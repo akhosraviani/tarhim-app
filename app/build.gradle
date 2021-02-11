@@ -42,8 +42,8 @@ dependencies {
 
 
     //Retrofit
-    def retrofit_version = "2.4.0"
-    def gson_version = "2.8.5"
+    def retrofit_version = "2.9.0"
+    def gson_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$gson_version"
 
@@ -63,4 +63,8 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava:$rxadapter_version"
     implementation "io.reactivex:rxandroid:$rxandroid_version"
     implementation "io.reactivex:rxjava:$rxjava_version"
+
+
+    //Hawk
+    implementation "com.orhanobut:hawk:2.0.1"
 }
