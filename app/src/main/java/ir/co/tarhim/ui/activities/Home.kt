@@ -1,8 +1,7 @@
-package ir.co.tarhim.ui.activites
+package ir.co.tarhim.ui.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import ir.co.tarhim.network.RequestClient
 
 class Home :AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- region all-->
+    <dimen name="all_small_space">8dp</dimen>
+    <dimen name="all_medium_space">16dp</dimen>
+    <dimen name="all_large_space">24dp</dimen>
+    <dimen name="all_xlarge_space">32dp</dimen>
+    <dimen name="all_2xlarge_space">64dp</dimen>
+
+    <!-- endregion-->
+
+    <!-- region login-->
+    <dimen name="size_login_logo">100dp</dimen>
+    <dimen name="width_login_stroke">2dp</dimen>
+
+    <dimen name="radius_login_card_view">16dp</dimen>
+    <dimen name="radius_login_edit_text">4dp</dimen>
+    <dimen name="radius_login_button_entry">4dp</dimen>
+
+    <dimen name="margin_end_slash">4dp</dimen>
+    <dimen name="margin_end_register">4dp</dimen>
+
+
+    <dimen name="padding_top_phone_email_entry_et">8dp</dimen>
+    <dimen name="padding_top_entry_btn">4dp</dimen>
+    <dimen name="padding_bottom_entry_btn">4dp</dimen>
+
+
+    <dimen name="textsize_login_enter_btn">18sp</dimen>
+    <dimen name="textsize_login_rules">12sp</dimen>
+    <!-- endregion-->
+
+</resources>

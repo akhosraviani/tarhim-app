@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.authentication.LoginFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/loginCv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/all_xlarge_space"
+        android:layout_marginEnd="@dimen/all_xlarge_space"
+        android:background="@drawable/shape_login_card_view_border"
+        app:cardCornerRadius="@dimen/radius_login_card_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/loginLogo"
+                android:layout_width="@dimen/size_login_logo"
+                android:layout_height="@dimen/size_login_logo"
+                android:layout_marginTop="@dimen/all_xlarge_space"
+                android:src="@drawable/sample_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/loginStartTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/all_xlarge_space"
+                android:layout_marginEnd="@dimen/all_xlarge_space"
+                android:text="@string/login_start"
+                android:textColor="@color/grey_900"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/loginLogo" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_end_slash"
+                android:text="@string/login_slash"
+                android:textColor="@color/grey_900"
+                app:layout_constraintBottom_toBottomOf="@+id/loginStartTv"
+                app:layout_constraintEnd_toStartOf="@+id/loginStartTv"
+                app:layout_constraintTop_toTopOf="@+id/loginStartTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/loginRegisterTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_end_register"
+                android:text="@string/login_register"
+                android:textColor="@color/grey_900"
+                app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                app:layout_constraintEnd_toStartOf="@+id/textView3"
+                app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/loginEnterPhoneOrMailTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/all_xlarge_space"
+                android:layout_marginTop="@dimen/all_xlarge_space"
+                android:layout_marginEnd="@dimen/all_xlarge_space"
+                android:text="@string/login_start_description"
+                android:textColor="@color/grey_900"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/loginStartTv" />
+
+            <EditText
+                android:id="@+id/loginEnterPhoneOrMailEt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/all_xlarge_space"
+                android:layout_marginTop="@dimen/all_medium_space"
+                android:layout_marginEnd="@dimen/all_xlarge_space"
+                android:background="@drawable/shape_login_edit_text_phone_number"
+                android:paddingTop="@dimen/padding_top_phone_email_entry_et"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/loginEnterPhoneOrMailTv" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/loginEnterTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/all_xlarge_space"
+                android:background="@drawable/shape_login_start_button"
+                android:gravity="center"
+                android:paddingTop="@dimen/padding_top_entry_btn"
+                android:paddingBottom="@dimen/padding_bottom_entry_btn"
+                android:text="@string/login_start_button"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_login_enter_btn"
+                app:layout_constraintEnd_toEndOf="@+id/loginEnterPhoneOrMailEt"
+                app:layout_constraintStart_toStartOf="@+id/loginEnterPhoneOrMailEt"
+                app:layout_constraintTop_toBottomOf="@+id/loginEnterPhoneOrMailEt" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/loginRulesTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/all_medium_space"
+                android:layout_marginBottom="@dimen/all_medium_space"
+                android:textSize="@dimen/textsize_login_rules"
+                android:textColor="@color/grey_900"
+                android:textColorLink="@color/grey_900"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/loginEnterTv"
+                app:layout_constraintStart_toStartOf="@+id/loginEnterTv"
+                app:layout_constraintTop_toBottomOf="@+id/loginEnterTv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
