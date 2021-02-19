@@ -11,7 +11,14 @@
     <string name="login_start_description">شماره موبایل یا پست الکترونیکی خود را وارد کنید</string>
     <string name="login_start_button">ورود به فلان</string>
     <string name="login_rules_description">با ورود و ثبت نام در فلان ، شما قوانین و شرایط استفاده از سرویس های سایت فلان و قوانین حریم خصوصی آن را میپذیرید</string>
+    <!-- endregion -->
 
+    <!-- region sign In-->
+    <string name="signIn_title">رمز عبور را وارد کنید</string>
+    <string name="signIn_start_description">رمز عبور حساب کاربری خود را وارد کنید</string>
+    <string name="signIn_password_recovery">بازیابی رمز عبور > </string>
+    <string name="signIn_entry_with_verification"> ورود با رمز یک بار مصرف > </string>
+    <string name="signIn_continue">ادامه</string>
     <!-- endregion -->
 
 </resources>

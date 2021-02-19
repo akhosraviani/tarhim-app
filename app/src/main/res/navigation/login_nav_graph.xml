@@ -10,5 +10,12 @@
         android:name="ir.co.tarhim.ui.fragments.authentication.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="ir.co.tarhim.ui.fragments.authentication.SignInFragment"
+        android:label="SignInFragment" />
 </navigation>

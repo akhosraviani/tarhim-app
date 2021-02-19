@@ -12,6 +12,7 @@
 
     <!-- region login-->
     <dimen name="size_login_logo">100dp</dimen>
+    <dimen name="size_signIn_back">50dp</dimen>
     <dimen name="width_login_stroke">2dp</dimen>
 
     <dimen name="radius_login_card_view">16dp</dimen>

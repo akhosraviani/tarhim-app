@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <corners android:radius="@dimen/radius_login_edit_text"/>
+    <solid
+        android:color="@color/purple_100"/>
+    <stroke
+        android:color="@color/purple_300"
+        android:width="@dimen/width_login_stroke" />
+</shape>

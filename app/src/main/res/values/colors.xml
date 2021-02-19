@@ -14,4 +14,6 @@
 
     <color name="grey_900">#161616</color>
     <color name="san_felix">#045E07</color>
+    <color name="purple_100">#D7BDE2</color>
+    <color name="purple_300">#A569BD</color>
 </resources>

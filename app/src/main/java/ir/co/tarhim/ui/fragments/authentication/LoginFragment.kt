@@ -29,37 +29,51 @@ class LoginFragment : AbstractFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loginEnterTv.setOnClickListener {
+            navigate(LoginFragmentDirections.actionLoginFragmentToSignInFragment())
+        }
+
         loginCv.setBackgroundResource(R.drawable.shape_login_card_view_border)
 
         val text = resources.getString(R.string.login_rules_description).toSpannable()
 
-        val clickableSpanForCondition:ClickableSpan = object :ClickableSpan(){
+        val clickableSpanForCondition: ClickableSpan = object : ClickableSpan() {
             override fun onClick(p0: View) {
                 //go to condition's page
             }
 
             override fun updateDrawState(ds: TextPaint) {
                 super.updateDrawState(ds)
-                ds.isUnderlineText=true
+                ds.isUnderlineText = true
             }
 
         }
 
-        val clickableSpanForRules:ClickableSpan = object :ClickableSpan(){
+        val clickableSpanForRules: ClickableSpan = object : ClickableSpan() {
             override fun onClick(p0: View) {
                 //go to rule's page
             }
 
             override fun updateDrawState(ds: TextPaint) {
                 super.updateDrawState(ds)
-                ds.isUnderlineText=true
+                ds.isUnderlineText = true
             }
 
         }
 
         val rulesWord = SpannableString(text)
-        rulesWord.setSpan(clickableSpanForCondition, CONDITION_WORDS_START_INDEX, CONDITION_WORDS_END_INDEX, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        rulesWord.setSpan(clickableSpanForRules, RULES_WORDS_START_INDEX, RULES_WORDS_END_INDEX, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        rulesWord.setSpan(
+            clickableSpanForCondition,
+            CONDITION_WORDS_START_INDEX,
+            CONDITION_WORDS_END_INDEX,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        rulesWord.setSpan(
+            clickableSpanForRules,
+            RULES_WORDS_START_INDEX,
+            RULES_WORDS_END_INDEX,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         loginRulesTv.text = rulesWord
         loginRulesTv.movementMethod = LinkMovementMethod.getInstance()
     }
