@@ -39,14 +39,15 @@ class LoginFragment : AbstractFragment() {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         loginEnterTv.setOnClickListener {
+            Log.i("testTag","clicked")
             viewModel.requestSignUp(CheckRegisterRequest(loginEnterPhoneOrMailEt.text.toString()))
         }
 
         viewModel.ldSignUp.observe(viewLifecycleOwner, Observer { x ->
             if (x.registered) {
-                navigate(LoginFragmentDirections.actionLoginFragmentToSignInFragment())
+                navigate(LoginFragmentDirections.loginToSignIn(loginEnterPhoneOrMailEt.text.toString()))
             } else {
-                navigate(LoginFragmentDirections.actionLoginFragmentToVerificationFragment())
+                navigate(LoginFragmentDirections.loginToVerification(loginEnterPhoneOrMailEt.text.toString()))
             }
         })
 

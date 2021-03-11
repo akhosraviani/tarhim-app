@@ -11,19 +11,29 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_loginFragment_to_signInFragment"
+            android:id="@+id/loginToSignIn"
             app:destination="@id/signInFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_verificationFragment"
+            android:id="@+id/loginToVerification"
             app:destination="@id/verificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
         android:name="ir.co.tarhim.ui.fragments.authentication.SignInFragment"
-        android:label="SignInFragment" />
+        android:label="SignInFragment" >
+    <argument
+        android:name="userPhoneNumber"
+        app:argType="string"
+        app:nullable="false" />
+    </fragment>
     <fragment
         android:id="@+id/verificationFragment"
         android:name="ir.co.tarhim.ui.fragments.authentication.VerificationFragment"
         android:label="fragment_verification"
-        tools:layout="@layout/fragment_verification" />
+        tools:layout="@layout/fragment_verification" >
+    <argument
+        android:name="userPhoneNumber"
+        app:argType="string"
+        app:nullable="false" />
+    </fragment>
 </navigation>

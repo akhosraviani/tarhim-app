@@ -2,6 +2,7 @@
 
     <!--region all -->
     <string name="app_name">ترحیم</string>
+    <string name="all_timer_style">%02d:%02d</string>
     <!--endregion -->
 
     <!-- region login-->
@@ -19,7 +20,16 @@
     <string name="signIn_password_recovery">بازیابی رمز عبور > </string>
     <string name="signIn_entry_with_verification"> ورود با رمز یک بار مصرف > </string>
     <string name="signIn_continue">ادامه</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- endregion -->
+
+    <!-- region verification-->
+    <string name="verification_title">کد تایید را وارد کنید</string>
+    <string name="verification_start_description">کد تایید برای شماره موبایل %1$s ارسال گردید.</string>
+    <string name="verification_inter_with_password">ورود با رمز عبور > </string>
+    <string name="verification_continue">ادامه</string>
+    <string name="verification_send_me_again">ارسال مجدد کد</string>
+    <!-- endregion -->
+
+
 
 </resources>

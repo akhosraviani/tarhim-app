@@ -28,8 +28,8 @@ class LoginRepository {
                     call: retrofit2.Call<CheckRegisterModel>,
                     response: Response<CheckRegisterModel>
                 ) {
-                    CheckRegisterModel(response.body()!!.registered)
-
+                  mldSignUp.value=  CheckRegisterModel(response.body()!!.registered)
+                       Log.i("testTag","im here="+response.body())
                 }
             })
         return mldSignUp
