@@ -13,9 +13,17 @@
         <action
             android:id="@+id/action_loginFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_verificationFragment"
+            app:destination="@id/verificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
         android:name="ir.co.tarhim.ui.fragments.authentication.SignInFragment"
         android:label="SignInFragment" />
+    <fragment
+        android:id="@+id/verificationFragment"
+        android:name="ir.co.tarhim.ui.fragments.authentication.VerificationFragment"
+        android:label="fragment_verification"
+        tools:layout="@layout/fragment_verification" />
 </navigation>

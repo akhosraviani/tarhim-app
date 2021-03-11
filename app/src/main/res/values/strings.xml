@@ -5,7 +5,7 @@
     <!--endregion -->
 
     <!-- region login-->
-    <string name="login_start">ورود</string>
+    <string name="login_start">ورود / ثبت نام</string>
     <string name="login_register">ثبت نام</string>
     <string name="login_slash">/</string>
     <string name="login_start_description">شماره موبایل یا پست الکترونیکی خود را وارد کنید</string>
@@ -19,6 +19,7 @@
     <string name="signIn_password_recovery">بازیابی رمز عبور > </string>
     <string name="signIn_entry_with_verification"> ورود با رمز یک بار مصرف > </string>
     <string name="signIn_continue">ادامه</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- endregion -->
 
 </resources>

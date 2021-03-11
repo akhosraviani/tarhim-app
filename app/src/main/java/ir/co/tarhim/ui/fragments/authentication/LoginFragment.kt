@@ -7,10 +7,15 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import androidx.core.text.toSpannable
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import ir.co.tarhim.R
+import ir.co.tarhim.model.mobile.CheckRegisterRequest
 import ir.co.tarhim.ui.AbstractFragment
+import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 
 
@@ -23,15 +28,27 @@ class LoginFragment : AbstractFragment() {
         private const val RULES_WORDS_END_INDEX: Int = 97
     }
 
+    private lateinit var viewModel: HomeViewModel
+
     override val layoutId: Int
         get() = R.layout.fragment_login
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
         loginEnterTv.setOnClickListener {
-            navigate(LoginFragmentDirections.actionLoginFragmentToSignInFragment())
+            viewModel.requestSignUp(CheckRegisterRequest(loginEnterPhoneOrMailEt.text.toString()))
         }
+
+        viewModel.ldSignUp.observe(viewLifecycleOwner, Observer { x ->
+            if (x.registered) {
+                navigate(LoginFragmentDirections.actionLoginFragmentToSignInFragment())
+            } else {
+                navigate(LoginFragmentDirections.actionLoginFragmentToVerificationFragment())
+            }
+        })
 
         loginCv.setBackgroundResource(R.drawable.shape_login_card_view_border)
 

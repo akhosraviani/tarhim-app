@@ -1,22 +1,23 @@
 package ir.co.tarhim.ui.viewModels
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ir.co.tarhim.ui.repository.LoginRepositoy
-import okhttp3.ResponseBody
-import kotlin.math.log
+import ir.co.tarhim.model.mobile.CheckRegisterModel
+import ir.co.tarhim.model.mobile.CheckRegisterRequest
+import ir.co.tarhim.ui.repository.LoginRepository
 
-class HomeViewModel:ViewModel() {
+class HomeViewModel : ViewModel() {
 
 
-    private lateinit var loginRepositoy: LoginRepositoy
-    public lateinit var ldSignUp: LiveData<ResponseBody>
+    private var loginRepository: LoginRepository = LoginRepository()
+    var ldSignUp: MutableLiveData<CheckRegisterModel>
+
     init {
-        loginRepositoy= LoginRepositoy()
-        ldSignUp=loginRepositoy.mldSignUp
+        ldSignUp = loginRepository.mldSignUp
     }
 
-    fun  requestSignUp(number:String){
-        loginRepositoy.requestSignUp(number)
+    fun requestSignUp(checkRegisterRequest: CheckRegisterRequest): MutableLiveData<CheckRegisterModel> {
+        ldSignUp = loginRepository.requestSignUp(checkRegisterRequest)
+        return ldSignUp
     }
 }

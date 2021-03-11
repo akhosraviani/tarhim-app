@@ -45,28 +45,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/loginLogo" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_end_slash"
-                android:text="@string/login_slash"
-                android:textColor="@color/grey_900"
-                app:layout_constraintBottom_toBottomOf="@+id/loginStartTv"
-                app:layout_constraintEnd_toStartOf="@+id/loginStartTv"
-                app:layout_constraintTop_toTopOf="@+id/loginStartTv" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/loginRegisterTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_end_register"
-                android:text="@string/login_register"
-                android:textColor="@color/grey_900"
-                app:layout_constraintBottom_toBottomOf="@+id/textView3"
-                app:layout_constraintEnd_toStartOf="@+id/textView3"
-                app:layout_constraintTop_toTopOf="@+id/textView3" />
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/loginEnterPhoneOrMailTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -88,6 +66,7 @@
                 android:layout_marginEnd="@dimen/all_xlarge_space"
                 android:background="@drawable/shape_login_edit_text_phone_number"
                 android:paddingTop="@dimen/padding_top_phone_email_entry_et"
+                android:inputType="textWebEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/loginEnterPhoneOrMailTv" />
