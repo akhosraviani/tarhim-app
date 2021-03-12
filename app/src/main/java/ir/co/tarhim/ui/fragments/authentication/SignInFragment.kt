@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import ir.co.tarhim.R
+import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 
 
 class SignInFragment : Fragment() {
 
+    private lateinit var viewModel: HomeViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,6 +29,7 @@ class SignInFragment : Fragment() {
         signInBack.setOnClickListener {
 //            val fm: FragmentManager = requireActivity().supportFragmentManager
 //            fm.popBackStack()
+
         }
 
         loginPhoneNumberEditText.doOnTextChanged { _, _, _, _ ->

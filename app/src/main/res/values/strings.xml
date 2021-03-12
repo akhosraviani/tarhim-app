@@ -9,7 +9,7 @@
     <string name="login_start">ورود / ثبت نام</string>
     <string name="login_register">ثبت نام</string>
     <string name="login_slash">/</string>
-    <string name="login_start_description">شماره موبایل یا پست الکترونیکی خود را وارد کنید</string>
+    <string name="login_start_description">شماره موبایل خود را وارد کنید</string>
     <string name="login_start_button">ورود به فلان</string>
     <string name="login_rules_description">با ورود و ثبت نام در فلان ، شما قوانین و شرایط استفاده از سرویس های سایت فلان و قوانین حریم خصوصی آن را میپذیرید</string>
     <!-- endregion -->

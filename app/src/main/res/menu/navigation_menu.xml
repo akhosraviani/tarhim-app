@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/profile_fragment"
+        android:title="پروفایل"
+        android:icon="@drawable/profil_icon"
+        />
+    <item
+        android:id="@+id/news_fragment"
+        android:title="اخبار"
+        android:icon="@drawable/news_icon"
+        />
+    <item
+        android:id="@+id/cemetery_fragment"
+        android:title="بهشت زهرا"
+        android:icon="@drawable/behesht_icon"
+        />
+    <item
+        android:id="@+id/requirement_fragment"
+        android:title="نیازمندی ها"
+        android:icon="@drawable/niazmandiha_icon"
+        />
+
+
+</menu>

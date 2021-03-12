@@ -91,6 +91,7 @@
                     android:inputType="textPassword"
                     android:paddingStart="@dimen/all_small_space"
                     android:gravity="end"
+                    android:layout_gravity="center_vertical"
                     android:background="@drawable/shape_login_edit_text_phone_number"
                     android:paddingTop="@dimen/padding_top_phone_email_entry_et"
                     android:paddingEnd="@dimen/all_small_space"
