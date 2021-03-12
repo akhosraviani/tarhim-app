@@ -9,16 +9,14 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.NavDirections
 import ir.co.tarhim.R
+import ir.co.tarhim.utils.Timer
+import kotlinx.android.synthetic.main.fragment_verification.*
 
 
 class VerificationFragment : Fragment() {
 
     private val args: VerificationFragmentArgs by navArgs()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var timer: Timer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,9 +28,14 @@ class VerificationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        timer = Timer(verificationTimerTv)
         val userPhoneNumber = args.userPhoneNumber
-        Log.i("testTag","test "+userPhoneNumber)
 
+        verificationStartDescriptionTv.text = resources.getString(
+            R.string.verification_start_description,
+            userPhoneNumber
+        )
+        
     }
 
 }

@@ -13,7 +13,7 @@ import androidx.core.text.toSpannable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ir.co.tarhim.R
-import ir.co.tarhim.model.mobile.CheckRegisterRequest
+import ir.co.tarhim.model.mobile.CheckPhoneNumber
 import ir.co.tarhim.ui.AbstractFragment
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -39,17 +39,24 @@ class LoginFragment : AbstractFragment() {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         loginEnterTv.setOnClickListener {
-            Log.i("testTag","clicked")
-            viewModel.requestSignUp(CheckRegisterRequest(loginEnterPhoneOrMailEt.text.toString()))
+            viewModel.requestSignUp(CheckPhoneNumber(loginEnterPhoneOrMailEt.text.toString()))
         }
 
         viewModel.ldSignUp.observe(viewLifecycleOwner, Observer { x ->
             if (x.registered) {
                 navigate(LoginFragmentDirections.loginToSignIn(loginEnterPhoneOrMailEt.text.toString()))
             } else {
-                navigate(LoginFragmentDirections.loginToVerification(loginEnterPhoneOrMailEt.text.toString()))
+                viewModel.requestOtp(CheckPhoneNumber(loginEnterPhoneOrMailEt.text.toString()))
             }
         })
+
+        viewModel.ldOtp.observe(viewLifecycleOwner , Observer {
+            x ->
+            if(x.IsSuccessful){
+            navigate(LoginFragmentDirections.loginToVerification(loginEnterPhoneOrMailEt.text.toString()))
+            }
+        })
+
 
         loginCv.setBackgroundResource(R.drawable.shape_login_card_view_border)
 
@@ -95,6 +102,7 @@ class LoginFragment : AbstractFragment() {
         loginRulesTv.text = rulesWord
         loginRulesTv.movementMethod = LinkMovementMethod.getInstance()
     }
+
 
 
 }

@@ -1,5 +1,5 @@
 package ir.co.tarhim.model.mobile
 
-data class CheckRegisterRequest(
+data class CheckPhoneNumber(
     val mobile : String
 )
