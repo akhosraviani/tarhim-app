@@ -21,7 +21,7 @@ object RequestClient {
 
     private var makeRetrofit=Retrofit
         .Builder()
-        .baseUrl("")
+        .baseUrl("http://194.225.229.200:9092/")
         .client(client)
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(gson))

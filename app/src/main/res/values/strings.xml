@@ -1,3 +1,35 @@
 <resources>
-    <string name="app_name">Tarhim</string>
+
+    <!--region all -->
+    <string name="app_name">ترحیم</string>
+    <string name="all_timer_style">%02d:%02d</string>
+    <!--endregion -->
+
+    <!-- region login-->
+    <string name="login_start">ورود / ثبت نام</string>
+    <string name="login_register">ثبت نام</string>
+    <string name="login_slash">/</string>
+    <string name="login_start_description">شماره موبایل یا پست الکترونیکی خود را وارد کنید</string>
+    <string name="login_start_button">ورود به فلان</string>
+    <string name="login_rules_description">با ورود و ثبت نام در فلان ، شما قوانین و شرایط استفاده از سرویس های سایت فلان و قوانین حریم خصوصی آن را میپذیرید</string>
+    <!-- endregion -->
+
+    <!-- region sign In-->
+    <string name="signIn_title">رمز عبور را وارد کنید</string>
+    <string name="signIn_start_description">رمز عبور حساب کاربری خود را وارد کنید</string>
+    <string name="signIn_password_recovery">بازیابی رمز عبور > </string>
+    <string name="signIn_entry_with_verification"> ورود با رمز یک بار مصرف > </string>
+    <string name="signIn_continue">ادامه</string>
+    <!-- endregion -->
+
+    <!-- region verification-->
+    <string name="verification_title">کد تایید را وارد کنید</string>
+    <string name="verification_start_description">کد تایید برای شماره موبایل %1$s ارسال گردید.</string>
+    <string name="verification_inter_with_password">ورود با رمز عبور > </string>
+    <string name="verification_continue">ادامه</string>
+    <string name="verification_send_me_again">ارسال مجدد کد</string>
+    <!-- endregion -->
+
+
+
 </resources>
