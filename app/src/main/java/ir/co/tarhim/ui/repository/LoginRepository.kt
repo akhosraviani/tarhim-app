@@ -22,8 +22,8 @@ class LoginRepository {
     val mldOtp = MutableLiveData<OtpDataModel>()
     val mldConfirmOtp = MutableLiveData<ConfirmOtpDataModel>()
 
-    fun requestSignUp(checkRegisterRequest: CheckPhoneNumber): MutableLiveData<CheckRegisterModel> {
-        RequestClient.makeRequest().requestSignUp(checkRegisterRequest)
+    fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumber): MutableLiveData<CheckRegisterModel> {
+        RequestClient.makeRequest().requestCheckRegister(checkRegisterRequest)
             .enqueue(object : Callback<CheckRegisterModel> {
                 override fun onFailure(call: retrofit2.Call<CheckRegisterModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)

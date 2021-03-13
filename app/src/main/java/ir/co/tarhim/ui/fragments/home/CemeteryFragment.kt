@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import ir.co.tarhim.R
 
 class CemeteryFragment : Fragment() {
     override fun onCreateView(
@@ -12,7 +13,7 @@ class CemeteryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return inflater.inflate(R.layout.fragment_cemetery, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -3,25 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@layout/fragment_profile">
-
+    app:startDestination="@id/fragment_profile">
     <fragment
         android:id="@+id/fragment_profile"
         android:name="ir.co.tarhim.ui.fragments.home.ProfileFragment"
         tools:layout="@layout/fragment_profile" />
-
     <fragment
         android:id="@+id/fragment_news"
         android:name="ir.co.tarhim.ui.fragments.home.NewsFragment"
         tools:layout="@layout/fragment_news" />
-
     <fragment
         android:id="@+id/fragment_cemetery"
         android:name="ir.co.tarhim.ui.fragments.home.CemeteryFragment"
         tools:layout="@layout/fragment_cemetery" />
-
     <fragment
         android:id="@+id/fragment_requirement"
         android:name="ir.co.tarhim.ui.fragments.home.RequirementFragment"
         tools:layout="@layout/fragment_requirement" />
+
 </navigation>

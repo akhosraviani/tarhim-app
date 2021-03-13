@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.AuthenticationActivity">
 
+    <ProgressBar
+        android:id="@+id/ProgressLoading"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/authentication_fragment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/authentication_fragment" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/authentication_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

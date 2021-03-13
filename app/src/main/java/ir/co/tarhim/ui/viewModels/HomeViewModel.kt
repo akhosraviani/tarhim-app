@@ -24,8 +24,8 @@ class HomeViewModel : ViewModel() {
         ldConfirmOtp = loginRepository.mldConfirmOtp
     }
 
-    fun requestSignUp(checkRegisterRequest: CheckPhoneNumber): MutableLiveData<CheckRegisterModel> {
-        ldSignUp = loginRepository.requestSignUp(checkRegisterRequest)
+    fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumber): MutableLiveData<CheckRegisterModel> {
+        ldSignUp = loginRepository.requestCheckRegister(checkRegisterRequest)
         Log.i("testTag" ,"hi model view" + ldSignUp)
         return ldSignUp
 

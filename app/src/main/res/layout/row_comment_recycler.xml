@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:padding="5dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/IvToComment"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/download"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/TvNameToComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="علی محمدی"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/IvToComment"
+        app:layout_constraintEnd_toStartOf="@+id/IvToComment"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/IvToComment"
+        app:layout_constraintVertical_bias="0.152" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/TvComment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="5dp"
+        android:text="علی محمدی علی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی  علی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیعلی محمدیمحمدی"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/TvNameToComment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TvNameToComment"
+        app:layout_constraintVertical_bias="0.1" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

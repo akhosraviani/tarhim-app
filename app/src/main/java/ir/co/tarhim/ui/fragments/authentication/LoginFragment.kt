@@ -7,7 +7,6 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.view.View
 import androidx.core.text.toSpannable
 import androidx.lifecycle.Observer
@@ -39,7 +38,7 @@ class LoginFragment : AbstractFragment() {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         loginEnterTv.setOnClickListener {
-            viewModel.requestSignUp(CheckPhoneNumber(loginEnterPhoneOrMailEt.text.toString()))
+            viewModel.requestCheckRegister(CheckPhoneNumber(loginEnterPhoneOrMailEt.text.toString()))
         }
 
         viewModel.ldSignUp.observe(viewLifecycleOwner, Observer { x ->

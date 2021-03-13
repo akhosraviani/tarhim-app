@@ -14,13 +14,13 @@
         android:theme="@style/Theme.Tarhim">
         <activity
             android:name=".ui.activities.AuthenticationActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden">
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"
+            >
 
         </activity>
         <activity android:name=".ui.activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

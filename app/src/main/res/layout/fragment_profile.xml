@@ -5,278 +5,96 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/PrivateLayout"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ImVUser"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".03" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/TvuUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="مهرداد میناوند"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ImVUser"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ImVUser"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/BtnNeedToPray"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:background="@drawable/green_buttton"
+        android:gravity="center"
+        android:text="التماس دعا"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ImVUser"
+        app:layout_constraintHorizontal_bias="0.116"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ImVUser"
+        app:layout_constraintVertical_bias="0.028" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/BtnCreatePageDeceased"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:background="@drawable/green_buttton"
+        android:gravity="center"
+        android:text="ویرایش پروفایل"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ImVUser"
+        app:layout_constraintHorizontal_bias=".116"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BtnEditProfile"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/BtnEditProfile"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:background="@drawable/green_buttton"
+        android:gravity="center"
+        android:text="ایجاد صفحه متوفی"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ImVUser"
+        app:layout_constraintHorizontal_bias="0.116"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BtnNeedToPray"
+        app:layout_constraintVertical_bias="0.01" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/ToolbarProfile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TvuUserName"
+        app:layout_constraintVertical_bias="0.01" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ImVDeceasedPrivate"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".95"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".03" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvDeseacesNamePrivate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text="مهرداد میناوند"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/ImVDeceasedPrivate"
-            app:layout_constraintEnd_toStartOf="@+id/ImVDeceasedPrivate"
-            app:layout_constraintHorizontal_bias="0.722"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ImVDeceasedPrivate"
-            app:layout_constraintVertical_bias="0.171" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvBornDateDeseacesPrivate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="مهرداد میناوند"
-            android:textColor="@color/grey_900"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/TvDeseacesNamePrivate"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TvDeseacesNamePrivate"
-            app:layout_constraintVertical_bias="0.019" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvDeathDateDeseacesPrivate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="مهرداد میناوند"
-            android:textColor="@color/grey_900"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/TvBornDateDeseacesPrivate"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TvBornDateDeseacesPrivate"
-            app:layout_constraintVertical_bias="0.019" />
-
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_margin="15dp"
-            android:background="@drawable/bio_container"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TvDeathDateDeseacesPrivate"
-            app:layout_constraintVertical_bias=".1" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/appCompatImageView"
-            android:layout_width="50dp"
-            android:layout_height="60dp"
-            android:background="@drawable/lock_icon"
-            app:layout_constraintBottom_toBottomOf="@+id/view2"
-            app:layout_constraintEnd_toEndOf="@+id/view2"
-            app:layout_constraintStart_toStartOf="@+id/view2"
-            app:layout_constraintTop_toTopOf="@+id/view2"
-            app:layout_constraintVertical_bias="0.266" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvLockAccount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="این صفحه خصوصی است"
-            android:textColor="@color/grey_900"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/view2"
-            app:layout_constraintEnd_toEndOf="@+id/view2"
-            app:layout_constraintStart_toStartOf="@+id/view2"
-            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView"
-             />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnRequestFollow"
-            android:layout_width="150dp"
-            android:layout_height="45dp"
-            android:background="@drawable/follow_button"
-            android:text="دنبال کردن"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2"
-            app:layout_constraintVertical_bias="0.152" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/FollowLayout"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/VPagerProfile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ImBNotif"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/notif"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".02" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ImVDeceased"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".95"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".03" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvDeseacesName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text="مهرداد میناوند"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/ImVDeceased"
-            app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.872"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ImVDeceased"
-            app:layout_constraintVertical_bias="0.144" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvBornDateDeseaces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text="مهرداد میناوند"
-            android:textColor="@color/grey_900"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.872"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TvDeseacesName"
-            app:layout_constraintVertical_bias="0.02" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvDeathDateDeseaces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text="مهرداد میناوند"
-            android:textColor="@color/grey_900"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.872"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TvBornDateDeseaces"
-            app:layout_constraintVertical_bias="0.02" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvBurialLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="مهرداد میناوند"
-            android:textColor="@color/grey_900"
-            app:layout_constraintBottom_toBottomOf="@+id/btnFindBurialLocation"
-            app:layout_constraintEnd_toEndOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.959"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnFindBurialLocation" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnFindBurialLocation"
-            android:layout_width="90dp"
-            android:layout_height="40dp"
-            android:background="@drawable/green_buttton"
-            android:drawableLeft="@drawable/ic_location"
-            android:drawablePadding="5dp"
-            android:text="مسیریابی"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ImVDeceased"
-            app:layout_constraintVertical_bias="0.02" />
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="135dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/bio_container"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnFindBurialLocation"
-            app:layout_constraintVertical_bias="0"
-            tools:layout_editor_absoluteX="8dp" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvBioDeseaces"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="10dp"
-            android:text="مهرداد میناوند"
-            android:textColor="@color/grey_900"
-            app:layout_constraintBottom_toTopOf="@+id/TvMore"
-            app:layout_constraintEnd_toEndOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.959"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view"
-            app:layout_constraintVertical_bias=".1" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/TvMore"
-            android:layout_width="60dp"
-            android:layout_height="20dp"
-
-            android:layout_margin="10dp"
-            android:background="@drawable/more"
-            app:layout_constraintBottom_toBottomOf="@+id/view"
-            app:layout_constraintEnd_toEndOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.056"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view"
-            app:layout_constraintVertical_bias="1.0" />
-
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/TabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view"
-            app:layout_constraintVertical_bias="0" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/ViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TabLayout"
-            app:layout_constraintVertical_bias="0" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ToolbarProfile"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

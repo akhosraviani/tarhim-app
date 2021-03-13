@@ -10,4 +10,5 @@ class AuthenticationActivity : AbstractActivity() {
     override val navHostFragmentId: Int
         get() =  R.id.authentication_fragment
 
+
 }

@@ -45,4 +45,5 @@ abstract class AbstractFragment :
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
     }
+
 }

@@ -28,8 +28,21 @@
     <string name="verification_inter_with_password">ورود با رمز عبور > </string>
     <string name="verification_continue">ادامه</string>
     <string name="verification_send_me_again">ارسال مجدد کد</string>
+
     <!-- endregion -->
 
-
+    <string name="charity_msg">
+        <br>
+    شما میتوانید برای شادی روح مرحوم و برخورداری از
+        </br>
+    <br>
+        اجر و ثواب معنوی به ایشان کمک کنید تا در دنیای
+    </br>
+        <br>
+         باقی در آرامش باشد.
+        </br>
+    </string>
+    <string name="help_to_charity_centers">کمک به مراکز خیریه به نیت مرحوم</string>
+    <string name="spiritual_affairs_msg">انجام امور معنوی به نیت مرحوم</string>
 
 </resources>

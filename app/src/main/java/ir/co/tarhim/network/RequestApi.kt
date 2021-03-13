@@ -15,7 +15,7 @@ interface RequestApi {
 
 
     @POST("api/v1/account/mobile")
-    fun requestSignUp(@Body checkRegisterRequest: CheckPhoneNumber): Call<CheckRegisterModel>
+    fun requestCheckRegister(@Body checkRegisterRequest: CheckPhoneNumber): Call<CheckRegisterModel>
 
     @POST("api/v1/account/otp")
     fun requestOtp(@Body checkPhoneNumber: CheckPhoneNumber): Call<OtpDataModel>
