@@ -85,7 +85,7 @@
              >
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/loginPhoneNumberEditText"
+                    android:id="@+id/verificationPhoneNumberEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textPassword"

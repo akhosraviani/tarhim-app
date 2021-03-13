@@ -27,7 +27,7 @@
         app:nullable="false" />
         <argument
             android:name="userRegistered"
-            app:argType="Boolean"
+            app:argType="boolean"
             app:nullable="false" />
     </fragment>
     <fragment

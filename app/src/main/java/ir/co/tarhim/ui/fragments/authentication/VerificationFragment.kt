@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.NavDirections
@@ -16,6 +17,7 @@ import ir.co.tarhim.ui.AbstractFragment
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.Timer
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_sign_in.*
 import kotlinx.android.synthetic.main.fragment_verification.*
 
 
@@ -40,14 +42,20 @@ class VerificationFragment : AbstractFragment(){
             userPhoneNumber
         )
 
-        verificationEnterTv.setOnClickListener {
-            viewModel.requestConfirmOtp(ConfirmOtpRequest(loginPhoneNumberEditText.text.toString().toInt() , userPhoneNumber))
+        //for removing error layout
+        verificationPhoneNumberEditText.doOnTextChanged { _, _, _, _ ->
+            verificationPasswordLayout.setBackgroundResource(R.drawable.shape_login_edit_text_phone_number)
         }
+
+        verificationEnterTv.setOnClickListener {
+            viewModel.requestConfirmOtp(ConfirmOtpRequest(verificationPhoneNumberEditText.text.toString().toInt() , userPhoneNumber))
+        }
+
         viewModel.ldConfirmOtp.observe(viewLifecycleOwner ,Observer{ x ->
             if(x.code==200){
                 navigate(VerificationFragmentDirections.verificationToSignIn(loginEnterPhoneOrMailEt.text.toString() , false))
             }else{
-                //set error for entered otp code
+                verificationPasswordLayout.setBackgroundResource(R.drawable.shape_purple_card)
             }
 
         } )

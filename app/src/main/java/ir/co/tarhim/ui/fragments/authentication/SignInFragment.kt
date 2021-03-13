@@ -15,6 +15,7 @@ import ir.co.tarhim.ui.AbstractFragment
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_sign_in.*
+import kotlinx.android.synthetic.main.fragment_verification.*
 
 
 class SignInFragment :  AbstractFragment() {
@@ -35,9 +36,9 @@ class SignInFragment :  AbstractFragment() {
 
         signInEnterTv.setOnClickListener {
             if(userState){
-                viewModel.requestConfirmPassword(PasswordRequest(userPhoneNumber , loginPhoneNumberEditText.text.toString()))
+                viewModel.requestConfirmPassword(PasswordRequest(userPhoneNumber , signInPhoneNumberEditText.text.toString()))
             }else{
-                viewModel.requestSetPassword(PasswordRequest(userPhoneNumber , loginPhoneNumberEditText.text.toString()))
+                viewModel.requestSetPassword(PasswordRequest(userPhoneNumber , signInPhoneNumberEditText.text.toString()))
             }
         }
 
@@ -46,6 +47,8 @@ class SignInFragment :  AbstractFragment() {
                 //go to home
             }else{
                 //set error for entered pass
+                signInPasswordLayout.setBackgroundResource(R.drawable.shape_purple_card)
+
             }
 
         } )
@@ -54,9 +57,11 @@ class SignInFragment :  AbstractFragment() {
                 //go to home
             }else{
                 //set error for entered pass
+                signInPhoneNumberEditText.setBackgroundResource(R.drawable.shape_purple_card)
             }
 
         } )
+
 
         signInCv.setBackgroundResource(R.drawable.shape_login_card_view_border)
 
@@ -64,11 +69,11 @@ class SignInFragment :  AbstractFragment() {
 //            val fm: FragmentManager = requireActivity().supportFragmentManager
 //            fm.popBackStack()
         }
-        loginPhoneNumberEditText.doOnTextChanged { _, _, _, _ ->
-                if(loginPhoneNumberEditText.text.toString().isEmpty()){
-                    loginPhoneNumberEditText.setBackgroundResource(R.drawable.shape_login_edit_text_phone_number)
+        signInPhoneNumberEditText.doOnTextChanged { _, _, _, _ ->
+                if(signInPhoneNumberEditText.text.toString().isEmpty()){
+                    signInPhoneNumberEditText.setBackgroundResource(R.drawable.shape_login_edit_text_phone_number)
                 }else{
-                    loginPhoneNumberEditText.setBackgroundResource(R.drawable.shape_purple_card)
+                    signInPhoneNumberEditText.setBackgroundResource(R.drawable.shape_purple_card)
                 }
                 }
 

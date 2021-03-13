@@ -9,6 +9,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import androidx.core.text.toSpannable
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ir.co.tarhim.R
@@ -16,6 +17,7 @@ import ir.co.tarhim.model.mobile.CheckPhoneNumber
 import ir.co.tarhim.ui.AbstractFragment
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_verification.*
 
 
 class LoginFragment : AbstractFragment() {
@@ -38,7 +40,18 @@ class LoginFragment : AbstractFragment() {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         loginEnterTv.setOnClickListener {
-            viewModel.requestSignUp(CheckPhoneNumber(loginEnterPhoneOrMailEt.text.toString()))
+            if(loginEnterPhoneOrMailEt.text.toString().startsWith("09") &&loginEnterPhoneOrMailEt.text.toString().length==11 ){
+                viewModel.requestSignUp(CheckPhoneNumber(loginEnterPhoneOrMailEt.text.toString()))
+            }else{
+                //set error for edittext
+                loginEnterPhoneOrMailEt.setBackgroundResource(R.drawable.shape_purple_card)
+            }
+
+        }
+
+        //for removing error layout
+        loginEnterPhoneOrMailEt.doOnTextChanged { _, _, _, _ ->
+            loginEnterPhoneOrMailEt.setBackgroundResource(R.drawable.shape_login_edit_text_phone_number)
         }
 
         viewModel.ldSignUp.observe(viewLifecycleOwner, Observer { x ->

@@ -57,19 +57,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/loginStartTv" />
 
-            <EditText
-                android:id="@+id/loginEnterPhoneOrMailEt"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/loginEnterPhoneOrMailLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/all_xlarge_space"
                 android:layout_marginTop="@dimen/all_medium_space"
                 android:layout_marginEnd="@dimen/all_xlarge_space"
-                android:background="@drawable/shape_login_edit_text_phone_number"
+                android:background="@android:color/transparent"
+                app:boxBackgroundMode="none"
                 android:paddingTop="@dimen/padding_top_phone_email_entry_et"
-                android:inputType="textWebEmailAddress"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxStrokeColor="@color/blue_grey_200"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginEnterPhoneOrMailTv" />
+                app:layout_constraintTop_toBottomOf="@+id/loginEnterPhoneOrMailTv">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/loginEnterPhoneOrMailEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textWebEmailAddress"
+                    android:paddingStart="@dimen/all_small_space"
+                    android:gravity="end"
+                    android:maxLength="11"
+                    android:background="@drawable/shape_login_edit_text_phone_number"
+                    android:paddingTop="@dimen/padding_top_phone_email_entry_et"
+                    android:paddingEnd="@dimen/all_small_space"
+                    android:textColor="@color/grey_600"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/loginEnterTv"
@@ -83,9 +101,9 @@
                 android:text="@string/login_start_button"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_login_enter_btn"
-                app:layout_constraintEnd_toEndOf="@+id/loginEnterPhoneOrMailEt"
-                app:layout_constraintStart_toStartOf="@+id/loginEnterPhoneOrMailEt"
-                app:layout_constraintTop_toBottomOf="@+id/loginEnterPhoneOrMailEt" />
+                app:layout_constraintEnd_toEndOf="@+id/loginEnterPhoneOrMailLayout"
+                app:layout_constraintStart_toStartOf="@+id/loginEnterPhoneOrMailLayout"
+                app:layout_constraintTop_toBottomOf="@+id/loginEnterPhoneOrMailLayout" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/loginRulesTv"
