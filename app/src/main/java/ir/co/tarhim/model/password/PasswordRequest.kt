@@ -1,6 +1,6 @@
 package ir.co.tarhim.model.password
 
-data class SetPasswordRequest (
+data class PasswordRequest (
     val mobile : String ,
     val password : String
 )

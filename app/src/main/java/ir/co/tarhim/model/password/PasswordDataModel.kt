@@ -1,6 +1,6 @@
 package ir.co.tarhim.model.password
 
-data class SetPasswordDataModel (
+data class PasswordDataModel (
     val message : String ,
-    val code : String
+    val code : Int
 )

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.NavDirections
 import androidx.lifecycle.Observer
 import ir.co.tarhim.R
+import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.ui.AbstractFragment
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.Timer
@@ -25,7 +26,7 @@ class VerificationFragment : AbstractFragment(){
     private lateinit var viewModel: HomeViewModel
 
     override val layoutId: Int
-        get() = R.layout.fragment_login
+        get() = R.layout.fragment_verification
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,6 +40,9 @@ class VerificationFragment : AbstractFragment(){
             userPhoneNumber
         )
 
+        verificationEnterTv.setOnClickListener {
+            viewModel.requestConfirmOtp(ConfirmOtpRequest(loginPhoneNumberEditText.text.toString().toInt() , userPhoneNumber))
+        }
         viewModel.ldConfirmOtp.observe(viewLifecycleOwner ,Observer{ x ->
             if(x.code==200){
                 navigate(VerificationFragmentDirections.verificationToSignIn(loginEnterPhoneOrMailEt.text.toString() , false))

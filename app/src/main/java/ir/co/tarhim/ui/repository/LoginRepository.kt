@@ -7,6 +7,8 @@ import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.mobile.CheckRegisterModel
 import ir.co.tarhim.model.mobile.CheckPhoneNumber
 import ir.co.tarhim.model.otp.OtpDataModel
+import ir.co.tarhim.model.password.PasswordDataModel
+import ir.co.tarhim.model.password.PasswordRequest
 import ir.co.tarhim.network.RequestClient
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,6 +23,8 @@ class LoginRepository {
     val mldSignUp = MutableLiveData<CheckRegisterModel>()
     val mldOtp = MutableLiveData<OtpDataModel>()
     val mldConfirmOtp = MutableLiveData<ConfirmOtpDataModel>()
+    val mldSetPassword = MutableLiveData<PasswordDataModel>()
+    val mldConfirmPassword = MutableLiveData<PasswordDataModel>()
 
     fun requestSignUp(checkRegisterRequest: CheckPhoneNumber): MutableLiveData<CheckRegisterModel> {
         RequestClient.makeRequest().requestSignUp(checkRegisterRequest)
@@ -72,6 +76,40 @@ class LoginRepository {
                 }
             })
         return mldConfirmOtp
+    }
+
+    fun setPassword(setPasswordRequest: PasswordRequest): MutableLiveData<PasswordDataModel>{
+        RequestClient.makeRequest().setPassword(setPasswordRequest)
+            .enqueue(object : Callback<PasswordDataModel> {
+                override fun onFailure(call: retrofit2.Call<PasswordDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                }
+                override fun onResponse(
+                    call: retrofit2.Call<PasswordDataModel>,
+                    response: Response<PasswordDataModel>
+                ) {
+                    mldSetPassword.value=  PasswordDataModel(response.body()!!.message , response.body()!!.code )
+                    Log.i("testTag","im here="+response.body())
+                }
+            })
+        return mldSetPassword
+    }
+
+    fun confirmPassword(confirmPasswordRequest: PasswordRequest): MutableLiveData<PasswordDataModel>{
+        RequestClient.makeRequest().confirmPassword(confirmPasswordRequest)
+            .enqueue(object : Callback<PasswordDataModel> {
+                override fun onFailure(call: retrofit2.Call<PasswordDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                }
+                override fun onResponse(
+                    call: retrofit2.Call<PasswordDataModel>,
+                    response: Response<PasswordDataModel>
+                ) {
+                    mldConfirmPassword.value=  PasswordDataModel(response.body()!!.message , response.body()!!.code )
+                    Log.i("testTag","im here="+response.body())
+                }
+            })
+        return mldConfirmPassword
     }
 
 }
