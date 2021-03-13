@@ -25,6 +25,10 @@
         android:name="userPhoneNumber"
         app:argType="string"
         app:nullable="false" />
+        <argument
+            android:name="userRegistered"
+            app:argType="Boolean"
+            app:nullable="false" />
     </fragment>
     <fragment
         android:id="@+id/verificationFragment"
@@ -35,5 +39,8 @@
         android:name="userPhoneNumber"
         app:argType="string"
         app:nullable="false" />
+        <action
+            android:id="@+id/verificationToSignIn"
+            app:destination="@id/signInFragment" />
     </fragment>
 </navigation>

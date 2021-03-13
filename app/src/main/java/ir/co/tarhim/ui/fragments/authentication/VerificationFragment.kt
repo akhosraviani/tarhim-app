@@ -6,28 +6,31 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.NavDirections
+import androidx.lifecycle.Observer
 import ir.co.tarhim.R
+import ir.co.tarhim.ui.AbstractFragment
+import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.Timer
+import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_verification.*
 
 
-class VerificationFragment : Fragment() {
+class VerificationFragment : AbstractFragment(){
 
     private val args: VerificationFragmentArgs by navArgs()
     private lateinit var timer: Timer
+    private lateinit var viewModel: HomeViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_verification, container, false)
-    }
+    override val layoutId: Int
+        get() = R.layout.fragment_login
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         timer = Timer(verificationTimerTv)
         val userPhoneNumber = args.userPhoneNumber
 
@@ -35,7 +38,15 @@ class VerificationFragment : Fragment() {
             R.string.verification_start_description,
             userPhoneNumber
         )
-        
+
+        viewModel.ldConfirmOtp.observe(viewLifecycleOwner ,Observer{ x ->
+            if(x.code==200){
+                navigate(VerificationFragmentDirections.verificationToSignIn(loginEnterPhoneOrMailEt.text.toString() , false))
+            }else{
+                //set error for entered otp code
+            }
+
+        } )
     }
 
 }
