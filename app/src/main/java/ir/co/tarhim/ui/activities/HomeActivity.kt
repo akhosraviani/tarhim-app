@@ -1,23 +1,25 @@
 package ir.co.tarhim.ui.activities
 
 import android.os.Bundle
-import android.view.MenuItem
-import android.widget.ProgressBar
+import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
-import ir.co.tarhim.ui.AbstractActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
 
 class HomeActivity : AppCompatActivity() {
 
+    companion object{
+        private const val TAG = "HomeActivity"
+    }
+
+    var doubleBackToExitPressedOnce = false
     private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +31,13 @@ class HomeActivity : AppCompatActivity() {
         bottom_navigation.setOnNavigationItemReselectedListener { }
         bottom_navigation.itemIconTintList = null
 
+        Log.e(TAG, "onCreate: UserNumber" + Hawk.get("UserNumber"))
 
     }
 
     override fun onSupportNavigateUp(): Boolean = navController.navigateUp()
+
+
 
 }
 

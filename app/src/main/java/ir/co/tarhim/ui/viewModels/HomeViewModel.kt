@@ -1,6 +1,5 @@
 package ir.co.tarhim.ui.viewModels
 
-import android.mtp.MtpObjectInfo
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,10 +8,10 @@ import ir.co.tarhim.model.confirmotp.ConfirmOtpDataModel
 import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.confirmpass.ConfirmPasswordDataModel
 import ir.co.tarhim.model.confirmpass.ConfirmPasswordRequest
-import ir.co.tarhim.model.confirmpass.SetPasswordDataModel
+import ir.co.tarhim.model.deceased.CreateDeceasedRequest
 import ir.co.tarhim.model.deceased.DeceasedDataModel
-import ir.co.tarhim.model.deceased.LatestDeceasedDataModel
-import ir.co.tarhim.model.deceased.SearchDeceasedDataModel
+import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
+import ir.co.tarhim.model.deceased.MydeceasedDataModel
 import ir.co.tarhim.model.mobile.CheckPhoneNumber
 import ir.co.tarhim.model.mobile.CheckRegisterModel
 import ir.co.tarhim.model.otp.OtpDataModel
@@ -28,8 +27,10 @@ class HomeViewModel : ViewModel() {
     var ldConfirmPassword: MutableLiveData<ConfirmPasswordDataModel>
     var ldSetPassword: MutableLiveData<ConfirmPasswordDataModel>
     var ldSearch: MutableLiveData<List<DeceasedDataModel>>
-    var ldLatestSearch: MutableLiveData<LatestDeceasedDataModel>
-    var ldDeceasedProfile: MutableLiveData<DeceasedDataModel>
+    var ldLatestSearch: MutableLiveData<List<DeceasedDataModel>>
+    var ldDeceasedProfile: MutableLiveData<DeceasedProfileDataModel>
+    var ldMyDeceased: MutableLiveData<List<MydeceasedDataModel>>
+    var ldcreateDeceased: MutableLiveData<ConfirmOtpDataModel>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -40,14 +41,23 @@ class HomeViewModel : ViewModel() {
         ldSearch=loginRepository.mldSearchList
         ldLatestSearch=loginRepository.mldLatestSearch
         ldDeceasedProfile=loginRepository.mldDeceaedProfile
+        ldMyDeceased=loginRepository.mldMyDeceaed
+        ldcreateDeceased=loginRepository.mldCreateDeceased
+    }
+
+    fun requestCreateDeceased(dataRequest: CreateDeceasedRequest) {
+        loginRepository.requestCreateDeceaed(dataRequest,Hawk.get("UserNumber"))
+        Log.i("testTag", "hi model view" + ldSignUp)
     }
 
     fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumber) {
          loginRepository.requestCheckRegister(checkRegisterRequest)
         Log.i("testTag", "hi model view" + ldSignUp)
-
-
     }
+    fun requestMydeceased() {
+        loginRepository.requestMyDeceaed(Hawk.get("UserNumber"))
+    }
+
 
     fun requestOtp(otpRequest: CheckPhoneNumber) {
         loginRepository.requestOtp(otpRequest)
@@ -56,8 +66,8 @@ class HomeViewModel : ViewModel() {
     fun requestSearch(keyword: String) {
         loginRepository.requestSearch(keyword)
     }
-    fun requestlatestSearch(mobile: String) {
-        loginRepository.requestLatestSearch(mobile)
+    fun requestlatestSearch() {
+        loginRepository.requestLatestSearch(Hawk.get("UserNumber"))
     }
     fun requestDeceasedProfile(id:Int) {
         loginRepository.requestDeceasedProfile(id,Hawk.get("UserNumber"))

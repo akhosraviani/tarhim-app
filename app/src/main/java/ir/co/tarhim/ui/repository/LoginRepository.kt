@@ -6,9 +6,7 @@ import ir.co.tarhim.model.confirmotp.ConfirmOtpDataModel
 import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.confirmpass.ConfirmPasswordDataModel
 import ir.co.tarhim.model.confirmpass.ConfirmPasswordRequest
-import ir.co.tarhim.model.deceased.DeceasedDataModel
-import ir.co.tarhim.model.deceased.LatestDeceasedDataModel
-import ir.co.tarhim.model.deceased.SearchDeceasedDataModel
+import ir.co.tarhim.model.deceased.*
 import ir.co.tarhim.model.mobile.CheckPhoneNumber
 import ir.co.tarhim.model.mobile.CheckRegisterModel
 import ir.co.tarhim.model.otp.OtpDataModel
@@ -27,11 +25,13 @@ class LoginRepository {
     val mldSignUp = MutableLiveData<CheckRegisterModel>()
     val mldOtp = MutableLiveData<OtpDataModel>()
     val mldConfirmOtp = MutableLiveData<ConfirmOtpDataModel>()
+    val mldCreateDeceased = MutableLiveData<ConfirmOtpDataModel>()
     val mldConfirmPassword = MutableLiveData<ConfirmPasswordDataModel>()
     val mldConfirmSetPassword = MutableLiveData<ConfirmPasswordDataModel>()
-    val mldLatestSearch = MutableLiveData<LatestDeceasedDataModel>()
+    val mldLatestSearch = MutableLiveData<List<DeceasedDataModel>>()
     val mldSearchList = MutableLiveData<List<DeceasedDataModel>>()
-    val mldDeceaedProfile = MutableLiveData<DeceasedDataModel>()
+    val mldDeceaedProfile = MutableLiveData<DeceasedProfileDataModel>()
+    val mldMyDeceaed = MutableLiveData<List<MydeceasedDataModel>>()
 
     fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumber) {
         RequestClient.makeRequest().requestCheckRegister(checkRegisterRequest)
@@ -50,27 +50,55 @@ class LoginRepository {
             })
 
     }
-    fun requestLatestSearch(mobile: String) {
-        RequestClient.makeRequest().requestLatestSearch(mobile)
-            .enqueue(object : Callback<LatestDeceasedDataModel> {
-                override fun onFailure(call: retrofit2.Call<LatestDeceasedDataModel>, t: Throwable) {
+
+    fun requestMyDeceaed(mobile: String) {
+        RequestClient.makeRequest().requestMyDeceased(mobile)
+            .enqueue(object : Callback<List<MydeceasedDataModel>> {
+                override fun onFailure(
+                    call: retrofit2.Call<List<MydeceasedDataModel>>,
+                    t: Throwable
+                ) {
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
                 override fun onResponse(
-                    call: retrofit2.Call<LatestDeceasedDataModel>,
-                    response: Response<LatestDeceasedDataModel>
+                    call: retrofit2.Call<List<MydeceasedDataModel>>,
+                    response: Response<List<MydeceasedDataModel>>
                 ) {
-                    mldLatestSearch.value =response.body()
+                    mldMyDeceaed.value = response.body()
                     Log.i("testTag", "im here=" + response.body())
                 }
             })
 
     }
-    fun requestSearch(keyword:String) {
-        RequestClient.makeRequest().requestSearch(SearchDeceasedDataModel(keyword))
+    fun requestCreateDeceaed(dataRequest: CreateDeceasedRequest,mobile:String) {
+        RequestClient.makeRequest().requestCreateDeceased(dataRequest,mobile)
+            .enqueue(object : Callback<ConfirmOtpDataModel> {
+                override fun onFailure(
+                    call: retrofit2.Call<ConfirmOtpDataModel>,
+                    t: Throwable
+                ) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmOtpDataModel>,
+                    response: Response<ConfirmOtpDataModel>
+                ) {
+                    mldCreateDeceased.value = response.body()
+                    Log.i("testTag", "im here=" + response.body())
+                }
+            })
+
+    }
+
+    fun requestLatestSearch(mobile: String) {
+        RequestClient.makeRequest().requestLatestSearch(mobile)
             .enqueue(object : Callback<List<DeceasedDataModel>> {
-                override fun onFailure(call: retrofit2.Call<List<DeceasedDataModel>>, t: Throwable) {
+                override fun onFailure(
+                    call: retrofit2.Call<List<DeceasedDataModel>>,
+                    t: Throwable
+                ) {
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
@@ -78,24 +106,49 @@ class LoginRepository {
                     call: retrofit2.Call<List<DeceasedDataModel>>,
                     response: Response<List<DeceasedDataModel>>
                 ) {
-                    mldSearchList.value =response.body()
+                    mldLatestSearch.value=response.body()
                     Log.i("testTag", "im here=" + response.body())
                 }
             })
 
     }
-    fun requestDeceasedProfile(id:Int,mobile:String) {
-        RequestClient.makeRequest().requestDeceaedProfile(id,mobile)
-            .enqueue(object : Callback<DeceasedDataModel> {
-                override fun onFailure(call: retrofit2.Call<DeceasedDataModel>, t: Throwable) {
+
+    fun requestSearch(keyword: String) {
+        RequestClient.makeRequest().requestSearch(SearchDeceasedRequest(keyword))
+            .enqueue(object : Callback<List<DeceasedDataModel>> {
+                override fun onFailure(
+                    call: retrofit2.Call<List<DeceasedDataModel>>,
+                    t: Throwable
+                ) {
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
                 override fun onResponse(
-                    call: retrofit2.Call<DeceasedDataModel>,
-                    response: Response<DeceasedDataModel>
+                    call: retrofit2.Call<List<DeceasedDataModel>>,
+                    response: Response<List<DeceasedDataModel>>
                 ) {
-                    mldDeceaedProfile.value =response.body()
+                    mldSearchList.postValue(response.body())
+                    Log.i("testTag", "im here=" + response.body())
+                }
+            })
+
+    }
+
+    fun requestDeceasedProfile(id: Int, mobile: String) {
+        RequestClient.makeRequest().requestDeceaedProfile(id, mobile)
+            .enqueue(object : Callback<DeceasedProfileDataModel> {
+                override fun onFailure(
+                    call: retrofit2.Call<DeceasedProfileDataModel>,
+                    t: Throwable
+                ) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<DeceasedProfileDataModel>,
+                    response: Response<DeceasedProfileDataModel>
+                ) {
+                    mldDeceaedProfile.value = response.body()
                     Log.i("testTag", "im here=" + response.body())
                 }
             })

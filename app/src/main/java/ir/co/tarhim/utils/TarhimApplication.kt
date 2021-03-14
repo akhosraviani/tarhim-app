@@ -8,7 +8,7 @@ class TarhimApplication:Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Hawk.init(this)
+        Hawk.init(this).build()
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }

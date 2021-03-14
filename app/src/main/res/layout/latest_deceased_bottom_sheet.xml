@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
    >
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appCompatTextView"
         android:layout_width="wrap_content"
@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias=".05" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/SuggestRecycler"
+        android:id="@+id/latestRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,6 +30,6 @@
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView"
         app:layout_constraintVertical_bias="0"
         tools:itemCount="3"
-        tools:listitem="@layout/row_suggesttion_deceased" />
+        tools:listitem="@layout/row_latest_deceased" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,10 +4,7 @@ import ir.co.tarhim.model.confirmotp.ConfirmOtpDataModel
 import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.confirmpass.ConfirmPasswordDataModel
 import ir.co.tarhim.model.confirmpass.ConfirmPasswordRequest
-import ir.co.tarhim.model.confirmpass.SetPasswordDataModel
-import ir.co.tarhim.model.deceased.DeceasedDataModel
-import ir.co.tarhim.model.deceased.LatestDeceasedDataModel
-import ir.co.tarhim.model.deceased.SearchDeceasedDataModel
+import ir.co.tarhim.model.deceased.*
 import ir.co.tarhim.model.mobile.CheckRegisterModel
 import ir.co.tarhim.model.mobile.CheckPhoneNumber
 import ir.co.tarhim.model.otp.OtpDataModel
@@ -36,14 +33,23 @@ interface RequestApi {
     fun setPassword(@Body setPassword: ConfirmPasswordRequest): Call<ConfirmPasswordDataModel>
 
 
-
     @GET("api/v1/deceased/latestsearch")
-    fun requestLatestSearch(@Query("mobile") mobile: String): Call<LatestDeceasedDataModel>
+    fun requestLatestSearch(@Query("mobile") mobile: String): Call<List<DeceasedDataModel>>
+
     @GET("api/v1/deceased/getfromsearch")
-    fun requestDeceaedProfile(@Query("id") id: Int, @Query("mobile") mobile: String): Call<DeceasedDataModel>
+    fun requestDeceaedProfile(@Query("id") id: Int, @Query("mobile") mobile: String): Call<DeceasedProfileDataModel>
 
     @POST("api/v1/deceased/search")
-    fun requestSearch(@Body keyword: SearchDeceasedDataModel): Call<List<DeceasedDataModel>>
+    fun requestSearch(@Body keyword: SearchDeceasedRequest): Call<List<DeceasedDataModel>>
+
+
+    @GET("api/v1/deceased/mydeceased")
+    fun requestMyDeceased(@Query("mobile")mobile:String): Call<List<MydeceasedDataModel>>
+
+    @POST("api/v1/deceased/create")
+    fun requestCreateDeceased(@Body createdeceased: CreateDeceasedRequest,@Query("mobile")mobile:String
+    ): Call<ConfirmOtpDataModel>
+
 
 }
 

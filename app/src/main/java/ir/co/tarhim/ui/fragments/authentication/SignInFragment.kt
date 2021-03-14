@@ -97,7 +97,7 @@ class SignInFragment : Fragment() {
 
         viewModel.ldSetPassword.observe(viewLifecycleOwner, Observer {
             if(it.code==200){
-//                Hawk.put("UserNumber", phoneNumber)
+                Hawk.put("UserNumber", phoneNumber)
                 startActivity(Intent(requireContext(), HomeActivity::class.java))
             }
         })
@@ -106,7 +106,7 @@ class SignInFragment : Fragment() {
             Log.e(TAG, "onViewCreated: code " + it.code)
             if (it.code == 200) {
 
-//                Hawk.put("UserNumber", phoneNumber)
+                Hawk.put("UserNumber", phoneNumber)
              startActivity(Intent(requireContext(), HomeActivity::class.java))
             } else {
                 Toast.makeText(activity, "رمز عبور نامعتبر میباشد", Toast.LENGTH_SHORT).show()

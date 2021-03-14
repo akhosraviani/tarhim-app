@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
@@ -41,11 +43,16 @@ class DeceasedSearchRecyclerAdapter(private val listDeceased: List<DeceasedDataM
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Glide.with(holder.itemView.context)
             .load(listDeceased.get(position).imageurl)
+            .circleCrop()
             .into(holder.imageDeceased)
 
         holder.nameDeceased.text = listDeceased.get(position).name
-        holder.nameDeceased.text =
-            "$listDeceased.get(position).birthday - ${listDeceased.get(position).deathday}"
+        holder.birth_DeathDay.text =
+            "${listDeceased.get(position).birthday} - ${listDeceased.get(position).deathday}"
+        holder.itemView.setOnClickListener {
+            val args= bundleOf("DeceasedId" to listDeceased.get(holder.adapterPosition).id )
+            holder.itemView.findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page,args)
+        }
     }
 
     override fun getItemCount(): Int {

@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/fragment_profile"
         android:name="ir.co.tarhim.ui.fragments.home.ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_fragment_profile_to_fragment_deceased_page"
+            app:destination="@id/fragment_deceased_page" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_news"
         android:name="ir.co.tarhim.ui.fragments.home.NewsFragment"
@@ -15,10 +19,30 @@
     <fragment
         android:id="@+id/fragment_cemetery"
         android:name="ir.co.tarhim.ui.fragments.home.CemeteryFragment"
-        tools:layout="@layout/fragment_cemetery" />
+        tools:layout="@layout/fragment_cemetery" >
+        <action
+            android:id="@+id/action_fragment_cemetery_to_fragment_deceased_page"
+            app:destination="@id/fragment_deceased_page" />
+        <action
+            android:id="@+id/action_fragment_cemetery_to_fragment_create_deceased"
+            app:destination="@id/fragment_create_deceased" />
+    </fragment>
     <fragment
         android:id="@+id/fragment_requirement"
         android:name="ir.co.tarhim.ui.fragments.home.RequirementFragment"
         tools:layout="@layout/fragment_requirement" />
+
+
+    <fragment
+         tools:layout="@layout/page_of_deceased"
+        android:id="@+id/fragment_deceased_page"
+        android:name="ir.co.tarhim.ui.fragments.home.DeceasedPageFragment"
+        />
+
+    <fragment
+        tools:layout="@layout/create_deceased"
+        android:id="@+id/fragment_create_deceased"
+        android:name="ir.co.tarhim.ui.fragments.home.CreateDeceased"
+        />
 
 </navigation>

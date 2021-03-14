@@ -39,9 +39,9 @@ class LoginFragment : AbstractFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        if (Hawk.get("UserNumber","") != null) {
-//            startActivity(Intent(requireContext(), HomeActivity::class.java))
-//        } else {
+        if (Hawk.get("UserNumber", null) != null) {
+            startActivity(Intent(requireContext(), HomeActivity::class.java))
+        } else {
             viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
             loginEnterTv.setOnClickListener {
@@ -112,6 +112,7 @@ class LoginFragment : AbstractFragment() {
         loginRulesTv.text = rulesWord
         loginRulesTv.movementMethod = LinkMovementMethod.getInstance()
 
+        }
 
 
     }
