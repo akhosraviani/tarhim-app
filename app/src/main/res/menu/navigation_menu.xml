@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/fragment_cemetery"
+        android:title="بهشت زهرا"
+        android:icon="@drawable/behesht_icon"
+        />
+    <item
         android:id="@+id/fragment_profile"
         android:title="پروفایل"
         android:icon="@drawable/profil_icon"
@@ -10,11 +15,6 @@
         android:id="@+id/fragment_news"
         android:title="اخبار"
         android:icon="@drawable/news_icon"
-        />
-    <item
-        android:id="@+id/fragment_cemetery"
-        android:title="بهشت زهرا"
-        android:icon="@drawable/behesht_icon"
         />
     <item
         android:id="@+id/fragment_requirement"

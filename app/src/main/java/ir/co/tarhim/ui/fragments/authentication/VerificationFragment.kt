@@ -1,22 +1,26 @@
 package ir.co.tarhim.ui.fragments.authentication
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.navArgs
-import androidx.navigation.NavDirections
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import ir.co.tarhim.R
-import ir.co.tarhim.utils.Timer
+import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
+import ir.co.tarhim.model.mobile.CheckPhoneNumber
+import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_verification.*
 
 
 class VerificationFragment : Fragment() {
 
-    private val args: VerificationFragmentArgs by navArgs()
-    private lateinit var timer: Timer
+    private lateinit var phoneNumber: String
+    private var checkRecovery: Boolean = false
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,15 +31,35 @@ class VerificationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        if (arguments != null) {
+            phoneNumber = arguments?.getString("phoneNumber").toString()
+            checkRecovery = arguments?.getBoolean("CheckRecovery")!!
 
-        timer = Timer(verificationTimerTv)
-        val userPhoneNumber = args.userPhoneNumber
+        }
 
-        verificationStartDescriptionTv.text = resources.getString(
-            R.string.verification_start_description,
-            userPhoneNumber
-        )
-        
+        verificationEnterTv.setOnClickListener {
+            viewModel.requestConfirmOtp(
+                ConfirmOtpRequest(
+                    loginPhoneNumberEditText.text.toString(),
+                    phoneNumber
+                )
+            )
+        }
+
+        viewModel.ldConfirmOtp.observe(viewLifecycleOwner, Observer { x ->
+            if (x.code == 200) {
+                val args = bundleOf("phoneNumber" to phoneNumber)
+                findNavController().navigate(
+                    R.id.action_verificationFragment_to_signInFragment,
+                    args
+                )
+            }else{
+
+            }
+        })
+
+
     }
 
 }

@@ -88,8 +88,9 @@
                     android:id="@+id/loginPhoneNumberEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textPassword"
+                    android:inputType="numberPassword"
                     android:paddingStart="@dimen/all_small_space"
+                    android:layout_gravity="center"
                     android:gravity="end"
                     android:background="@drawable/shape_login_edit_text_phone_number"
                     android:paddingTop="@dimen/padding_top_phone_email_entry_et"
@@ -103,7 +104,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/all_xlarge_space"
-                android:text="@string/verification_inter_with_password"
                 android:textColor="@color/purple_300"
                 app:layout_constraintEnd_toEndOf="@+id/verificationPasswordLayout"
                 app:layout_constraintTop_toBottomOf="@+id/verificationPasswordLayout" />

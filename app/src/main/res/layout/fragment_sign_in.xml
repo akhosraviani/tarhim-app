@@ -26,6 +26,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/signInBack"
                 android:layout_width="@dimen/size_signIn_back"
+                android:visibility="gone"
                 android:layout_height="@dimen/size_signIn_back"
                 android:layout_marginEnd="@dimen/all_xlarge_space"
                 android:src="@drawable/ic_arrow_right"
@@ -104,7 +105,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/all_xlarge_space"
-                android:text="@string/signIn_entry_with_verification"
                 android:textColor="@color/purple_300"
                 app:layout_constraintEnd_toEndOf="@+id/signInPasswordLayout"
                 app:layout_constraintTop_toBottomOf="@+id/signInPasswordLayout" />
