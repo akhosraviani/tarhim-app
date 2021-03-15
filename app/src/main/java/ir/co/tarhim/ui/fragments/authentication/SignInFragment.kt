@@ -55,7 +55,6 @@ class SignInFragment : Fragment() {
         signInRecoveryTv.setOnClickListener {
             val args = bundleOf("phoneNumber" to phoneNumber, "CheckRecovery" to true)
             viewModel.requestOtp(CheckPhoneNumber(phoneNumber))
-
             findNavController().navigate(R.id.action_signInFragment_to_verificationFragment, args)
         }
 
