@@ -1,12 +1,15 @@
 package ir.co.tarhim.ui.fragments.home
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
-import androidx.constraintlayout.solver.GoalRow
+import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,14 +17,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedDataModel
-import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
 import ir.co.tarhim.ui.adapter.DeceasedSearchRecyclerAdapter
 import ir.co.tarhim.ui.adapter.LatestSearchRecyclerAdapter
+import ir.co.tarhim.ui.callback.DeceasedRecyclerCallBack
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_cemetery.*
+import kotlinx.android.synthetic.main.fragment_charity.*
 import kotlinx.android.synthetic.main.latest_deceased_bottom_sheet.view.*
 
-class CemeteryFragment : Fragment() {
+class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
 
 
     companion object {
@@ -42,71 +46,88 @@ class CemeteryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-
-//        showUi(true)
-        viewModel.requestlatestSearch()
-        SearchIcon.setOnClickListener({
-            Log.e(TAG, "onViewCreated: " + searchbar.text.toString())
-            viewModel.requestSearch(searchbar.text.toString())
+        initUi()
+        viewModel.ldLatestSearch.observe(viewLifecycleOwner, Observer {
+            showLoading(false)
+            it.let {
+                latestAdapter.submitList(it)
+            }
         })
+
+
+
+        SearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.e(TAG, "onQueryTextSubmit: ")
+                return false
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                if (query != null && TextUtils.getTrimmedLength(query) > 0) {
+                    latestAdapter.submitList(null)
+                    viewModel.requestSearch(query!!)
+                    showLoading(true)
+                    Log.e(TAG, "onQueryTextChange: ")
+                }
+                return false
+            }
+        })
+
 
 
         viewModel.ldSearch.observe(viewLifecycleOwner, { data ->
-            Log.e(TAG, "onCreateView: " + data.get(0).name)
-            showUi(false)
-
-            if (data.size != 0) {
-                initRecycler(data)
-            } else {
+            showLoading(false)
+            TvLatestSearch.visibility = View.GONE
+            data.let {
+                latestAdapter.submitList(data)
+            }
+            if (data == null)
                 Toast.makeText(getActivity(), "محتوایی وجود ندار", Toast.LENGTH_SHORT).show()
-            }
+        }
+        )
 
+        SearchView.setOnCloseListener {
+            TvLatestSearch.visibility = View.VISIBLE
+            viewModel.requestlatestSearch()
+            false
+        }
 
-        })
-        viewModel.ldLatestSearch.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                Log.e(TAG, "onViewCreated:  latest"+it.size )
-                if (it.size != 0) {
-//                    showUi(true)
-                    initLatestRecycler(it)
-                } else {
-                    latestLayout.visibility = View.GONE
-                }
-            }
-        })
-
-
-        create_deceased.setOnClickListener({
+        BtnCreateDeceased.setOnClickListener({
             findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_create_deceased)
         })
 
     }
 
-
-    private fun initRecycler(listDeceased: List<DeceasedDataModel>) {
-        searchAdapter = DeceasedSearchRecyclerAdapter(listDeceased)
-        search_Deceased_Recycler.adapter = searchAdapter
-        search_Deceased_Recycler.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        searchAdapter.notifyDataSetChanged()
+    private fun initUi() {
+        showLoading(true)
+        initRecycler()
+        viewModel.requestlatestSearch()
     }
 
-    private fun initLatestRecycler(listDeceased: List<DeceasedDataModel>) {
-        latestAdapter = LatestSearchRecyclerAdapter(listDeceased)
-        latestLayout.latestRecycler.adapter = latestAdapter
-        latestLayout.latestRecycler.layoutManager =
+
+    private fun initRecycler() {
+        latestAdapter = LatestSearchRecyclerAdapter(this)
+        var resanim = R.anim.up_to_bottom
+        var animation = AnimationUtils.loadLayoutAnimation(requireContext(), resanim)
+        Deceased_Recycler.adapter = latestAdapter
+        Deceased_Recycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        latestAdapter.notifyDataSetChanged()
+        Deceased_Recycler.layoutAnimation = animation
     }
 
-    private fun showUi(visibil: Boolean) {
-        if (visibil) {
-            search_layout.visibility = View.VISIBLE
-            search_Deceased_Recycler.visibility = View.GONE
+    private fun showLoading(visibility: Boolean) {
+        if (visibility) {
+            loadingProgress.visibility = View.VISIBLE
+            Deceased_Recycler.visibility = View.GONE
         } else {
-            search_layout.visibility = View.GONE
-            search_Deceased_Recycler.visibility = View.VISIBLE
+            loadingProgress.visibility = View.GONE
+            Deceased_Recycler.visibility = View.VISIBLE
         }
+    }
+
+    override fun getId(decId: Int) {
+        val args = bundleOf("DeceasedId" to decId)
+        findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page, args)
     }
 
 }

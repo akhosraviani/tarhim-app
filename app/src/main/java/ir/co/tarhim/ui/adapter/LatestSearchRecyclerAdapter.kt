@@ -1,23 +1,56 @@
 package ir.co.tarhim.ui.adapter
 
+import android.os.Build
+import android.provider.ContactsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedDataModel
+import ir.co.tarhim.ui.callback.DeceasedRecyclerCallBack
+import ir.co.tarhim.utils.PersianDate
+import ir.co.tarhim.utils.PersianDate.SolarCalendar
 import kotlinx.android.synthetic.main.row_latest_deceased.view.*
+import java.lang.String
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
 
-class LatestSearchRecyclerAdapter(private val listDeceased: List<DeceasedDataModel>) :
-    RecyclerView.Adapter<LatestSearchRecyclerAdapter.ViewHolder>() {
 
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+class LatestSearchRecyclerAdapter(private val deceasedCallBack: DeceasedRecyclerCallBack) :
+    ListAdapter<DeceasedDataModel, LatestSearchRecyclerAdapter.ViewHolder>(DeceasedDiffCallBack()) {
+
+    companion object {
+        private const val TAG = "LatestSearchRecyclerAda"
+    }
+
+    open class DeceasedDiffCallBack() : DiffUtil.ItemCallback<DeceasedDataModel>() {
+        override fun areItemsTheSame(
+            oldItem: DeceasedDataModel,
+            newItem: DeceasedDataModel
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: DeceasedDataModel,
+            newItem: DeceasedDataModel
+        ): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+
+    class ViewHolder(v: View, val callBack: DeceasedRecyclerCallBack) : RecyclerView.ViewHolder(v) {
         val imageDeceased: AppCompatImageView
         val nameDeceased: AppCompatTextView
         val birth_DeathDay: AppCompatTextView
@@ -26,6 +59,34 @@ class LatestSearchRecyclerAdapter(private val listDeceased: List<DeceasedDataMod
             imageDeceased = v.IVDeceased
             nameDeceased = v.TvDeceasedName
             birth_DeathDay = v.TvBornDeceased
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun bindTo(deceased: DeceasedDataModel) {
+            Glide.with(itemView.context)
+                .load(deceased.imageurl)
+                .centerInside()
+                .circleCrop()
+                .into(imageDeceased)
+
+            nameDeceased.text = deceased.name
+
+            val loc = Locale("en_US")
+
+            var dateBirthDay = Date(deceased.birthday)
+            var dateDeathDay = Date(deceased.deathday)
+            val scBirthDay = SolarCalendar(dateBirthDay)
+            val scDeathDay = SolarCalendar(dateDeathDay)
+
+            var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
+            birth_DeathDay.text = "$birthDay-$deathDay"
+
+            itemView.setOnClickListener {
+
+                callBack.getId(deceased.id)
+            }
 
         }
 
@@ -36,27 +97,11 @@ class LatestSearchRecyclerAdapter(private val listDeceased: List<DeceasedDataMod
         val view =
             LayoutInflater.from(group.context).inflate(R.layout.row_latest_deceased, group, false)
 
-        return ViewHolder(view)
+        return ViewHolder(view, deceasedCallBack)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Glide.with(holder.itemView.context)
-            .load(listDeceased.get(position).imageurl)
-            .circleCrop()
-            .into(holder.imageDeceased)
-
-        holder.nameDeceased.text = listDeceased.get(position).name
-        holder.birth_DeathDay.text =
-            "${listDeceased.get(position).birthday} - ${listDeceased.get(position).deathday}"
-
-        holder.itemView.setOnClickListener {
-            val args= bundleOf("DeceasedId" to listDeceased.get(holder.adapterPosition).id )
-            holder.itemView.findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page,args)
-        }
-
-    }
-
-    override fun getItemCount(): Int {
-        return listDeceased.size
+        holder.bindTo(getItem(position))
     }
 }

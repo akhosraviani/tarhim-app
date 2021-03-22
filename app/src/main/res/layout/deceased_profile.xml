@@ -2,20 +2,22 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/deceasedRoot"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/PrivateLayout"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ImVDeceasedPrivate"
-            android:background="@drawable/download"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:background="@drawable/download"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias=".95"
@@ -98,8 +100,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/view2"
             app:layout_constraintEnd_toEndOf="@+id/view2"
             app:layout_constraintStart_toStartOf="@+id/view2"
-            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnRequestFollow"
@@ -220,64 +221,69 @@
             app:layout_constraintTop_toBottomOf="@+id/ImVDeceased"
             app:layout_constraintVertical_bias="0.02" />
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="135dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/bio_container"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnFindBurialLocation"
-            app:layout_constraintVertical_bias="0"
-            tools:layout_editor_absoluteX="8dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btShowmore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_arrow_down"
+            android:text="بیشتر"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textAllCaps="false"
+            android:textColor="@color/tradewind"
+            app:layout_constraintBottom_toBottomOf="@id/TvBioDeseaces"
+            app:layout_constraintEnd_toEndOf="@id/TvBioDeseaces"
+            app:layout_constraintHorizontal_bias=".05"
+            app:layout_constraintStart_toStartOf="@id/TvBioDeseaces"
+            app:layout_constraintTop_toTopOf="@id/TvBioDeseaces"
+            app:layout_constraintVertical_bias="1"
+            android:layout_marginBottom="3dp"/>
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/TvBioDeseaces"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text=""
+            android:maxLines="3"
+            android:scrollbars="vertical"
+            android:background="@drawable/shape_bg_box_latest_search"
+            android:paddingBottom="30dp"
+            android:paddingStart="7dp"
+            android:paddingEnd="7dp"
             android:textColor="@color/grey_900"
-            app:layout_constraintBottom_toTopOf="@+id/TvMore"
-            app:layout_constraintEnd_toEndOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.959"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view"
-            app:layout_constraintVertical_bias=".1" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/TvMore"
-            android:layout_width="60dp"
-            android:layout_height="20dp"
-
-            android:layout_margin="10dp"
-            android:background="@drawable/more"
-            app:layout_constraintBottom_toBottomOf="@+id/view"
-            app:layout_constraintEnd_toEndOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.056"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/btnFindBurialLocation"
+            app:layout_constraintVertical_bias="0" />
 
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/TabLayout"
+            android:id="@+id/deceasedTabLayout"
+            style="@style/TarhimTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintTop_toBottomOf="@+id/TvBioDeseaces"
             app:layout_constraintVertical_bias="0" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/ViewPager"
+            android:id="@+id/deceasedViewPager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layoutDirection="rtl"
+            android:layout_margin="7dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TabLayout"
+            app:layout_constraintTop_toBottomOf="@+id/deceasedTabLayout"
             app:layout_constraintVertical_bias="0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

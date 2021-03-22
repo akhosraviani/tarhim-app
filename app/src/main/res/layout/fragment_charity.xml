@@ -62,7 +62,7 @@
         app:layout_constraintHorizontal_bias="0.74"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView3"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnEmKhomeiniInstitute"
@@ -79,7 +79,7 @@
         app:layout_constraintHorizontal_bias="0.28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView3"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnFemaleGuardians"
@@ -157,7 +157,8 @@
         app:layout_constraintHorizontal_bias="0.74"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView4"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.05" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnSalavat"
         android:layout_width="120dp"
@@ -173,7 +174,7 @@
         app:layout_constraintHorizontal_bias="0.28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView4"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnPrayer"
@@ -189,7 +190,7 @@
         app:layout_constraintEnd_toEndOf="@+id/BtnReadQuran"
         app:layout_constraintStart_toStartOf="@+id/BtnReadQuran"
         app:layout_constraintTop_toBottomOf="@+id/BtnReadQuran"
-        app:layout_constraintVertical_bias=".04" />
+        app:layout_constraintVertical_bias=".05" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnFasting"
@@ -206,7 +207,7 @@
         app:layout_constraintEnd_toEndOf="@+id/BtnSalavat"
         app:layout_constraintStart_toStartOf="@+id/BtnSalavat"
         app:layout_constraintTop_toBottomOf="@+id/BtnSalavat"
-        app:layout_constraintVertical_bias=".04" />
+        app:layout_constraintVertical_bias=".05" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnHorrorPrayer"
@@ -222,7 +223,7 @@
         app:layout_constraintEnd_toEndOf="@+id/BtnPrayer"
         app:layout_constraintStart_toStartOf="@+id/BtnPrayer"
         app:layout_constraintTop_toBottomOf="@+id/BtnPrayer"
-        app:layout_constraintVertical_bias=".04" />
+        app:layout_constraintVertical_bias=".05" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnSelectedQuran"
@@ -239,6 +240,6 @@
         app:layout_constraintEnd_toEndOf="@+id/BtnFasting"
         app:layout_constraintStart_toStartOf="@+id/BtnFasting"
         app:layout_constraintTop_toBottomOf="@+id/BtnFasting"
-        app:layout_constraintVertical_bias=".04" />
+        app:layout_constraintVertical_bias=".05" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

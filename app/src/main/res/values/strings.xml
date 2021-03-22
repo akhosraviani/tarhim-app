@@ -10,8 +10,8 @@
     <string name="login_register">ثبت نام</string>
     <string name="login_slash">/</string>
     <string name="login_start_description">شماره موبایل خود را وارد کنید</string>
-    <string name="login_start_button">ورود به فلان</string>
-    <string name="login_rules_description">با ورود و ثبت نام در فلان ، شما قوانین و شرایط استفاده از سرویس های سایت فلان و قوانین حریم خصوصی آن را میپذیرید</string>
+    <string name="login_start_button">ارسال کد تایید</string>
+    <string name="login_rules_description">با ورود و ثبت نام در ترحیم ، شما قوانین و شرایط استفاده از سرویس های ترحیم و قوانین حریم خصوصی آن را میپذیرید</string>
     <!-- endregion -->
 
     <!-- region sign In-->
@@ -31,6 +31,7 @@
 
     <!-- endregion -->
 
+    <string name="bioTitle"></string>
     <string name="charity_msg">
         <br>
     شما میتوانید برای شادی روح مرحوم و برخورداری از

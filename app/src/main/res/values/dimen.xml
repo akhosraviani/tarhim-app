@@ -5,7 +5,7 @@
     <dimen name="all_small_space">8dp</dimen>
     <dimen name="all_medium_space">16dp</dimen>
     <dimen name="all_large_space">24dp</dimen>
-    <dimen name="all_xlarge_space">32dp</dimen>
+    <dimen name="all_xlarge_space">15dp</dimen>
     <dimen name="all_2xlarge_space">64dp</dimen>
 
     <!-- endregion-->

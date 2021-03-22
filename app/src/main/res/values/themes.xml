@@ -24,4 +24,22 @@
         <item name="android:layoutDirection">rtl</item>
         <item name="labelVisibilityMode">labeled</item>
     </style>
+
+
+    <style name="TarhimTabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabBackground">@drawable/selector_tab_layout</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabInlineLabel">true</item>
+        <item name="android:layout_marginStart">7dp</item>
+        <item name="android:layout_marginEnd">7dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="tabRippleColor">@android:color/transparent</item>
+        <item name="tabPadding">10dp</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabTextColor">@color/grey_600</item>
+        <item name="tabSelectedTextColor">@color/black</item>
+
+    </style>
+
 </resources>

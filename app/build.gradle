@@ -75,7 +75,7 @@ dependencies {
     implementation "io.reactivex:rxandroid:$rxandroid_version"
     implementation "io.reactivex:rxjava:$rxjava_version"
 
-
     //Hawk
     implementation "com.orhanobut:hawk:2.0.1"
+
 }

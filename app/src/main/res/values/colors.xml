@@ -10,13 +10,15 @@
 
     <color name="grey_600">#707070</color>
     <color name="grey_500">#9B9A9A</color>
-    <color name="blue_grey_200">#BDC3C7</color>
-
+    <color name="blue_grey_200">#E0E1E3</color>
+    <color name="iron_alpha_100">#FFE0E1E3</color>
+    <color name="tradewind">#5BB39D</color>
     <color name="grey_900">#161616</color>
     <color name="san_felix">#045E07</color>
     <color name="purple_100">#D7BDE2</color>
     <color name="purple_300">#A569BD</color>
-    <color name="bottom_nav_colot">
+    <color name="jet_stream">#8D9F9D</color>
+    <color name="limed_spruce">#868E8F</color>
 
-    </color>
+
 </resources>

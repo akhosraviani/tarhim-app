@@ -7,7 +7,7 @@
     android:background="@color/black">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView"
+        android:id="@+id/TvLatestSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="فوت شدگانی که شاید بشناسید"
@@ -27,7 +27,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView"
+        app:layout_constraintTop_toBottomOf="@+id/TvLatestSearch"
         app:layout_constraintVertical_bias="0"
         tools:itemCount="3"
         tools:listitem="@layout/row_suggesttion_deceased" />
