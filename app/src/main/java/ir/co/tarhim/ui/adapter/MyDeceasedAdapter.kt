@@ -3,6 +3,7 @@ package ir.co.tarhim.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.bundleOf
@@ -10,26 +11,36 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
-import ir.co.tarhim.model.deceased.DeceasedDataModel
-import ir.co.tarhim.model.deceased.MydeceasedDataModel
+import ir.co.tarhim.model.deceased.MyDeceasedDataModel
+import ir.co.tarhim.ui.callback.ProfileListener
+import kotlinx.android.synthetic.main.row_deceased_pages_recycler.view.*
 import kotlinx.android.synthetic.main.row_latest_deceased.view.*
+import kotlinx.android.synthetic.main.row_latest_deceased.view.IVDeceased
+import kotlinx.android.synthetic.main.row_latest_deceased.view.TvBornDeceased
+import kotlinx.android.synthetic.main.row_latest_deceased.view.TvDeceasedName
 
 class MyDeceasedAdapter(
-    private val listDeceased: List<MydeceasedDataModel>,
-    var nameParent: String
+    private val listDeceased: List<MyDeceasedDataModel>,
+    var nameParent: String,private val editdeceasedCallBack: ProfileListener.MyDeceasedEditCallBack
 ) :
     RecyclerView.Adapter<MyDeceasedAdapter.ViewHolder>() {
 
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+    class ViewHolder(v: View)
+        : RecyclerView.ViewHolder(v), View.OnClickListener {
         val imageDeceased: AppCompatImageView
         val nameDeceased: AppCompatTextView
         val birth_DeathDay: AppCompatTextView
+        val editDeceased: AppCompatButton
 
         init {
             imageDeceased = v.IVDeceased
             nameDeceased = v.TvDeceasedName
             birth_DeathDay = v.TvBornDeceased
+            editDeceased=v.BtnEditDeceased
+
+
             v.rootView.setOnClickListener(this)
+
         }
 
         override fun onClick(v: View?) {
@@ -64,6 +75,10 @@ class MyDeceasedAdapter(
                     .navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page, args)
 
         }
+        holder.editDeceased.setOnClickListener {
+            editdeceasedCallBack.editDeceased(listDeceased[position])
+        }
+
     }
 
     override fun getItemCount(): Int {

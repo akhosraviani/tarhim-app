@@ -77,5 +77,9 @@ dependencies {
 
     //Hawk
     implementation "com.orhanobut:hawk:2.0.1"
+    implementation 'com.github.aliab:Persian-Date-Picker-Dialog:1.5.2'
 
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
 }

@@ -7,10 +7,16 @@
     <fragment
         android:id="@+id/fragment_profile"
         android:name="ir.co.tarhim.ui.fragments.profile.ProfileFragment"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_fragment_profile_to_fragment_deceased_page"
             app:destination="@id/fragment_deceased_page" />
+        <action
+            android:id="@+id/action_fragment_profile_to_fragment_create_deceased"
+            app:destination="@id/fragment_create_deceased" />
+        <action
+            android:id="@+id/action_fragment_profile_to_user_edit_fragment"
+            app:destination="@id/user_edit_fragment" />
     </fragment>
     <fragment
         android:id="@+id/fragment_news"
@@ -18,8 +24,8 @@
         tools:layout="@layout/fragment_news" />
     <fragment
         android:id="@+id/fragment_cemetery"
-        android:name="ir.co.tarhim.ui.fragments.home.CemeteryFragment"
-        tools:layout="@layout/fragment_cemetery" >
+        android:name="ir.co.tarhim.ui.fragments.cemetery.CemeteryFragment"
+        tools:layout="@layout/fragment_cemetery">
         <action
             android:id="@+id/action_fragment_cemetery_to_fragment_deceased_page"
             app:destination="@id/fragment_deceased_page" />
@@ -34,15 +40,32 @@
 
 
     <fragment
-         tools:layout="@layout/deceased_profile"
         android:id="@+id/fragment_deceased_page"
         android:name="ir.co.tarhim.ui.fragments.deceased.DeceasedPageFragment"
-        />
+        tools:layout="@layout/deceased_profile" />
 
     <fragment
-        tools:layout="@layout/create_deceased"
         android:id="@+id/fragment_create_deceased"
-        android:name="ir.co.tarhim.ui.fragments.home.CreateDeceased"
+        android:name="ir.co.tarhim.ui.fragments.deceased.CreateDeceased"
+        tools:layout="@layout/create_deceased">
+        <action
+            android:id="@+id/action_fragment_create_deceased_to_maps_fragment"
+            app:destination="@id/maps_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/maps_fragment"
+        android:name="ir.co.tarhim.ui.fragments.deceased.MapsFragment"
+        tools:layout="@layout/fragment_maps" >
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/user_edit_fragment"
+        android:name="ir.co.tarhim.ui.fragments.profile.EditProfileFragment"
+        tools:layout="@layout/edit_user_profile"
         />
 
 </navigation>

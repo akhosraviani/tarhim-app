@@ -2,17 +2,15 @@ package ir.co.tarhim.network
 
 import ir.co.tarhim.model.confirmotp.ConfirmOtpDataModel
 import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
-import ir.co.tarhim.model.confirmpass.ConfirmPasswordDataModel
+import ir.co.tarhim.model.confirmpass.ConfirmDataModel
 import ir.co.tarhim.model.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.deceased.*
 import ir.co.tarhim.model.mobile.CheckRegisterModel
 import ir.co.tarhim.model.mobile.CheckPhoneNumber
 import ir.co.tarhim.model.otp.OtpDataModel
+import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface RequestApi {
 
@@ -24,13 +22,13 @@ interface RequestApi {
     fun requestOtp(@Body checkPhoneNumber: CheckPhoneNumber): Call<OtpDataModel>
 
     @POST("api/v1/account/confirmOtp")
-    fun confirmOtp(@Body confirmOtpRequest: ConfirmOtpRequest): Call<ConfirmOtpDataModel>
+    fun confirmOtp(@Body confirmOtpRequest: ConfirmOtpRequest): Call<ConfirmDataModel>
 
     @POST("api/v1/account/confirmPassword")
-    fun confirmPassword(@Body confirmPassword: ConfirmPasswordRequest): Call<ConfirmPasswordDataModel>
+    fun confirmPassword(@Body confirmPassword: ConfirmPasswordRequest): Call<ConfirmDataModel>
 
     @POST("api/v1/account/setPassword")
-    fun setPassword(@Body setPassword: ConfirmPasswordRequest): Call<ConfirmPasswordDataModel>
+    fun setPassword(@Body setPassword: ConfirmPasswordRequest): Call<ConfirmDataModel>
 
 
     @GET("api/v1/deceased/latestsearch")
@@ -44,12 +42,30 @@ interface RequestApi {
 
 
     @GET("api/v1/deceased/mydeceased")
-    fun requestMyDeceased(@Query("mobile")mobile:String): Call<List<MydeceasedDataModel>>
+    fun requestMyDeceased(@Query("mobile")mobile:String): Call<List<MyDeceasedDataModel>>
 
     @POST("api/v1/deceased/create")
     fun requestCreateDeceased(@Body createdeceased: CreateDeceasedRequest,@Query("mobile")mobile:String
-    ): Call<ConfirmOtpDataModel>
+    ): Call<ConfirmDataModel>
 
+    @PUT("api/v1/deceased/edit")
+    fun requestEditDeceased(@Body createdeceased: CreateDeceasedRequest, @Query("id")id:Int, @Query("mobile")mobile:String
+    ): Call<ConfirmDataModel>
+
+
+    @Multipart
+    @POST("api/v1/utility/image")
+    fun requestUploadFile(@Part file:MultipartBody.Part):Call<UploadFileDataModel>
+
+    @GET("api/v1/deceased/mygallery")
+    fun requestGetGallery(@Query("id")id:Int):Call<GalleryDataModel>
+
+
+    @GET("api/v1/comments")
+    fun requestGetComment(@Query("id") id:Int,@Query("mobile") mobile:String):Call<List<CommentDataModel>>
+
+    @POST("api/v1/comments")
+    fun requestSendComment(@Body body:SendCommentRequest,@Query("mobile") mobile:String):Call<ConfirmDataModel>
 
 }
 

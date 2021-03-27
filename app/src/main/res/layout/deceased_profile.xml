@@ -1,17 +1,366 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/deceasedRoot"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    android:layout_height="match_parent">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/BtInbox"
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:background="@drawable/inbox_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/BtnNotifBell"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/bell_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".05"
+                app:layout_constraintStart_toEndOf="@id/BtInbox"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/NotifDotDeceased"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/notif_dot"
+                app:layout_constraintBottom_toTopOf="@id/BtInbox"
+                app:layout_constraintEnd_toEndOf="@id/BtInbox"
+                app:layout_constraintStart_toEndOf="@id/BtInbox"
+                app:layout_constraintTop_toTopOf="@id/BtInbox" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/BellDotDeceased"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+
+                android:background="@drawable/notif_dot"
+                app:layout_constraintBottom_toTopOf="@id/BtnNotifBell"
+                app:layout_constraintEnd_toEndOf="@id/BtnNotifBell"
+                app:layout_constraintStart_toEndOf="@id/BtnNotifBell"
+                app:layout_constraintTop_toTopOf="@id/BtnNotifBell" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iran_sans"
+                android:text="@string/msg_edit_deceased_profile"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/FollowLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ImVDeceased"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:elevation="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias=".95"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias=".03" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/TvDeseacesName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:elevation="5dp"
+                        android:fontFamily="@font/iran_sans_bold"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/ImVDeceased"
+                        app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
+                        app:layout_constraintHorizontal_bias="0.872"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/ImVDeceased"
+                        app:layout_constraintVertical_bias="0.144" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/TvBornDateDeseaces"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/iran_sans_light"
+                        android:text=""
+                        android:textColor="@color/grey_900"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
+                        app:layout_constraintHorizontal_bias="0.872"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/TvDeseacesName"
+                        app:layout_constraintVertical_bias="0.02" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/TvDeathDateDeseaces"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/iran_sans_light"
+                        android:textColor="@color/grey_900"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
+                        app:layout_constraintHorizontal_bias="0.872"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/TvBornDateDeseaces"
+                        app:layout_constraintVertical_bias="0.02" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/TvCountFollowers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:textColor="@color/grey_900"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
+                        app:layout_constraintHorizontal_bias="0.872"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/TvDeathDateDeseaces"
+                        app:layout_constraintVertical_bias="0.02" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/TvBurialLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/iran_sans_light"
+                        android:textColor="@color/grey_900"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnFindBurialLocation"
+                        app:layout_constraintEnd_toEndOf="@+id/ImVDeceased"
+                        app:layout_constraintHorizontal_bias="0.959"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/btnFindBurialLocation" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnFindBurialLocation"
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/green_buttton"
+                        android:drawableLeft="@drawable/ic_location"
+                        android:drawablePadding="5dp"
+                        android:fontFamily="@font/iran_sans"
+                        android:text="مسیریابی"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias=".05"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ImVDeceased"
+                        app:layout_constraintVertical_bias="0.02" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/BtnEditDeceased"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edit_icon"
+                        android:drawablePadding="5dp"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
+                        app:layout_constraintHorizontal_bias=".1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/ImVDeceased"
+                        app:layout_constraintVertical_bias="0.05" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/btShowmore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:drawableLeft="@drawable/ic_arrow_down"
+                        android:text="بیشتر"
+                        android:textAllCaps="false"
+                        android:textColor="@color/tradewind"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@id/TvBioDeseaces"
+                        app:layout_constraintEnd_toEndOf="@id/TvBioDeseaces"
+                        app:layout_constraintHorizontal_bias=".05"
+                        app:layout_constraintStart_toStartOf="@id/TvBioDeseaces"
+                        app:layout_constraintTop_toTopOf="@id/TvBioDeseaces"
+                        app:layout_constraintVertical_bias="1" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/TvBioDeseaces"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/shape_bg_box_latest_search"
+                        android:fontFamily="@font/iran_sans"
+                        android:gravity="center_horizontal"
+                        android:maxLines="3"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="30dp"
+                        android:scrollbars="vertical"
+                        android:textColor="@color/grey_900"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btnFindBurialLocation"
+                        app:layout_constraintVertical_bias="0"
+                        tools:text="text to1" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/cToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0"
+                    android:background="@color/white"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/viewToolbarLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/IvToolbar"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="5dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias=".95"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/TvNameToolbar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="5dp"
+                            android:fontFamily="@font/iran_sans_bold"
+                            android:textColor="@color/black"
+                            app:layout_constraintBottom_toBottomOf="@+id/IvToolbar"
+                            app:layout_constraintEnd_toStartOf="@+id/IvToolbar"
+                            app:layout_constraintHorizontal_bias=".95"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/IvToolbar" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/BtnEditToolbar"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:background="@drawable/edit_icon"
+                            android:drawablePadding="5dp"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/TvNameToolbar"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/deceasedTabLayout"
+                style="@style/TarhimTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                app:tabPaddingStart="20dp"
+                app:tabPaddingEnd="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/IvToolbar"
+                app:layout_constraintVertical_bias="0"
+
+                />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/deceasedViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="7dp"
+            android:layoutDirection="rtl"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+            />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/PrivateLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ImVDeceasedPrivate"
@@ -118,173 +467,4 @@
             app:layout_constraintVertical_bias="0.152" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/FollowLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
-
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ImBNotif"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/notif"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".02" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ImVDeceased"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".95"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".03" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvDeseacesName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/ImVDeceased"
-            app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.872"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ImVDeceased"
-            app:layout_constraintVertical_bias="0.144" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvBornDateDeseaces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/grey_900"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.872"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TvDeseacesName"
-            app:layout_constraintVertical_bias="0.02" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvDeathDateDeseaces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/grey_900"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.872"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TvBornDateDeseaces"
-            app:layout_constraintVertical_bias="0.02" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvBurialLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/grey_900"
-            app:layout_constraintBottom_toBottomOf="@+id/btnFindBurialLocation"
-            app:layout_constraintEnd_toEndOf="@+id/ImVDeceased"
-            app:layout_constraintHorizontal_bias="0.959"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btnFindBurialLocation" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnFindBurialLocation"
-            android:layout_width="90dp"
-            android:layout_height="40dp"
-            android:background="@drawable/green_buttton"
-            android:drawableLeft="@drawable/ic_location"
-            android:drawablePadding="5dp"
-            android:text="مسیریابی"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ImVDeceased"
-            app:layout_constraintVertical_bias="0.02" />
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btShowmore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_arrow_down"
-            android:text="بیشتر"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            android:textAllCaps="false"
-            android:textColor="@color/tradewind"
-            app:layout_constraintBottom_toBottomOf="@id/TvBioDeseaces"
-            app:layout_constraintEnd_toEndOf="@id/TvBioDeseaces"
-            app:layout_constraintHorizontal_bias=".05"
-            app:layout_constraintStart_toStartOf="@id/TvBioDeseaces"
-            app:layout_constraintTop_toTopOf="@id/TvBioDeseaces"
-            app:layout_constraintVertical_bias="1"
-            android:layout_marginBottom="3dp"/>
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TvBioDeseaces"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:maxLines="3"
-            android:scrollbars="vertical"
-            android:background="@drawable/shape_bg_box_latest_search"
-            android:paddingBottom="30dp"
-            android:paddingStart="7dp"
-            android:paddingEnd="7dp"
-            android:textColor="@color/grey_900"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnFindBurialLocation"
-            app:layout_constraintVertical_bias="0" />
-
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/deceasedTabLayout"
-            style="@style/TarhimTabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layoutDirection="rtl"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TvBioDeseaces"
-            app:layout_constraintVertical_bias="0" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/deceasedViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layoutDirection="rtl"
-            android:layout_margin="7dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/deceasedTabLayout"
-            app:layout_constraintVertical_bias="0" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -4,25 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:padding="3dp">
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginEnd="5dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/IVDeceased"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        tools:background="@drawable/download"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.97"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias=".1"
+        tools:background="@drawable/download" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/TvDeceasedName"
-        android:layout_width="100dp"
-        android:layout_height="26dp"
-        tools:text="خسرو شکیبایی"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/iran_sans"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -31,26 +35,28 @@
         app:layout_constraintHorizontal_bias=".9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".3" />
+        app:layout_constraintVertical_bias=".3"
+        tools:text="خسرو شکیبایی" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/TvBornDeceased"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="1336/05/08 - 1399/08/28"
-        android:textSize="12dp"
         android:textColor="@color/grey_600"
+        android:textSize="12dp"
+        android:fontFamily="@font/iran_sans_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/TvDeceasedName"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TvDeceasedName"
-        app:layout_constraintVertical_bias=".3" />
+        app:layout_constraintVertical_bias=".3"
+        tools:text="1336/05/08 - 1399/08/28" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnRemoveDeceased"
-        android:layout_width="13dp"
-        android:layout_height="13dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:background="@drawable/close"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,15 +65,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias=".2" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="2dp"
         android:background="@color/blue_grey_200"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@id/IVDeceased"
-        />
+        app:layout_constraintVertical_bias="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -72,16 +72,16 @@ class LatestSearchRecyclerAdapter(private val deceasedCallBack: DeceasedRecycler
             nameDeceased.text = deceased.name
 
             val loc = Locale("en_US")
+//
+//            var dateBirthDay = Date(deceased.birthday)
+//            var dateDeathDay = Date(deceased.deathday)
+//            val scBirthDay = SolarCalendar(dateBirthDay)
+//            val scDeathDay = SolarCalendar(dateDeathDay)
+//
+//            var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+//            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
 
-            var dateBirthDay = Date(deceased.birthday)
-            var dateDeathDay = Date(deceased.deathday)
-            val scBirthDay = SolarCalendar(dateBirthDay)
-            val scDeathDay = SolarCalendar(dateDeathDay)
-
-            var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
-            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
-
-            birth_DeathDay.text = "$birthDay-$deathDay"
+            birth_DeathDay.text = "${deceased.birthday} - ${deceased.deathday}"
 
             itemView.setOnClickListener {
 

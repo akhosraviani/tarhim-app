@@ -1,4 +1,4 @@
-package ir.co.tarhim.ui.fragments.home
+package ir.co.tarhim.ui.fragments.cemetery
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -15,15 +15,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ir.co.tarhim.R
-import ir.co.tarhim.model.deceased.DeceasedDataModel
-import ir.co.tarhim.ui.adapter.DeceasedSearchRecyclerAdapter
 import ir.co.tarhim.ui.adapter.LatestSearchRecyclerAdapter
 import ir.co.tarhim.ui.callback.DeceasedRecyclerCallBack
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import ir.co.tarhim.utils.ManageKeyboard
 import kotlinx.android.synthetic.main.fragment_cemetery.*
-import kotlinx.android.synthetic.main.fragment_charity.*
-import kotlinx.android.synthetic.main.latest_deceased_bottom_sheet.view.*
+import kotlinx.android.synthetic.main.fragment_cemetery.TvLatestSearch
+import javax.crypto.SealedObject
 
 class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
 
@@ -33,7 +33,6 @@ class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
     }
 
     private lateinit var viewModel: HomeViewModel
-    private lateinit var searchAdapter: DeceasedSearchRecyclerAdapter
     private lateinit var latestAdapter: LatestSearchRecyclerAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,14 +46,27 @@ class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         initUi()
+        //<editor-fold desc="show EllipizeTitle">
+        var titlesrc = "${getString(R.string.salavat)} ♦ ${getString(R.string.ill)}"
+        TitleCemetery.text = titlesrc
+        TitleCemetery.ellipsize = TextUtils.TruncateAt.MARQUEE
+        TitleCemetery.setSingleLine(true)
+        TitleCemetery.marqueeRepeatLimit = 1
+        TitleCemetery.isSelected = true
+        //</editor-fold>
+
         viewModel.ldLatestSearch.observe(viewLifecycleOwner, Observer {
+//            Log.e(TAG, "onViewCreated: " + it.size)
             showLoading(false)
             it.let {
                 latestAdapter.submitList(it)
             }
         })
 
-
+        SearchLayout.setOnClickListener {
+            initRecycler(DeceasedSearchRecycler)
+            showView(false)
+        }
 
         SearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -68,6 +80,8 @@ class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
                     viewModel.requestSearch(query!!)
                     showLoading(true)
                     Log.e(TAG, "onQueryTextChange: ")
+                }else{
+                    latestAdapter.submitList(null)
                 }
                 return false
             }
@@ -100,28 +114,28 @@ class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
 
     private fun initUi() {
         showLoading(true)
-        initRecycler()
+        initRecycler(LatestSearchRecycler)
         viewModel.requestlatestSearch()
     }
 
 
-    private fun initRecycler() {
+    private fun initRecycler(recyclerView: RecyclerView) {
         latestAdapter = LatestSearchRecyclerAdapter(this)
         var resanim = R.anim.up_to_bottom
         var animation = AnimationUtils.loadLayoutAnimation(requireContext(), resanim)
-        Deceased_Recycler.adapter = latestAdapter
-        Deceased_Recycler.layoutManager =
+        recyclerView.adapter = latestAdapter
+        recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        Deceased_Recycler.layoutAnimation = animation
+        recyclerView.layoutAnimation = animation
     }
 
     private fun showLoading(visibility: Boolean) {
         if (visibility) {
             loadingProgress.visibility = View.VISIBLE
-            Deceased_Recycler.visibility = View.GONE
+            LatestSearchRecycler.visibility = View.GONE
         } else {
             loadingProgress.visibility = View.GONE
-            Deceased_Recycler.visibility = View.VISIBLE
+            LatestSearchRecycler.visibility = View.VISIBLE
         }
     }
 
@@ -129,5 +143,23 @@ class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
         val args = bundleOf("DeceasedId" to decId)
         findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page, args)
     }
+
+
+    private fun showView(status: Boolean) {
+        if (!status) {
+            SearchView.animate().alpha(1f).duration = 600
+            LatestSearchRecycler.animate().alpha(0f).duration = 600
+            SearchLayout.animate().alpha(0f).duration = 600
+            TvLatestSearch.animate().alpha(0f).duration = 600
+            BtnCreateDeceased.animate().alpha(0f).duration = 600
+            SearchView.visibility = View.VISIBLE
+//            LatestSearchRecycler.visibility=View.GONE
+//            SearchLayout.visibility=View.GONE
+//            TvLatestSearch.visibility=View.GONE
+//            BtnCreateDeceased.visibility=View.GONE
+
+        }
+    }
+
 
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import ir.co.tarhim.R
@@ -31,6 +32,17 @@ class ProfileFragment : Fragment(), ViewPagerCallBack {
         TabLayoutMediator(tabProfile, VPagerProfile) { tab, position ->
             tab.text = tabs[position]
         }.attach()
+
+
+
+        BtnCreatePageDeceased.setOnClickListener {
+            findNavController().navigate(R.id.action_fragment_profile_to_fragment_create_deceased)
+        }
+
+        BtnEditProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_fragment_profile_to_user_edit_fragment)
+        }
+
 
     }
 

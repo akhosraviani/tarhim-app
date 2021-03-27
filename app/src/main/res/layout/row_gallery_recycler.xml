@@ -6,19 +6,26 @@
     android:layout_margin="3dp"
     app:cardCornerRadius="5dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/loadinggallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:layout_centerInParent="true" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/IvGallery"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:background="@drawable/download"
 
             />
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

@@ -4,17 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
-import ir.co.tarhim.model.deceased.MydeceasedDataModel
+import ir.co.tarhim.model.deceased.MyDeceasedDataModel
 import ir.co.tarhim.ui.adapter.MyDeceasedAdapter
+import ir.co.tarhim.ui.callback.ProfileListener
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.my_deceased_fragment.*
 
-class MyDeceasedFragment : Fragment() {
+class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var myDeceasedAdapter: MyDeceasedAdapter
@@ -54,11 +59,17 @@ class MyDeceasedFragment : Fragment() {
     }
 
 
-    private fun initMyDeceasedRecycler(listMyDeceased: List<MydeceasedDataModel>) {
-        myDeceasedAdapter = MyDeceasedAdapter(listMyDeceased,"MyDeceasedFragment")
+    private fun initMyDeceasedRecycler(listMyDeceased: List<MyDeceasedDataModel>) {
+        myDeceasedAdapter = MyDeceasedAdapter(listMyDeceased, "MyDeceasedFragment",this)
         mydeceasedRecycler.adapter = myDeceasedAdapter
         mydeceasedRecycler.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+    }
+
+    override fun editDeceased(item: MyDeceasedDataModel) {
+//        Toast.makeText(activity, "test ", Toast.LENGTH_SHORT).show()
+//        var args = bundleOf("EditDetails" to item)
+//        findNavController().navigate(R.id.action_fragment_profile_to_fragment_create_deceased, args)
     }
 
 

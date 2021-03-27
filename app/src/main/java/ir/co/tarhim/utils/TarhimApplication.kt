@@ -11,5 +11,6 @@ class TarhimApplication:Application() {
         Hawk.init(this).build()
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
     }
 }

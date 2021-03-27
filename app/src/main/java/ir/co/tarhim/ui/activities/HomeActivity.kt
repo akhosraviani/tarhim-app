@@ -1,5 +1,6 @@
 package ir.co.tarhim.ui.activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -73,6 +74,15 @@ class HomeActivity : AppCompatActivity() {
         sparseIcon.put(R.id.fragment_requirement, R.drawable.niazmandiha_icon_selected)
 
         return sparseIcon
+    }
+
+
+    @SuppressLint("RestrictedApi")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        navController.popBackStack()
+        if(navController.currentBackStackEntry==null)
+            finishAffinity()
     }
 
 }

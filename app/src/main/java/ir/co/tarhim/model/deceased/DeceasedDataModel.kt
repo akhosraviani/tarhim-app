@@ -1,8 +1,8 @@
 package ir.co.tarhim.model.deceased
 
 data class DeceasedDataModel(
-    val birthday: Long,
-    val deathday: Long,
+    val birthday: String,
+    val deathday: String,
     val id: Int,
     val imageurl: String,
     val name: String,

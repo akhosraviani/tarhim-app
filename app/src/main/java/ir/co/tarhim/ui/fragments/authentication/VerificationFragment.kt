@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -48,15 +49,19 @@ class VerificationFragment : Fragment() {
         }
 
         viewModel.ldConfirmOtp.observe(viewLifecycleOwner, Observer { x ->
-            if (x.code == 200) {
-                val args = bundleOf("phoneNumber" to phoneNumber)
-                findNavController().navigate(
-                    R.id.action_verificationFragment_to_signInFragment,
-                    args
-                )
-            }else{
-
+            when (x.code) {
+                200 -> {
+                    val args = bundleOf("phoneNumber" to phoneNumber)
+                    findNavController().navigate(
+                        R.id.action_verificationFragment_to_signInFragment,
+                        args
+                    )
+                }
+                400 -> {
+                    Toast.makeText(context, "کد شما صحیح نیست", Toast.LENGTH_SHORT).show()
+                }
             }
+
         })
 
 

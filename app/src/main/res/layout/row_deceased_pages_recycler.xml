@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layoutDirection="ltr"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:padding="5dp">
@@ -14,7 +15,7 @@
         android:layout_height="65dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.951"
+        app:layout_constraintHorizontal_bias="0.98"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="خسرو شکیبایی"
+        android:fontFamily="@font/iran_sans"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -39,12 +41,13 @@
         android:layout_height="wrap_content"
         tools:text="1336/05/08 - 1399/08/28"
         android:textColor="@color/grey_600"
+        android:fontFamily="@font/iran_sans_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/TvDeceasedName"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TvDeceasedName"
-        app:layout_constraintVertical_bias=".3" />
+        app:layout_constraintVertical_bias=".5" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnRemoveDeceased"
@@ -52,13 +55,14 @@
         android:layout_height="25dp"
         android:background="@drawable/small_red_button"
         android:text="حذف"
+        android:visibility="gone"
         android:textColor="@android:color/holo_red_dark"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/TvDeceasedName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.213"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TvDeceasedName"
         app:layout_constraintVertical_bias="0.4" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -67,6 +71,7 @@
         android:layout_height="25dp"
         android:background="@drawable/green_buttton"
         android:text="ویرایش"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/BtnRemoveDeceased"

@@ -18,10 +18,8 @@ import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import ir.co.tarhim.model.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.mobile.CheckPhoneNumber
-import ir.co.tarhim.ui.activities.AuthenticationActivity
 import ir.co.tarhim.ui.activities.HomeActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 
 
@@ -74,7 +72,7 @@ class SignInFragment : Fragment() {
         Log.e(TAG, "onViewCreated: phoneNumber" + phoneNumber)
         signInEnterTv.setOnClickListener {
             if (Register) {
-            Toast.makeText(activity, "register", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(activity, "register", Toast.LENGTH_SHORT).show()
                 viewModel.requestConfirmPassword(
                     ConfirmPasswordRequest(
                         phoneNumber,
@@ -83,7 +81,7 @@ class SignInFragment : Fragment() {
                 )
             }
             else{
-                Toast.makeText(activity, "nonRegister", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(activity, "nonRegister", Toast.LENGTH_SHORT).show()
 
                 viewModel.requestSetPassword(
                     ConfirmPasswordRequest(
@@ -94,13 +92,13 @@ class SignInFragment : Fragment() {
             }
         }
 
-        viewModel.ldSetPassword.observe(viewLifecycleOwner, Observer {
+        viewModel.ldSet.observe(viewLifecycleOwner, Observer {
             if(it.code==200){
                 Hawk.put("UserNumber", phoneNumber)
                 startActivity(Intent(requireContext(), HomeActivity::class.java))
             }
         })
-        viewModel.ldConfirmPassword.observe(viewLifecycleOwner, Observer {
+        viewModel.ldConfirm.observe(viewLifecycleOwner, Observer {
 
             Log.e(TAG, "onViewCreated: code " + it.code)
             if (it.code == 200) {

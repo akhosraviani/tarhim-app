@@ -62,7 +62,7 @@
             app:layout_constraintVertical_bias=".01" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TVReplayComment"
+            android:id="@+id/BtnLikeComment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -87,10 +87,10 @@
             android:text="سه روز پیش"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/TVReplayComment"
+            app:layout_constraintEnd_toEndOf="@+id/BtnLikeComment"
             app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toStartOf="@+id/TVReplayComment"
-            app:layout_constraintTop_toBottomOf="@+id/TVReplayComment" />
+            app:layout_constraintStart_toStartOf="@+id/BtnLikeComment"
+            app:layout_constraintTop_toBottomOf="@+id/BtnLikeComment" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/TVSelectReplayComment"
@@ -100,10 +100,10 @@
             android:layout_marginBottom="5dp"
             android:text="پاسخ"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/TVReplayComment"
+            app:layout_constraintEnd_toEndOf="@+id/BtnLikeComment"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="@+id/TVReplayComment"
-            app:layout_constraintTop_toBottomOf="@+id/TVReplayComment" />
+            app:layout_constraintStart_toStartOf="@+id/BtnLikeComment"
+            app:layout_constraintTop_toBottomOf="@+id/BtnLikeComment" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

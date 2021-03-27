@@ -5,31 +5,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/BtInbox"
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:background="@drawable/inbox_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/NotifDotDeceased"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/notif_dot"
+                app:layout_constraintBottom_toTopOf="@id/BtInbox"
+                app:layout_constraintEnd_toEndOf="@id/BtInbox"
+                app:layout_constraintStart_toEndOf="@id/BtInbox"
+                app:layout_constraintTop_toTopOf="@id/BtInbox" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iran_sans"
+                android:text="@string/msg_edit_profile"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ImVUser"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:background="@drawable/profil_pic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".95"
+        app:layout_constraintHorizontal_bias=".85"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias=".03" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/TvuUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="مهرداد میناوند"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ImVUser"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/iran_sans"
+        app:layout_constraintStart_toStartOf="@+id/ImVUser"
         app:layout_constraintTop_toBottomOf="@+id/ImVUser"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintVertical_bias="0.01"
+        tools:text="مهرداد میناوند" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnNeedToPray"
@@ -37,6 +89,7 @@
         android:layout_height="40dp"
         android:background="@drawable/green_buttton"
         android:gravity="center"
+        android:fontFamily="@font/iran_sans"
         android:text="التماس دعا"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -48,27 +101,27 @@
         app:layout_constraintVertical_bias="0.028" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/BtnEditProfile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/edit_icon"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ImVUser"
+        app:layout_constraintEnd_toEndOf="@+id/ImVUser"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/ImVUser"
+        app:layout_constraintTop_toTopOf="@+id/ImVUser"
+        app:layout_constraintVertical_bias="1" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnCreatePageDeceased"
         android:layout_width="140dp"
         android:layout_height="40dp"
         android:background="@drawable/green_buttton"
         android:gravity="center"
-        android:text="ویرایش پروفایل"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ImVUser"
-        app:layout_constraintHorizontal_bias=".116"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnEditProfile"
-        app:layout_constraintVertical_bias="0.01" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/BtnEditProfile"
-        android:layout_width="140dp"
-        android:layout_height="40dp"
-        android:background="@drawable/green_buttton"
-        android:gravity="center"
+        android:fontFamily="@font/iran_sans"
         android:text="ایجاد صفحه متوفی"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -81,13 +134,15 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabProfile"
-        android:layoutDirection="rtl"
+        style="@style/TarhimTabLayout"
         android:layout_width="match_parent"
-        app:tabMode="auto"
-        app:tabIndicatorAnimationMode="elastic"
-        app:tabGravity="center"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layoutDirection="rtl"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TvuUserName"
         app:layout_constraintVertical_bias="0.01" />
 
@@ -96,6 +151,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layoutDirection="rtl"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

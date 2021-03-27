@@ -13,7 +13,8 @@
     <string name="login_start_button">ارسال کد تایید</string>
     <string name="login_rules_description">با ورود و ثبت نام در ترحیم ، شما قوانین و شرایط استفاده از سرویس های ترحیم و قوانین حریم خصوصی آن را میپذیرید</string>
     <!-- endregion -->
-
+    <string name="salavat">الّلهُمَّ صَلِّ عَلَی مُحَمَّدٍ وَ آلِ مُحَمَّدٍ و عَجّل فَرَجَهم</string>
+    <string name="ill">اللّهُمَّ اشْفِ كُلَّ مَرِیضٍ</string>
     <!-- region sign In-->
     <string name="signIn_title">رمز عبور را وارد کنید</string>
     <string name="signIn_start_description">رمز عبور حساب کاربری خود را وارد کنید</string>
@@ -45,5 +46,11 @@
     </string>
     <string name="help_to_charity_centers">کمک به مراکز خیریه به نیت مرحوم</string>
     <string name="spiritual_affairs_msg">انجام امور معنوی به نیت مرحوم</string>
+    <string name="msg_edit_deceased_profile">صفحه متوفی</string>
+    <string name="msg_edit_image">تغییر عکس</string>
+    <string name="title_activity_maps_fragment">Map</string>
+    <string name="msg_open_map">نقشه</string>
+    <string name="msg_submit_location">ثبت</string>
+    <string name="msg_edit_profile">پروفایل</string>
 
 </resources>
