@@ -1,7 +1,8 @@
 package ir.co.tarhim.ui.fragments.deceased
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -15,10 +16,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
-import androidx.core.content.contentValuesOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,11 +31,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.CreateDeceasedRequest
+import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
 import ir.co.tarhim.model.deceased.MyDeceasedDataModel
 import ir.co.tarhim.ui.callback.UploadCallBack
 import ir.co.tarhim.ui.callback.UploadProgress
 import ir.co.tarhim.ui.viewModels.HomeViewModel
-import ir.co.tarhim.utils.ToastBuilder
 import ir.hamsaa.persiandatepicker.Listener
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
@@ -51,13 +54,18 @@ class CreateDeceased : Fragment(), UploadCallBack {
 
     private var imagePath: String? = null
     private lateinit var location: LatLng
-    private var choseDate: String? = null
     private lateinit var pathImage: String
+    private lateinit var editBirth: String
+    private lateinit var editDeath: String
     private lateinit var cursor: Cursor
+    private var editProfile = false
+    private var DeceasedId: Int? = -1
     private lateinit var viewModel: HomeViewModel
     private lateinit var picker: PersianDatePickerDialog
     private var editDetailsStatus: Boolean? = false
-    private lateinit var details:MyDeceasedDataModel
+    private lateinit var details: MyDeceasedDataModel
+    private lateinit var deceasedInfo: DeceasedProfileDataModel
+    private lateinit var inputMethodManager: InputMethodManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,10 +75,13 @@ class CreateDeceased : Fragment(), UploadCallBack {
         return inflater.inflate(R.layout.create_deceased, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         picker = PersianDatePickerDialog(requireContext())
+        inputMethodManager =
+            activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         viewModel.ldImageUpload.observe(viewLifecycleOwner, Observer {
             if (it.id != null) {
                 loadingImg.visibility = View.GONE
@@ -79,20 +90,42 @@ class CreateDeceased : Fragment(), UploadCallBack {
             }
         })
 
-//        if (arguments?.get("EditDetails") != null) {
-//            editDetailsStatus = true
-//            details= arguments?.get("DeceasedDetails") as MyDeceasedDataModel
-//            showDeceasedDetails(details)
-//        }
+        setUpView(requireView())
+
+
+
+        if (arguments?.get("EditDeceased") != null) {
+            txtToolbar.text = "ویرایش پروفایل"
+            TvChangeImg.text = getString(R.string.msg_edit_image)
+            editProfile = true
+            deceasedInfo = arguments?.getParcelable("EditDeceased")!!
+            DeceasedId = arguments?.getInt("DeceasedId")!!
+            showDeceasedDetails(deceasedInfo)
+
+        }
+        EtBirthDateDeceased.setOnFocusChangeListener { view, b ->
+            hideSoftKeyboard(requireActivity())
+            showDialogCalendar(EtBirthDateDeceased)
+            picker.show()
+        }
+        ETDeathDeceased.setOnFocusChangeListener { view, b ->
+            hideSoftKeyboard(requireActivity())
+            showDialogCalendar(EtBirthDateDeceased)
+            picker.show()
+        }
+
 
         EtBirthDateDeceased.setOnClickListener {
+//            hideSoftKeyboard(requireActivity())
             showDialogCalendar(EtBirthDateDeceased)
             picker.show()
         }
         ETDeathDeceased.setOnClickListener {
+//            hideSoftKeyboard(requireActivity())
             showDialogCalendar(ETDeathDeceased)
             picker.show()
         }
+
         BtnOpenMap.setOnClickListener {
             findNavController().navigate(R.id.action_fragment_create_deceased_to_maps_fragment)
         }
@@ -102,9 +135,28 @@ class CreateDeceased : Fragment(), UploadCallBack {
         }
         location = Hawk.get("Location", LatLng(0.0, 0.0))
 
-        BtnSaveEdit.setOnClickListener {
+        BtnSaveEditUser.setOnClickListener {
+            if (editProfile) {
+                showLoading(true)
 
+                viewModel.requestEditDeceased(
+                    CreateDeceasedRequest(
+                        "Public",
+                        EtBirthDateDeceased.text.toString(),
+                        ETDeathDeceased.text.toString(),
+                        ETBurialLocation.text.toString(),
+                        ETdeceasedDescription.text.toString(),
+                        imagePath!!,
+                        location.latitude.toLong(),
+                        location.longitude.toLong(),
+                        ETNameDeceased.text.toString()
+                    ), DeceasedId!!
+                )
 
+                Log.e(TAG, "onViewCreated:ETDeathDeceased "+ETDeathDeceased.text.toString() )
+                Log.e(TAG, "onViewCreated:ETDeathDeceased "+EtBirthDateDeceased.text.toString() )
+            } else {
+                //<editor-fold desc="Create Deceaed Profile">
                 if (
                     ETNameDeceased.text.toString().length > 0 &&
                     ETBurialLocation.text.toString().length > 0 &&
@@ -112,13 +164,13 @@ class CreateDeceased : Fragment(), UploadCallBack {
                     ETDeathDeceased.text.toString().length > 0
                 ) {
                     showLoading(true)
-                    val birthDay = EtBirthDateDeceased.text.toString()
-                    val deathDay = ETDeathDeceased.text.toString()
+
                     viewModel.requestCreateDeceased(
                         CreateDeceasedRequest(
                             "Public",
-                            birthDay,
-                            deathDay,
+
+                            EtBirthDateDeceased.text.toString(),
+                            ETDeathDeceased.text.toString(),
                             ETBurialLocation.text.toString(),
                             ETdeceasedDescription.text.toString(),
                             imagePath!!,
@@ -132,7 +184,8 @@ class CreateDeceased : Fragment(), UploadCallBack {
                     Toast.makeText(activity, "لطفا تمام قسمت ها را تکمیل کنید", Toast.LENGTH_SHORT)
                         .show()
                 }
-
+                //</editor-fold>
+            }
         }
 
 
@@ -148,7 +201,10 @@ class CreateDeceased : Fragment(), UploadCallBack {
                         showLoading(false)
                         Toast.makeText(activity, "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show()
                         Handler().postDelayed({
-                            findNavController().navigateUp()
+
+                            txtToolbar.text = "ویرایش پروفایل"
+                            TvChangeImg.text = getString(R.string.msg_edit_image)
+                            editProfile = true
                         }, 1000)
                     }
                     400 -> {
@@ -158,6 +214,18 @@ class CreateDeceased : Fragment(), UploadCallBack {
             }
 
         })
+
+        viewModel.ldEditDeceased.observe(viewLifecycleOwner, Observer {
+            it!!.let {
+                showLoading(false)
+                if (it.code == 200) {
+                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT)
+                } else {
+
+                }
+            }
+        })
+
     }
 
 
@@ -167,10 +235,11 @@ class CreateDeceased : Fragment(), UploadCallBack {
                 requireContext(),
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED -> {
-                val galleryIntent = Intent(Intent.ACTION_PICK)
-                galleryIntent.setType("image/*")
-                galleryIntent.setAction(Intent.ACTION_GET_CONTENT)
-                startActivityForResult(galleryIntent, GALLERY_CODE)
+                Intent(Intent.ACTION_PICK).also { intent ->
+                    intent.type = "image/*"
+                    startActivityForResult(intent, GALLERY_CODE)
+
+                }
             }
 
             else -> {
@@ -191,9 +260,10 @@ class CreateDeceased : Fragment(), UploadCallBack {
         when (requestCode) {
             GALLERY_CODE -> {
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    val galleryIntent = Intent(Intent.ACTION_PICK)
-                    galleryIntent.setType("image/*")
-                    startActivityForResult(galleryIntent, GALLERY_CODE)
+                    Intent(Intent.ACTION_PICK).also { intent ->
+                        intent.type = "image/*"
+                        startActivityForResult(intent, GALLERY_CODE)
+                    }
                 } else {
                     requestPermissions(
                         arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
@@ -207,44 +277,40 @@ class CreateDeceased : Fragment(), UploadCallBack {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        loadingImg.visibility = View.VISIBLE
-        var dataUri = data?.data
+        if (resultCode == RESULT_OK) {
+            loadingImg.visibility = View.VISIBLE
+            var dataUri = data?.data
 
-        Log.e(
-            TAG,
-            "onActivityResult: " + getRealPathFromURI(dataUri!!)
-        )
+            Log.e(
+                TAG,
+                "onActivityResult: " + getRealPathFromURI(dataUri!!)
+            )
 
 
-        viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(dataUri!!))))
+            viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(dataUri!!))))
 
-        Glide.with(requireContext())
-            .load(dataUri)
-            .centerInside()
-            .circleCrop()
-            .into(IvDeceased)
-
+            Glide.with(requireContext())
+                .load(dataUri)
+                .centerInside()
+                .circleCrop()
+                .into(IvDeceased)
+        }
     }
 
 
     fun getRealPathFromURI(contentUri: Uri?): String? {
-        var cursor: Cursor =
-            contentUri?.let { activity?.contentResolver?.query(it, null, null, null, null) }!!
-        cursor.moveToFirst()
-        var document_id = cursor.getString(0)
-        document_id = document_id.substring(document_id.lastIndexOf(":") + 1)
-        cursor.close()
-        cursor = activity?.contentResolver?.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            null,
-            MediaStore.Images.Media._ID + " = ? ",
-            arrayOf(document_id),
-            null
-        )!!
-        cursor.moveToFirst()
-        val path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA))
-        cursor.close()
-        return path
+        var path: String? = null
+        var cursor = activity?.contentResolver?.query(contentUri!!, null, null, null, null)
+        if (cursor == null) {
+            path = contentUri!!.path
+        } else {
+            cursor.moveToFirst()
+            var index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            path = cursor.getString(index)
+            cursor.close()
+        }
+
+        return path!!
     }
 
     private fun uploadFile(filePath: Uri): MultipartBody.Part {
@@ -272,12 +338,14 @@ class CreateDeceased : Fragment(), UploadCallBack {
             .setCancelable(false)
             .setListener(object : Listener {
                 override fun onDateSelected(persianCalendar: PersianCalendar) {
-                    choseDate = persianCalendar.getPersianYear()
+                    var choseDate = persianCalendar.getPersianYear()
                         .toString() + "/" + persianCalendar.getPersianMonth() + "/" + persianCalendar.getPersianDay()
 
 
                     editText.setText(choseDate)
 
+                    editText.imeOptions = EditorInfo.IME_ACTION_NEXT
+                    showSoftKeyboard(requireActivity())
                 }
 
                 override fun onDismissed() {}
@@ -307,17 +375,35 @@ class CreateDeceased : Fragment(), UploadCallBack {
         }
     }
 
-    private fun showDeceasedDetails(details: MyDeceasedDataModel) {
+    private fun showDeceasedDetails(details: DeceasedProfileDataModel) {
         Glide.with(this)
             .load(details.imageurl)
             .circleCrop()
             .into(IvDeceased)
+        imagePath = details.imageurl
         ETNameDeceased.setText(details.name)
-        EtBirthDateDeceased.setText("سال تولد :" + details.birthday)
-        ETDeathDeceased.setText("سال وفات :" + details.deathday)
+        EtBirthDateDeceased.setText(details.birthday)
+        editBirth = details.birthday!!
+        ETDeathDeceased.setText(details.deathday)
+        editDeath = details.deathday!!
         ETBurialLocation.setText(details.deathloc)
         ETdeceasedDescription.setText(details.description)
     }
 
 
+    fun hideSoftKeyboard(activity: Activity) {
+        inputMethodManager.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
+    }
+
+    fun showSoftKeyboard(activity: Activity) {
+        inputMethodManager.showSoftInput(activity.currentFocus, 0)
+    }
+
+
+    fun setUpView(view: View) {
+        view.setOnTouchListener { view, motionEvent ->
+            hideSoftKeyboard(requireActivity())
+            false
+        }
+    }
 }

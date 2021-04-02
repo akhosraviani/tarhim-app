@@ -12,6 +12,8 @@ import ir.co.tarhim.model.deceased.*
 import ir.co.tarhim.model.mobile.CheckPhoneNumber
 import ir.co.tarhim.model.mobile.CheckRegisterModel
 import ir.co.tarhim.model.otp.OtpDataModel
+import ir.co.tarhim.model.user.RegisterUser
+import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.ui.repository.LoginRepository
 import okhttp3.MultipartBody
 
@@ -27,12 +29,16 @@ class HomeViewModel : ViewModel() {
     var ldSearch: LiveData<List<DeceasedDataModel>>
     var ldLatestSearch: LiveData<List<DeceasedDataModel>>
     var ldDeceasedProfile: LiveData<DeceasedProfileDataModel>
+    var ldDeceasedFromSearch: LiveData<DeceasedProfileDataModel>
     var ldMyDeceased: LiveData<List<MyDeceasedDataModel>>
     var ldcreateDeceased: LiveData<ConfirmDataModel>
+    var ldEditDeceased: LiveData<ConfirmDataModel>
     var ldImageUpload: LiveData<UploadFileDataModel>
     var ldGetGallery: LiveData<GalleryDataModel>
     var ldGetCommnet: LiveData<List<CommentDataModel>>
     var ldSendCommnet: LiveData<ConfirmDataModel>
+    var ldRegisterUser: LiveData<ConfirmDataModel>
+    var ldUserInfo: LiveData<UserInfoDataModel>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -43,22 +49,36 @@ class HomeViewModel : ViewModel() {
         ldSearch = loginRepository.mldSearchList
         ldLatestSearch = loginRepository.mldLatestSearch
         ldDeceasedProfile = loginRepository.mldDeceaedProfile
+        ldDeceasedFromSearch = loginRepository.mldDeceaedFromSearch
         ldMyDeceased = loginRepository.mldMyDeceaed
         ldcreateDeceased = loginRepository.mldCreateDeceased
         ldImageUpload = loginRepository.mldUploadImage
         ldGetGallery = loginRepository.mldGetGallery
         ldGetCommnet = loginRepository.mldGetComment
+        ldEditDeceased = loginRepository.mldEditDeceased
         ldSendCommnet = loginRepository.mldSendComment
+        ldRegisterUser = loginRepository.mldRegisterUser
+        ldUserInfo = loginRepository.mldUserInfo
 
     }
 
     fun requestCreateDeceased(dataRequest: CreateDeceasedRequest) {
         loginRepository.requestCreateDeceaed(dataRequest, Hawk.get("UserNumber"))
     }
-    fun requestEditDeceased(dataRequest: CreateDeceasedRequest,id:Int) {
-        loginRepository.requestEditDeceaed(dataRequest,id, Hawk.get("UserNumber"))
+
+    fun requestRegisterUser(dataRequest: RegisterUser) {
+        loginRepository.requestRegisterUser(dataRequest, Hawk.get("UserNumber"))
     }
-    fun requestSendComment(body:SendCommentRequest) {
+
+    fun requestUserInfo() {
+        loginRepository.requestUserInfo(Hawk.get("UserNumber"))
+    }
+
+    fun requestEditDeceased(dataRequest: CreateDeceasedRequest, id: Int) {
+        loginRepository.requestEditDeceaed(dataRequest, id, Hawk.get("UserNumber"))
+    }
+
+    fun requestSendComment(body: SendCommentRequest) {
         loginRepository.requestSendComment(body, Hawk.get("UserNumber"))
     }
 
@@ -98,9 +118,12 @@ class HomeViewModel : ViewModel() {
         loginRepository.requestLatestSearch(Hawk.get("UserNumber"))
     }
 
-    fun requestDeceasedProfile(id: Int) {
-        loginRepository.requestDeceasedProfile(id, Hawk.get("UserNumber"))
+    fun requestDeceasedPersonal(id: Int) {
+        loginRepository.requestDeceasedPersonalProfile(id, Hawk.get("UserNumber"))
+    }
 
+    fun requestDeceasedFromSearch(id: Int) {
+        loginRepository.requestDeceasedFromSearch(id, Hawk.get("UserNumber"))
     }
 
     fun requestConfirmPassword(confirmPassword: ConfirmPasswordRequest) {

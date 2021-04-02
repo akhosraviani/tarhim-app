@@ -19,7 +19,7 @@ import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.my_deceased_fragment.*
 
-class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack {
+class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack,ProfileListener.MyDeceasedListener {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var myDeceasedAdapter: MyDeceasedAdapter
@@ -51,6 +51,8 @@ class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack {
                 if (data.size != 0) {
                     initMyDeceasedRecycler(data)
                     myDeceasedAdapter.notifyDataSetChanged()
+                }else{
+                    TvNullMydeceased.text="محتوایی برای نمایش وجود ندارد"
                 }
             }
         })
@@ -60,7 +62,7 @@ class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack {
 
 
     private fun initMyDeceasedRecycler(listMyDeceased: List<MyDeceasedDataModel>) {
-        myDeceasedAdapter = MyDeceasedAdapter(listMyDeceased, "MyDeceasedFragment",this)
+        myDeceasedAdapter = MyDeceasedAdapter(listMyDeceased, "MyDeceasedFragment",this,this)
         mydeceasedRecycler.adapter = myDeceasedAdapter
         mydeceasedRecycler.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
@@ -70,6 +72,13 @@ class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack {
 //        Toast.makeText(activity, "test ", Toast.LENGTH_SHORT).show()
 //        var args = bundleOf("EditDetails" to item)
 //        findNavController().navigate(R.id.action_fragment_profile_to_fragment_create_deceased, args)
+    }
+
+    override fun myDeceasedCallBack(deceasedId: Int) {
+        val args =Bundle()
+        bundleOf("LatestSearch" to deceasedId)
+        args.putInt("LatestSearch",deceasedId)
+        findNavController().navigate(R.id.action_fragment_profile_to_fragment_deceased_page,args)
     }
 
 

@@ -6,4 +6,7 @@ interface ProfileListener {
     interface MyDeceasedEditCallBack{
         fun editDeceased(item:MyDeceasedDataModel)
     }
+    interface MyDeceasedListener{
+        fun myDeceasedCallBack(deceasedId:Int)
+    }
 }

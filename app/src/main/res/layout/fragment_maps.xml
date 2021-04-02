@@ -14,25 +14,25 @@
 
     <ImageView
         android:id="@+id/ImMarkerMap"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:visibility="gone"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_centerInParent="true"
-        android:background="@drawable/pin_marker" />
+        android:background="@drawable/pin_marker"
+        android:visibility="gone" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="100dp"
-        android:layout_height="50dp"
         android:id="@+id/BtnSubmitLocation"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-      android:layout_marginBottom="10dp"
-        android:background="@drawable/follow_button"
-        android:text="@string/msg_submit_location"
-        android:visibility="gone"
-        android:textColor="@color/white"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_50sdp"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
         android:layout_centerInParent="true"
-        android:textStyle="bold" />
+        android:layout_marginBottom="@dimen/_3sdp"
+        android:background="@drawable/shape_button"
+        android:gravity="center"
+        android:text="@string/msg_submit_location"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
 </RelativeLayout>

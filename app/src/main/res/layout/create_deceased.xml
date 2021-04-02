@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_page">
 
     <ProgressBar
         android:id="@+id/loadingSavePofile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="5dp"
+        android:elevation="@dimen/_3sdp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,14 +30,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="18dp">
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/BtnExitDeceasedPage"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:background="@drawable/close"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -45,9 +44,9 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnSaveEdit"
-                android:layout_width="25dp"
-                android:layout_height="20dp"
+                android:id="@+id/BtnSaveEditUser"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:background="@drawable/done"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -56,10 +55,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtToolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/msg_edit_deceased_profile"
                 android:fontFamily="@font/iran_sans_bold"
+                android:text="@string/msg_edit_deceased_profile"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -73,9 +73,9 @@
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/loadingImg"
         style="?android:attr/progressBarStyleLarge"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:elevation="10dp"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:elevation="@dimen/_7sdp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/IvDeceased"
         app:layout_constraintEnd_toEndOf="@+id/IvDeceased"
@@ -84,8 +84,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/IvDeceased"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
         android:background="@drawable/add_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,10 +98,10 @@
         android:id="@+id/TvChangeImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/msg_edit_image"
         android:fontFamily="@font/iran_sans"
+        android:text="@string/msg_add_image"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/tradewind"
+        android:textColor="@color/color_green"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/IvDeceased"
@@ -113,33 +113,35 @@
         android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/white"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_7sdp"
         android:hint=" نام و نام خانوادگی"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TvChangeImg"
-        app:layout_constraintVertical_bias=".05"
-        tools:layout_editor_absoluteX="10dp">
+        app:layout_constraintVertical_bias=".05">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/ETNameDeceased"
-            android:background="@color/white"
-            android:fontFamily="@font/iran_sans_light"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/background_page"
+            android:fontFamily="@font/iran_sans_light"
+            android:gravity="right"
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_7sdp"
         android:hint=" تاریخ تولد"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -151,21 +153,22 @@
             android:id="@+id/EtBirthDateDeceased"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:fontFamily="@font/iran_sans_light"
-
             android:layout_gravity="right"
+            android:background="@color/background_page"
             android:focusableInTouchMode="false"
-            android:gravity="right" />
+            android:fontFamily="@font/iran_sans_light"
+            android:gravity="right"
+            android:maxLines="1"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_7sdp"
         android:hint=" تاریخ وفات"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -177,20 +180,22 @@
             android:id="@+id/ETDeathDeceased"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:fontFamily="@font/iran_sans_light"
-
             android:layout_gravity="right"
+            android:background="@color/background_page"
             android:focusableInTouchMode="false"
-            android:gravity="right" />
+            android:fontFamily="@font/iran_sans_light"
+            android:gravity="right"
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:hint="جزئیات(ردیف،قطعه...)"
+        android:layout_marginStart="@dimen/_3sdp"
+        android:hint="محل دفن"
         app:layout_constraintBottom_toBottomOf="@+id/BtnOpenMap"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"
         app:layout_constraintStart_toEndOf="@+id/BtnOpenMap"
@@ -199,20 +204,22 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/ETBurialLocation"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:fontFamily="@font/iran_sans_light"
-
             android:layout_height="match_parent"
-             />
+            android:background="@color/background_page"
+            android:fontFamily="@font/iran_sans_light"
+            android:gravity="right"
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnOpenMap"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:background="@drawable/follow_button"
-        android:text="@string/msg_open_map"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/shape_button"
         android:fontFamily="@font/iran_sans"
+        android:text="@string/msg_open_map"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -225,8 +232,8 @@
         android:id="@+id/textInputLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_7sdp"
         android:hint="بیوگرافی"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -236,10 +243,12 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/ETdeceasedDescription"
-            android:background="@color/white"
-            android:fontFamily="@font/iran_sans_light"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/background_page"
+            android:fontFamily="@font/iran_sans_light"
+            android:gravity="right"
+            android:imeOptions="actionDone" />
     </com.google.android.material.textfield.TextInputLayout>
 
 

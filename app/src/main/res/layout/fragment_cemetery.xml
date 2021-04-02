@@ -22,8 +22,8 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/BtInbox"
-                android:layout_width="25dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_14sdp"
                 android:background="@drawable/inbox_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -33,9 +33,10 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/NotifDotDeceased"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="@dimen/_5sdp"
+                android:layout_height="@dimen/_5sdp"
                 android:background="@drawable/notif_dot"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/BtInbox"
                 app:layout_constraintEnd_toEndOf="@id/BtInbox"
                 app:layout_constraintStart_toEndOf="@id/BtInbox"
@@ -45,13 +46,12 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-
     <ProgressBar
         android:id="@+id/loadingProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         android:elevation="10dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,10 +61,10 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/TitleCemetery"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/_35sdp"
         android:background="@drawable/shape_bg_box_latest_search"
         android:fontFamily="@font/iran_sans_medium"
-        android:padding="8dp"
+        android:padding="@dimen/_7sdp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -76,118 +76,178 @@
         app:layout_constraintVertical_bias="0"
         tools:text="jjj" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/SearchView"
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:background="@drawable/search_bar"
-        android:layoutDirection="rtl"
-        android:padding="5dp"
+    <FrameLayout
+        android:id="@+id/SearchRoot"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:visibility="gone"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        app:iconifiedByDefault="false"
         app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TitleCemetery"
-        app:layout_constraintVertical_bias=".01"
-        app:queryBackground="@android:color/transparent"
-        app:queryHint="جستجوی متوفی">
+        app:layout_constraintTop_toBottomOf="@+id/TitleCemetery">
 
-    </androidx.appcompat.widget.SearchView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/SearchLayout"
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:background="@drawable/search_bar"
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/SearchView"
+                android:layout_width="@dimen/_220sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@drawable/shape_search"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:imeOptions="actionSearch"
+                android:layoutDirection="rtl"
+                android:padding="@dimen/_3sdp"
+                android:visibility="visible"
+                app:iconifiedByDefault="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias=".01"
+                app:queryBackground="@android:color/transparent"
+                app:queryHint="جستجوی متوفی">
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TitleCemetery"
-        app:layout_constraintVertical_bias=".35">
+            </androidx.appcompat.widget.SearchView>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/iran_sans_ultra_light"
-            android:text="جستجوی متوفی"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/DeceasedSearchRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/SearchView"
+                app:layout_constraintVertical_bias=".01" />
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/search_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".95"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/TvNullSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iran_sans_medium"
+                android:textColor="@color/text_color_light"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/SearchView"
+                app:layout_constraintVertical_bias=".1" />
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/BtnCreateDeceased"
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:background="@drawable/follow_button"
-        android:fontFamily="@font/iran_sans"
-        android:text="ایجادصفحه متوفی"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/SearchLayout"
-        app:layout_constraintStart_toStartOf="@+id/SearchLayout"
-        app:layout_constraintTop_toBottomOf="@+id/SearchLayout"
-        app:layout_constraintVertical_bias=".05" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/TvLatestSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/iran_sans_ultra_light"
-        android:text="آخرین جستجوها"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.944"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnCreateDeceased"
-        app:layout_constraintVertical_bias="0.1" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/LatestSearchRecycler"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="visible"
+        android:layout_height="@dimen/_300sdp"
+        android:id="@+id/latestRoot"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TvLatestSearch"
-        app:layout_constraintVertical_bias=".02"
-        tools:listitem="@layout/row_latest_deceased" />
+        app:layout_constraintTop_toBottomOf="@+id/TitleCemetery"
+        app:layout_constraintVertical_bias="1">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/DeceasedSearchRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SearchView"
-        app:layout_constraintVertical_bias=".01" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SearchLayout"
+                android:layout_width="@dimen/_230sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@drawable/shape_search"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iran_sans_ultra_light"
+                    android:text="جستجوی متوفی"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColorHighlight="@color/text_color_lighter"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:background="@drawable/search_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias=".95"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/BtnCreateDeceased"
+                android:layout_width="@dimen/_230sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@drawable/shape_button"
+                android:fontFamily="@font/iran_sans"
+                android:text="ایجادصفحه متوفی"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/SearchLayout"
+                app:layout_constraintStart_toStartOf="@+id/SearchLayout"
+                app:layout_constraintTop_toBottomOf="@+id/SearchLayout"
+                app:layout_constraintVertical_bias=".05" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/TvLatestSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iran_sans_ultra_light"
+                android:text="آخرین جستجوها"
+                android:textColor="@color/text_color_lighter"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.944"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/BtnCreateDeceased"
+                app:layout_constraintVertical_bias="0.1" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/LatestSearchRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TvLatestSearch"
+                app:layout_constraintVertical_bias=".02"
+                tools:listitem="@layout/row_latest_deceased" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/TvNullLatest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iran_sans_medium"
+                android:textColor="@color/text_color_light"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/LatestSearchRecycler"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/LatestSearchRecycler" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

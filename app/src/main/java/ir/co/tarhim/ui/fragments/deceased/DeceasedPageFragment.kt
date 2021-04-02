@@ -2,42 +2,48 @@ package ir.co.tarhim.ui.fragments.deceased
 
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.Typeface
-import android.os.Build
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.TextView
-import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import ir.co.tarhim.R
+import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
 import ir.co.tarhim.ui.adapter.ViewPagerAdapter
 import ir.co.tarhim.ui.callback.ViewPagerCallBack
 import ir.co.tarhim.ui.viewModels.HomeViewModel
-import kotlinx.android.synthetic.main.create_deceased.view.*
+import ir.co.tarhim.utils.OnBackPressed
 import kotlinx.android.synthetic.main.deceased_profile.*
-import kotlinx.android.synthetic.main.row_right_forum.*
 import java.util.*
 
 
 class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
+
+    companion object {
+        private const val TAG = "DeceasedPageFragment"
+    }
 
     private lateinit var viewModel: HomeViewModel
     private var deceasedId: Int = -1
     private var tabsTitle = arrayListOf<String>("تالارگفتگو", "گالری تصاویر", "خیرات")
     private lateinit var briefBio: String
     private var expandable = false
-    private var bioDeceased:String?=null
+    private var latitude: Long? = null
+    private var longtude: Long? = null
+    private lateinit var deceasedInfo:DeceasedProfileDataModel
+    private var bioDeceased: String? = null
     private lateinit var pagerAdapter: ViewPagerAdapter
 
     override fun onCreateView(
@@ -50,27 +56,72 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        if (arguments != null) {
-            deceasedId = arguments?.getInt("DeceasedId")!!
-            viewModel.requestDeceasedProfile(deceasedId)
+        OnBackPressed().pressedCallBack(findNavController())
+
+        if (requireArguments()?.getInt("LatestSearch") != 0) {
+            deceasedId = arguments?.getInt("LatestSearch")!!
+            viewModel.requestDeceasedPersonal(deceasedId)
+            Log.e(TAG, "onViewCreated: deceasedId" + deceasedId)
+
         }
+        if (requireArguments()?.getInt("GetFromSearch") != 0) {
+            deceasedId = arguments?.getInt("GetFromSearch")!!
+            Log.e(TAG, "onViewCreated: GetFromSearch" + deceasedId)
+            viewModel.requestDeceasedFromSearch(deceasedId)
+        }
+
 
         initTabAndViewPager()
         viewModel.ldDeceasedProfile.observe(viewLifecycleOwner, Observer {
-            Log.e("TAG", "onViewCreated: " + it.name)
-            TvDeseacesName.text = it.name
 
-            TvDeathDateDeseaces.text = "تاریخ تولد :" + it.birthday
-            TvBornDateDeseaces.text = "تاریخ وفات :" + it.deathday
-            TvBurialLocation.text = "${it.deathloc}"
-            bioDeceased = it.description
-            configBioText(it.description)
-            Glide.with(requireActivity())
-                .load(it.imageurl)
-                .circleCrop()
-                .into(ImVDeceased)
+            it?.let {
+                deceasedInfo=it
+                TvDeseacesName.text = it.name
 
-            initCollapsToolbar(requireContext(), it.imageurl, it.name)
+                TvDeathDateDeseaces.text = it.birthday
+                TvBornDateDeseaces.text = it.deathday
+                TvBurialLocation.text = "${it.deathloc}"
+                bioDeceased = it.description
+                configBioText(it.description!!)
+                Glide.with(requireActivity())
+                    .load(it.imageurl)
+                    .circleCrop()
+                    .into(ImVDeceased)
+
+                latitude = it.latitude
+                longtude = it.longitude
+                if (!it.isowner!!) {
+                    BtnEditToolbar.visibility = View.GONE
+                    BtnEditDeceased.visibility = View.GONE
+                }
+
+                initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+            }
+        })
+        viewModel.ldDeceasedFromSearch.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                deceasedInfo=it
+
+                TvDeseacesName.text = it.name
+                TvDeathDateDeseaces.text =it.birthday
+                TvBornDateDeseaces.text =  it.deathday
+                TvBurialLocation.text = "${it.deathloc}"
+                bioDeceased = it.description
+                configBioText(it.description!!)
+                Glide.with(requireActivity())
+                    .load(it.imageurl)
+                    .circleCrop()
+                    .into(ImVDeceased)
+
+//                latitude=it.latitude
+//                longtude=it.longitude
+//                if(!it.isowner){
+//                    BtnEditToolbar.visibility=View.GONE
+//                    BtnEditDeceased.visibility=View.GONE
+//                }
+
+                initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+            }
         })
 
         appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -83,6 +134,37 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
                 cToolbar.animate().alpha(0f).duration = 600
             }
         })
+
+        Log.e(TAG, "onViewCreated:latitude " + latitude)
+        btnFindBurialLocation.setOnClickListener {
+            if (latitude != null && longtude != null) {
+                val uri = java.lang.String.format(
+                    Locale.ENGLISH,
+                    "http://maps.google.com/maps?q=loc:%f,%f",
+                    latitude,
+                    longtude
+                )
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                startActivity(intent)
+            }else{
+                btnFindBurialLocation.visibility=View.GONE
+            }
+        }
+
+
+        BtnEditDeceased.setOnClickListener {
+            var editArgs= Bundle()
+            editArgs.putParcelable("EditDeceased",deceasedInfo)
+            editArgs.putInt("DeceasedId",deceasedId)
+            findNavController().navigate(R.id.action_fragment_deceased_page_to_fragment_create_deceased,editArgs)
+        }
+        BtnEditToolbar.setOnClickListener {
+            var editArgs= Bundle()
+            editArgs.putParcelable("EditDeceased",deceasedInfo)
+            editArgs.putInt("DeceasedId",deceasedId)
+            findNavController().navigate(R.id.action_fragment_deceased_page_to_fragment_create_deceased,editArgs)
+        }
+
     }
 
     override fun getContent(item: Int): Fragment {
@@ -104,7 +186,6 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
     }
 
 
-
     private fun initTabAndViewPager() {
 
 
@@ -123,7 +204,11 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
         }
     }
 
-    private fun initCollapsToolbar(ctx: Context, imageDeceased: String, nameDeceased: String) {
+    private fun initCollapsToolbar(
+        ctx: Context,
+        imageDeceased: String,
+        nameDeceased: String
+    ) {
         Glide.with(ctx)
             .load(imageDeceased)
             .circleCrop()
@@ -134,8 +219,8 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
     private fun configBioText(bio: String) {
         TvBioDeseaces.text = bio
-        if(TvBioDeseaces.lineCount>3){
-            btShowmore.visibility=View.VISIBLE
+        if (TvBioDeseaces.lineCount > 3) {
+            btShowmore.visibility = View.VISIBLE
         }
 
         btShowmore.setOnClickListener {
@@ -145,7 +230,12 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
                 expandable = true
                 var animation = ObjectAnimator.ofInt(TvBioDeseaces, "maxLines", countLine)
                 animation.setDuration(100).start()
-                btShowmore.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_up, 0, 0, 0)
+                btShowmore.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_arrow_up,
+                    0,
+                    0,
+                    0
+                )
             } else {
                 expandable = false
                 var animation = ObjectAnimator.ofInt(TvBioDeseaces, "maxLines", 3)

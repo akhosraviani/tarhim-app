@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import ir.co.tarhim.R
+import ir.co.tarhim.utils.OnBackPressed
+import kotlinx.android.synthetic.main.fragment_requirement.*
 
 class RequirementFragment : Fragment() {
     override fun onCreateView(
@@ -17,5 +20,8 @@ class RequirementFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        OnBackPressed().pressedCallBack(findNavController())
+
+        TvNullRequirement.text="در حال پیاده سازی"
     }
 }

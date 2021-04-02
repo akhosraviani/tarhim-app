@@ -2,14 +2,16 @@ package ir.co.tarhim.ui.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import ir.co.tarhim.model.confirmotp.ConfirmOtpDataModel
 import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.confirmpass.ConfirmDataModel
 import ir.co.tarhim.model.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.deceased.*
 import ir.co.tarhim.model.mobile.CheckPhoneNumber
 import ir.co.tarhim.model.mobile.CheckRegisterModel
+import ir.co.tarhim.model.news.NewsDataModel
 import ir.co.tarhim.model.otp.OtpDataModel
+import ir.co.tarhim.model.user.RegisterUser
+import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.network.RequestClient
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -27,16 +29,21 @@ class LoginRepository {
     val mldOtp = MutableLiveData<OtpDataModel>()
     val mldConfirmOtp = MutableLiveData<ConfirmDataModel>()
     val mldCreateDeceased = MutableLiveData<ConfirmDataModel>()
+    val mldEditDeceased = MutableLiveData<ConfirmDataModel>()
     val mldConfirmPassword = MutableLiveData<ConfirmDataModel>()
     val mldConfirmSetPassword = MutableLiveData<ConfirmDataModel>()
     val mldLatestSearch = MutableLiveData<List<DeceasedDataModel>>()
     val mldSearchList = MutableLiveData<List<DeceasedDataModel>>()
     val mldDeceaedProfile = MutableLiveData<DeceasedProfileDataModel>()
+    val mldDeceaedFromSearch = MutableLiveData<DeceasedProfileDataModel>()
     val mldMyDeceaed = MutableLiveData<List<MyDeceasedDataModel>>()
     val mldUploadImage = MutableLiveData<UploadFileDataModel>()
     val mldGetGallery = MutableLiveData<GalleryDataModel>()
     val mldGetComment = MutableLiveData<List<CommentDataModel>>()
     val mldSendComment = MutableLiveData<ConfirmDataModel>()
+    val mldRegisterUser = MutableLiveData<ConfirmDataModel>()
+    val mldUserInfo = MutableLiveData<UserInfoDataModel>()
+    val mldNews = MutableLiveData<List<NewsDataModel>>()
 
     fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumber) {
         RequestClient.makeRequest().requestCheckRegister(checkRegisterRequest)
@@ -185,7 +192,47 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldCreateDeceased.value = response.body()
+                    mldEditDeceased.value = response.body()
+                    Log.i("testTag", "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestRegisterUser(dataRequest: RegisterUser, mobile: String) {
+        RequestClient.makeRequest().requestRegisterUser(dataRequest, mobile)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    t: Throwable
+                ) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldRegisterUser.value = response.body()
+                    Log.i("testTag", "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestUserInfo( mobile: String) {
+        RequestClient.makeRequest().requestUserInfo( mobile)
+            .enqueue(object : Callback<UserInfoDataModel> {
+                override fun onFailure(
+                    call: retrofit2.Call<UserInfoDataModel>,
+                    t: Throwable
+                ) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<UserInfoDataModel>,
+                    response: Response<UserInfoDataModel>
+                ) {
+                    mldUserInfo.value = response.body()
                     Log.i("testTag", "im here=" + response.body())
                 }
             })
@@ -234,8 +281,8 @@ class LoginRepository {
 
     }
 
-    fun requestDeceasedProfile(id: Int, mobile: String) {
-        RequestClient.makeRequest().requestDeceaedProfile(id, mobile)
+    fun requestDeceasedPersonalProfile(id: Int,mobile:String) {
+        RequestClient.makeRequest().requestDeceaedPersonal(id,mobile)
             .enqueue(object : Callback<DeceasedProfileDataModel> {
                 override fun onFailure(
                     call: retrofit2.Call<DeceasedProfileDataModel>,
@@ -254,6 +301,27 @@ class LoginRepository {
             })
 
     }
+    fun requestDeceasedFromSearch(id: Int,mobile:String) {
+        RequestClient.makeRequest().requestDeceaedFromSearch(id,mobile)
+            .enqueue(object : Callback<DeceasedProfileDataModel> {
+                override fun onFailure(
+                    call: retrofit2.Call<DeceasedProfileDataModel>,
+                    t: Throwable
+                ) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<DeceasedProfileDataModel>,
+                    response: Response<DeceasedProfileDataModel>
+                ) {
+                    mldDeceaedFromSearch.value = response.body()
+                    Log.i("testTag", "im here=" + response.body())
+                }
+            })
+
+    }
+
 
     fun requestOtp(checkOtpRequest: CheckPhoneNumber) {
         RequestClient.makeRequest().requestOtp(checkOtpRequest)
@@ -306,6 +374,23 @@ class LoginRepository {
 
                 override fun onFailure(call: Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
+                }
+            })
+    }
+
+    fun requestNews(page:String,size:String) {
+        RequestClient.makeRequest().requestNews(page,size)
+            .enqueue(object : Callback<List<NewsDataModel>> {
+
+                override fun onFailure(call: Call<List<NewsDataModel>>, t: Throwable) {
+                    Log.e(TAG, "onFailure news: "+t.message )
+                }
+
+                override fun onResponse(
+                    call: Call<List<NewsDataModel>>,
+                    response: Response<List<NewsDataModel>>
+                ) {
+                    mldNews.value = response.body()
                 }
             })
     }

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import ir.co.tarhim.R
 import ir.co.tarhim.ui.adapter.MyDeceasedAdapter
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import kotlinx.android.synthetic.main.my_deceased_fragment.*
 
 class FollowDeceasedFragment : Fragment() {
 
@@ -34,11 +35,9 @@ class FollowDeceasedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-
+        TvNullMydeceased.text = "محتوایی برای نمایش وجود ندارد"
 
     }
-
-
 
 
 }

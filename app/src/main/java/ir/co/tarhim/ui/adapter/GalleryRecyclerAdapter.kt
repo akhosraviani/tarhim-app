@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -15,12 +13,15 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import ir.co.tarhim.R
-import ir.co.tarhim.model.deceased.GalleryDataModel
+import ir.co.tarhim.ui.callback.GalleryListener
 import kotlinx.android.synthetic.main.row_gallery_recycler.view.*
-import java.util.zip.Inflater
 
-class GalleryRecyclerAdapter(var pathList:List<String>) :
+class GalleryRecyclerAdapter(
+    var pathList: List<String>, var galleryCallBack: GalleryListener
+) :
     RecyclerView.Adapter<GalleryRecyclerAdapter.ViewHolder>() {
+
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val galleryIv: AppCompatImageView
         val loadinggallery: ProgressBar
@@ -68,7 +69,7 @@ class GalleryRecyclerAdapter(var pathList:List<String>) :
         }
     }
 
-
+    class AddViewHolder(view: View) : RecyclerView.ViewHolder(view) {}
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -80,9 +81,14 @@ class GalleryRecyclerAdapter(var pathList:List<String>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindTo(pathList[position])
+
+        holder.galleryIv.setOnClickListener {
+            galleryCallBack.galleryRecyclerCallBack(position)
+        }
+
     }
 
     override fun getItemCount(): Int {
-       return pathList.size
+        return pathList.size
     }
 }

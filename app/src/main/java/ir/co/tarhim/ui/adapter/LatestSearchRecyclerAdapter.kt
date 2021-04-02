@@ -1,8 +1,6 @@
 package ir.co.tarhim.ui.adapter
 
 import android.os.Build
-import android.provider.ContactsContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,18 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedDataModel
-import ir.co.tarhim.ui.callback.DeceasedRecyclerCallBack
-import ir.co.tarhim.utils.PersianDate
-import ir.co.tarhim.utils.PersianDate.SolarCalendar
+import ir.co.tarhim.ui.callback.LatestRecyclerListener
 import kotlinx.android.synthetic.main.row_latest_deceased.view.*
-import java.lang.String
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
 
-class LatestSearchRecyclerAdapter(private val deceasedCallBack: DeceasedRecyclerCallBack) :
+class LatestSearchRecyclerAdapter(private val latestListener: LatestRecyclerListener) :
     ListAdapter<DeceasedDataModel, LatestSearchRecyclerAdapter.ViewHolder>(DeceasedDiffCallBack()) {
 
     companion object {
@@ -41,6 +33,8 @@ class LatestSearchRecyclerAdapter(private val deceasedCallBack: DeceasedRecycler
             return oldItem.id == newItem.id
         }
 
+
+
         override fun areContentsTheSame(
             oldItem: DeceasedDataModel,
             newItem: DeceasedDataModel
@@ -50,7 +44,7 @@ class LatestSearchRecyclerAdapter(private val deceasedCallBack: DeceasedRecycler
 
     }
 
-    class ViewHolder(v: View, val callBack: DeceasedRecyclerCallBack) : RecyclerView.ViewHolder(v) {
+    class ViewHolder(v: View, val listener: LatestRecyclerListener) : RecyclerView.ViewHolder(v) {
         val imageDeceased: AppCompatImageView
         val nameDeceased: AppCompatTextView
         val birth_DeathDay: AppCompatTextView
@@ -85,7 +79,7 @@ class LatestSearchRecyclerAdapter(private val deceasedCallBack: DeceasedRecycler
 
             itemView.setOnClickListener {
 
-                callBack.getId(deceased.id)
+                listener.latestCallBack(deceased.id)
             }
 
         }
@@ -97,7 +91,7 @@ class LatestSearchRecyclerAdapter(private val deceasedCallBack: DeceasedRecycler
         val view =
             LayoutInflater.from(group.context).inflate(R.layout.row_latest_deceased, group, false)
 
-        return ViewHolder(view, deceasedCallBack)
+        return ViewHolder(view, latestListener)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -1,5 +1,6 @@
 package ir.co.tarhim.ui.fragments.cemetery
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
@@ -15,25 +17,26 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ir.co.tarhim.R
 import ir.co.tarhim.ui.adapter.LatestSearchRecyclerAdapter
-import ir.co.tarhim.ui.callback.DeceasedRecyclerCallBack
+import ir.co.tarhim.ui.adapter.SearchRecyclerAdapter
+import ir.co.tarhim.ui.callback.LatestRecyclerListener
+import ir.co.tarhim.ui.callback.SearchListener
 import ir.co.tarhim.ui.viewModels.HomeViewModel
-import ir.co.tarhim.utils.ManageKeyboard
 import kotlinx.android.synthetic.main.fragment_cemetery.*
-import kotlinx.android.synthetic.main.fragment_cemetery.TvLatestSearch
-import javax.crypto.SealedObject
 
-class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
+
+class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
 
 
     companion object {
         private const val TAG = "CemeteryFragment"
     }
 
+    private lateinit var imm: InputMethodManager
     private lateinit var viewModel: HomeViewModel
     private lateinit var latestAdapter: LatestSearchRecyclerAdapter
+    private lateinit var searchAdapter: SearchRecyclerAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,35 +56,39 @@ class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
         TitleCemetery.setSingleLine(true)
         TitleCemetery.marqueeRepeatLimit = 1
         TitleCemetery.isSelected = true
+
         //</editor-fold>
 
         viewModel.ldLatestSearch.observe(viewLifecycleOwner, Observer {
-//            Log.e(TAG, "onViewCreated: " + it.size)
             showLoading(false)
             it.let {
-                latestAdapter.submitList(it)
+                if (it.size > 0)
+                    latestAdapter.submitList(it)
+                else
+                    TvNullLatest.text = "محتوایی برای نمایش وجود ندارد"
             }
         })
 
         SearchLayout.setOnClickListener {
-            initRecycler(DeceasedSearchRecycler)
             showView(false)
+            imm!!.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            SearchView.requestFocus()
         }
 
         SearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.e(TAG, "onQueryTextSubmit: ")
                 return false
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
+
                 if (query != null && TextUtils.getTrimmedLength(query) > 0) {
-                    latestAdapter.submitList(null)
+
                     viewModel.requestSearch(query!!)
+
+                    Log.e(TAG, "onQueryTextChange:query " + query)
+
                     showLoading(true)
-                    Log.e(TAG, "onQueryTextChange: ")
-                }else{
-                    latestAdapter.submitList(null)
                 }
                 return false
             }
@@ -91,18 +98,17 @@ class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
 
         viewModel.ldSearch.observe(viewLifecycleOwner, { data ->
             showLoading(false)
-            TvLatestSearch.visibility = View.GONE
             data.let {
-                latestAdapter.submitList(data)
+                searchAdapter.submitList(data)
             }
             if (data == null)
-                Toast.makeText(getActivity(), "محتوایی وجود ندار", Toast.LENGTH_SHORT).show()
+                Toast.makeText(getActivity(), "موردی یافت نشد", Toast.LENGTH_SHORT).show()
         }
         )
 
         SearchView.setOnCloseListener {
-            TvLatestSearch.visibility = View.VISIBLE
             viewModel.requestlatestSearch()
+            showView(true)
             false
         }
 
@@ -114,19 +120,34 @@ class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
 
     private fun initUi() {
         showLoading(true)
-        initRecycler(LatestSearchRecycler)
+        initLatestRecycler()
+        initSearchRecycler()
         viewModel.requestlatestSearch()
+        imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
     }
 
 
-    private fun initRecycler(recyclerView: RecyclerView) {
+    private fun initLatestRecycler() {
         latestAdapter = LatestSearchRecyclerAdapter(this)
         var resanim = R.anim.up_to_bottom
         var animation = AnimationUtils.loadLayoutAnimation(requireContext(), resanim)
-        recyclerView.adapter = latestAdapter
-        recyclerView.layoutManager =
+        LatestSearchRecycler.adapter = latestAdapter
+        LatestSearchRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerView.layoutAnimation = animation
+        LatestSearchRecycler.layoutAnimation = animation
+        latestAdapter.submitList(ArrayList())
+
+    }
+
+    private fun initSearchRecycler() {
+        searchAdapter = SearchRecyclerAdapter(this)
+        var resanim = R.anim.up_to_bottom
+        var animation = AnimationUtils.loadLayoutAnimation(requireContext(), resanim)
+        DeceasedSearchRecycler.adapter = searchAdapter
+        DeceasedSearchRecycler.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        DeceasedSearchRecycler.layoutAnimation = animation
     }
 
     private fun showLoading(visibility: Boolean) {
@@ -139,27 +160,42 @@ class CemeteryFragment : Fragment(), DeceasedRecyclerCallBack {
         }
     }
 
-    override fun getId(decId: Int) {
-        val args = bundleOf("DeceasedId" to decId)
-        findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page, args)
-    }
-
 
     private fun showView(status: Boolean) {
         if (!status) {
-            SearchView.animate().alpha(1f).duration = 600
-            LatestSearchRecycler.animate().alpha(0f).duration = 600
-            SearchLayout.animate().alpha(0f).duration = 600
-            TvLatestSearch.animate().alpha(0f).duration = 600
-            BtnCreateDeceased.animate().alpha(0f).duration = 600
-            SearchView.visibility = View.VISIBLE
+            SearchRoot.visibility = View.VISIBLE
+            SearchRoot.animate().alpha(1f).duration = 600
+            latestRoot.animate().alpha(0f).duration = 600
 //            LatestSearchRecycler.visibility=View.GONE
 //            SearchLayout.visibility=View.GONE
 //            TvLatestSearch.visibility=View.GONE
 //            BtnCreateDeceased.visibility=View.GONE
-
+        } else {
+            imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+            SearchRoot.animate().alpha(0f).duration = 600
+            latestRoot.animate().alpha(1f).duration = 600
         }
+
     }
 
+    override fun latestCallBack(decId: Int) {
+        imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+        val args: Bundle
 
+        args = bundleOf("LatestSearch" to decId)
+        Log.e(TAG, "getId:latestSearch " + decId)
+
+        findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page, args)
+    }
+
+    override fun serachClickCallBack(deceasedId: Int) {
+        val args: Bundle
+        args = bundleOf("GetFromSearch" to deceasedId)
+        SearchView.setQuery("", false)
+        SearchView.clearFocus()
+        imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+        findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page, args)
+    }
 }
+
+

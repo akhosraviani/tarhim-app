@@ -10,9 +10,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/IVDeceased"
-        android:layout_width="65dp"
+        android:layout_width="@dimen/_60sdp"
         tools:background="@drawable/download"
-        android:layout_height="65dp"
+        android:layout_height="@dimen/_60sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.98"
@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="1336/05/08 - 1399/08/28"
-        android:textColor="@color/grey_600"
+        android:textColor="@color/text_color_light"
         android:fontFamily="@font/iran_sans_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/TvDeceasedName"
@@ -51,8 +51,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnRemoveDeceased"
-        android:layout_width="60dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_20sdp"
         android:background="@drawable/small_red_button"
         android:text="حذف"
         android:visibility="gone"
@@ -67,8 +67,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnEditDeceased"
-        android:layout_width="60dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_20sdp"
         android:background="@drawable/green_buttton"
         android:text="ویرایش"
         android:visibility="gone"

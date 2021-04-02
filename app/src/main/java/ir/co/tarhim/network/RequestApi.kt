@@ -1,13 +1,15 @@
 package ir.co.tarhim.network
 
-import ir.co.tarhim.model.confirmotp.ConfirmOtpDataModel
 import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.confirmpass.ConfirmDataModel
 import ir.co.tarhim.model.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.deceased.*
 import ir.co.tarhim.model.mobile.CheckRegisterModel
 import ir.co.tarhim.model.mobile.CheckPhoneNumber
+import ir.co.tarhim.model.news.NewsDataModel
 import ir.co.tarhim.model.otp.OtpDataModel
+import ir.co.tarhim.model.user.RegisterUser
+import ir.co.tarhim.model.user.UserInfoDataModel
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -35,37 +37,72 @@ interface RequestApi {
     fun requestLatestSearch(@Query("mobile") mobile: String): Call<List<DeceasedDataModel>>
 
     @GET("api/v1/deceased/getfromsearch")
-    fun requestDeceaedProfile(@Query("id") id: Int, @Query("mobile") mobile: String): Call<DeceasedProfileDataModel>
+    fun requestDeceaedFromSearch(
+        @Query("id") id: Int,
+        @Query("mobile") mobile: String
+    ): Call<DeceasedProfileDataModel>
+
+    @GET("api/v1/deceased/personal")
+    fun requestDeceaedPersonal(
+        @Query("id") id: Int,
+        @Query("mobile") mobile: String
+    ): Call<DeceasedProfileDataModel>
 
     @POST("api/v1/deceased/search")
     fun requestSearch(@Body keyword: SearchDeceasedRequest): Call<List<DeceasedDataModel>>
 
 
     @GET("api/v1/deceased/mydeceased")
-    fun requestMyDeceased(@Query("mobile")mobile:String): Call<List<MyDeceasedDataModel>>
+    fun requestMyDeceased(@Query("mobile") mobile: String): Call<List<MyDeceasedDataModel>>
 
     @POST("api/v1/deceased/create")
-    fun requestCreateDeceased(@Body createdeceased: CreateDeceasedRequest,@Query("mobile")mobile:String
+    fun requestCreateDeceased(
+        @Body createdeceased: CreateDeceasedRequest, @Query("mobile") mobile: String
     ): Call<ConfirmDataModel>
 
     @PUT("api/v1/deceased/edit")
-    fun requestEditDeceased(@Body createdeceased: CreateDeceasedRequest, @Query("id")id:Int, @Query("mobile")mobile:String
+    fun requestEditDeceased(
+        @Body createdeceased: CreateDeceasedRequest,
+        @Query("id") id: Int,
+        @Query("mobile") mobile: String
     ): Call<ConfirmDataModel>
 
 
     @Multipart
     @POST("api/v1/utility/image")
-    fun requestUploadFile(@Part file:MultipartBody.Part):Call<UploadFileDataModel>
+    fun requestUploadFile(@Part file: MultipartBody.Part): Call<UploadFileDataModel>
 
     @GET("api/v1/deceased/mygallery")
-    fun requestGetGallery(@Query("id")id:Int):Call<GalleryDataModel>
+    fun requestGetGallery(@Query("id") id: Int): Call<GalleryDataModel>
 
 
     @GET("api/v1/comments")
-    fun requestGetComment(@Query("id") id:Int,@Query("mobile") mobile:String):Call<List<CommentDataModel>>
+    fun requestGetComment(
+        @Query("id") id: Int,
+        @Query("mobile") mobile: String
+    ): Call<List<CommentDataModel>>
 
     @POST("api/v1/comments")
-    fun requestSendComment(@Body body:SendCommentRequest,@Query("mobile") mobile:String):Call<ConfirmDataModel>
+    fun requestSendComment(
+        @Body body: SendCommentRequest,
+        @Query("mobile") mobile: String
+    ): Call<ConfirmDataModel>
+
+    @PUT("api/v1/account/edit")
+    fun requestRegisterUser(
+        @Body body: RegisterUser,
+        @Query("mobile") mobile: String
+    ): Call<ConfirmDataModel>
+
+    @GET("api/v1/account/me")
+    fun requestUserInfo(@Query("mobile") mobile: String): Call<UserInfoDataModel>
+
+    @GET("api/v1/account/news")
+    fun requestNews(
+        @Query("page") page: String,
+        @Query("pagesize") pageSize: String
+    ): Call<List<NewsDataModel>>
+
 
 }
 

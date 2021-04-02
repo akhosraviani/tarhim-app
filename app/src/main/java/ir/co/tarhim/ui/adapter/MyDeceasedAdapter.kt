@@ -21,12 +21,13 @@ import kotlinx.android.synthetic.main.row_latest_deceased.view.TvDeceasedName
 
 class MyDeceasedAdapter(
     private val listDeceased: List<MyDeceasedDataModel>,
-    var nameParent: String,private val editdeceasedCallBack: ProfileListener.MyDeceasedEditCallBack
+    var nameParent: String,
+    private val editdeceasedCallBack: ProfileListener.MyDeceasedEditCallBack,
+    private val deceasedCallBack: ProfileListener.MyDeceasedListener,
 ) :
     RecyclerView.Adapter<MyDeceasedAdapter.ViewHolder>() {
 
-    class ViewHolder(v: View)
-        : RecyclerView.ViewHolder(v), View.OnClickListener {
+    class ViewHolder(v: View) : RecyclerView.ViewHolder(v){
         val imageDeceased: AppCompatImageView
         val nameDeceased: AppCompatTextView
         val birth_DeathDay: AppCompatTextView
@@ -36,16 +37,11 @@ class MyDeceasedAdapter(
             imageDeceased = v.IVDeceased
             nameDeceased = v.TvDeceasedName
             birth_DeathDay = v.TvBornDeceased
-            editDeceased=v.BtnEditDeceased
+            editDeceased = v.BtnEditDeceased
 
-
-            v.rootView.setOnClickListener(this)
 
         }
 
-        override fun onClick(v: View?) {
-            v?.setOnClickListener { }
-        }
     }
 
     override fun onCreateViewHolder(group: ViewGroup, p1: Int): ViewHolder {
@@ -66,14 +62,7 @@ class MyDeceasedAdapter(
         holder.birth_DeathDay.text =
             "${listDeceased.get(position).birthday} - ${listDeceased.get(position).deathday}"
         holder.itemView.setOnClickListener {
-            val args = bundleOf("DeceasedId" to listDeceased.get(holder.adapterPosition).id)
-            if (nameParent.equals("MyDeceasedFragment"))
-                holder.itemView.findNavController()
-                    .navigate(R.id.action_fragment_profile_to_fragment_deceased_page, args)
-            else
-                holder.itemView.findNavController()
-                    .navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page, args)
-
+            deceasedCallBack.myDeceasedCallBack(listDeceased.get(holder.adapterPosition).id)
         }
         holder.editDeceased.setOnClickListener {
             editdeceasedCallBack.editDeceased(listDeceased[position])

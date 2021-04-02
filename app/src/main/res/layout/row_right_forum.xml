@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layoutDirection="ltr"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="@dimen/_3sdp"
+    android:layoutDirection="ltr">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/IVRightForum"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:background="@drawable/profil_pic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.97"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.024"
-        android:background="@drawable/profil_pic" />
+        app:layout_constraintVertical_bias="0.024" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_3sdp"
         android:background="@drawable/chat_right_user"
-        android:padding="5dp"
+        android:padding="@dimen/_3sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/IVRightForum"
         app:layout_constraintHorizontal_bias="0.0"
@@ -36,8 +36,8 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/TVNameRightForum"
             android:layout_width="wrap_content"
-            android:fontFamily="@font/iran_sans"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/iran_sans"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -52,15 +52,15 @@
             android:id="@+id/TVCommentForum"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginStart="@dimen/_3sdp"
             android:fontFamily="@font/iran_sans_light"
-            android:padding="5dp"
+            android:padding="@dimen/_3sdp"
             android:text="مهرداد میناوند بیش از علی دایی، علی کریمی، مهدی مهدوی‌کیا و وحید هاشمیان، سابقه بازی در لیگ قهرمانان اروپا را دارد."
+            android:textColor="@color/text_color_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/TVNameRightForum"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TVNameRightForum"
+            app:layout_constraintTop_toBottomOf="@+id/BtnMore"
             app:layout_constraintVertical_bias=".01" />
 
 
@@ -68,8 +68,8 @@
             android:id="@+id/TVDateComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
             android:fontFamily="@font/iran_sans_light"
+            android:textColor="@color/text_color_lighter"
             app:layout_constraintBottom_toBottomOf="@+id/BtnLikeComment"
             app:layout_constraintEnd_toEndOf="@+id/TVCommentForum"
             app:layout_constraintHorizontal_bias="1"
@@ -79,23 +79,24 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/BtnLikeComment"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
             android:background="@drawable/heart_none"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/TVCommentForum"
-            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintHorizontal_bias="0.02"
             app:layout_constraintStart_toStartOf="@+id/TVCommentForum"
             app:layout_constraintTop_toBottomOf="@+id/TVCommentForum" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/BtnMore"
-            android:layout_width="5dp"
-            android:layout_height="20dp"
-            android:background="@drawable/more_icon"
-            app:layout_constraintBottom_toBottomOf="@+id/TVNameRightForum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias="0"
+            android:background="@drawable/ic_baseline_more_"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/TVNameRightForum"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@+id/TVCommentForum"

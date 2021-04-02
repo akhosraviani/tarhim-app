@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/background_page"
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
@@ -20,8 +21,8 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/BtInbox"
-                android:layout_width="25dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_14sdp"
                 android:background="@drawable/inbox_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -32,8 +33,9 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/NotifDotDeceased"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="@dimen/_7sdp"
+                android:visibility="gone"
+                android:layout_height="@dimen/_7sdp"
                 android:background="@drawable/notif_dot"
                 app:layout_constraintBottom_toTopOf="@id/BtInbox"
                 app:layout_constraintEnd_toEndOf="@id/BtInbox"
@@ -58,8 +60,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ImVUser"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_90sdp"
         android:background="@drawable/profil_pic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,9 +74,8 @@
         android:id="@+id/TvuUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/black"
-        android:textStyle="bold"
+        app:fontFamily="@font/iran_sans_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ImVUser"
         android:fontFamily="@font/iran_sans"
@@ -85,9 +86,9 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnNeedToPray"
-        android:layout_width="140dp"
-        android:layout_height="40dp"
-        android:background="@drawable/green_buttton"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:background="@drawable/shape_button"
         android:gravity="center"
         android:fontFamily="@font/iran_sans"
         android:text="التماس دعا"
@@ -102,8 +103,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnEditProfile"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
         android:background="@drawable/edit_icon"
         android:gravity="center"
         android:textColor="@color/white"
@@ -117,9 +118,9 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/BtnCreatePageDeceased"
-        android:layout_width="140dp"
-        android:layout_height="40dp"
-        android:background="@drawable/green_buttton"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:background="@drawable/shape_button"
         android:gravity="center"
         android:fontFamily="@font/iran_sans"
         android:text="ایجاد صفحه متوفی"
@@ -134,11 +135,12 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabProfile"
+        android:background="@color/background_page"
         style="@style/TarhimTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_7sdp"
         android:layoutDirection="rtl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -151,8 +153,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layoutDirection="rtl"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:background="@color/white"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_7sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -20,5 +20,17 @@
     <color name="jet_stream">#8D9F9D</color>
     <color name="limed_spruce">#868E8F</color>
 
+    <color name="background_page">#f0f1f6</color>
+    <color name="text_color_lighter">#808285</color>
+    <color name="text_color_light">#334042</color>
+    <color name="color_strock">#d6d8dc</color>
+    <color name="color_info_strock">#c1c2c6</color>
+    <color name="color_green">#5bb39d</color>
+    <color name="background_grey">#dcddde</color>
+    <color name="background_color_comment">#c4c8ca</color>
+    <color name="color_right_comment">#f0f1f6</color>
+    <color name="color_left_comment">#d1e0e1</color>
+    <color name="color_navigation_selected">#414d4f</color>
+
 
 </resources>

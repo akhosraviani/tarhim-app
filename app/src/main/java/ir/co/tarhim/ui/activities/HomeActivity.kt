@@ -21,6 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlin.properties.Delegates
 
 
 class HomeActivity : AppCompatActivity() {
@@ -30,6 +31,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private lateinit var navController: NavController
+    private var TIME_INTERVAL: Long = 2000
+    private var mBackPressed by Delegates.notNull<Long>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +50,6 @@ class HomeActivity : AppCompatActivity() {
             getEnableSelectedIcon().get(R.id.fragment_cemetery)
         )
 
-        Log.e(TAG, "onCreate UserNumber: "+Hawk.get("UserNumber") )
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             changeBottomIcon(bottom_navigation.menu, item, getEnableSelectedIcon().get(item.itemId))
@@ -66,6 +68,7 @@ class HomeActivity : AppCompatActivity() {
         menuItem.setIcon(focusedItemDrwable)
         navController.navigate(menuItem.itemId)
     }
+
     private fun getEnableSelectedIcon(): SparseIntArray {
         var sparseIcon = SparseIntArray()
         sparseIcon.put(R.id.fragment_profile, R.drawable.profil_icon_selected)
@@ -80,9 +83,17 @@ class HomeActivity : AppCompatActivity() {
     @SuppressLint("RestrictedApi")
     override fun onBackPressed() {
         super.onBackPressed()
-        navController.popBackStack()
-        if(navController.currentBackStackEntry==null)
-            finishAffinity()
+//
+        if (navController.currentBackStackEntry == null)
+
+            if (TIME_INTERVAL + mBackPressed > System.currentTimeMillis()) {
+                finishAffinity()
+
+            } else {
+                Toast.makeText(this, "برای خروج دوباره کلیک کنید", Toast.LENGTH_SHORT).show()
+                mBackPressed = System.currentTimeMillis()
+            }
+
     }
 
 }

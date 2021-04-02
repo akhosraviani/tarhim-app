@@ -52,5 +52,9 @@
     <string name="msg_open_map">نقشه</string>
     <string name="msg_submit_location">ثبت</string>
     <string name="msg_edit_profile">پروفایل</string>
+    <string name="tv_txt_birthday">تاریخ تولد :</string>
+    <string name="tv_txt_deathday">تاریخ وفات :</string>
+    <string name="msg_add_image">افزودن عکس</string>
+    <string name="msg_add_image_user">افزودن عکس</string>
 
 </resources>

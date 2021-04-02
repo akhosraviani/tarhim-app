@@ -33,16 +33,16 @@
         <item name="android:layout_gravity">fill</item>
         <item name="tabIndicatorColor">@android:color/transparent</item>
         <item name="tabInlineLabel">true</item>
-
+        <item name="background">@color/background_grey</item>
+        <item name="backgroundColor">@color/background_grey</item>
         <item name="tabIndicator">@drawable/shape_indicator_tab_selected</item>
         <item name="android:layout_marginStart">7dp</item>
         <item name="android:layout_marginEnd">7dp</item>
-        <item name="android:layout_marginTop">5dp</item>
         <item name="tabRippleColor">@android:color/transparent</item>
         <item name="tabMode">fixed</item>
         <item name="tabTextAppearance">@style/TabTextAppesrance</item>
         <item name="fontFamily">@font/iran_sans_bold</item>
-        <item name="tabTextColor">@color/grey_600</item>
+        <item name="tabTextColor">@color/text_color_lighter</item>
         <item name="tabSelectedTextColor">@color/black</item>
 
     </style>
