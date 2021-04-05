@@ -29,7 +29,6 @@ import ir.co.tarhim.ui.callback.UploadCallBack
 import ir.co.tarhim.ui.callback.UploadProgress
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.OnBackPressed
-import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.edit_user_profile.*
 import okhttp3.MultipartBody
 import java.io.File
@@ -132,23 +131,28 @@ class EditProfileFragment : Fragment(), UploadCallBack {
             openGallery()
         }
 
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+        val p: Pattern = Pattern.compile(emailPattern)
 
         BtnSaveUser.setOnClickListener {
             if (ETNameUser.text.toString().length > 0) {
-//                if (ETNameUser.text.toString().length > 0){
-//                    if(isEmailValid(ETNameUser.text.toString())){
-//                        showLoading(true)
-//                        viewModel.requestRegisterUser(
-//                        RegisterUser(
-//                            ETUserEmail.text.toString(),
-//                            imagePath,
-//                            ETNameUser.text.toString()
-//                        )
-//                    )
-//                    }else{
-//                        Toast.makeText(requireContext(), "ایمیل نامعتبر است", Toast.LENGTH_SHORT).show()
-//                    }
-//                }else{
+
+                if(ETNameUser.text.toString().length > 0){
+                    val m: Matcher = p.matcher(ETNameUser.text.toString())
+                    if (m.find()) {
+                        showLoading(true)
+                        viewModel.requestRegisterUser(
+                            RegisterUser(
+                                ETUserEmail.text.toString(),
+                                imagePath,
+                                ETNameUser.text.toString()
+                            )
+                        )
+                    }else{
+                        Toast.makeText(requireContext(), "ایمیل نامعتبر است", Toast.LENGTH_SHORT)
+                    }
+                }else {
+
                     showLoading(true)
                     viewModel.requestRegisterUser(
                         RegisterUser(
@@ -157,14 +161,14 @@ class EditProfileFragment : Fragment(), UploadCallBack {
                             ETNameUser.text.toString()
                         )
                     )
-
+                }
             } else {
-                Toast.makeText(
-                    requireContext(),
-                    "نام کاربری نمیتواند خالی باشد",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+                    Toast.makeText(
+                        requireContext(),
+                        "نام کاربری نمیتواند خالی باشد",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
         }
 
 
@@ -296,11 +300,6 @@ class EditProfileFragment : Fragment(), UploadCallBack {
         }
     }
 
-    fun isEmailValid(email: String?): Boolean {
-        val expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$"
-        val pattern: Pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
-        val matcher: Matcher = pattern.matcher(email)
-        return matcher.matches()
-    }
+
 
 }

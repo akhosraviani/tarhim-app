@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -66,6 +68,15 @@ class CreateDeceased : Fragment(), UploadCallBack {
     private lateinit var details: MyDeceasedDataModel
     private lateinit var deceasedInfo: DeceasedProfileDataModel
     private lateinit var inputMethodManager: InputMethodManager
+    private var yearBirth: Int? = -1
+    private var monthBirth: Int? = -1
+    private var dayBirth: Int? = -1
+    private var yearDeath: Int? = -1
+    private var monthDeath: Int? = -1
+    private var dayDeath: Int? = -1
+
+    private var listBirth: List<String>?=null
+    private var listDeath: List<String>?=null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,6 +91,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         picker = PersianDatePickerDialog(requireContext())
+
         inputMethodManager =
             activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         viewModel.ldImageUpload.observe(viewLifecycleOwner, Observer {
@@ -103,27 +115,19 @@ class CreateDeceased : Fragment(), UploadCallBack {
             showDeceasedDetails(deceasedInfo)
 
         }
+
         EtBirthDateDeceased.setOnFocusChangeListener { view, b ->
-            hideSoftKeyboard(requireActivity())
-            showDialogCalendar(EtBirthDateDeceased)
-            picker.show()
+            setUpBirthDayCalendar(listBirth!![0].toInt(),listBirth!![1].toInt(),listBirth!![2].toInt())
         }
         ETDeathDeceased.setOnFocusChangeListener { view, b ->
-            hideSoftKeyboard(requireActivity())
-            showDialogCalendar(EtBirthDateDeceased)
-            picker.show()
+            setUpDeathDayCalendar(listDeath!![0].toInt(),listDeath!![1].toInt(),listDeath!![2].toInt())
         }
-
 
         EtBirthDateDeceased.setOnClickListener {
-//            hideSoftKeyboard(requireActivity())
-            showDialogCalendar(EtBirthDateDeceased)
-            picker.show()
+            setUpBirthDayCalendar(listBirth!![0].toInt(),listBirth!![1].toInt(),listBirth!![2].toInt())
         }
         ETDeathDeceased.setOnClickListener {
-//            hideSoftKeyboard(requireActivity())
-            showDialogCalendar(ETDeathDeceased)
-            picker.show()
+            setUpDeathDayCalendar(listDeath!![0].toInt(),listDeath!![1].toInt(),listDeath!![2].toInt())
         }
 
         BtnOpenMap.setOnClickListener {
@@ -153,8 +157,8 @@ class CreateDeceased : Fragment(), UploadCallBack {
                     ), DeceasedId!!
                 )
 
-                Log.e(TAG, "onViewCreated:ETDeathDeceased "+ETDeathDeceased.text.toString() )
-                Log.e(TAG, "onViewCreated:ETDeathDeceased "+EtBirthDateDeceased.text.toString() )
+                Log.e(TAG, "onViewCreated:ETDeathDeceased " + ETDeathDeceased.text.toString())
+                Log.e(TAG, "onViewCreated:ETDeathDeceased " + EtBirthDateDeceased.text.toString())
             } else {
                 //<editor-fold desc="Create Deceaed Profile">
                 if (
@@ -228,6 +232,28 @@ class CreateDeceased : Fragment(), UploadCallBack {
 
     }
 
+
+    private fun setUpBirthDayCalendar(year: Int, month: Int, day: Int) {
+        hideSoftKeyboard(requireActivity())
+        if (TextUtils.isEmpty(EtBirthDateDeceased.text)) {
+            showDialogCalendar(EtBirthDateDeceased, 1370, 3, 13)
+        } else {
+            showDialogCalendar(EtBirthDateDeceased, year, month, day)
+
+        }
+        picker.show()
+    }
+
+    private fun setUpDeathDayCalendar(year: Int, month: Int, day: Int) {
+        hideSoftKeyboard(requireActivity())
+        if (TextUtils.isEmpty(ETDeathDeceased.text)) {
+            showDialogCalendar(ETDeathDeceased, 1370, 3, 13)
+        } else {
+            showDialogCalendar(ETDeathDeceased, year, month, day)
+
+        }
+        picker.show()
+    }
 
     private fun openGallery() {
         when {
@@ -323,24 +349,27 @@ class CreateDeceased : Fragment(), UploadCallBack {
 
 
     @SuppressLint("ResourceAsColor")
-    private fun showDialogCalendar(editText: AppCompatEditText) {
-
+    private fun showDialogCalendar(editText: AppCompatEditText, year: Int, month: Int, day: Int) {
+        val initDate = PersianCalendar()
+        initDate.setPersianDate(year, month, day)
         picker
             .setPositiveButtonString("ثبت")
             .setNegativeButton("لغو")
             .setTodayButton("امروز")
+            .setInitDate(initDate)
             .setTodayButtonVisible(true)
             .setShowInBottomSheet(true)
             .setPickerBackgroundDrawable(R.drawable.shape_indicator_tab_selected)
             .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
             .setMinYear(1300)
+            .setTypeFace(ResourcesCompat.getFont(requireContext(), R.font.iran_sans_medium))
             .setActionTextColor(R.color.tradewind)
             .setCancelable(false)
             .setListener(object : Listener {
-                override fun onDateSelected(persianCalendar: PersianCalendar) {
-                    var choseDate = persianCalendar.getPersianYear()
-                        .toString() + "/" + persianCalendar.getPersianMonth() + "/" + persianCalendar.getPersianDay()
+                override fun onDateSelected(persianCalendar: PersianCalendar?) {
 
+                    var choseDate = persianCalendar?.getPersianYear()
+                        .toString() + "/" + persianCalendar?.getPersianMonth() + "/" + persianCalendar?.getPersianDay()
 
                     editText.setText(choseDate)
 
@@ -348,7 +377,10 @@ class CreateDeceased : Fragment(), UploadCallBack {
                     showSoftKeyboard(requireActivity())
                 }
 
-                override fun onDismissed() {}
+                override fun onDismissed() {
+
+                }
+
             })
     }
 
@@ -380,9 +412,14 @@ class CreateDeceased : Fragment(), UploadCallBack {
             .load(details.imageurl)
             .circleCrop()
             .into(IvDeceased)
+
         imagePath = details.imageurl
         ETNameDeceased.setText(details.name)
         EtBirthDateDeceased.setText(details.birthday)
+
+       listBirth = details.birthday?.split("/")
+       listDeath = details.deathday?.split("/")
+
         editBirth = details.birthday!!
         ETDeathDeceased.setText(details.deathday)
         editDeath = details.deathday!!

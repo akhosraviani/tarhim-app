@@ -88,4 +88,6 @@ dependencies {
     // alternatively - without Android dependencies for testing
     testImplementation "androidx.paging:paging-common:$paging_version"
     implementation "androidx.paging:paging-runtime:$paging_version"
+
+    implementation 'com.github.dariushm2:PersianCaldroid:1.0.1'
 }

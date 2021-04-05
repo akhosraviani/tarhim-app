@@ -23,6 +23,7 @@ class LoginRepository {
 
     companion object {
         private const val TAG = "LoginRepository"
+
     }
 
     val mldSignUp = MutableLiveData<CheckRegisterModel>()
