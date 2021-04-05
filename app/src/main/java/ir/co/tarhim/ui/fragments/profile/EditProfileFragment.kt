@@ -87,10 +87,12 @@ class EditProfileFragment : Fragment(), UploadCallBack {
         viewModel.ldUserInfo.observe(viewLifecycleOwner, Observer {
             it?.let {
                 showLoading(false)
-                if (it.name != null) {
+                if (it.name != null ) {
                     TvEditImgUser.setText(getString(R.string.msg_edit_image))
                     ETNameUser.setText(it.name)
-                    ETUserEmail.setText(it.email!!)
+                    if(it.email != null) {
+                        ETUserEmail.setText(it.email)
+                    }
                     imagePath = it.imageurl
                     Glide.with(requireContext())
                         .load(it.imageurl)
@@ -131,44 +133,46 @@ class EditProfileFragment : Fragment(), UploadCallBack {
             openGallery()
         }
 
-        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        val p: Pattern = Pattern.compile(emailPattern)
+
+
+
+
 
         BtnSaveUser.setOnClickListener {
             if (ETNameUser.text.toString().length > 0) {
 
-                if(ETNameUser.text.toString().length > 0){
-                    val m: Matcher = p.matcher(ETNameUser.text.toString())
-                    if (m.find()) {
-                        showLoading(true)
-                        viewModel.requestRegisterUser(
-                            RegisterUser(
-                                ETUserEmail.text.toString(),
-                                imagePath,
-                                ETNameUser.text.toString()
-                            )
-                        )
-                    }else{
-                        Toast.makeText(requireContext(), "ایمیل نامعتبر است", Toast.LENGTH_SHORT)
-                    }
-                }else {
+//                if(ETUserEmail.text.toString().length > 0){
+//                    val m: Matcher = p.matcher(ETUserEmail.text.toString())
+//                    if (m.find()) {
+//                        showLoading(true)
+//                        viewModel.requestRegisterUser(
+//                            RegisterUser(
+//                                ETUserEmail.text.toString(),
+//                                imagePath,
+//                                ETNameUser.text.toString()
+//                            )
+//                        )
+//                    }else{
+//                        Toast.makeText(requireContext(), "ایمیل نامعتبر است", Toast.LENGTH_SHORT)
+//                    }
+//                }else {
 
-                    showLoading(true)
-                    viewModel.requestRegisterUser(
-                        RegisterUser(
-                            ETUserEmail.text.toString(),
-                            imagePath,
-                            ETNameUser.text.toString()
-                        )
+                showLoading(true)
+                viewModel.requestRegisterUser(
+                    RegisterUser(
+                        ETUserEmail.text.toString(),
+                        imagePath,
+                        ETNameUser.text.toString()
                     )
-                }
+                )
+
             } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "نام کاربری نمیتواند خالی باشد",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                Toast.makeText(
+                    requireContext(),
+                    "نام کاربری نمیتواند خالی باشد",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
 
@@ -176,6 +180,13 @@ class EditProfileFragment : Fragment(), UploadCallBack {
             findNavController().navigateUp()
 
         }
+    }
+
+    private fun validateEmail(): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+        val p: Pattern = Pattern.compile(emailPattern)
+
+        return false
     }
 
 
@@ -299,7 +310,6 @@ class EditProfileFragment : Fragment(), UploadCallBack {
             false
         }
     }
-
 
 
 }

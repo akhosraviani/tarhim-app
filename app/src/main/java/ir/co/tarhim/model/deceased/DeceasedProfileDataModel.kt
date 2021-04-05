@@ -11,8 +11,6 @@ data class DeceasedProfileDataModel(
     val deathday: String?,
     val deathloc: String?,
     val imageurl: String?,
-    val latitude: Long?,
-    val longitude: Long?,
     val isowner: Boolean?,
 ): Parcelable {
     constructor(parcel: Parcel) : this(
@@ -22,8 +20,7 @@ data class DeceasedProfileDataModel(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readLong(),
-        parcel.readLong(),
+
         parcel.readByte() != 0.toByte()
     ) {
     }

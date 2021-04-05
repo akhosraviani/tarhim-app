@@ -12,8 +12,6 @@ data class MyDeceasedDataModel(
     val description: String,
     val id: Int,
     val imageurl: String,
-    val latitude:Long,
-    val longitude: Long,
     val name: String
 ):Parcelable {
     constructor(parcel: Parcel) : this(
@@ -25,8 +23,6 @@ data class MyDeceasedDataModel(
         parcel.readString()!!,
         parcel.readInt(),
         parcel.readString()!!,
-        parcel.readLong(),
-        parcel.readLong(),
         parcel.readString()!!
     ) {
     }
@@ -40,8 +36,7 @@ data class MyDeceasedDataModel(
         parcel.writeString(description)
         parcel.writeInt(id)
         parcel.writeString(imageurl)
-        parcel.writeLong(latitude)
-        parcel.writeLong(longitude)
+
         parcel.writeString(name)
     }
 

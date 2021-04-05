@@ -233,6 +233,7 @@
                         android:id="@+id/btnFindBurialLocation"
                         android:layout_width="@dimen/_80sdp"
                         android:layout_height="@dimen/_30sdp"
+                        android:visibility="invisible"
                         android:background="@drawable/shape_button"
                         android:drawableLeft="@drawable/ic_location"
                         android:drawablePadding="5dp"
@@ -303,26 +304,54 @@
                         tools:text="text to1" />
 
 
-                    <!--                    <androidx.appcompat.widget.AppCompatTextView-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:fontFamily="@font/iran_sans_medium"-->
-                    <!--                        android:text="حالت نمایش صفحه"-->
-                    <!--                        android:textColor="@color/text_color_light" />-->
-
                     <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnAddFriends"
                         android:layout_width="@dimen/_230sdp"
                         android:layout_height="@dimen/_35sdp"
-                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/_7sdp"
                         android:background="@drawable/shape_button"
+                        android:drawableLeft="@drawable/ic_baseline_add_circle_outline_24"
                         android:fontFamily="@font/iran_sans_bold"
+                        android:gravity="left|center"
+                        android:paddingLeft="@dimen/_13sdp"
                         android:text="اضافه کردن مخاطب جدید با شماره تلفن "
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/TvBioDeseaces"
+                        app:layout_constraintVertical_bias=".1"
 
                         />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/appCompatTextView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_9sdp"
+                        android:layout_marginBottom="@dimen/_9sdp"
+                        android:visibility="gone"
+                        android:fontFamily="@font/iran_sans_medium"
+                        android:text="حالت نمایش صفحه :"
+                        android:textColor="@color/text_color_light"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/btnAddFriends"
+                        app:layout_constraintHorizontal_bias=".9"
+                        app:layout_constraintStart_toStartOf="@+id/btnAddFriends"
+                        app:layout_constraintTop_toBottomOf="@id/btnAddFriends" />
+
+                    <Spinner
+                        android:id="@+id/typeSpinner"
+                        android:layout_width="@dimen/_80sdp"
+                        android:background="@drawable/shape_spinner"
+                        android:layout_height="30sp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView6"
+                        app:layout_constraintEnd_toStartOf="@+id/appCompatTextView6"
+                        app:layout_constraintStart_toStartOf="@id/btnAddFriends"
+                        app:layout_constraintTop_toTopOf="@+id/appCompatTextView6" />
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.Toolbar
@@ -386,6 +415,9 @@
                 style="@style/TarhimTabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_9sdp"
+                android:layout_marginEnd="@dimen/_9sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:background="@color/background_page"
                 android:layoutDirection="rtl"
                 app:layout_constraintBottom_toBottomOf="parent"

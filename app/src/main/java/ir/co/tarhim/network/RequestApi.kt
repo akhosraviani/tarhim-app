@@ -58,7 +58,7 @@ interface RequestApi {
     @POST("api/v1/deceased/create")
     fun requestCreateDeceased(
         @Body createdeceased: CreateDeceasedRequest, @Query("mobile") mobile: String
-    ): Call<ConfirmDataModel>
+    ): Call<userRedirect>
 
     @PUT("api/v1/deceased/edit")
     fun requestEditDeceased(

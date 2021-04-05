@@ -6,5 +6,5 @@ data class CommentDataModel(
     val imageurl: String,
     val message: String,
     val name: String,
-    val timestamp: Int
+
 )

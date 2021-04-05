@@ -1,5 +1,6 @@
 package ir.co.tarhim.ui.fragments.deceased
 
+import android.R.string
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
@@ -10,7 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
-import androidx.core.os.bundleOf
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -42,7 +46,7 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
     private var expandable = false
     private var latitude: Long? = null
     private var longtude: Long? = null
-    private lateinit var deceasedInfo:DeceasedProfileDataModel
+    private lateinit var deceasedInfo: DeceasedProfileDataModel
     private var bioDeceased: String? = null
     private lateinit var pagerAdapter: ViewPagerAdapter
 
@@ -75,7 +79,7 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
         viewModel.ldDeceasedProfile.observe(viewLifecycleOwner, Observer {
 
             it?.let {
-                deceasedInfo=it
+                deceasedInfo = it
                 TvDeseacesName.text = it.name
 
                 TvDeathDateDeseaces.text = it.birthday
@@ -88,8 +92,8 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
                     .circleCrop()
                     .into(ImVDeceased)
 
-                latitude = it.latitude
-                longtude = it.longitude
+//                latitude = it.latitude
+//                longtude = it.longitude
                 if (!it.isowner!!) {
                     BtnEditToolbar.visibility = View.GONE
                     BtnEditDeceased.visibility = View.GONE
@@ -100,12 +104,12 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
         })
         viewModel.ldDeceasedFromSearch.observe(viewLifecycleOwner, Observer {
             it?.let {
-                deceasedInfo=it
+                deceasedInfo = it
 
                 TvDeseacesName.text = it.name
-                TvDeathDateDeseaces.text =it.birthday
-                TvBornDateDeseaces.text =  it.deathday
-                TvBurialLocation.text = "${it.deathloc}"
+                TvDeathDateDeseaces.text = it.birthday
+                TvBornDateDeseaces.text = it.deathday
+                TvBurialLocation.text = "${it.deathloc} محل دفن : "
                 bioDeceased = it.description
                 configBioText(it.description!!)
                 Glide.with(requireActivity())
@@ -146,23 +150,51 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
                 )
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
                 startActivity(intent)
-            }else{
-                btnFindBurialLocation.visibility=View.GONE
+            } else {
+                btnFindBurialLocation.visibility = View.GONE
             }
         }
 
 
         BtnEditDeceased.setOnClickListener {
-            var editArgs= Bundle()
-            editArgs.putParcelable("EditDeceased",deceasedInfo)
-            editArgs.putInt("DeceasedId",deceasedId)
-            findNavController().navigate(R.id.action_fragment_deceased_page_to_fragment_create_deceased,editArgs)
+            var editArgs = Bundle()
+            editArgs.putParcelable("EditDeceased", deceasedInfo)
+            editArgs.putInt("DeceasedId", deceasedId)
+            findNavController().navigate(
+                R.id.action_fragment_deceased_page_to_fragment_create_deceased,
+                editArgs
+            )
         }
         BtnEditToolbar.setOnClickListener {
-            var editArgs= Bundle()
-            editArgs.putParcelable("EditDeceased",deceasedInfo)
-            editArgs.putInt("DeceasedId",deceasedId)
-            findNavController().navigate(R.id.action_fragment_deceased_page_to_fragment_create_deceased,editArgs)
+            var editArgs = Bundle()
+            editArgs.putParcelable("EditDeceased", deceasedInfo)
+            editArgs.putInt("DeceasedId", deceasedId)
+            findNavController().navigate(
+                R.id.action_fragment_deceased_page_to_fragment_create_deceased,
+                editArgs
+            )
+        }
+
+
+        btnAddFriends.setOnClickListener {
+            Toast.makeText(requireActivity(), "در حال پیاده سازی", Toast.LENGTH_SHORT).show()
+        }
+
+
+        val arrayList: Array<String> = resources.getStringArray(R.array.list_type)
+
+        val aa = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item,arrayList)
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        typeSpinner.setAdapter(aa)
+        typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                Toast.makeText(requireActivity(), "در حال پیاده سازی", Toast.LENGTH_SHORT).show()
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
         }
 
     }

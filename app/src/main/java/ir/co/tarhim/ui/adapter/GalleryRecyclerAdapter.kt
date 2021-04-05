@@ -83,7 +83,7 @@ class GalleryRecyclerAdapter(
         holder.bindTo(pathList[position])
 
         holder.galleryIv.setOnClickListener {
-            galleryCallBack.galleryRecyclerCallBack(position)
+            galleryCallBack.galleryRecyclerCallBack(pathList[position])
         }
 
     }

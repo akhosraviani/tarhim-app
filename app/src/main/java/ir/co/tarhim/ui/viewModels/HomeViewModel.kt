@@ -16,6 +16,7 @@ import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.ui.repository.LoginRepository
 import okhttp3.MultipartBody
+import kotlin.math.log
 
 class HomeViewModel : ViewModel() {
 
@@ -31,7 +32,7 @@ class HomeViewModel : ViewModel() {
     var ldDeceasedProfile: LiveData<DeceasedProfileDataModel>
     var ldDeceasedFromSearch: LiveData<DeceasedProfileDataModel>
     var ldMyDeceased: LiveData<List<MyDeceasedDataModel>>
-    var ldcreateDeceased: LiveData<ConfirmDataModel>
+    var ldcreateDeceased: LiveData<userRedirect>
     var ldEditDeceased: LiveData<ConfirmDataModel>
     var ldImageUpload: LiveData<UploadFileDataModel>
     var ldGetGallery: LiveData<GalleryDataModel>
@@ -39,6 +40,7 @@ class HomeViewModel : ViewModel() {
     var ldSendCommnet: LiveData<ConfirmDataModel>
     var ldRegisterUser: LiveData<ConfirmDataModel>
     var ldUserInfo: LiveData<UserInfoDataModel>
+    var ldError: LiveData<Throwable>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -59,6 +61,7 @@ class HomeViewModel : ViewModel() {
         ldSendCommnet = loginRepository.mldSendComment
         ldRegisterUser = loginRepository.mldRegisterUser
         ldUserInfo = loginRepository.mldUserInfo
+        ldError= loginRepository.mldError
 
     }
 

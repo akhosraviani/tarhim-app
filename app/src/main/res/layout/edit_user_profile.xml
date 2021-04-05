@@ -187,6 +187,7 @@
             android:background="@color/background_grey"
             android:fontFamily="@font/iran_sans_light"
             android:gravity="right"
+            android:visibility="gone"
             android:singleLine="true"
             android:imeOptions="actionDone"
             android:inputType="textEmailAddress" />

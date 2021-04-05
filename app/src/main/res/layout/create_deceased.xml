@@ -192,14 +192,17 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout4"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_3sdp"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_7sdp"
         android:hint="محل دفن"
-        app:layout_constraintBottom_toBottomOf="@+id/BtnOpenMap"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"
         app:layout_constraintStart_toEndOf="@+id/BtnOpenMap"
-        app:layout_constraintTop_toTopOf="@+id/BtnOpenMap">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
+        app:layout_constraintVertical_bias=".01">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/ETBurialLocation"
@@ -221,6 +224,7 @@
         android:fontFamily="@font/iran_sans"
         android:text="@string/msg_open_map"
         android:textColor="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.032"
@@ -233,13 +237,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginTop="@dimen/_3sdp"
         android:layout_marginEnd="@dimen/_7sdp"
         android:hint="بیوگرافی"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BtnOpenMap"
-        app:layout_constraintVertical_bias=".05">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4"
+        app:layout_constraintVertical_bias=".01">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/ETdeceasedDescription"

@@ -7,7 +7,8 @@ data class CreateDeceasedRequest(
     val deathloc: String,
     val description: String,
     val imageurl: String,
-    val latitude: Long,
-    val longtiude: Long,
+    val latitude: Int,
+    val longitude: Int,
     val name: String
+
 )

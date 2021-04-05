@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_fragment_create_deceased_to_maps_fragment"
             app:destination="@id/maps_fragment" />
+        <action
+            android:id="@+id/action_fragment_create_deceased_to_fragment_deceased_page"
+            app:destination="@id/fragment_deceased_page" />
 
     </fragment>
 

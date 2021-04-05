@@ -14,6 +14,7 @@ import ir.co.tarhim.R
 import ir.co.tarhim.ui.adapter.GalleryRecyclerAdapter
 import ir.co.tarhim.ui.callback.GalleryListener
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import ir.co.tarhim.utils.DialogProvider
 import kotlinx.android.synthetic.main.fragment_gallery.*
 
 class GalleryFragment : Fragment(), GalleryListener {
@@ -46,11 +47,10 @@ class GalleryFragment : Fragment(), GalleryListener {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         pathlist = ArrayList()
-        pathlist.toMutableList().add(R.drawable.shape_upload_img_gallery.toString())
+//        pathlist.toMutableList().add(R.drawable.shape_upload_img_gallery.toString())
 
         deceasedId = arguments?.getInt("Id")!!
         viewModel.requestGetGallery(deceasedId)
-        Log.e(TAG, "onViewCreated:deceasedId " + deceasedId)
 
         viewModel.ldGetGallery.observe(viewLifecycleOwner, Observer {
 
@@ -74,7 +74,7 @@ class GalleryFragment : Fragment(), GalleryListener {
         galleryAdapter.notifyDataSetChanged()
     }
 
-    override fun galleryRecyclerCallBack(rowId: Int) {
-        TODO("Not yet implemented")
+    override fun galleryRecyclerCallBack(rowId: String) {
+        DialogProvider().showImageDialog(requireActivity(), rowId)
     }
 }

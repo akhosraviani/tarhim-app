@@ -1,6 +1,7 @@
 package ir.co.tarhim.ui.fragments.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,12 +48,14 @@ class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack,Pr
         }
 
         viewModel.ldMyDeceased.observe(viewLifecycleOwner, Observer { data ->
-            run {
+
+            Log.e("TAG", "onViewCreated:data "+data.size )
+            data!!.let {
                 if (data.size != 0) {
                     initMyDeceasedRecycler(data)
                     myDeceasedAdapter.notifyDataSetChanged()
-                }else{
-                    TvNullMydeceased.text="محتوایی برای نمایش وجود ندارد"
+                } else {
+                    TvNullMydeceased.text = "محتوایی برای نمایش وجود ندارد"
                 }
             }
         })
@@ -79,6 +82,7 @@ class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack,Pr
         bundleOf("LatestSearch" to deceasedId)
         args.putInt("LatestSearch",deceasedId)
         findNavController().navigate(R.id.action_fragment_profile_to_fragment_deceased_page,args)
+
     }
 
 

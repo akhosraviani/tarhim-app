@@ -28,8 +28,9 @@ class LoginRepository {
 
     val mldSignUp = MutableLiveData<CheckRegisterModel>()
     val mldOtp = MutableLiveData<OtpDataModel>()
+    val mldError = MutableLiveData<Throwable>()
     val mldConfirmOtp = MutableLiveData<ConfirmDataModel>()
-    val mldCreateDeceased = MutableLiveData<ConfirmDataModel>()
+    val mldCreateDeceased = MutableLiveData<userRedirect>()
     val mldEditDeceased = MutableLiveData<ConfirmDataModel>()
     val mldConfirmPassword = MutableLiveData<ConfirmDataModel>()
     val mldConfirmSetPassword = MutableLiveData<ConfirmDataModel>()
@@ -144,7 +145,8 @@ class LoginRepository {
                     call: retrofit2.Call<List<MyDeceasedDataModel>>,
                     t: Throwable
                 ) {
-                    Log.e(TAG, "onFailure: " + t.message)
+
+
                 }
 
                 override fun onResponse(
@@ -160,19 +162,20 @@ class LoginRepository {
 
     fun requestCreateDeceaed(dataRequest: CreateDeceasedRequest, mobile: String) {
         RequestClient.makeRequest().requestCreateDeceased(dataRequest, mobile)
-            .enqueue(object : Callback<ConfirmDataModel> {
+            .enqueue(object : Callback<userRedirect> {
                 override fun onFailure(
-                    call: retrofit2.Call<ConfirmDataModel>,
+                    call: retrofit2.Call<userRedirect>,
                     t: Throwable
                 ) {
+                    mldError.value=t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
                 override fun onResponse(
-                    call: retrofit2.Call<ConfirmDataModel>,
-                    response: Response<ConfirmDataModel>
+                    call: retrofit2.Call<userRedirect>,
+                    response: Response<userRedirect>
                 ) {
-                    mldCreateDeceased.value = response.body()
+                    mldCreateDeceased.value = userRedirect(response.body()!!.id)
                     Log.i("testTag", "im here=" + response.body())
                 }
             })

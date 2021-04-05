@@ -24,6 +24,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -54,7 +55,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
     }
     //35.5303902,51.3763243
 
-    private var imagePath: String? = null
+    private var imagePath: String? = ""
     private lateinit var location: LatLng
     private lateinit var pathImage: String
     private lateinit var editBirth: String
@@ -75,8 +76,8 @@ class CreateDeceased : Fragment(), UploadCallBack {
     private var monthDeath: Int? = -1
     private var dayDeath: Int? = -1
 
-    private var listBirth: List<String>?=null
-    private var listDeath: List<String>?=null
+    private var listBirth: List<String>? = null
+    private var listDeath: List<String>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -117,17 +118,19 @@ class CreateDeceased : Fragment(), UploadCallBack {
         }
 
         EtBirthDateDeceased.setOnFocusChangeListener { view, b ->
-            setUpBirthDayCalendar(listBirth!![0].toInt(),listBirth!![1].toInt(),listBirth!![2].toInt())
+            hideSoftKeyboard(requireActivity())
+            setUpBirthDayCalendar()
         }
         ETDeathDeceased.setOnFocusChangeListener { view, b ->
-            setUpDeathDayCalendar(listDeath!![0].toInt(),listDeath!![1].toInt(),listDeath!![2].toInt())
+            hideSoftKeyboard(requireActivity())
+            setUpDeathDayCalendar()
         }
 
         EtBirthDateDeceased.setOnClickListener {
-            setUpBirthDayCalendar(listBirth!![0].toInt(),listBirth!![1].toInt(),listBirth!![2].toInt())
+            setUpBirthDayCalendar()
         }
         ETDeathDeceased.setOnClickListener {
-            setUpDeathDayCalendar(listDeath!![0].toInt(),listDeath!![1].toInt(),listDeath!![2].toInt())
+            setUpDeathDayCalendar()
         }
 
         BtnOpenMap.setOnClickListener {
@@ -151,8 +154,8 @@ class CreateDeceased : Fragment(), UploadCallBack {
                         ETBurialLocation.text.toString(),
                         ETdeceasedDescription.text.toString(),
                         imagePath!!,
-                        location.latitude.toLong(),
-                        location.longitude.toLong(),
+                        0,
+                        0,
                         ETNameDeceased.text.toString()
                     ), DeceasedId!!
                 )
@@ -172,14 +175,13 @@ class CreateDeceased : Fragment(), UploadCallBack {
                     viewModel.requestCreateDeceased(
                         CreateDeceasedRequest(
                             "Public",
-
                             EtBirthDateDeceased.text.toString(),
                             ETDeathDeceased.text.toString(),
                             ETBurialLocation.text.toString(),
                             ETdeceasedDescription.text.toString(),
                             imagePath!!,
-                            location.latitude.toLong(),
-                            location.longitude.toLong(),
+                            0,
+                            0,
                             ETNameDeceased.text.toString()
                         )
                     )
@@ -193,30 +195,34 @@ class CreateDeceased : Fragment(), UploadCallBack {
         }
 
 
+
         TvChangeImg.setOnClickListener {
             openGallery()
         }
 
         viewModel.ldcreateDeceased.observe(viewLifecycleOwner, Observer {
 
+            showLoading(false)
             it.let {
-                when (it.code) {
-                    200 -> {
-                        showLoading(false)
-                        Toast.makeText(activity, "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show()
-                        Handler().postDelayed({
 
-                            txtToolbar.text = "ویرایش پروفایل"
-                            TvChangeImg.text = getString(R.string.msg_edit_image)
-                            editProfile = true
-                        }, 1000)
-                    }
-                    400 -> {
-                        Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
+                    Toast.makeText(activity, "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show()
+                    Handler().postDelayed({
+                        val args = Bundle()
+                        args.putInt("LatestSearch", it.id!!)
+                        findNavController().navigate(
+                            R.id.action_fragment_create_deceased_to_fragment_deceased_page,
+                            args
+                        )
+
+                        editProfile = true
+                    }, 1000)
+
             }
 
+        })
+
+        viewModel.ldError.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(activity, "ورودی های خود را چک کنید!", Toast.LENGTH_SHORT).show()
         })
 
         viewModel.ldEditDeceased.observe(viewLifecycleOwner, Observer {
@@ -225,6 +231,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
                 if (it.code == 200) {
                     Toast.makeText(activity, it.message, Toast.LENGTH_SHORT)
                 } else {
+                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
 
                 }
             }
@@ -233,25 +240,24 @@ class CreateDeceased : Fragment(), UploadCallBack {
     }
 
 
-    private fun setUpBirthDayCalendar(year: Int, month: Int, day: Int) {
-        hideSoftKeyboard(requireActivity())
-        if (TextUtils.isEmpty(EtBirthDateDeceased.text)) {
-            showDialogCalendar(EtBirthDateDeceased, 1370, 3, 13)
-        } else {
-            showDialogCalendar(EtBirthDateDeceased, year, month, day)
+    private fun setUpBirthDayCalendar() {
+//        if (TextUtils.isEmpty(EtBirthDateDeceased.text)) {
+//            showDialogCalendar(EtBirthDateDeceased, 1370, 3, 13)
+//        } else {
+        showDialogCalendar(EtBirthDateDeceased, 1370, 3, 13)
 
-        }
+//        }
         picker.show()
     }
 
-    private fun setUpDeathDayCalendar(year: Int, month: Int, day: Int) {
-        hideSoftKeyboard(requireActivity())
-        if (TextUtils.isEmpty(ETDeathDeceased.text)) {
-            showDialogCalendar(ETDeathDeceased, 1370, 3, 13)
-        } else {
-            showDialogCalendar(ETDeathDeceased, year, month, day)
+    private fun setUpDeathDayCalendar() {
+//        hideSoftKeyboard(requireActivity())
+//        if (TextUtils.isEmpty(ETDeathDeceased.text)) {
+//            showDialogCalendar(ETDeathDeceased, 1370, 3, 13)
+//        } else {
+        showDialogCalendar(ETDeathDeceased, 1370, 3, 13)
 
-        }
+//        }
         picker.show()
     }
 
@@ -417,8 +423,8 @@ class CreateDeceased : Fragment(), UploadCallBack {
         ETNameDeceased.setText(details.name)
         EtBirthDateDeceased.setText(details.birthday)
 
-       listBirth = details.birthday?.split("/")
-       listDeath = details.deathday?.split("/")
+        listBirth = details.birthday?.split("/")
+        listDeath = details.deathday?.split("/")
 
         editBirth = details.birthday!!
         ETDeathDeceased.setText(details.deathday)
