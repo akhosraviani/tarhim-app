@@ -4,11 +4,14 @@ import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +32,11 @@ import ir.co.tarhim.ui.callback.UploadCallBack
 import ir.co.tarhim.ui.callback.UploadProgress
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.OnBackPressed
+import ir.co.tarhim.utils.TarhimCompress
 import kotlinx.android.synthetic.main.edit_user_profile.*
 import okhttp3.MultipartBody
+import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class EditProfileFragment : Fragment(), UploadCallBack {
@@ -87,15 +91,15 @@ class EditProfileFragment : Fragment(), UploadCallBack {
         viewModel.ldUserInfo.observe(viewLifecycleOwner, Observer {
             it?.let {
                 showLoading(false)
-                if (it.name != null ) {
+                if (it.name != null) {
                     TvEditImgUser.setText(getString(R.string.msg_edit_image))
                     ETNameUser.setText(it.name)
-                    if(it.email != null) {
+                    if (it.email != null) {
                         ETUserEmail.setText(it.email)
                     }
                     imagePath = it.imageurl
                     Glide.with(requireContext())
-                        .load(it.imageurl)
+                        .load(imagePath)
                         .centerInside()
                         .circleCrop()
                         .into(IvUser)
@@ -104,8 +108,8 @@ class EditProfileFragment : Fragment(), UploadCallBack {
         })
 
         viewModel.ldImageUpload.observe(viewLifecycleOwner, Observer {
+            loadingImgUser.visibility = View.GONE
             if (it.id != null) {
-                loadingImgUser.visibility = View.GONE
                 imagePath = it.path
                 Log.e(TAG, "onViewCreated: " + it.path)
             }
@@ -141,31 +145,18 @@ class EditProfileFragment : Fragment(), UploadCallBack {
         BtnSaveUser.setOnClickListener {
             if (ETNameUser.text.toString().length > 0) {
 
-//                if(ETUserEmail.text.toString().length > 0){
-//                    val m: Matcher = p.matcher(ETUserEmail.text.toString())
-//                    if (m.find()) {
-//                        showLoading(true)
-//                        viewModel.requestRegisterUser(
-//                            RegisterUser(
-//                                ETUserEmail.text.toString(),
-//                                imagePath,
-//                                ETNameUser.text.toString()
-//                            )
-//                        )
-//                    }else{
-//                        Toast.makeText(requireContext(), "ایمیل نامعتبر است", Toast.LENGTH_SHORT)
-//                    }
-//                }else {
-
-                showLoading(true)
-                viewModel.requestRegisterUser(
-                    RegisterUser(
-                        ETUserEmail.text.toString(),
-                        imagePath,
-                        ETNameUser.text.toString()
+                if (ETUserEmail.text.isNullOrEmpty()|| Patterns.EMAIL_ADDRESS.matcher(ETUserEmail.text!!.trim().toString()).matches()) {
+                    showLoading(true)
+                    viewModel.requestRegisterUser(
+                        RegisterUser(
+                            ETUserEmail.text.toString(),
+                            imagePath,
+                            ETNameUser.text.toString()
+                        )
                     )
-                )
-
+                }else{
+                    ETUserEmail.error="ایمیل نامعتبر"
+                }
             } else {
                 Toast.makeText(
                     requireContext(),
@@ -238,17 +229,35 @@ class EditProfileFragment : Fragment(), UploadCallBack {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
-            var dataUri = data?.data
             loadingImgUser.visibility = View.VISIBLE
+            var dataUri = data?.data
+
             Log.e(
-                TAG, "onActivityResult: " + realFilePath(dataUri!!)
+                TAG,
+                "onActivityResult: " + realFilePath(dataUri!!)
             )
-            viewModel.requestUploadImage(uploadFile(Uri.parse(realFilePath(dataUri!!))))
+            var imagestream = requireActivity().contentResolver.openInputStream(dataUri)
+            var imgBitmap =
+                TarhimCompress().compressImage(BitmapFactory.decodeStream(imagestream), 1000)
+
             Glide.with(requireContext())
-                .load(dataUri)
+                .load(imgBitmap)
                 .centerInside()
                 .circleCrop()
                 .into(IvUser)
+
+            var byte = ByteArrayOutputStream()
+            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
+            val path = MediaStore.Images.Media.insertImage(
+                requireActivity().contentResolver,
+                imgBitmap,
+                "",
+                null
+            )
+
+
+            viewModel.requestUploadImage(uploadFile(Uri.parse(realFilePath(Uri.parse(path.toString())))))
+
         }
     }
 
@@ -279,6 +288,7 @@ class EditProfileFragment : Fragment(), UploadCallBack {
 
 
     override fun updateProgress(interceptare: Int) {
+        Log.e(TAG, "updateProgress interceptare: " + interceptare)
     }
 
 

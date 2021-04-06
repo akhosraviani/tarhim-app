@@ -6,12 +6,14 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
-import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +26,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -39,11 +40,13 @@ import ir.co.tarhim.model.deceased.MyDeceasedDataModel
 import ir.co.tarhim.ui.callback.UploadCallBack
 import ir.co.tarhim.ui.callback.UploadProgress
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import ir.co.tarhim.utils.TarhimCompress
 import ir.hamsaa.persiandatepicker.Listener
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.create_deceased.*
 import okhttp3.MultipartBody
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 
@@ -128,9 +131,11 @@ class CreateDeceased : Fragment(), UploadCallBack {
 
         EtBirthDateDeceased.setOnClickListener {
             setUpBirthDayCalendar()
+//            showCalendarInDarkMode()
         }
         ETDeathDeceased.setOnClickListener {
             setUpDeathDayCalendar()
+//            showCalendarInDarkMode()
         }
 
         BtnOpenMap.setOnClickListener {
@@ -205,17 +210,17 @@ class CreateDeceased : Fragment(), UploadCallBack {
             showLoading(false)
             it.let {
 
-                    Toast.makeText(activity, "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show()
-                    Handler().postDelayed({
-                        val args = Bundle()
-                        args.putInt("LatestSearch", it.id!!)
-                        findNavController().navigate(
-                            R.id.action_fragment_create_deceased_to_fragment_deceased_page,
-                            args
-                        )
+                Toast.makeText(activity, "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show()
+                Handler().postDelayed({
+                    val args = Bundle()
+                    args.putInt("LatestSearch", it.id!!)
+                    findNavController().navigate(
+                        R.id.action_fragment_create_deceased_to_fragment_deceased_page,
+                        args
+                    )
 
-                        editProfile = true
-                    }, 1000)
+                    editProfile = true
+                }, 1000)
 
             }
 
@@ -241,13 +246,13 @@ class CreateDeceased : Fragment(), UploadCallBack {
 
 
     private fun setUpBirthDayCalendar() {
-//        if (TextUtils.isEmpty(EtBirthDateDeceased.text)) {
-//            showDialogCalendar(EtBirthDateDeceased, 1370, 3, 13)
-//        } else {
-        showDialogCalendar(EtBirthDateDeceased, 1370, 3, 13)
+////        if (TextUtils.isEmpty(EtBirthDateDeceased.text)) {
+////            showDialogCalendar(EtBirthDateDeceased, 1370, 3, 13)
+////        } else {
+        showCalendarInDarkMode(EtBirthDateDeceased, 1370, 3, 13)
+//
+////        }
 
-//        }
-        picker.show()
     }
 
     private fun setUpDeathDayCalendar() {
@@ -255,7 +260,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
 //        if (TextUtils.isEmpty(ETDeathDeceased.text)) {
 //            showDialogCalendar(ETDeathDeceased, 1370, 3, 13)
 //        } else {
-        showDialogCalendar(ETDeathDeceased, 1370, 3, 13)
+        showCalendarInDarkMode(ETDeathDeceased, 1370, 3, 13)
 
 //        }
         picker.show()
@@ -317,15 +322,22 @@ class CreateDeceased : Fragment(), UploadCallBack {
                 TAG,
                 "onActivityResult: " + getRealPathFromURI(dataUri!!)
             )
-
-
-            viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(dataUri!!))))
+            var imagestream=requireActivity().contentResolver.openInputStream(dataUri)
+            var imgBitmap=TarhimCompress().compressImage(BitmapFactory.decodeStream(imagestream),1000)
 
             Glide.with(requireContext())
-                .load(dataUri)
+                .load(imgBitmap)
                 .centerInside()
                 .circleCrop()
                 .into(IvDeceased)
+
+            var byte=ByteArrayOutputStream()
+           imgBitmap.compress(Bitmap.CompressFormat.JPEG,100,byte)
+            val path=MediaStore.Images.Media.insertImage(requireActivity().contentResolver,imgBitmap,ETNameDeceased.text.toString(),null)
+
+
+            viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(Uri.parse(path.toString())))))
+
         }
     }
 
@@ -354,26 +366,29 @@ class CreateDeceased : Fragment(), UploadCallBack {
     }
 
 
-    @SuppressLint("ResourceAsColor")
-    private fun showDialogCalendar(editText: AppCompatEditText, year: Int, month: Int, day: Int) {
+    fun showCalendarInDarkMode(editText: AppCompatEditText, year: Int, month: Int, day: Int) {
+        val typeface = ResourcesCompat.getFont(requireContext(), R.font.iran_sans_medium)
         val initDate = PersianCalendar()
-        initDate.setPersianDate(year, month, day)
-        picker
+        initDate.setPersianDate(1370, 3, 13)
+        picker = PersianDatePickerDialog(requireContext())
             .setPositiveButtonString("ثبت")
             .setNegativeButton("لغو")
             .setTodayButton("امروز")
-            .setInitDate(initDate)
             .setTodayButtonVisible(true)
             .setShowInBottomSheet(true)
-            .setPickerBackgroundDrawable(R.drawable.shape_indicator_tab_selected)
-            .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
             .setMinYear(1300)
-            .setTypeFace(ResourcesCompat.getFont(requireContext(), R.font.iran_sans_medium))
-            .setActionTextColor(R.color.tradewind)
+            .setMaxYear(PersianDatePickerDialog.THIS_YEAR)
+            .setInitDate(initDate)
+            .setActionTextColor(Color.GRAY)
+            .setTypeFace(typeface)
+            .setBackgroundColor(Color.BLACK)
+            .setTitleColor(Color.WHITE)
+            .setActionTextColor(Color.WHITE)
+            .setPickerBackgroundDrawable(R.drawable.darkmode_bg)
+            .setTitleType(PersianDatePickerDialog.DAY_MONTH_YEAR)
             .setCancelable(false)
             .setListener(object : Listener {
-                override fun onDateSelected(persianCalendar: PersianCalendar?) {
-
+                override fun onDateSelected(persianCalendar: PersianCalendar) {
                     var choseDate = persianCalendar?.getPersianYear()
                         .toString() + "/" + persianCalendar?.getPersianMonth() + "/" + persianCalendar?.getPersianDay()
 
@@ -383,13 +398,10 @@ class CreateDeceased : Fragment(), UploadCallBack {
                     showSoftKeyboard(requireActivity())
                 }
 
-                override fun onDismissed() {
-
-                }
-
+                override fun onDismissed() {}
             })
+        picker.show()
     }
-
 
     override fun updateProgress(interceptare: Int) {
         Log.e(TAG, "updateProgress: " + interceptare)
@@ -414,8 +426,10 @@ class CreateDeceased : Fragment(), UploadCallBack {
     }
 
     private fun showDeceasedDetails(details: DeceasedProfileDataModel) {
+        var imgStrem=requireActivity().contentResolver.openInputStream(Uri.parse(details.imageurl))
+        var img=TarhimCompress().compressImage(BitmapFactory.decodeStream(imgStrem),500)
         Glide.with(this)
-            .load(details.imageurl)
+            .load(img)
             .circleCrop()
             .into(IvDeceased)
 
@@ -449,4 +463,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
             false
         }
     }
+
+
+
 }

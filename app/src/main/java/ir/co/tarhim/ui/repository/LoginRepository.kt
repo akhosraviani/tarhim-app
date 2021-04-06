@@ -131,7 +131,7 @@ class LoginRepository {
                     call: retrofit2.Call<UploadFileDataModel>,
                     response: Response<UploadFileDataModel>
                 ) {
-                    mldUploadImage.value = response.body()
+                    mldUploadImage.value =UploadFileDataModel( response.body()!!.id, response.body()!!.path)
                     Log.i("testTag", "im here=" + response.body())
                 }
             })

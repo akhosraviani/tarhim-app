@@ -1,24 +1,13 @@
 package ir.co.tarhim.ui.activities
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
-import android.util.SparseArray
 import android.util.SparseIntArray
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.annotation.NavigationRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.NavDirections
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlin.properties.Delegates
@@ -79,21 +68,10 @@ class HomeActivity : AppCompatActivity() {
         return sparseIcon
     }
 
-
-    @SuppressLint("RestrictedApi")
     override fun onBackPressed() {
         super.onBackPressed()
-//
-        if (navController.currentBackStackEntry == null)
-
-            if (TIME_INTERVAL + mBackPressed > System.currentTimeMillis()) {
-                finishAffinity()
-
-            } else {
-                Toast.makeText(this, "برای خروج دوباره کلیک کنید", Toast.LENGTH_SHORT).show()
-                mBackPressed = System.currentTimeMillis()
-            }
-
+        finishAffinity()
+        System.exit(0)
     }
 
 }
