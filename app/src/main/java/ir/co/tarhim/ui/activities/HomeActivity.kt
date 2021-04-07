@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.util.SparseIntArray
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import ir.co.tarhim.R
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlin.properties.Delegates
 
 
 class HomeActivity : AppCompatActivity() {
@@ -21,7 +21,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private var TIME_INTERVAL: Long = 2000
-    private var mBackPressed by Delegates.notNull<Long>()
+    private var mBackPressed: Long? = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,9 +69,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        finishAffinity()
-        System.exit(0)
+        if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        }else{
+            Toast.makeText(this, "برای خروج مجددا کلیک کنید", Toast.LENGTH_SHORT).show()
+        }
+
+        mBackPressed=System.currentTimeMillis()
+
     }
 
 }

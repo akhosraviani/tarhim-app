@@ -426,10 +426,9 @@ class CreateDeceased : Fragment(), UploadCallBack {
     }
 
     private fun showDeceasedDetails(details: DeceasedProfileDataModel) {
-        var imgStrem=requireActivity().contentResolver.openInputStream(Uri.parse(details.imageurl))
-        var img=TarhimCompress().compressImage(BitmapFactory.decodeStream(imgStrem),500)
+
         Glide.with(this)
-            .load(img)
+            .load(details.imageurl)
             .circleCrop()
             .into(IvDeceased)
 

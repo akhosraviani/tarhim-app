@@ -9,7 +9,7 @@
         android:id="@+id/IVLeftForum"
         android:layout_width="@dimen/_65sdp"
         android:layout_height="@dimen/_65sdp"
-        android:background="@drawable/download"
+        tools:background="@drawable/download"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
