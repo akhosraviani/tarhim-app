@@ -104,5 +104,12 @@ interface RequestApi {
     ): Call<List<NewsDataModel>>
 
 
+    @POST("api/v1/deceased/follow")
+    fun requestFollowDeceased(@Query("id")deceasedId:Int,@Query("mobile")mobile: String):Call<ConfirmDataModel>
+
+    @POST("api/v1/deceased/unfollow")
+    fun requestUnFollowDeceased(@Query("id")deceasedId:Int,@Query("mobile")mobile: String):Call<ConfirmDataModel>
+
+
 }
 

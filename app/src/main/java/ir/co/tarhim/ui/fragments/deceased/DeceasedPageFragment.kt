@@ -5,11 +5,13 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.GONE
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
@@ -28,10 +30,13 @@ import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
 import ir.co.tarhim.ui.adapter.ViewPagerAdapter
 import ir.co.tarhim.ui.callback.ViewPagerCallBack
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import ir.co.tarhim.utils.AccessTypeDeceased
 import ir.co.tarhim.utils.OnBackPressed
 import kotlinx.android.synthetic.main.deceased_profile.*
+import kotlinx.android.synthetic.main.deceased_profile.BtInbox
+import kotlinx.android.synthetic.main.deceased_profile.view.*
+import kotlinx.android.synthetic.main.fragment_cemetery.*
 import java.util.*
-
 
 class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
@@ -49,6 +54,7 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
     private lateinit var deceasedInfo: DeceasedProfileDataModel
     private var bioDeceased: String? = null
     private lateinit var pagerAdapter: ViewPagerAdapter
+    private var checkFollow = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +67,7 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         OnBackPressed().pressedCallBack(findNavController())
+        showLoading(true)
 
         if (requireArguments()?.getInt("LatestSearch") != 0) {
             deceasedId = arguments?.getInt("LatestSearch")!!
@@ -74,57 +81,112 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
             viewModel.requestDeceasedFromSearch(deceasedId)
         }
 
-
         initTabAndViewPager()
         viewModel.ldDeceasedProfile.observe(viewLifecycleOwner, Observer {
+            showLoading(false)
 
             it?.let {
                 deceasedInfo = it
-                TvDeseacesName.text = it.name
+                when (it.accesstype) {
+                    AccessTypeDeceased.Public.name -> {
+                        if (!it.isowner!!) {
+                            BtnEditToolbar.visibility = View.GONE
+                            BtnEditDeceased.visibility = View.GONE
+                        }
+                        coordinateLayout.visibility = View.VISIBLE
+                        TvDeseacesName.text = it.name
+                        TvDeathDateDeseaces.text = it.birthday
+                        TvBornDateDeseaces.text = it.deathday
+                        TvBurialLocation.text = "${it.deathloc}"
+                        bioDeceased = it.description
+                        configBioText(it.description!!)
+                        Glide.with(requireActivity())
+                            .load(it.imageurl)
+                            .circleCrop()
+                            .into(ImVDeceased)
 
-                TvDeathDateDeseaces.text = it.birthday
-                TvBornDateDeseaces.text = it.deathday
-                TvBurialLocation.text = "${it.deathloc}"
-                bioDeceased = it.description
-                configBioText(it.description!!)
-                Glide.with(requireActivity())
-                    .load(it.imageurl)
-                    .circleCrop()
-                    .into(ImVDeceased)
+                        initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
 
-//                latitude = it.latitude
-//                longtude = it.longitude
-                if (!it.isowner!!) {
-                    BtnEditToolbar.visibility = View.GONE
-                    BtnEditDeceased.visibility = View.GONE
+                    }
+                    AccessTypeDeceased.SemiPublic.name -> {
+                        if (!it.isowner!!) {
+                            BtnEditToolbar.visibility = View.GONE
+                            BtnEditDeceased.visibility = View.GONE
+                            requestFollow(it)
+
+                        } else {
+                            coordinateLayout.visibility = View.VISIBLE
+                            TvDeseacesName.text = it.name
+                            TvDeathDateDeseaces.text = it.birthday
+                            TvBornDateDeseaces.text = it.deathday
+                            TvBurialLocation.text = "${it.deathloc}"
+                            bioDeceased = it.description
+                            configBioText(it.description!!)
+                            Glide.with(requireActivity())
+                                .load(it.imageurl)
+                                .circleCrop()
+                                .into(ImVDeceased)
+
+                            initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+
+                        }
+                    }
                 }
 
-                initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+
             }
         })
         viewModel.ldDeceasedFromSearch.observe(viewLifecycleOwner, Observer {
+                showLoading(false)
             it?.let {
                 deceasedInfo = it
+                when (it.accesstype) {
+                    AccessTypeDeceased.Public.name -> {
+                        if (!it.isowner!!) {
+                            BtnEditToolbar.visibility = View.GONE
+                            BtnEditDeceased.visibility = View.GONE
+                        }
+                        coordinateLayout.visibility = View.VISIBLE
+                        TvDeseacesName.text = it.name
+                        TvDeathDateDeseaces.text = it.birthday
+                        TvBornDateDeseaces.text = it.deathday
+                        TvBurialLocation.text = "${it.deathloc}"
+                        bioDeceased = it.description
+                        configBioText(it.description!!)
+                        Glide.with(requireActivity())
+                            .load(it.imageurl)
+                            .circleCrop()
+                            .into(ImVDeceased)
 
-                TvDeseacesName.text = it.name
-                TvDeathDateDeseaces.text = it.birthday
-                TvBornDateDeseaces.text = it.deathday
-                TvBurialLocation.text = "${it.deathloc} محل دفن : "
-                bioDeceased = it.description
-                configBioText(it.description!!)
-                Glide.with(requireActivity())
-                    .load(it.imageurl)
-                    .circleCrop()
-                    .into(ImVDeceased)
+                        initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
 
-//                latitude=it.latitude
-//                longtude=it.longitude
-//                if(!it.isowner){
-//                    BtnEditToolbar.visibility=View.GONE
-//                    BtnEditDeceased.visibility=View.GONE
-//                }
+                    }
+                    AccessTypeDeceased.SemiPublic.name -> {
+                        if (!it.isowner!!) {
+                            BtnEditToolbar.visibility = View.GONE
+                            BtnEditDeceased.visibility = View.GONE
+                            requestFollow(it)
 
-                initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+                        } else {
+                            coordinateLayout.visibility = View.VISIBLE
+                            TvDeseacesName.text = it.name
+                            TvDeathDateDeseaces.text = it.birthday
+                            TvBornDateDeseaces.text = it.deathday
+                            TvBurialLocation.text = "${it.deathloc}"
+                            bioDeceased = it.description
+                            configBioText(it.description!!)
+                            Glide.with(requireActivity())
+                                .load(it.imageurl)
+                                .circleCrop()
+                                .into(ImVDeceased)
+
+                            initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+
+                        }
+                    }
+                }
+
+
             }
         })
 
@@ -183,11 +245,16 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
         val arrayList: Array<String> = resources.getStringArray(R.array.list_type)
 
-        val aa = ArrayAdapter(requireActivity(),android.R.layout.simple_spinner_item,arrayList)
+        val aa = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, arrayList)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         typeSpinner.setAdapter(aa)
         typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
                 Toast.makeText(requireActivity(), "در حال پیاده سازی", Toast.LENGTH_SHORT).show()
 
             }
@@ -196,6 +263,49 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
             }
         }
+
+        btnRequestFollow.setOnClickListener {
+            if (deceasedInfo.isrequested == null || !deceasedInfo.isrequested!!) {
+
+                showLoading(true)
+                viewModel.requestFollowDeceased(deceasedId)
+
+
+            } else if (deceasedInfo.isrequested!!) {
+                showLoading(true)
+                viewModel.requestUnFollowDeceased(deceasedId)
+
+                checkFollow = false
+
+            }
+        }
+
+
+        viewModel.ldFollow.observe(viewLifecycleOwner, Observer {
+            showLoading(false)
+            if (it.code == 200) {
+                viewModel.requestDeceasedPersonal(deceasedId)
+                btnRequestFollow.setBackgroundResource(R.drawable.waiting_request_follow_shape)
+                btnRequestFollow.text = "در انتظار تایید"
+                btnRequestFollow.setTextColor(resources.getColor(R.color.tradewind))
+                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+        viewModel.ldUnFollow.observe(viewLifecycleOwner, Observer {
+            showLoading(false)
+            if (it.code == 200) {
+                viewModel.requestDeceasedPersonal(deceasedId)
+                btnRequestFollow.setBackgroundResource(R.drawable.shape_button)
+                btnRequestFollow.text = "دنبال کردن"
+                btnRequestFollow.setTextColor(resources.getColor(R.color.white))
+                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
 
     }
 
@@ -279,6 +389,68 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
                     0
                 )
             }
+        }
+    }
+
+    private fun requestFollow(deceasedInfo: DeceasedProfileDataModel) {
+        showPrivateDetailsPage(deceasedInfo)
+        if ((deceasedInfo.isrequested == null || !deceasedInfo.isrequested!!) && !deceasedInfo.isfollow!!) {
+            txttitleDeceaedPage.visibility = GONE
+            BtnNotifBell.visibility = GONE
+            BtInbox.visibility = GONE
+
+            PrivateLayout.visibility = View.VISIBLE
+            btnRequestFollow.setBackgroundResource(R.drawable.shape_button)
+            btnRequestFollow.text = "دنبال کردن"
+            btnRequestFollow.setTextColor(resources.getColor(R.color.white))
+        }
+        if (deceasedInfo.isrequested != null && deceasedInfo.isrequested!! && !deceasedInfo.isfollow!!) {
+            btnRequestFollow.setBackgroundResource(R.drawable.waiting_request_follow_shape)
+            btnRequestFollow.text = "در انتظار تایید"
+            btnRequestFollow.setTextColor(resources.getColor(R.color.tradewind))
+            txttitleDeceaedPage.visibility = GONE
+            BtnNotifBell.visibility = GONE
+            BtInbox.visibility = GONE
+            PrivateLayout.visibility = View.VISIBLE
+        }
+        if (deceasedInfo.isfollow!!) {
+            TvDeseacesName.text = deceasedInfo.name
+            coordinateLayout.visibility = View.VISIBLE
+            TvDeathDateDeseaces.text = deceasedInfo.birthday
+            TvBornDateDeseaces.text = deceasedInfo.deathday
+            TvBurialLocation.text = "${deceasedInfo.deathloc}"
+            bioDeceased = deceasedInfo.description
+            configBioText(deceasedInfo.description!!)
+            Glide.with(requireActivity())
+                .load(deceasedInfo.imageurl)
+                .circleCrop()
+                .into(ImVDeceased)
+
+            initCollapsToolbar(requireContext(), deceasedInfo.imageurl!!, deceasedInfo.name!!)
+
+        }
+
+    }
+
+    private fun showPrivateDetailsPage(itemDeceased: DeceasedProfileDataModel) {
+        Glide.with(requireContext())
+            .load(itemDeceased.imageurl)
+            .circleCrop()
+            .into(ImVDeceasedPrivate)
+
+        TvDeseacesNamePrivate.text = itemDeceased.name
+        TvBornDateDeseacesPrivate.text = itemDeceased.birthday
+        TvDeathDateDeseacesPrivate.text = itemDeceased.deathday
+    }
+
+
+    private fun showLoading(visibility: Boolean) {
+        if (visibility) {
+            deceasedPagePrg.visibility = View.VISIBLE
+
+        } else {
+            deceasedPagePrg.visibility = View.GONE
+
         }
     }
 }

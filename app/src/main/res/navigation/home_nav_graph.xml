@@ -11,28 +11,26 @@
         <action
             android:id="@+id/action_fragment_profile_to_fragment_deceased_page"
             app:destination="@id/fragment_deceased_page"
-            app:popUpTo="@+id/fragment_cemetery"
-             />
+            />
         <action
             android:id="@+id/action_fragment_profile_to_fragment_create_deceased"
             app:destination="@id/fragment_create_deceased"
-            app:popUpTo="@+id/fragment_cemetery"
+
            />
         <action
             android:id="@+id/action_fragment_profile_to_user_edit_fragment"
             app:destination="@id/user_edit_fragment"
-            app:popUpTo="@+id/fragment_cemetery"
+
             />
     </fragment>
     <fragment
         android:id="@+id/fragment_news"
         android:name="ir.co.tarhim.ui.fragments.news.NewsFragment"
-        app:popUpTo="@id/fragment_cemetery"
         tools:layout="@layout/fragment_news">
         <action
             android:id="@+id/action_fragment_news_to_details_news_fragment"
             app:destination="@id/details_news_fragment"
-            app:popUpTo="@+id/fragment_cemetery"
+
              />
     </fragment>
     <fragment
@@ -42,13 +40,12 @@
         <action
             android:id="@+id/action_fragment_cemetery_to_fragment_deceased_page"
             app:destination="@id/fragment_deceased_page"
-            app:popUpTo="@+id/fragment_cemetery"
-         />
+
+            />
         <action
             android:id="@+id/action_fragment_cemetery_to_fragment_create_deceased"
             app:destination="@id/fragment_create_deceased"
-            app:popUpTo="@+id/fragment_cemetery"
-             />
+            />
 
     </fragment>
 
@@ -59,7 +56,7 @@
         <action
             android:id="@+id/action_fragment_deceased_page_to_fragment_create_deceased"
             app:destination="@id/fragment_create_deceased"
-            app:popUpTo="@+id/fragment_cemetery"
+
            />
     </fragment>
 
@@ -70,13 +67,11 @@
         <action
             android:id="@+id/action_fragment_create_deceased_to_maps_fragment"
             app:destination="@id/maps_fragment"
-            app:popUpTo="@+id/fragment_cemetery"
              />
         <action
             android:id="@+id/action_fragment_create_deceased_to_fragment_deceased_page"
             app:destination="@id/fragment_deceased_page"
-            app:popUpTo="@+id/fragment_cemetery"
-             />
+            />
 
     </fragment>
 
@@ -101,7 +96,7 @@
         <action
             android:id="@+id/action_user_edit_fragment_to_fragment_profile"
             app:destination="@id/fragment_profile"
-            app:popUpTo="@+id/fragment_cemetery"
+
              />
     </fragment>
 

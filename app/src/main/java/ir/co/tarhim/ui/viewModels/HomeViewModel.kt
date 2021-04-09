@@ -39,6 +39,8 @@ class HomeViewModel : ViewModel() {
     var ldGetCommnet: LiveData<List<CommentDataModel>>
     var ldSendCommnet: LiveData<ConfirmDataModel>
     var ldRegisterUser: LiveData<ConfirmDataModel>
+    var ldFollow: LiveData<ConfirmDataModel>
+    var ldUnFollow: LiveData<ConfirmDataModel>
     var ldUserInfo: LiveData<UserInfoDataModel>
     var ldError: LiveData<Throwable>
 
@@ -62,11 +64,19 @@ class HomeViewModel : ViewModel() {
         ldRegisterUser = loginRepository.mldRegisterUser
         ldUserInfo = loginRepository.mldUserInfo
         ldError= loginRepository.mldError
+        ldFollow=loginRepository.mldFollow
+        ldUnFollow=loginRepository.mldUnFollow
 
     }
 
     fun requestCreateDeceased(dataRequest: CreateDeceasedRequest) {
         loginRepository.requestCreateDeceaed(dataRequest, Hawk.get("UserNumber"))
+    }
+    fun requestFollowDeceased(id:Int) {
+        loginRepository.requestFollowDeceased(id, Hawk.get("UserNumber"))
+    }
+    fun requestUnFollowDeceased(id:Int) {
+        loginRepository.requestUnFollowDeceased(id, Hawk.get("UserNumber"))
     }
 
     fun requestRegisterUser(dataRequest: RegisterUser) {

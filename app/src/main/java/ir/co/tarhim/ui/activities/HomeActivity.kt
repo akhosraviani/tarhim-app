@@ -1,12 +1,14 @@
 package ir.co.tarhim.ui.activities
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.SparseIntArray
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import ir.co.tarhim.R
@@ -22,6 +24,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private var TIME_INTERVAL: Long = 2000
     private var mBackPressed: Long? = 0
+    private var doubleBackToExitPressedOnce = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +33,7 @@ class HomeActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
+        NavOptions.Builder().setPopUpTo(R.id.fragment_cemetery, true).build()
         NavigationUI.setupWithNavController(bottom_navigation, navController)
         bottom_navigation.setOnNavigationItemReselectedListener { }
         bottom_navigation.itemIconTintList = null
@@ -69,16 +73,62 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
-            super.onBackPressed();
-            return;
+
+        if (navController.currentDestination?.id == R.id.fragment_cemetery) {
+            if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
+                super.onBackPressed();
+                finishAffinity()
+            } else {
+                Toast.makeText(this, "برای خروج دوباره کلیک کنید", Toast.LENGTH_SHORT).show()
+            }
+
+            mBackPressed = System.currentTimeMillis()
         }else{
-            Toast.makeText(this, "برای خروج مجددا کلیک کنید", Toast.LENGTH_SHORT).show()
+            navController.navigate(R.id.fragment_cemetery)
+            changeBottomIcon(
+                bottom_navigation.menu,
+                bottom_navigation.menu.findItem(bottom_navigation.selectedItemId),
+                getEnableSelectedIcon().get(R.id.fragment_cemetery)
+            )
+
         }
 
-        mBackPressed=System.currentTimeMillis()
-
     }
+
+
+//    @SuppressLint("RestrictedApi")
+//    override fun onBackPressed() {
+//        if(navController.backStack.){
+//            navController.navigate(R.id.fragment_cemetery)
+//        }else{
+//            if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
+//                super.onBackPressed();
+//                finishAffinity()
+//            }else{
+//                Toast.makeText(this, "twice", Toast.LENGTH_SHORT).show()
+//            }
+//
+//            mBackPressed=System.currentTimeMillis()
+//        }
+
+
+//        Log.e(TAG, "onBackPressed: "+navController.currentBackStackEntry!!.destination )
+//        if(navController.currentBackStackEntry!= null){
+//
+//
+//        }
+//        navHostFragment.getChildFragmentManager().getFragments().get(0);
+//        if(navController.currentBackStackEntry!!.equals(R.id.fragment_cemetery)){
+//            if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
+//                super.onBackPressed();
+//                finishAffinity()
+//            }else{
+//                Toast.makeText(this, "twice", Toast.LENGTH_SHORT).show()
+//            }
+//
+//            mBackPressed=System.currentTimeMillis()
+//        }
+
 
 }
 

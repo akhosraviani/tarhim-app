@@ -17,12 +17,13 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.CommentDataModel
+import ir.co.tarhim.ui.callback.TipsListener
 import kotlinx.android.synthetic.main.row_left_forum.view.*
 import kotlinx.android.synthetic.main.row_right_forum.view.*
 import kotlinx.android.synthetic.main.row_right_forum.view.TVCommentForum
 import kotlinx.android.synthetic.main.row_right_forum.view.TVNameRightForum
 
-class CommentRecyclerAdapter() :
+class CommentRecyclerAdapter(var callBack:TipsListener) :
     ListAdapter<CommentDataModel, CommentRecyclerAdapter.ViewHolder>(CommentDiffUnit()) {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val txtComment: AppCompatTextView
@@ -69,9 +70,15 @@ class CommentRecyclerAdapter() :
         var view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.row_right_forum, parent, false)
         return ViewHolder(view)
+
+
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindTo(getItem(position))
+        holder.itemView.BtnMore.setOnClickListener {
+            callBack.tipsCallback(getItem(holder.adapterPosition).id)
+        }
+
     }
 }

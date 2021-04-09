@@ -109,19 +109,42 @@
         app:layout_constraintTop_toBottomOf="@+id/IvDeceased"
         app:layout_constraintVertical_bias=".02" />
 
+    <Spinner
+        android:id="@+id/AccessTypeSpinner"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:background="@drawable/shape_spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView9"
+        app:layout_constraintEnd_toStartOf="@+id/appCompatTextView9"
+        app:layout_constraintHorizontal_bias=".9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/appCompatTextView9" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appCompatTextView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/iran_sans_light"
+        android:text="حالت نمایش صفحه : "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.834"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TvChangeImg"
+        app:layout_constraintVertical_bias="0.05" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_7sdp"
-        android:layout_marginTop="@dimen/_3sdp"
         android:layout_marginEnd="@dimen/_7sdp"
         android:hint=" نام و نام خانوادگی"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TvChangeImg"
-        app:layout_constraintVertical_bias=".05">
+        app:layout_constraintTop_toBottomOf="@+id/AccessTypeSpinner"
+        app:layout_constraintVertical_bias=".03">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/ETNameDeceased"
@@ -235,7 +258,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout5"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/_7sdp"
         android:layout_marginTop="@dimen/_3sdp"
         android:layout_marginEnd="@dimen/_7sdp"
@@ -249,11 +272,13 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/ETdeceasedDescription"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/background_page"
             android:fontFamily="@font/iran_sans_light"
             android:gravity="right"
-            android:imeOptions="actionDone" />
+            android:imeOptions="actionDone"
+            android:isScrollContainer="true"
+            android:scrollbars="vertical" />
     </com.google.android.material.textfield.TextInputLayout>
 
 

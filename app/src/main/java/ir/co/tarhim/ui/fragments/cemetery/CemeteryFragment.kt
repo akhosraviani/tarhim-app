@@ -1,14 +1,18 @@
 package ir.co.tarhim.ui.fragments.cemetery
 
 import android.app.Activity
+import android.graphics.Rect
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
@@ -18,12 +22,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
+import ir.co.tarhim.model.deceased.DeceasedDataModel
 import ir.co.tarhim.ui.adapter.LatestSearchRecyclerAdapter
 import ir.co.tarhim.ui.adapter.SearchRecyclerAdapter
 import ir.co.tarhim.ui.callback.LatestRecyclerListener
 import ir.co.tarhim.ui.callback.SearchListener
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.fragment_cemetery.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
@@ -33,10 +41,14 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
         private const val TAG = "CemeteryFragment"
     }
 
+
     private lateinit var imm: InputMethodManager
     private lateinit var viewModel: HomeViewModel
     private lateinit var latestAdapter: LatestSearchRecyclerAdapter
     private lateinit var searchAdapter: SearchRecyclerAdapter
+    private var deceasedList: List<DeceasedDataModel> = ArrayList()
+
+    private lateinit var queryStr: String
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,6 +61,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         initUi()
+
         //<editor-fold desc="show EllipizeTitle">
         var titlesrc = "${getString(R.string.salavat)} ♦ ${getString(R.string.ill)}"
         TitleCemetery.text = titlesrc
@@ -58,6 +71,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
         TitleCemetery.isSelected = true
 
         //</editor-fold>
+//        keyBoardStatus()
 
         viewModel.ldLatestSearch.observe(viewLifecycleOwner, Observer {
             showLoading(false)
@@ -75,48 +89,63 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
             SearchView.requestFocus()
         }
 
-        SearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+
+        SearchView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
 
-            override fun onQueryTextChange(query: String?): Boolean {
-
+            override fun onTextChanged(query: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (query != null && TextUtils.getTrimmedLength(query) > 0) {
-
-                    viewModel.requestSearch(query!!)
+                    closeSearchBtn.animate().alpha(1f).duration = 600
+                    closeSearchBtn.visibility = View.VISIBLE
+                    viewModel.requestSearch(query!!.toString())
+                    queryStr = query!!.toString()
 
                     Log.e(TAG, "onQueryTextChange:query " + query)
 
                     showLoading(true)
                 }
-                return false
+            }
+
+            override fun afterTextChanged(query: Editable?) {
+
             }
         })
-
 
 
         viewModel.ldSearch.observe(viewLifecycleOwner, { data ->
             showLoading(false)
             data.let {
-                searchAdapter.submitList(data)
+
+                searchAdapter . submitList (it)
             }
             if (data == null)
                 Toast.makeText(getActivity(), "موردی یافت نشد", Toast.LENGTH_SHORT).show()
         }
         )
 
-        SearchView.setOnCloseListener {
+
+
+
+        closeSearchBtn.setOnClickListener {
+            imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+            SearchView.clearFocus()
+            SearchView.setText("")
+            closeSearchBtn.visibility = View.GONE
             viewModel.requestlatestSearch()
             showView(true)
-            false
+
+
         }
+
 
         BtnCreateDeceased.setOnClickListener({
             findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_create_deceased)
         })
 
     }
+
 
     private fun initUi() {
         showLoading(true)
@@ -165,15 +194,18 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
         if (!status) {
             SearchRoot.visibility = View.VISIBLE
             SearchRoot.animate().alpha(1f).duration = 600
+            SearchLayout.visibility = View.VISIBLE
             latestRoot.animate().alpha(0f).duration = 600
-//            LatestSearchRecycler.visibility=View.GONE
-//            SearchLayout.visibility=View.GONE
-//            TvLatestSearch.visibility=View.GONE
-//            BtnCreateDeceased.visibility=View.GONE
+            latestRoot.visibility = View.GONE
+
+
         } else {
             imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
             SearchRoot.animate().alpha(0f).duration = 600
+            SearchRoot.visibility = View.GONE
             latestRoot.animate().alpha(1f).duration = 600
+            latestRoot.visibility = View.VISIBLE
+
         }
 
     }
@@ -191,11 +223,40 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
     override fun serachClickCallBack(deceasedId: Int) {
         val args: Bundle
         args = bundleOf("GetFromSearch" to deceasedId)
-        SearchView.setQuery("", false)
-        SearchView.clearFocus()
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
+        SearchView.setText("")
+        SearchView.clearFocus()
         findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page, args)
     }
+
+
+    private fun keyBoardStatus() {
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        var contentView = requireActivity().findViewById<View>(android.R.id.content)
+        contentView.getViewTreeObserver()
+            .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+
+                override fun onGlobalLayout() {
+                    val r = Rect()
+                    contentView.getWindowVisibleDisplayFrame(r)
+                    val screenHeight: Int = contentView.getRootView().getHeight()
+                    val keypadHeight: Int = screenHeight - r.bottom
+                    if (keypadHeight > screenHeight * 0.15) {
+                        if (searchAdapter.itemCount > 0)
+                            DeceasedSearchRecycler.scrollToPosition(searchAdapter.itemCount - 1)
+                    } else {
+                        return
+                    }
+
+                }
+            })
+
+    }
+
+
 }
+
+
+
 
 

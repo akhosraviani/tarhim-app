@@ -12,7 +12,10 @@ data class DeceasedProfileDataModel(
     val deathloc: String?,
     val imageurl: String?,
     val isowner: Boolean?,
-): Parcelable {
+    val isfollow: Boolean?,
+    val isrequested: Boolean?,
+    val accesstype: String?,
+):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
@@ -20,8 +23,10 @@ data class DeceasedProfileDataModel(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-
-        parcel.readByte() != 0.toByte()
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readString()
     ) {
     }
 
@@ -42,4 +47,7 @@ data class DeceasedProfileDataModel(
             return arrayOfNulls(size)
         }
     }
+
+
 }
+

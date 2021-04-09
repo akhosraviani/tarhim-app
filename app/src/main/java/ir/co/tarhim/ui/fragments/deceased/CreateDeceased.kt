@@ -9,6 +9,7 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,9 +19,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
@@ -40,6 +44,7 @@ import ir.co.tarhim.model.deceased.MyDeceasedDataModel
 import ir.co.tarhim.ui.callback.UploadCallBack
 import ir.co.tarhim.ui.callback.UploadProgress
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import ir.co.tarhim.utils.AccessTypeDeceased
 import ir.co.tarhim.utils.TarhimCompress
 import ir.hamsaa.persiandatepicker.Listener
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
@@ -75,6 +80,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
     private var yearBirth: Int? = -1
     private var monthBirth: Int? = -1
     private var dayBirth: Int? = -1
+    private lateinit var accessType: String
     private var yearDeath: Int? = -1
     private var monthDeath: Int? = -1
     private var dayDeath: Int? = -1
@@ -107,6 +113,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
         })
 
         setUpView(requireView())
+        setUpSpinner()
 
 
 
@@ -143,7 +150,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
         }
 
         BtnExitDeceasedPage.setOnClickListener {
-            findNavController().navigateUp()
+            findNavController().navigate(R.id.fragment_cemetery)
         }
         location = Hawk.get("Location", LatLng(0.0, 0.0))
 
@@ -153,7 +160,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
 
                 viewModel.requestEditDeceased(
                     CreateDeceasedRequest(
-                        "Public",
+                        accessType,
                         EtBirthDateDeceased.text.toString(),
                         ETDeathDeceased.text.toString(),
                         ETBurialLocation.text.toString(),
@@ -205,6 +212,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
             openGallery()
         }
 
+
         viewModel.ldcreateDeceased.observe(viewLifecycleOwner, Observer {
 
             showLoading(false)
@@ -235,6 +243,14 @@ class CreateDeceased : Fragment(), UploadCallBack {
                 showLoading(false)
                 if (it.code == 200) {
                     Toast.makeText(activity, it.message, Toast.LENGTH_SHORT)
+                    Handler().postDelayed({
+                        val args = Bundle()
+                        args.putInt("LatestSearch", DeceasedId!!)
+                        findNavController().navigate(
+                            R.id.action_fragment_create_deceased_to_fragment_deceased_page,
+                            args
+                        )
+                    }, 1000)
                 } else {
                     Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
 
@@ -263,7 +279,7 @@ class CreateDeceased : Fragment(), UploadCallBack {
         showCalendarInDarkMode(ETDeathDeceased, 1370, 3, 13)
 
 //        }
-        picker.show()
+
     }
 
     private fun openGallery() {
@@ -322,8 +338,11 @@ class CreateDeceased : Fragment(), UploadCallBack {
                 TAG,
                 "onActivityResult: " + getRealPathFromURI(dataUri!!)
             )
-            var imagestream=requireActivity().contentResolver.openInputStream(dataUri)
-            var imgBitmap=TarhimCompress().compressImage(BitmapFactory.decodeStream(imagestream),1000)
+            var imagestream = requireActivity().contentResolver.openInputStream(dataUri)
+            var imgBitmap = TarhimCompress().compressImage(
+                BitmapFactory.decodeStream(imagestream),
+                1000
+            )
 
             Glide.with(requireContext())
                 .load(imgBitmap)
@@ -331,9 +350,14 @@ class CreateDeceased : Fragment(), UploadCallBack {
                 .circleCrop()
                 .into(IvDeceased)
 
-            var byte=ByteArrayOutputStream()
-           imgBitmap.compress(Bitmap.CompressFormat.JPEG,100,byte)
-            val path=MediaStore.Images.Media.insertImage(requireActivity().contentResolver,imgBitmap,ETNameDeceased.text.toString(),null)
+            var byte = ByteArrayOutputStream()
+            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
+            val path = MediaStore.Images.Media.insertImage(
+                requireActivity().contentResolver,
+                imgBitmap,
+                ETNameDeceased.text.toString(),
+                null
+            )
 
 
             viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(Uri.parse(path.toString())))))
@@ -436,6 +460,18 @@ class CreateDeceased : Fragment(), UploadCallBack {
         ETNameDeceased.setText(details.name)
         EtBirthDateDeceased.setText(details.birthday)
 
+        when (details.accesstype) {
+            AccessTypeDeceased.Public.name -> {
+                AccessTypeSpinner.setSelection(0)
+            }
+            AccessTypeDeceased.SemiPublic.name -> {
+                AccessTypeSpinner.setSelection(1)
+            }
+            AccessTypeDeceased.Private.name -> {
+                AccessTypeSpinner.setSelection(2)
+            }
+        }
+
         listBirth = details.birthday?.split("/")
         listDeath = details.deathday?.split("/")
 
@@ -457,12 +493,61 @@ class CreateDeceased : Fragment(), UploadCallBack {
 
 
     fun setUpView(view: View) {
-        view.setOnTouchListener { view, motionEvent ->
-            hideSoftKeyboard(requireActivity())
-            false
+        var contentView = activity?.findViewById<View>(android.R.id.content)
+        contentView!!.viewTreeObserver.addOnGlobalLayoutListener {
+            var rect = Rect()
+            contentView.getWindowVisibleDisplayFrame(rect)
+            var screenSize = contentView.rootView.height
+            var keyHeight = screenSize - rect.height()
+            if (keyHeight > screenSize * 0.15){
+                view.setOnTouchListener { view, motionEvent ->
+                    hideSoftKeyboard(requireActivity())
+                    false
+                }
+            }else{
+
+            }
+
+
         }
+
     }
 
+
+    private fun setUpSpinner() {
+        val listAccessType: Array<String> = resources.getStringArray(R.array.list_type)
+        var spinnerAdapter = ArrayAdapter(requireContext(), R.layout.row_spinner, listAccessType)
+        spinnerAdapter.setDropDownViewResource(R.layout.row_spinner)
+        AccessTypeSpinner.adapter = spinnerAdapter
+
+
+        AccessTypeSpinner.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View, position: Int, id: Long
+            ) {
+
+                when (position) {
+                    0 -> {
+                        accessType = AccessTypeDeceased.Public.name
+                    }
+                    1 -> {
+                        accessType = AccessTypeDeceased.SemiPublic.name
+                    }
+                    2 -> {
+                        accessType = AccessTypeDeceased.Private.name
+                    }
+                }
+
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                accessType = AccessTypeDeceased.Public.name
+            }
+        }
+    }
 
 
 }

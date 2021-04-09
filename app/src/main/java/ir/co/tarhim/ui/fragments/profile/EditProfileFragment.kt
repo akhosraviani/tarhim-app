@@ -168,7 +168,7 @@ class EditProfileFragment : Fragment(), UploadCallBack {
 
 
         BtnExitUserPage.setOnClickListener {
-            findNavController().navigateUp()
+            findNavController().navigate(R.id.fragment_profile)
 
         }
     }

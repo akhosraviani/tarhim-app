@@ -46,6 +46,8 @@ class LoginRepository {
     val mldRegisterUser = MutableLiveData<ConfirmDataModel>()
     val mldUserInfo = MutableLiveData<UserInfoDataModel>()
     val mldNews = MutableLiveData<List<NewsDataModel>>()
+    val mldFollow = MutableLiveData<ConfirmDataModel>()
+    val mldUnFollow = MutableLiveData<ConfirmDataModel>()
 
     fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumber) {
         RequestClient.makeRequest().requestCheckRegister(checkRegisterRequest)
@@ -59,6 +61,40 @@ class LoginRepository {
                     response: Response<CheckRegisterModel>
                 ) {
                     mldSignUp.value = CheckRegisterModel(response.body()!!.registered)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestFollowDeceased(id:Int,mobile:String) {
+        RequestClient.makeRequest().requestFollowDeceased(id,mobile)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldFollow.value =ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestUnFollowDeceased(id:Int,mobile:String) {
+        RequestClient.makeRequest().requestUnFollowDeceased(id,mobile)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldUnFollow.value =ConfirmDataModel(response.body()!!.message,response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })

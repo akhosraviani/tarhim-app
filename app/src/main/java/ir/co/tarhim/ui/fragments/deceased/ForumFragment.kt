@@ -2,9 +2,11 @@ package ir.co.tarhim.ui.fragments.deceased
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,10 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.SendCommentRequest
 import ir.co.tarhim.ui.adapter.CommentRecyclerAdapter
+import ir.co.tarhim.ui.callback.TipsListener
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_forum.*
+import kotlinx.android.synthetic.main.row_right_forum.*
 
-class ForumFragment : Fragment() {
+class ForumFragment : Fragment(), TipsListener {
 
     fun newInstance(id: Int): ForumFragment {
         val fragment = ForumFragment()
@@ -74,17 +78,31 @@ class ForumFragment : Fragment() {
             }
         }
 
+
     }
 
+
+    private fun showPopupMenu() {
+        var popup = PopupMenu(requireActivity(), BtnMore)
+        popup.menuInflater.inflate(R.menu.tool_tip_menu, popup.menu)
+        popup.show()
+    }
 
     private fun initRecycler() {
-        commentAdapter = CommentRecyclerAdapter()
+        commentAdapter = CommentRecyclerAdapter(this)
         ForumRecycler.adapter = commentAdapter
-        ForumRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+        ForumRecycler.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
 
-    private fun controllKeyboard(){
+    private fun controllKeyboard() {
+
+    }
+
+    override fun tipsCallback(msgId: Int) {
+
+        showPopupMenu()
 
     }
 
