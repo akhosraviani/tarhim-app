@@ -131,6 +131,28 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
                         }
                     }
+                    AccessTypeDeceased.Private.name -> {
+                        if(it.isowner!!){
+                            coordinateLayout.visibility = View.VISIBLE
+                            btnAddFriends.visibility = View.VISIBLE
+                            typeSpinner.visibility = View.VISIBLE
+                            appCompatTextView6.visibility = View.VISIBLE
+                            typeSpinner.setText(resources.getStringArray(R.array.list_type)[2])
+                            TvDeseacesName.text = it.name
+                            TvDeathDateDeseaces.text = it.birthday
+                            TvBornDateDeseaces.text = it.deathday
+                            TvBurialLocation.text = "${it.deathloc}"
+                            bioDeceased = it.description
+                            configBioText(it.description!!)
+                            Glide.with(requireActivity())
+                                .load(it.imageurl)
+                                .circleCrop()
+                                .into(ImVDeceased)
+
+                            initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+                        }
+                    }
+
                 }
 
 
@@ -182,6 +204,27 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
                             initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
 
+                        }
+                    }
+                    AccessTypeDeceased.Private.name -> {
+                        if(it.isowner!!){
+                            coordinateLayout.visibility = View.VISIBLE
+                            btnAddFriends.visibility = View.VISIBLE
+                            typeSpinner.visibility = View.VISIBLE
+                            appCompatTextView6.visibility = View.VISIBLE
+                            typeSpinner.setText(resources.getStringArray(R.array.list_type)[2])
+                            TvDeseacesName.text = it.name
+                            TvDeathDateDeseaces.text = it.birthday
+                            TvBornDateDeseaces.text = it.deathday
+                            TvBurialLocation.text = "${it.deathloc}"
+                            bioDeceased = it.description
+                            configBioText(it.description!!)
+                            Glide.with(requireActivity())
+                                .load(it.imageurl)
+                                .circleCrop()
+                                .into(ImVDeceased)
+
+                            initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
                         }
                     }
                 }
@@ -247,22 +290,22 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
         val aa = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, arrayList)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        typeSpinner.setAdapter(aa)
-        typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                Toast.makeText(requireActivity(), "در حال پیاده سازی", Toast.LENGTH_SHORT).show()
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-
-            }
-        }
+//        typeSpinner.setAdapter(aa)
+//        typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(
+//                parent: AdapterView<*>,
+//                view: View,
+//                position: Int,
+//                id: Long
+//            ) {
+//                Toast.makeText(requireActivity(), "در حال پیاده سازی", Toast.LENGTH_SHORT).show()
+//
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>) {
+//
+//            }
+//        }
 
         btnRequestFollow.setOnClickListener {
             if (deceasedInfo.isrequested == null || !deceasedInfo.isrequested!!) {

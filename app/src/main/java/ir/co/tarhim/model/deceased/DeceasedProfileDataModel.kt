@@ -2,7 +2,6 @@ package ir.co.tarhim.model.deceased
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.io.Serializable
 
 data class DeceasedProfileDataModel(
     val name: String?,
@@ -30,12 +29,21 @@ data class DeceasedProfileDataModel(
     ) {
     }
 
-    override fun describeContents(): Int {
-        TODO("Not yet implemented")
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(name)
+        parcel.writeString(description)
+        parcel.writeString(birthday)
+        parcel.writeString(deathday)
+        parcel.writeString(deathloc)
+        parcel.writeString(imageurl)
+        parcel.writeValue(isowner)
+        parcel.writeValue(isfollow)
+        parcel.writeValue(isrequested)
+        parcel.writeString(accesstype)
     }
 
-    override fun writeToParcel(p0: Parcel?, p1: Int) {
-        TODO("Not yet implemented")
+    override fun describeContents(): Int {
+        return 0
     }
 
     companion object CREATOR : Parcelable.Creator<DeceasedProfileDataModel> {
@@ -47,7 +55,6 @@ data class DeceasedProfileDataModel(
             return arrayOfNulls(size)
         }
     }
-
-
 }
+
 

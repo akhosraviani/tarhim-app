@@ -316,6 +316,7 @@
                         android:fontFamily="@font/iran_sans_bold"
                         android:gravity="left|center"
                         android:paddingLeft="@dimen/_13sdp"
+                        android:textSize="@dimen/_12sdp"
                         android:text="اضافه کردن مخاطب جدید با شماره تلفن "
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -342,12 +343,16 @@
                         app:layout_constraintStart_toStartOf="@+id/btnAddFriends"
                         app:layout_constraintTop_toBottomOf="@id/btnAddFriends" />
 
-                    <Spinner
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/typeSpinner"
                         android:layout_width="@dimen/_80sdp"
                         android:layout_height="30sp"
                         android:background="@drawable/shape_spinner"
                         android:visibility="gone"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_7sdp"
+                        android:textColor="@color/text_color_lighter"
                         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView6"
                         app:layout_constraintEnd_toStartOf="@+id/appCompatTextView6"
                         app:layout_constraintStart_toStartOf="@id/btnAddFriends"

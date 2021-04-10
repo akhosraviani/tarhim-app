@@ -33,6 +33,7 @@ import ir.co.tarhim.ui.callback.UploadProgress
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.OnBackPressed
 import ir.co.tarhim.utils.TarhimCompress
+import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.edit_user_profile.*
 import okhttp3.MultipartBody
 import java.io.ByteArrayOutputStream
@@ -236,27 +237,27 @@ class EditProfileFragment : Fragment(), UploadCallBack {
                 TAG,
                 "onActivityResult: " + realFilePath(dataUri!!)
             )
-            var imagestream = requireActivity().contentResolver.openInputStream(dataUri)
-            var imgBitmap =
-                TarhimCompress().compressImage(BitmapFactory.decodeStream(imagestream), 1000)
+//            var imagestream = requireActivity().contentResolver.openInputStream(dataUri)
+//            var imgBitmap =
+//                TarhimCompress().compressImage(BitmapFactory.decodeStream(imagestream), 1000)
 
             Glide.with(requireContext())
-                .load(imgBitmap)
+                .load(realFilePath(dataUri!!))
                 .centerInside()
                 .circleCrop()
                 .into(IvUser)
 
-            var byte = ByteArrayOutputStream()
-            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
-            val path = MediaStore.Images.Media.insertImage(
-                requireActivity().contentResolver,
-                imgBitmap,
-                "",
-                null
-            )
+//            var byte = ByteArrayOutputStream()
+//            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
+//            val path = MediaStore.Images.Media.insertImage(
+//                requireActivity().contentResolver,
+//                imgBitmap,
+//                ETNameDeceased.text.toString(),
+//                null
+//            )
 
 
-            viewModel.requestUploadImage(uploadFile(Uri.parse(realFilePath(Uri.parse(path.toString())))))
+            viewModel.requestUploadImage(uploadFile(Uri.parse(realFilePath(dataUri!!))))
 
         }
     }

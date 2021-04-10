@@ -66,8 +66,9 @@ class LoginRepository {
             })
 
     }
-    fun requestFollowDeceased(id:Int,mobile:String) {
-        RequestClient.makeRequest().requestFollowDeceased(id,mobile)
+
+    fun requestFollowDeceased(id: Int, mobile: String) {
+        RequestClient.makeRequest().requestFollowDeceased(id, mobile)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -77,14 +78,19 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldFollow.value =ConfirmDataModel(response.body()!!.message,response.body()!!.code)
-                    Log.i(TAG, "im here=" + response.body())
+
+                    Log.e(TAG, "onResponse: "+response.body() )
+                    if (response.isSuccessful && response.body() != null) {
+                        mldFollow.value =
+                            ConfirmDataModel(response.body()!!.message, response.body()!!.code)
+                    }
                 }
             })
 
     }
-    fun requestUnFollowDeceased(id:Int,mobile:String) {
-        RequestClient.makeRequest().requestUnFollowDeceased(id,mobile)
+
+    fun requestUnFollowDeceased(id: Int, mobile: String) {
+        RequestClient.makeRequest().requestUnFollowDeceased(id, mobile)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -94,7 +100,8 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldUnFollow.value =ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    mldUnFollow.value =
+                        ConfirmDataModel(response.body()!!.message, response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })
@@ -167,7 +174,8 @@ class LoginRepository {
                     call: retrofit2.Call<UploadFileDataModel>,
                     response: Response<UploadFileDataModel>
                 ) {
-                    mldUploadImage.value =UploadFileDataModel( response.body()!!.id, response.body()!!.path)
+                    mldUploadImage.value =
+                        UploadFileDataModel(response.body()!!.id, response.body()!!.path)
                     Log.i("testTag", "im here=" + response.body())
                 }
             })
@@ -203,7 +211,7 @@ class LoginRepository {
                     call: retrofit2.Call<userRedirect>,
                     t: Throwable
                 ) {
-                    mldError.value=t
+                    mldError.value = t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
@@ -238,6 +246,7 @@ class LoginRepository {
             })
 
     }
+
     fun requestRegisterUser(dataRequest: RegisterUser, mobile: String) {
         RequestClient.makeRequest().requestRegisterUser(dataRequest, mobile)
             .enqueue(object : Callback<ConfirmDataModel> {
@@ -258,8 +267,9 @@ class LoginRepository {
             })
 
     }
-    fun requestUserInfo( mobile: String) {
-        RequestClient.makeRequest().requestUserInfo( mobile)
+
+    fun requestUserInfo(mobile: String) {
+        RequestClient.makeRequest().requestUserInfo(mobile)
             .enqueue(object : Callback<UserInfoDataModel> {
                 override fun onFailure(
                     call: retrofit2.Call<UserInfoDataModel>,
@@ -321,8 +331,8 @@ class LoginRepository {
 
     }
 
-    fun requestDeceasedPersonalProfile(id: Int,mobile:String) {
-        RequestClient.makeRequest().requestDeceaedPersonal(id,mobile)
+    fun requestDeceasedPersonalProfile(id: Int, mobile: String) {
+        RequestClient.makeRequest().requestDeceaedPersonal(id, mobile)
             .enqueue(object : Callback<DeceasedProfileDataModel> {
                 override fun onFailure(
                     call: retrofit2.Call<DeceasedProfileDataModel>,
@@ -341,8 +351,9 @@ class LoginRepository {
             })
 
     }
-    fun requestDeceasedFromSearch(id: Int,mobile:String) {
-        RequestClient.makeRequest().requestDeceaedFromSearch(id,mobile)
+
+    fun requestDeceasedFromSearch(id: Int, mobile: String) {
+        RequestClient.makeRequest().requestDeceaedFromSearch(id, mobile)
             .enqueue(object : Callback<DeceasedProfileDataModel> {
                 override fun onFailure(
                     call: retrofit2.Call<DeceasedProfileDataModel>,
@@ -392,7 +403,13 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    Log.i(TAG, "im here=" + ConfirmDataModel(response.message(),response.code()).toString())
+                    Log.i(
+                        TAG,
+                        "im here=" + ConfirmDataModel(
+                            response.message(),
+                            response.code()
+                        ).toString()
+                    )
                     response.body().let {
                         mldConfirmOtp.value = ConfirmDataModel(response.message(), response.code())
                         Log.i("testTag", "im here=" + it?.code)
@@ -418,12 +435,12 @@ class LoginRepository {
             })
     }
 
-    fun requestNews(page:String,size:String) {
-        RequestClient.makeRequest().requestNews(page,size)
+    fun requestNews(page: String, size: String) {
+        RequestClient.makeRequest().requestNews(page, size)
             .enqueue(object : Callback<List<NewsDataModel>> {
 
                 override fun onFailure(call: Call<List<NewsDataModel>>, t: Throwable) {
-                    Log.e(TAG, "onFailure news: "+t.message )
+                    Log.e(TAG, "onFailure news: " + t.message)
                 }
 
                 override fun onResponse(

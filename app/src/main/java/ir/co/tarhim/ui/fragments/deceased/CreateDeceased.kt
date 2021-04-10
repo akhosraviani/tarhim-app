@@ -339,28 +339,25 @@ class CreateDeceased : Fragment(), UploadCallBack {
                 "onActivityResult: " + getRealPathFromURI(dataUri!!)
             )
             var imagestream = requireActivity().contentResolver.openInputStream(dataUri)
-            var imgBitmap = TarhimCompress().compressImage(
-                BitmapFactory.decodeStream(imagestream),
-                1000
-            )
+            var imgBitmap = TarhimCompress().compressImage(BitmapFactory.decodeStream(imagestream), 500)
 
             Glide.with(requireContext())
-                .load(imgBitmap)
+                .load(getRealPathFromURI(dataUri!!))
                 .centerInside()
                 .circleCrop()
                 .into(IvDeceased)
 
-            var byte = ByteArrayOutputStream()
-            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
-            val path = MediaStore.Images.Media.insertImage(
-                requireActivity().contentResolver,
-                imgBitmap,
-                ETNameDeceased.text.toString(),
-                null
-            )
+//            var byte = ByteArrayOutputStream()
+//            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
+//            val path = MediaStore.Images.Media.insertImage(
+//                requireActivity().contentResolver,
+//                imgBitmap,
+//                ETNameDeceased.text.toString(),
+//                null
+//            )
 
 
-            viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(Uri.parse(path.toString())))))
+            viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(dataUri!!))))
 
         }
     }
