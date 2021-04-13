@@ -1,11 +1,9 @@
 package ir.co.tarhim.ui.fragments.deceased
 
-import android.R.string
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +12,6 @@ import android.view.ViewGroup
 import android.view.ViewGroup.GONE
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.view.ViewCompat
@@ -28,17 +25,16 @@ import com.google.android.material.tabs.TabLayoutMediator
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
 import ir.co.tarhim.ui.adapter.ViewPagerAdapter
+import ir.co.tarhim.ui.callback.SpinnerListener
 import ir.co.tarhim.ui.callback.ViewPagerCallBack
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.AccessTypeDeceased
 import ir.co.tarhim.utils.OnBackPressed
+import ir.co.tarhim.utils.SpinnerTarhim
 import kotlinx.android.synthetic.main.deceased_profile.*
-import kotlinx.android.synthetic.main.deceased_profile.BtInbox
-import kotlinx.android.synthetic.main.deceased_profile.view.*
-import kotlinx.android.synthetic.main.fragment_cemetery.*
 import java.util.*
 
-class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
+class DeceasedPageFragment : Fragment(), ViewPagerCallBack, SpinnerListener {
 
     companion object {
         private const val TAG = "DeceasedPageFragment"
@@ -131,6 +127,30 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
                         }
                     }
+
+
+                    AccessTypeDeceased.Private.name -> {
+                        if (it.isowner!!){
+                            coordinateLayout.visibility = View.VISIBLE
+                            btnAddFriends.visibility=View.VISIBLE
+                            typeSpinner.visibility=View.VISIBLE
+//                            SpinnerTarhim().initSpinner(this,requireActivity(),R.layout.row_spinner,typeSpinner,resources.getStringArray(R.array.list_type) as Array<String>)
+
+//                            typeSpinner.setSelection(2)
+                            TvDeseacesName.text = it.name
+                            TvDeathDateDeseaces.text = it.birthday
+                            TvBornDateDeseaces.text = it.deathday
+                            TvBurialLocation.text = "${it.deathloc}"
+                            bioDeceased = it.description
+                            configBioText(it.description!!)
+                            Glide.with(requireActivity())
+                                .load(it.imageurl)
+                                .circleCrop()
+                                .into(ImVDeceased)
+
+                            initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+                        }
+                    }
                     AccessTypeDeceased.Private.name -> {
                         if(it.isowner!!){
                             coordinateLayout.visibility = View.VISIBLE
@@ -159,7 +179,7 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
             }
         })
         viewModel.ldDeceasedFromSearch.observe(viewLifecycleOwner, Observer {
-                showLoading(false)
+            showLoading(false)
             it?.let {
                 deceasedInfo = it
                 when (it.accesstype) {
@@ -226,6 +246,7 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
                             initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
                         }
+
                     }
                 }
 
@@ -287,6 +308,7 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
 
         val arrayList: Array<String> = resources.getStringArray(R.array.list_type)
+
 
         val aa = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, arrayList)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -496,4 +518,14 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
         }
     }
+
+    override fun onNothing() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSelected(adapter: AdapterView<*>, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+
 }

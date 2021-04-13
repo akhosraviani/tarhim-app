@@ -2,14 +2,14 @@ package ir.co.tarhim.ui.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
-import ir.co.tarhim.model.confirmpass.ConfirmDataModel
-import ir.co.tarhim.model.confirmpass.ConfirmPasswordRequest
+import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
+import ir.co.tarhim.model.ConfirmDataModel
+import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.deceased.*
-import ir.co.tarhim.model.mobile.CheckPhoneNumber
-import ir.co.tarhim.model.mobile.CheckRegisterModel
+import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
+import ir.co.tarhim.model.login.mobile.CheckRegisterModel
+import ir.co.tarhim.model.login.otp.OtpDataModel
 import ir.co.tarhim.model.news.NewsDataModel
-import ir.co.tarhim.model.otp.OtpDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.network.RequestClient
@@ -49,11 +49,12 @@ class LoginRepository {
     val mldFollow = MutableLiveData<ConfirmDataModel>()
     val mldUnFollow = MutableLiveData<ConfirmDataModel>()
 
-    fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumber) {
+    fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumberRequest) {
         RequestClient.makeRequest().requestCheckRegister(checkRegisterRequest)
             .enqueue(object : Callback<CheckRegisterModel> {
                 override fun onFailure(call: retrofit2.Call<CheckRegisterModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
                 }
 
                 override fun onResponse(
@@ -72,6 +73,8 @@ class LoginRepository {
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+
                 }
 
                 override fun onResponse(
@@ -94,6 +97,8 @@ class LoginRepository {
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+
                 }
 
                 override fun onResponse(
@@ -113,6 +118,8 @@ class LoginRepository {
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+
                 }
 
                 override fun onResponse(
@@ -131,6 +138,8 @@ class LoginRepository {
             .enqueue(object : Callback<List<CommentDataModel>> {
                 override fun onFailure(call: retrofit2.Call<List<CommentDataModel>>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+
                 }
 
                 override fun onResponse(
@@ -149,6 +158,8 @@ class LoginRepository {
             .enqueue(object : Callback<GalleryDataModel> {
                 override fun onFailure(call: retrofit2.Call<GalleryDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure getGallery: " + t.message)
+                    mldError.value=t
+
                 }
 
                 override fun onResponse(
@@ -168,6 +179,8 @@ class LoginRepository {
             .enqueue(object : Callback<UploadFileDataModel> {
                 override fun onFailure(call: retrofit2.Call<UploadFileDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+
                 }
 
                 override fun onResponse(
@@ -189,7 +202,7 @@ class LoginRepository {
                     call: retrofit2.Call<List<MyDeceasedDataModel>>,
                     t: Throwable
                 ) {
-
+                    mldError.value=t
 
                 }
 
@@ -233,6 +246,7 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     t: Throwable
                 ) {
+                    mldError.value=t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
@@ -254,6 +268,7 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     t: Throwable
                 ) {
+                    mldError.value=t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
@@ -275,6 +290,7 @@ class LoginRepository {
                     call: retrofit2.Call<UserInfoDataModel>,
                     t: Throwable
                 ) {
+                    mldError.value=t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
@@ -296,6 +312,7 @@ class LoginRepository {
                     call: retrofit2.Call<List<DeceasedDataModel>>,
                     t: Throwable
                 ) {
+                    mldError.value=t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
@@ -317,6 +334,7 @@ class LoginRepository {
                     call: retrofit2.Call<List<DeceasedDataModel>>,
                     t: Throwable
                 ) {
+                    mldError.value=t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
@@ -338,6 +356,7 @@ class LoginRepository {
                     call: retrofit2.Call<DeceasedProfileDataModel>,
                     t: Throwable
                 ) {
+                    mldError.value=t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
@@ -359,6 +378,7 @@ class LoginRepository {
                     call: retrofit2.Call<DeceasedProfileDataModel>,
                     t: Throwable
                 ) {
+                    mldError.value=t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
 
@@ -374,18 +394,19 @@ class LoginRepository {
     }
 
 
-    fun requestOtp(checkOtpRequest: CheckPhoneNumber) {
+    fun requestOtp(checkOtpRequest: CheckPhoneNumberRequest) {
         RequestClient.makeRequest().requestOtp(checkOtpRequest)
             .enqueue(object : Callback<OtpDataModel> {
                 override fun onFailure(call: retrofit2.Call<OtpDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
                 }
 
                 override fun onResponse(
                     call: retrofit2.Call<OtpDataModel>,
                     response: Response<OtpDataModel>
                 ) {
-                    mldOtp.value = OtpDataModel(response.body()!!.IsSuccessful)
+                    mldOtp.value = OtpDataModel(response.body()!!.IsSuccessful,response.body()!!.Message)
                     Log.i("testTag", "im here=" + response.body())
                 }
             })
@@ -393,10 +414,12 @@ class LoginRepository {
     }
 
     fun confirmOtp(confirmOtpRequest: ConfirmOtpRequest) {
-        RequestClient.makeRequest().confirmOtp(confirmOtpRequest)
+        RequestClient.makeRequest().requestConfirmOtp(confirmOtpRequest)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+
                 }
 
                 override fun onResponse(
@@ -419,7 +442,7 @@ class LoginRepository {
     }
 
     fun confirmPassword(confirmPassword: ConfirmPasswordRequest) {
-        RequestClient.makeRequest().confirmPassword(confirmPassword)
+        RequestClient.makeRequest().requestConfirmPassword(confirmPassword)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onResponse(
                     call: Call<ConfirmDataModel>,
@@ -431,6 +454,7 @@ class LoginRepository {
 
                 override fun onFailure(call: Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
                 }
             })
     }
@@ -441,6 +465,8 @@ class LoginRepository {
 
                 override fun onFailure(call: Call<List<NewsDataModel>>, t: Throwable) {
                     Log.e(TAG, "onFailure news: " + t.message)
+                    mldError.value=t
+
                 }
 
                 override fun onResponse(
@@ -457,7 +483,7 @@ class LoginRepository {
             .enqueue(object : Callback<ConfirmDataModel> {
 
                 override fun onFailure(call: Call<ConfirmDataModel>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    mldError.value=t
                 }
 
                 override fun onResponse(

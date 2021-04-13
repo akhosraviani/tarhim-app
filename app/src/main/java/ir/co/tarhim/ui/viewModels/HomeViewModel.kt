@@ -4,19 +4,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.orhanobut.hawk.Hawk
-import ir.co.tarhim.model.confirmotp.ConfirmOtpDataModel
-import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
-import ir.co.tarhim.model.confirmpass.ConfirmDataModel
-import ir.co.tarhim.model.confirmpass.ConfirmPasswordRequest
+import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
+import ir.co.tarhim.model.ConfirmDataModel
+import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.deceased.*
-import ir.co.tarhim.model.mobile.CheckPhoneNumber
-import ir.co.tarhim.model.mobile.CheckRegisterModel
-import ir.co.tarhim.model.otp.OtpDataModel
+import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
+import ir.co.tarhim.model.login.mobile.CheckRegisterModel
+import ir.co.tarhim.model.login.otp.OtpDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.ui.repository.LoginRepository
 import okhttp3.MultipartBody
-import kotlin.math.log
 
 class HomeViewModel : ViewModel() {
 
@@ -25,8 +23,8 @@ class HomeViewModel : ViewModel() {
     var ldSignUp: LiveData<CheckRegisterModel>
     var ldOtp: LiveData<OtpDataModel>
     var ldConfirmOtp: LiveData<ConfirmDataModel>
-    var ldConfirm: LiveData<ConfirmDataModel>
-    var ldSet: LiveData<ConfirmDataModel>
+    var ldConfirmPass: LiveData<ConfirmDataModel>
+    var ldSetPass: LiveData<ConfirmDataModel>
     var ldSearch: LiveData<List<DeceasedDataModel>>
     var ldLatestSearch: LiveData<List<DeceasedDataModel>>
     var ldDeceasedProfile: LiveData<DeceasedProfileDataModel>
@@ -48,8 +46,8 @@ class HomeViewModel : ViewModel() {
         ldSignUp = loginRepository.mldSignUp
         ldOtp = loginRepository.mldOtp
         ldConfirmOtp = loginRepository.mldConfirmOtp
-        ldConfirm = loginRepository.mldConfirmPassword
-        ldSet = loginRepository.mldConfirmSetPassword
+        ldConfirmPass = loginRepository.mldConfirmPassword
+        ldSetPass = loginRepository.mldConfirmSetPassword
         ldSearch = loginRepository.mldSearchList
         ldLatestSearch = loginRepository.mldLatestSearch
         ldDeceasedProfile = loginRepository.mldDeceaedProfile
@@ -108,7 +106,7 @@ class HomeViewModel : ViewModel() {
         loginRepository.requestGetGallery(id)
     }
 
-    fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumber) {
+    fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumberRequest) {
         loginRepository.requestCheckRegister(checkRegisterRequest)
         Log.i("testTag", "hi model view" + ldSignUp)
     }
@@ -118,7 +116,7 @@ class HomeViewModel : ViewModel() {
     }
 
 
-    fun requestOtp(otpRequest: CheckPhoneNumber) {
+    fun requestOtp(otpRequest: CheckPhoneNumberRequest) {
         loginRepository.requestOtp(otpRequest)
         Log.i("testTag", "hi model view" + ldOtp)
     }

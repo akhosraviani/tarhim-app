@@ -1,13 +1,13 @@
 package ir.co.tarhim.network
 
-import ir.co.tarhim.model.confirmotp.ConfirmOtpRequest
-import ir.co.tarhim.model.confirmpass.ConfirmDataModel
-import ir.co.tarhim.model.confirmpass.ConfirmPasswordRequest
+import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
+import ir.co.tarhim.model.ConfirmDataModel
+import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.deceased.*
-import ir.co.tarhim.model.mobile.CheckRegisterModel
-import ir.co.tarhim.model.mobile.CheckPhoneNumber
+import ir.co.tarhim.model.login.mobile.CheckRegisterModel
+import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
+import ir.co.tarhim.model.login.otp.OtpDataModel
 import ir.co.tarhim.model.news.NewsDataModel
-import ir.co.tarhim.model.otp.OtpDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import okhttp3.MultipartBody
@@ -18,16 +18,16 @@ interface RequestApi {
 
 
     @POST("api/v1/account/mobile")
-    fun requestCheckRegister(@Body checkRegisterRequest: CheckPhoneNumber): Call<CheckRegisterModel>
+    fun requestCheckRegister(@Body checkRegisterRequest: CheckPhoneNumberRequest): Call<CheckRegisterModel>
 
     @POST("api/v1/account/otp")
-    fun requestOtp(@Body checkPhoneNumber: CheckPhoneNumber): Call<OtpDataModel>
+    fun requestOtp(@Body checkPhoneNumber: CheckPhoneNumberRequest): Call<OtpDataModel>
 
     @POST("api/v1/account/confirmOtp")
-    fun confirmOtp(@Body confirmOtpRequest: ConfirmOtpRequest): Call<ConfirmDataModel>
+    fun requestConfirmOtp(@Body confirmOtpRequest: ConfirmOtpRequest): Call<ConfirmDataModel>
 
     @POST("api/v1/account/confirmPassword")
-    fun confirmPassword(@Body confirmPassword: ConfirmPasswordRequest): Call<ConfirmDataModel>
+    fun requestConfirmPassword(@Body confirmPassword: ConfirmPasswordRequest): Call<ConfirmDataModel>
 
     @POST("api/v1/account/setPassword")
     fun setPassword(@Body setPassword: ConfirmPasswordRequest): Call<ConfirmDataModel>

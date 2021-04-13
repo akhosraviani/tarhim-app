@@ -4,12 +4,12 @@
     android:id="@+id/txt_toast"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/_30sdp"
-    android:layout_margin="@dimen/_3sdp"
+    android:layout_margin="@dimen/_2sdp"
     android:background="@drawable/shape_toast"
     android:fontFamily="@font/iran_sans_medium"
     android:gravity="center"
-    android:paddingStart="@dimen/_5sdp"
-    android:paddingEnd="@dimen/_5sdp"
+    android:paddingStart="@dimen/_7sdp"
+    android:paddingEnd="@dimen/_7sdp"
     android:textColor="@color/white"
     tools:text="test toast txt">
 

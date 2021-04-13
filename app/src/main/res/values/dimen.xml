@@ -3,15 +3,15 @@
 
     <!-- region all-->
     <dimen name="all_small_space">8dp</dimen>
-    <dimen name="all_medium_space">16dp</dimen>
+    <dimen name="all_medium_space">12dp</dimen>
     <dimen name="all_large_space">24dp</dimen>
-    <dimen name="all_xlarge_space">15dp</dimen>
+    <dimen name="all_xlarge_space">10dp</dimen>
     <dimen name="all_2xlarge_space">64dp</dimen>
 
     <!-- endregion-->
 
     <!-- region login-->
-    <dimen name="size_login_logo">100dp</dimen>
+    <dimen name="size_login_logo">70dp</dimen>
     <dimen name="size_signIn_back">50dp</dimen>
     <dimen name="width_login_stroke">2dp</dimen>
 
@@ -31,7 +31,6 @@
     <dimen name="textsize_login_enter_btn">18sp</dimen>
     <dimen name="textsize_login_rules">12sp</dimen>
     <!-- endregion-->
-
 
 
 </resources>

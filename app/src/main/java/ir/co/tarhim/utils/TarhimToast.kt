@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import ir.co.tarhim.R
+import kotlinx.android.synthetic.main.toast_view.view.*
 import java.time.Duration
 
 class TarhimToast private constructor(
@@ -20,10 +21,11 @@ class TarhimToast private constructor(
     init {
         this.message = builder.msg
         this.activity=builder.activity
-        view = LayoutInflater.from(activity).inflate(R.layout.toast_view, null, false)
+        view = LayoutInflater.from(activity).inflate(R.layout.toast_view, activity?.findViewById(R.id.txt_toast), false)
         toast = Toast(activity)
+        view.txt_toast.text=message
         toast.view = view.rootView
-        toast.setGravity(Gravity.BOTTOM, 0, 30)
+        toast.setGravity(Gravity.BOTTOM, 0, 50)
         toast.duration = Toast.LENGTH_SHORT
         toast.show()
     }
