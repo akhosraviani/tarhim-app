@@ -34,7 +34,7 @@ import ir.co.tarhim.utils.SpinnerTarhim
 import kotlinx.android.synthetic.main.deceased_profile.*
 import java.util.*
 
-class DeceasedPageFragment : Fragment(), ViewPagerCallBack, SpinnerListener {
+class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
     companion object {
         private const val TAG = "DeceasedPageFragment"
@@ -519,13 +519,11 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack, SpinnerListener {
         }
     }
 
-    override fun onNothing() {
-        TODO("Not yet implemented")
+
+    private fun showContactList(){
+
     }
 
-    override fun onSelected(adapter: AdapterView<*>, position: Int) {
-        TODO("Not yet implemented")
-    }
 
 
 }

@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.HomeActivity"
+            android:name=".ui.activities.home.HomeActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 

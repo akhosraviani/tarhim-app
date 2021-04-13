@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
-import ir.co.tarhim.ui.activities.HomeActivity
+import ir.co.tarhim.ui.activities.home.HomeActivity
 import ir.co.tarhim.ui.activities.login.state.InputOtpState
 import ir.co.tarhim.ui.activities.login.state.InputPasswordState
 import ir.co.tarhim.ui.activities.login.state.InputPhoneState

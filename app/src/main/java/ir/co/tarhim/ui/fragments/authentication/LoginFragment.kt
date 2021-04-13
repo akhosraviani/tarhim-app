@@ -18,7 +18,7 @@
 //import ir.co.tarhim.R
 //import ir.co.tarhim.model.login.mobile.CheckPhoneNumber
 //import ir.co.tarhim.ui.AbstractFragment
-//import ir.co.tarhim.ui.activities.HomeActivity
+//import ir.co.tarhim.ui.activities.home.HomeActivity
 //import ir.co.tarhim.ui.viewModels.HomeViewModel
 //import kotlinx.android.synthetic.main.fragment_login.*
 //

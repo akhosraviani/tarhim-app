@@ -46,6 +46,7 @@
     <string name="tv_txt_deathday">تاریخ وفات :</string>
     <string name="msg_add_image">افزودن عکس</string>
     <string name="msg_add_image_user">افزودن عکس</string>
+    <string name="msg_contact_toolbar">خویشان و نزدیکان</string>
 
 
     <string-array name="list_type">

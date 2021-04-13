@@ -14,6 +14,7 @@ import ir.co.tarhim.model.login.otp.OtpDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.ui.repository.LoginRepository
+import ir.co.tarhim.utils.TarhimConfig.Companion.USER_NUMBER
 import okhttp3.MultipartBody
 
 class HomeViewModel : ViewModel() {
@@ -68,33 +69,33 @@ class HomeViewModel : ViewModel() {
     }
 
     fun requestCreateDeceased(dataRequest: CreateDeceasedRequest) {
-        loginRepository.requestCreateDeceaed(dataRequest, Hawk.get("UserNumber"))
+        loginRepository.requestCreateDeceaed(dataRequest, Hawk.get(USER_NUMBER))
     }
     fun requestFollowDeceased(id:Int) {
-        loginRepository.requestFollowDeceased(id, Hawk.get("UserNumber"))
+        loginRepository.requestFollowDeceased(id, Hawk.get(USER_NUMBER))
     }
     fun requestUnFollowDeceased(id:Int) {
-        loginRepository.requestUnFollowDeceased(id, Hawk.get("UserNumber"))
+        loginRepository.requestUnFollowDeceased(id, Hawk.get(USER_NUMBER))
     }
 
     fun requestRegisterUser(dataRequest: RegisterUser) {
-        loginRepository.requestRegisterUser(dataRequest, Hawk.get("UserNumber"))
+        loginRepository.requestRegisterUser(dataRequest, Hawk.get(USER_NUMBER))
     }
 
     fun requestUserInfo() {
-        loginRepository.requestUserInfo(Hawk.get("UserNumber"))
+        loginRepository.requestUserInfo(Hawk.get(USER_NUMBER))
     }
 
     fun requestEditDeceased(dataRequest: CreateDeceasedRequest, id: Int) {
-        loginRepository.requestEditDeceaed(dataRequest, id, Hawk.get("UserNumber"))
+        loginRepository.requestEditDeceaed(dataRequest, id, Hawk.get(USER_NUMBER))
     }
 
     fun requestSendComment(body: SendCommentRequest) {
-        loginRepository.requestSendComment(body, Hawk.get("UserNumber"))
+        loginRepository.requestSendComment(body, Hawk.get(USER_NUMBER))
     }
 
     fun requestGetComment(id: Int) {
-        loginRepository.requestGetComment(id, Hawk.get("UserNumber"))
+        loginRepository.requestGetComment(id, Hawk.get(USER_NUMBER))
         Log.i("testTag", "hi model view" + ldSignUp)
     }
 
@@ -112,7 +113,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun requestMydeceased() {
-        loginRepository.requestMyDeceaed(Hawk.get("UserNumber"))
+        loginRepository.requestMyDeceaed(Hawk.get(USER_NUMBER))
     }
 
 
@@ -126,15 +127,15 @@ class HomeViewModel : ViewModel() {
     }
 
     fun requestlatestSearch() {
-        loginRepository.requestLatestSearch(Hawk.get("UserNumber"))
+        loginRepository.requestLatestSearch(Hawk.get(USER_NUMBER))
     }
 
     fun requestDeceasedPersonal(id: Int) {
-        loginRepository.requestDeceasedPersonalProfile(id, Hawk.get("UserNumber"))
+        loginRepository.requestDeceasedPersonalProfile(id, Hawk.get(USER_NUMBER))
     }
 
     fun requestDeceasedFromSearch(id: Int) {
-        loginRepository.requestDeceasedFromSearch(id, Hawk.get("UserNumber"))
+        loginRepository.requestDeceasedFromSearch(id, Hawk.get(USER_NUMBER))
     }
 
     fun requestConfirmPassword(confirmPassword: ConfirmPasswordRequest) {

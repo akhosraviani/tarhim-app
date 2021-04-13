@@ -1,4 +1,4 @@
-package ir.co.tarhim.ui.activities
+package ir.co.tarhim.ui.activities.home
 
 import android.os.Bundle
 import android.os.Handler
