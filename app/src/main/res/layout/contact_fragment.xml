@@ -52,24 +52,41 @@
         android:id="@+id/AddFriendsTv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_33sdp"
-        android:layout_marginTop="@dimen/_7sdp"
         android:background="@drawable/shape_button"
         android:drawableLeft="@drawable/ic_baseline_add_circle_outline_24"
         android:fontFamily="@font/iran_sans_bold"
         android:gravity="left|center"
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
-        android:text="اضافه کردن مخاطب جدید با شماره تلفن "
+        android:text="اضافه کردن مخاطب جدید"
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/contact_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/textInputEditText"
         app:layout_constraintVertical_bias=".01"
 
         />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textInputEditText"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginStart="@dimen/_40sdp"
+        android:layout_marginEnd="@dimen/_40sdp"
+        android:background="@drawable/shape_search"
+        android:gravity="center"
+        android:hint="@string/text_hint_add_friends"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/AddFriendsTv"
+        app:layout_constraintStart_toStartOf="@+id/AddFriendsTv"
+        app:layout_constraintTop_toBottomOf="@+id/contact_toolbar"
+        app:layout_constraintVertical_bias=".01">
+
+    </com.google.android.material.textfield.TextInputEditText>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contactRecycler"
@@ -78,7 +95,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/AddFriendsTv"
+        app:layout_constraintTop_toBottomOf="@+id/AddFriendsTv"
         app:layout_constraintVertical_bias=".02" />
 
 
