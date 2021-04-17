@@ -136,6 +136,12 @@ interface RequestApi {
 
         ): Call<List<MyInboxDataModel>>
 
+    @GET("api/v1/pray")
+    fun requestPray(): Call<List<PrayDataModel>>
+
+    @GET("api/v1/deceased/charity")
+    fun requestGetCharity(): Call<List<CharityDataModel>>
+
 
 }
 

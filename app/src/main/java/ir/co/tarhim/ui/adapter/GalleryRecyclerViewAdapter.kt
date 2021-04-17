@@ -22,12 +22,11 @@ import kotlinx.android.synthetic.main.row_gallery_recycler.view.*
 
 class GalleryRecyclerViewAdapter(
     val context: Context,
-    var data: List<GalleryDataModel>,
+    val data: List<GalleryDataModel>,
     val galleryListener: GalleryListener,
     val postListener: PostListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
 
     class GalleryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val galleryIv: AppCompatImageView

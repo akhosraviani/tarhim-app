@@ -45,8 +45,10 @@ class HomeViewModel : ViewModel() {
     var ldUnFollow: LiveData<ConfirmDataModel>
     var ldUserInfo: LiveData<UserInfoDataModel>
     var ldError: LiveData<Throwable>
+    var ldPray: LiveData<List<PrayDataModel>>
     var ldInvite: LiveData<ConfirmDataModel>
     var ldPostGallery: LiveData<ConfirmDataModel>
+    var ldCharity: LiveData<List<CharityDataModel>>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -73,11 +75,19 @@ class HomeViewModel : ViewModel() {
         ldError = loginRepository.mldError
         ldFollow = loginRepository.mldFollow
         ldUnFollow = loginRepository.mldUnFollow
+        ldPray=loginRepository.mldPray
+        ldCharity=loginRepository.mldCharity
 
     }
 
     fun requestPostGallery(deceasedId: Int, path :String ) {
         loginRepository.requestPostGallery(deceasedId, path )
+    }
+    fun requestGetPray( ) {
+        loginRepository.requestGetPray( )
+    }
+    fun requestGetCharity( ) {
+        loginRepository.requestGetCharity( )
     }
 
     fun requestInboxMessage() {

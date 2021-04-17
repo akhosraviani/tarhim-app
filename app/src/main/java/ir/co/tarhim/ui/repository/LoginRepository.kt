@@ -52,6 +52,8 @@ class LoginRepository {
     val mldUnFollow = MutableLiveData<ConfirmDataModel>()
     val mldInvite = MutableLiveData<ConfirmDataModel>()
     val mldPostGallery = MutableLiveData<ConfirmDataModel>()
+    val mldPray = MutableLiveData<List<PrayDataModel>>()
+    val mldCharity = MutableLiveData<List<CharityDataModel>>()
 
     fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumberRequest) {
         RequestClient.makeRequest().requestCheckRegister(checkRegisterRequest)
@@ -66,6 +68,42 @@ class LoginRepository {
                     response: Response<CheckRegisterModel>
                 ) {
                     mldSignUp.value = CheckRegisterModel(response.body()!!.registered)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestGetPray() {
+        RequestClient.makeRequest().requestPray()
+            .enqueue(object : Callback<List<PrayDataModel>> {
+                override fun onFailure(call: retrofit2.Call<List<PrayDataModel>>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<List<PrayDataModel>>,
+                    response: Response<List<PrayDataModel>>
+                ) {
+                    mldPray.value = response.body()
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestGetCharity() {
+        RequestClient.makeRequest().requestGetCharity()
+            .enqueue(object : Callback<List<CharityDataModel>> {
+                override fun onFailure(call: retrofit2.Call<List<CharityDataModel>>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<List<CharityDataModel>>,
+                    response: Response<List<CharityDataModel>>
+                ) {
+                    mldCharity.value = response.body()
                     Log.i(TAG, "im here=" + response.body())
                 }
             })
