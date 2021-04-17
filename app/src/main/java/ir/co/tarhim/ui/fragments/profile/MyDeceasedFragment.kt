@@ -1,5 +1,6 @@
 package ir.co.tarhim.ui.fragments.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,11 +17,13 @@ import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.MyDeceasedDataModel
 import ir.co.tarhim.ui.adapter.MyDeceasedAdapter
 import ir.co.tarhim.ui.callback.ProfileListener
+import ir.co.tarhim.ui.fragments.deceased.DeceasedPageActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.my_deceased_fragment.*
 
-class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack,ProfileListener.MyDeceasedListener {
+class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack,
+    ProfileListener.MyDeceasedListener {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var myDeceasedAdapter: MyDeceasedAdapter
@@ -49,7 +52,7 @@ class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack,Pr
 
         viewModel.ldMyDeceased.observe(viewLifecycleOwner, Observer { data ->
 
-            Log.e("TAG", "onViewCreated:data "+data.size )
+            Log.e("TAG", "onViewCreated:data " + data.size)
             data!!.let {
                 if (data.size != 0) {
                     initMyDeceasedRecycler(data)
@@ -65,23 +68,25 @@ class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack,Pr
 
 
     private fun initMyDeceasedRecycler(listMyDeceased: List<MyDeceasedDataModel>) {
-        myDeceasedAdapter = MyDeceasedAdapter(listMyDeceased, "MyDeceasedFragment",this,this)
+        myDeceasedAdapter = MyDeceasedAdapter(listMyDeceased, "MyDeceasedFragment", this, this)
         mydeceasedRecycler.adapter = myDeceasedAdapter
         mydeceasedRecycler.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
     }
 
     override fun editDeceased(item: MyDeceasedDataModel) {
-//        Toast.makeText(activity, "test ", Toast.LENGTH_SHORT).show()
-//        var args = bundleOf("EditDetails" to item)
-//        findNavController().navigate(R.id.action_fragment_profile_to_fragment_create_deceased, args)
+
+        startActivity(
+            Intent(requireActivity(), DeceasedPageActivity::class.java)
+                .putExtra("EditDetails", item)
+        )
     }
 
     override fun myDeceasedCallBack(deceasedId: Int) {
-        val args =Bundle()
-        bundleOf("LatestSearch" to deceasedId)
-        args.putInt("LatestSearch",deceasedId)
-        findNavController().navigate(R.id.action_fragment_profile_to_fragment_deceased_page,args)
+        startActivity(
+            Intent(requireActivity(), DeceasedPageActivity::class.java)
+                .putExtra("FromPersonal", deceasedId)
+        )
 
     }
 

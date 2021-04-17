@@ -105,10 +105,36 @@ interface RequestApi {
 
 
     @POST("api/v1/deceased/follow")
-    fun requestFollowDeceased(@Query("id")deceasedId:Int,@Query("mobile")mobile: String):Call<ConfirmDataModel>
+    fun requestFollowDeceased(
+        @Query("id") deceasedId: Int,
+        @Query("mobile") mobile: String
+    ): Call<ConfirmDataModel>
 
     @POST("api/v1/deceased/unfollow")
-    fun requestUnFollowDeceased(@Query("id")deceasedId:Int,@Query("mobile")mobile: String):Call<ConfirmDataModel>
+    fun requestUnFollowDeceased(
+        @Query("id") deceasedId: Int,
+        @Query("mobile") mobile: String
+    ): Call<ConfirmDataModel>
+
+
+    @POST("api/v1/inbox/invite")
+    fun requestInvite(
+        @Query("id") userId: Int,
+        @Query("mobile") contactMobile: String
+    ): Call<ConfirmDataModel>
+
+    @POST("api/v1/admin/specificdeceased/gallery")
+    fun requestPostGallery(
+        @Query("id") userId: Int,
+        @Query("path") path: String
+    ): Call<ConfirmDataModel>
+
+
+    @GET("api/v1/inbox/mybox")
+    fun requestMyInbox(
+        @Query("mobile") mobile: String,
+
+        ): Call<List<MyInboxDataModel>>
 
 
 }

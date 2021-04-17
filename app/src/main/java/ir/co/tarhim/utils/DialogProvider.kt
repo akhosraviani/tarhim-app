@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
+import ir.co.tarhim.ui.callback.RepostListener
 import kotlinx.android.synthetic.main.gallery_image_dialog.view.*
 
 class DialogProvider {
@@ -38,7 +39,7 @@ class DialogProvider {
             .centerInside()
             .into(view.img_load_gallery)
 
-        
+
         dialog.show()
     }
 

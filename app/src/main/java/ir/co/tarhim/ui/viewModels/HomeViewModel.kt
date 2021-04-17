@@ -14,8 +14,10 @@ import ir.co.tarhim.model.login.otp.OtpDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.ui.repository.LoginRepository
+import ir.co.tarhim.utils.TarhimConfig.Companion.DECEASED_ID
 import ir.co.tarhim.utils.TarhimConfig.Companion.USER_NUMBER
 import okhttp3.MultipartBody
+import retrofit2.http.Multipart
 
 class HomeViewModel : ViewModel() {
 
@@ -28,6 +30,7 @@ class HomeViewModel : ViewModel() {
     var ldSetPass: LiveData<ConfirmDataModel>
     var ldSearch: LiveData<List<DeceasedDataModel>>
     var ldLatestSearch: LiveData<List<DeceasedDataModel>>
+    var ldInboxMessage: LiveData<List<MyInboxDataModel>>
     var ldDeceasedProfile: LiveData<DeceasedProfileDataModel>
     var ldDeceasedFromSearch: LiveData<DeceasedProfileDataModel>
     var ldMyDeceased: LiveData<List<MyDeceasedDataModel>>
@@ -42,6 +45,8 @@ class HomeViewModel : ViewModel() {
     var ldUnFollow: LiveData<ConfirmDataModel>
     var ldUserInfo: LiveData<UserInfoDataModel>
     var ldError: LiveData<Throwable>
+    var ldInvite: LiveData<ConfirmDataModel>
+    var ldPostGallery: LiveData<ConfirmDataModel>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -50,31 +55,48 @@ class HomeViewModel : ViewModel() {
         ldConfirmPass = loginRepository.mldConfirmPassword
         ldSetPass = loginRepository.mldConfirmSetPassword
         ldSearch = loginRepository.mldSearchList
+        ldInboxMessage = loginRepository.mldInBox
         ldLatestSearch = loginRepository.mldLatestSearch
         ldDeceasedProfile = loginRepository.mldDeceaedProfile
         ldDeceasedFromSearch = loginRepository.mldDeceaedFromSearch
         ldMyDeceased = loginRepository.mldMyDeceaed
+        ldPostGallery = loginRepository.mldPostGallery
         ldcreateDeceased = loginRepository.mldCreateDeceased
         ldImageUpload = loginRepository.mldUploadImage
         ldGetGallery = loginRepository.mldGetGallery
+        ldInvite = loginRepository.mldInvite
         ldGetCommnet = loginRepository.mldGetComment
         ldEditDeceased = loginRepository.mldEditDeceased
         ldSendCommnet = loginRepository.mldSendComment
         ldRegisterUser = loginRepository.mldRegisterUser
         ldUserInfo = loginRepository.mldUserInfo
-        ldError= loginRepository.mldError
-        ldFollow=loginRepository.mldFollow
-        ldUnFollow=loginRepository.mldUnFollow
+        ldError = loginRepository.mldError
+        ldFollow = loginRepository.mldFollow
+        ldUnFollow = loginRepository.mldUnFollow
 
+    }
+
+    fun requestPostGallery(deceasedId: Int, path :String ) {
+        loginRepository.requestPostGallery(deceasedId, path )
+    }
+
+    fun requestInboxMessage() {
+        loginRepository.requestMyInbox(Hawk.get(USER_NUMBER))
+    }
+
+    fun requestInvite(deceasedId: Int, mobile: String) {
+        loginRepository.requestInvite(deceasedId, mobile)
     }
 
     fun requestCreateDeceased(dataRequest: CreateDeceasedRequest) {
         loginRepository.requestCreateDeceaed(dataRequest, Hawk.get(USER_NUMBER))
     }
-    fun requestFollowDeceased(id:Int) {
+
+    fun requestFollowDeceased(id: Int) {
         loginRepository.requestFollowDeceased(id, Hawk.get(USER_NUMBER))
     }
-    fun requestUnFollowDeceased(id:Int) {
+
+    fun requestUnFollowDeceased(id: Int) {
         loginRepository.requestUnFollowDeceased(id, Hawk.get(USER_NUMBER))
     }
 

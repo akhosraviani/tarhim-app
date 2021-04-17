@@ -11,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/iran_sans"
-        android:textStyle="bold"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".95"
@@ -35,13 +35,14 @@
         app:layout_constraintVertical_bias="0.512"
         tools:text="مریم زندی" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/TvStatusContact"
         android:layout_width="@dimen/_65sdp"
         android:layout_height="@dimen/_18sdp"
-        android:background="@drawable/shape_bg_box_contact_status"
+        android:background="@drawable/check_status_add_number"
         android:fontFamily="@font/iran_sans_medium"
         android:gravity="center"
+        android:visibility="visible"
         android:textColor="@color/text_color_lighter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/TvContactPhone"
@@ -58,9 +59,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintVertical_bias=".2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".2"
         tools:text="مریم زندی" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

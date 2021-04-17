@@ -9,8 +9,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/IVRightForum"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
         android:background="@drawable/profil_pic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +55,7 @@
             android:layout_marginStart="@dimen/_3sdp"
             android:fontFamily="@font/iran_sans_light"
             android:padding="@dimen/_3sdp"
+            android:textSize="12sp"
             android:text="مهرداد میناوند بیش از علی دایی، علی کریمی، مهدی مهدوی‌کیا و وحید هاشمیان، سابقه بازی در لیگ قهرمانان اروپا را دارد."
             android:textColor="@color/text_color_light"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -95,7 +96,7 @@
             android:id="@+id/BtnMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintVertical_bias="0"
             android:background="@drawable/ic_baseline_more_"
             app:layout_constraintBottom_toBottomOf="parent"

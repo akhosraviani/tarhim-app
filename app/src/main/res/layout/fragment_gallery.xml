@@ -9,15 +9,28 @@
         android:id="@+id/galleryrecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutDirection="ltr"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:listitem="@layout/row_gallery_recycler"
-        tools:itemCount="18"
-        app:spanCount="3"
-        app:layout_constraintVertical_bias="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:spanCount="3"
+        tools:itemCount="18"
+        tools:listitem="@layout/row_gallery_recycler" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/PrgPostGallery"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="@dimen/_5sdp"
+        android:visibility="gone"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

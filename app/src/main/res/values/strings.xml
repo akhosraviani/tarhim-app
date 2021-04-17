@@ -48,6 +48,7 @@
     <string name="msg_add_image_user">افزودن عکس</string>
     <string name="msg_contact_toolbar">خویشان و نزدیکان</string>
     <string name="text_hint_add_friends">شماره موبایل  مورد نظر را وارد کنید</string>
+    <string name="msg_inbox">صندوق پیام</string>
 
 
     <string-array name="list_type">

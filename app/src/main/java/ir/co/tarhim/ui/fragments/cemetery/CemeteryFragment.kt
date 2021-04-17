@@ -1,6 +1,7 @@
 package ir.co.tarhim.ui.fragments.cemetery
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -21,17 +22,22 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedDataModel
 import ir.co.tarhim.ui.adapter.LatestSearchRecyclerAdapter
 import ir.co.tarhim.ui.adapter.SearchRecyclerAdapter
 import ir.co.tarhim.ui.callback.LatestRecyclerListener
 import ir.co.tarhim.ui.callback.SearchListener
+import ir.co.tarhim.ui.fragments.deceased.CreateDeceasedActivity
+import ir.co.tarhim.ui.fragments.deceased.DeceasedPageActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import ir.co.tarhim.utils.TarhimConfig.Companion.FIRST_VISIT
 import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.fragment_cemetery.*
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
@@ -60,6 +66,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        Hawk.put(FIRST_VISIT,true)
         initUi()
 
         //<editor-fold desc="show EllipizeTitle">
@@ -76,10 +83,14 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
         viewModel.ldLatestSearch.observe(viewLifecycleOwner, Observer {
             showLoading(false)
             it.let {
-                if (it.size > 0)
+                if (it != null) {
+                    if(it.size > 0)
                     latestAdapter.submitList(it)
-                else
+                    else
                     TvNullLatest.text = "محتوایی برای نمایش وجود ندارد"
+                }else
+                    TvNullLatest.text = "محتوایی برای نمایش وجود ندارد"
+
             }
         })
 
@@ -141,9 +152,9 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
 
 
         BtnCreateDeceased.setOnClickListener({
-            findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_create_deceased)
-        })
+            startActivity(Intent(requireActivity(),CreateDeceasedActivity::class.java))
 
+        })
     }
 
 
@@ -212,12 +223,9 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
 
     override fun latestCallBack(decId: Int) {
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
-        val args: Bundle
-
-        args = bundleOf("LatestSearch" to decId)
-        Log.e(TAG, "getId:latestSearch " + decId)
-
-        findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page, args)
+        startActivity(Intent(requireActivity(),DeceasedPageActivity::class.java)
+            .putExtra("FromPersonal" , decId)
+        )
     }
 
     override fun serachClickCallBack(deceasedId: Int) {
@@ -226,7 +234,10 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
         SearchView.setText("")
         SearchView.clearFocus()
-        findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page, args)
+        startActivity(Intent(requireActivity(),DeceasedPageActivity::class.java)
+            .putExtra("GetFromSearch" , deceasedId)
+        )
+
     }
 
 

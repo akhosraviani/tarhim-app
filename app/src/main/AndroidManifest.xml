@@ -53,6 +53,11 @@
         <activity
             android:name=".ui.activities.home.HomeActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        <activity android:name=".ui.fragments.deceased.CreateDeceasedActivity"/>
+        <activity android:name=".ui.fragments.deceased.DeceasedPageActivity"/>
+        <activity android:name=".ui.fragments.add_firends.AddFriendsDialogActivity"/>
+        <activity android:name=".ui.activities.inbox.InboxMessageActivity"/>
     </application>
 
 </manifest>

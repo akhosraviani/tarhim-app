@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import ir.co.tarhim.R
@@ -42,6 +43,8 @@ class HomeActivity : AppCompatActivity() {
             bottom_navigation.menu.findItem(bottom_navigation.selectedItemId),
             getEnableSelectedIcon().get(R.id.fragment_cemetery)
         )
+
+
 
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->

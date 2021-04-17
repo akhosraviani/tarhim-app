@@ -6,35 +6,32 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.GONE
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
+import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
 import ir.co.tarhim.ui.adapter.ViewPagerAdapter
-import ir.co.tarhim.ui.callback.SpinnerListener
 import ir.co.tarhim.ui.callback.ViewPagerCallBack
+import ir.co.tarhim.ui.fragments.add_firends.AddFriendsDialogActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.AccessTypeDeceased
-import ir.co.tarhim.utils.OnBackPressed
-import ir.co.tarhim.utils.SpinnerTarhim
 import kotlinx.android.synthetic.main.deceased_profile.*
 import java.util.*
 
-class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
+class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
 
     companion object {
         private const val TAG = "DeceasedPageFragment"
@@ -51,37 +48,38 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
     private var bioDeceased: String? = null
     private lateinit var pagerAdapter: ViewPagerAdapter
     private var checkFollow = false
+    private var adminStatus = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.deceased_profile, container, false)
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.deceased_profile)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        OnBackPressed().pressedCallBack(findNavController())
+
         showLoading(true)
 
-        if (requireArguments()?.getInt("LatestSearch") != 0) {
-            deceasedId = arguments?.getInt("LatestSearch")!!
+        if (intent?.getIntExtra("FromPersonal", -1) != 0) {
+            deceasedId = intent?.getIntExtra("FromPersonal", -1)!!
             viewModel.requestDeceasedPersonal(deceasedId)
             Log.e(TAG, "onViewCreated: deceasedId" + deceasedId)
 
         }
-        if (requireArguments()?.getInt("GetFromSearch") != 0) {
-            deceasedId = arguments?.getInt("GetFromSearch")!!
+        if (intent?.getIntExtra("GetFromSearch", -1) != 0) {
+            deceasedId = intent?.getIntExtra("GetFromSearch", -1)!!
             Log.e(TAG, "onViewCreated: GetFromSearch" + deceasedId)
             viewModel.requestDeceasedFromSearch(deceasedId)
         }
-
         initTabAndViewPager()
-        viewModel.ldDeceasedProfile.observe(viewLifecycleOwner, Observer {
+        viewModel.ldDeceasedProfile.observe(this, Observer {
             showLoading(false)
 
+            Log.e(TAG, "onCreate: " + it.isowner)
+            if (it.isowner != null) {
+                adminStatus = it.isowner
+            }
+
             it?.let {
+
                 deceasedInfo = it
                 when (it.accesstype) {
                     AccessTypeDeceased.Public.name -> {
@@ -96,12 +94,12 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
                         TvBurialLocation.text = "${it.deathloc}"
                         bioDeceased = it.description
                         configBioText(it.description!!)
-                        Glide.with(requireActivity())
+                        Glide.with(this)
                             .load(it.imageurl)
                             .circleCrop()
                             .into(ImVDeceased)
 
-                        initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+                        initCollapsToolbar(this, it.imageurl!!, it.name!!)
 
                     }
                     AccessTypeDeceased.SemiPublic.name -> {
@@ -112,47 +110,28 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
                         } else {
                             coordinateLayout.visibility = View.VISIBLE
+                            btnAddFriends.visibility = View.VISIBLE
+                            typeSpinner.visibility = View.VISIBLE
+                            appCompatTextView6.visibility = View.VISIBLE
+                            typeSpinner.setText(resources.getStringArray(R.array.list_type)[1])
                             TvDeseacesName.text = it.name
                             TvDeathDateDeseaces.text = it.birthday
                             TvBornDateDeseaces.text = it.deathday
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
-                            Glide.with(requireActivity())
+                            Glide.with(this)
                                 .load(it.imageurl)
                                 .circleCrop()
                                 .into(ImVDeceased)
 
-                            initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+                            initCollapsToolbar(this, it.imageurl!!, it.name!!)
 
                         }
                     }
-
-
                     AccessTypeDeceased.Private.name -> {
-                        if (it.isowner!!){
-                            coordinateLayout.visibility = View.VISIBLE
-                            btnAddFriends.visibility=View.VISIBLE
-                            typeSpinner.visibility=View.VISIBLE
-//                            SpinnerTarhim().initSpinner(this,requireActivity(),R.layout.row_spinner,typeSpinner,resources.getStringArray(R.array.list_type) as Array<String>)
-
-//                            typeSpinner.setSelection(2)
-                            TvDeseacesName.text = it.name
-                            TvDeathDateDeseaces.text = it.birthday
-                            TvBornDateDeseaces.text = it.deathday
-                            TvBurialLocation.text = "${it.deathloc}"
-                            bioDeceased = it.description
-                            configBioText(it.description!!)
-                            Glide.with(requireActivity())
-                                .load(it.imageurl)
-                                .circleCrop()
-                                .into(ImVDeceased)
-
-                            initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
-                        }
-                    }
-                    AccessTypeDeceased.Private.name -> {
-                        if(it.isowner!!){
+                        if (it.isowner!!) {
+                            Log.e(TAG, "onCreate: ")
                             coordinateLayout.visibility = View.VISIBLE
                             btnAddFriends.visibility = View.VISIBLE
                             typeSpinner.visibility = View.VISIBLE
@@ -164,23 +143,27 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
-                            Glide.with(requireActivity())
+                            Glide.with(this)
                                 .load(it.imageurl)
                                 .circleCrop()
                                 .into(ImVDeceased)
 
-                            initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+                            initCollapsToolbar(this, it.imageurl!!, it.name!!)
                         }
-                    }
 
+                    }
                 }
 
 
             }
         })
-        viewModel.ldDeceasedFromSearch.observe(viewLifecycleOwner, Observer {
+        viewModel.ldDeceasedFromSearch.observe(this, Observer {
             showLoading(false)
+
             it?.let {
+                it.isowner.also {
+                    adminStatus = it!!
+                }
                 deceasedInfo = it
                 when (it.accesstype) {
                     AccessTypeDeceased.Public.name -> {
@@ -195,39 +178,45 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
                         TvBurialLocation.text = "${it.deathloc}"
                         bioDeceased = it.description
                         configBioText(it.description!!)
-                        Glide.with(requireActivity())
+                        Glide.with(this)
                             .load(it.imageurl)
                             .circleCrop()
                             .into(ImVDeceased)
 
-                        initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+                        initCollapsToolbar(this, it.imageurl!!, it.name!!)
 
                     }
                     AccessTypeDeceased.SemiPublic.name -> {
                         if (!it.isowner!!) {
                             BtnEditToolbar.visibility = View.GONE
                             BtnEditDeceased.visibility = View.GONE
+                            coordinateLayout.visibility = View.GONE
                             requestFollow(it)
 
                         } else {
                             coordinateLayout.visibility = View.VISIBLE
+                            btnAddFriends.visibility = View.VISIBLE
+                            typeSpinner.visibility = View.VISIBLE
+                            appCompatTextView6.visibility = View.VISIBLE
+                            typeSpinner.setText(resources.getStringArray(R.array.list_type)[1])
                             TvDeseacesName.text = it.name
                             TvDeathDateDeseaces.text = it.birthday
                             TvBornDateDeseaces.text = it.deathday
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
-                            Glide.with(requireActivity())
+                            Glide.with(this)
                                 .load(it.imageurl)
                                 .circleCrop()
                                 .into(ImVDeceased)
 
-                            initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+                            initCollapsToolbar(this, it.imageurl!!, it.name!!)
 
                         }
                     }
                     AccessTypeDeceased.Private.name -> {
-                        if(it.isowner!!){
+                        if (it.isowner!!) {
+                            Log.e(TAG, "onCreate: ")
                             coordinateLayout.visibility = View.VISIBLE
                             btnAddFriends.visibility = View.VISIBLE
                             typeSpinner.visibility = View.VISIBLE
@@ -239,12 +228,12 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
-                            Glide.with(requireActivity())
+                            Glide.with(this)
                                 .load(it.imageurl)
                                 .circleCrop()
                                 .into(ImVDeceased)
 
-                            initCollapsToolbar(requireContext(), it.imageurl!!, it.name!!)
+                            initCollapsToolbar(this, it.imageurl!!, it.name!!)
                         }
 
                     }
@@ -283,52 +272,30 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
 
         BtnEditDeceased.setOnClickListener {
-            var editArgs = Bundle()
-            editArgs.putParcelable("EditDeceased", deceasedInfo)
-            editArgs.putInt("DeceasedId", deceasedId)
-            findNavController().navigate(
-                R.id.action_fragment_deceased_page_to_fragment_create_deceased,
-                editArgs
+
+            startActivity(
+                Intent(this, CreateDeceasedActivity::class.java)
+                    .putExtra("DeceasedId", deceasedId)
+                    .putExtra("EditDeceased", deceasedInfo)
             )
+
         }
         BtnEditToolbar.setOnClickListener {
-            var editArgs = Bundle()
-            editArgs.putParcelable("EditDeceased", deceasedInfo)
-            editArgs.putInt("DeceasedId", deceasedId)
-            findNavController().navigate(
-                R.id.action_fragment_deceased_page_to_fragment_create_deceased,
-                editArgs
+            startActivity(
+                Intent(this, CreateDeceasedActivity::class.java)
+                    .putExtra("DeceasedId", deceasedId)
+                    .putExtra("EditDeceased", deceasedInfo)
             )
         }
-
-
         btnAddFriends.setOnClickListener {
-            Toast.makeText(requireActivity(), "در حال پیاده سازی", Toast.LENGTH_SHORT).show()
+            startActivity(
+                Intent(this, AddFriendsDialogActivity::class.java)
+                    .putExtra("DeceasedId", deceasedId)
+            )
         }
-
-
         val arrayList: Array<String> = resources.getStringArray(R.array.list_type)
-
-
-        val aa = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_item, arrayList)
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayList)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//        typeSpinner.setAdapter(aa)
-//        typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(
-//                parent: AdapterView<*>,
-//                view: View,
-//                position: Int,
-//                id: Long
-//            ) {
-//                Toast.makeText(requireActivity(), "در حال پیاده سازی", Toast.LENGTH_SHORT).show()
-//
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>) {
-//
-//            }
-//        }
-
         btnRequestFollow.setOnClickListener {
             if (deceasedInfo.isrequested == null || !deceasedInfo.isrequested!!) {
 
@@ -346,38 +313,40 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
         }
 
 
-        viewModel.ldFollow.observe(viewLifecycleOwner, Observer {
+        viewModel.ldFollow.observe(this, Observer {
             showLoading(false)
             if (it.code == 200) {
                 viewModel.requestDeceasedPersonal(deceasedId)
                 btnRequestFollow.setBackgroundResource(R.drawable.waiting_request_follow_shape)
                 btnRequestFollow.text = "در انتظار تایید"
                 btnRequestFollow.setTextColor(resources.getColor(R.color.tradewind))
-                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
-        viewModel.ldUnFollow.observe(viewLifecycleOwner, Observer {
+        viewModel.ldUnFollow.observe(this, Observer {
             showLoading(false)
             if (it.code == 200) {
                 viewModel.requestDeceasedPersonal(deceasedId)
                 btnRequestFollow.setBackgroundResource(R.drawable.shape_button)
                 btnRequestFollow.text = "دنبال کردن"
                 btnRequestFollow.setTextColor(resources.getColor(R.color.white))
-                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
-
+        BtInbox.setOnClickListener {
+            startActivity(Intent(this, InboxMessageActivity::class.java))
+        }
 
     }
 
     override fun getContent(item: Int): Fragment {
         when (item) {
             1 -> {
-                return GalleryFragment().newInstance(deceasedId)
+                return GalleryFragment().newInstance(deceasedId, adminStatus)
             }
             2 -> {
                 return CharityFragment()
@@ -395,8 +364,7 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
 
     private fun initTabAndViewPager() {
 
-
-        pagerAdapter = ViewPagerAdapter(this, this)
+        pagerAdapter = ViewPagerAdapter(supportFragmentManager, lifecycle, this)
         deceasedViewPager.adapter = pagerAdapter
         TabLayoutMediator(deceasedTabLayout, deceasedViewPager) { tab, position ->
             tab.text = tabsTitle[position]
@@ -486,19 +454,19 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
             TvBurialLocation.text = "${deceasedInfo.deathloc}"
             bioDeceased = deceasedInfo.description
             configBioText(deceasedInfo.description!!)
-            Glide.with(requireActivity())
+            Glide.with(this)
                 .load(deceasedInfo.imageurl)
                 .circleCrop()
                 .into(ImVDeceased)
 
-            initCollapsToolbar(requireContext(), deceasedInfo.imageurl!!, deceasedInfo.name!!)
+            initCollapsToolbar(this, deceasedInfo.imageurl!!, deceasedInfo.name!!)
 
         }
 
     }
 
     private fun showPrivateDetailsPage(itemDeceased: DeceasedProfileDataModel) {
-        Glide.with(requireContext())
+        Glide.with(this)
             .load(itemDeceased.imageurl)
             .circleCrop()
             .into(ImVDeceasedPrivate)
@@ -520,10 +488,9 @@ class DeceasedPageFragment : Fragment(), ViewPagerCallBack {
     }
 
 
-    private fun showContactList(){
+    private fun showContactList() {
 
     }
-
 
 
 }

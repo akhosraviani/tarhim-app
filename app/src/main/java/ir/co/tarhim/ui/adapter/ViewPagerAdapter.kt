@@ -7,8 +7,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import ir.co.tarhim.ui.callback.ViewPagerCallBack
 
 class ViewPagerAdapter(
-    fragment: Fragment,var viewPagerCallBack: ViewPagerCallBack) :
-    FragmentStateAdapter(fragment) {
+    fragment: FragmentManager,lifecycle: Lifecycle, var viewPagerCallBack: ViewPagerCallBack) :
+    FragmentStateAdapter(fragment,lifecycle) {
 
     override fun getItemCount(): Int {
         return viewPagerCallBack.getCount()

@@ -33,6 +33,7 @@ import ir.co.tarhim.ui.callback.UploadProgress
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.OnBackPressed
 import ir.co.tarhim.utils.TarhimCompress
+import ir.co.tarhim.utils.TarhimConfig.Companion.USER_NUMBER
 import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.edit_user_profile.*
 import okhttp3.MultipartBody
@@ -49,24 +50,8 @@ class EditProfileFragment : Fragment(), UploadCallBack {
     private lateinit var viewModel: HomeViewModel
     private val GALLERY_CODE = 101
     private lateinit var imm: InputMethodManager
-    private lateinit var imagePath: String
+    private var imagePath:String?= ""
     private lateinit var bottomSheet: FrameLayout
-
-//    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-//        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-//        dialog.setOnShowListener {
-//            bottomSheet =
-//                ((it as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout?)!!
-//            val behavior = BottomSheetBehavior.from(bottomSheet!!)
-//            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-//            behavior.isDraggable = false
-//
-//        }
-//
-//        return dialog
-//
-//    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,7 +70,7 @@ class EditProfileFragment : Fragment(), UploadCallBack {
         imm = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         showLoading(true)
         setUpView(requireView())
-        EtUserNumber.text = Hawk.get("UserNumber")
+        EtUserNumber.text = Hawk.get(USER_NUMBER)
         viewModel.requestUserInfo()
 
 
@@ -146,17 +131,19 @@ class EditProfileFragment : Fragment(), UploadCallBack {
         BtnSaveUser.setOnClickListener {
             if (ETNameUser.text.toString().length > 0) {
 
-                if (ETUserEmail.text.isNullOrEmpty()|| Patterns.EMAIL_ADDRESS.matcher(ETUserEmail.text!!.trim().toString()).matches()) {
+                if (ETUserEmail.text.isNullOrEmpty() ||
+                    Patterns.EMAIL_ADDRESS.matcher(ETUserEmail.text!!.trim().toString()).matches()
+                ) {
                     showLoading(true)
                     viewModel.requestRegisterUser(
                         RegisterUser(
                             ETUserEmail.text.toString(),
-                            imagePath,
+                            imagePath!!,
                             ETNameUser.text.toString()
                         )
                     )
-                }else{
-                    ETUserEmail.error="ایمیل نامعتبر"
+                } else {
+                    ETUserEmail.error = "ایمیل نامعتبر"
                 }
             } else {
                 Toast.makeText(
@@ -172,13 +159,6 @@ class EditProfileFragment : Fragment(), UploadCallBack {
             findNavController().navigate(R.id.fragment_profile)
 
         }
-    }
-
-    private fun validateEmail(): Boolean {
-        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        val p: Pattern = Pattern.compile(emailPattern)
-
-        return false
     }
 
 

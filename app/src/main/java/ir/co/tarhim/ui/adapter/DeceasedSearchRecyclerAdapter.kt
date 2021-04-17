@@ -1,16 +1,19 @@
 package ir.co.tarhim.ui.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedDataModel
+import ir.co.tarhim.ui.fragments.deceased.DeceasedPageActivity
 import kotlinx.android.synthetic.main.row_latest_deceased.view.*
 
 class DeceasedSearchRecyclerAdapter(private val listDeceased: List<DeceasedDataModel>) :
@@ -50,8 +53,12 @@ class DeceasedSearchRecyclerAdapter(private val listDeceased: List<DeceasedDataM
         holder.birth_DeathDay.text =
             "${listDeceased.get(position).birthday} - ${listDeceased.get(position).deathday}"
         holder.itemView.setOnClickListener {
-            val args= bundleOf("DeceasedId" to listDeceased.get(holder.adapterPosition).id )
-            holder.itemView.findNavController().navigate(R.id.action_fragment_cemetery_to_fragment_deceased_page,args)
+
+//            startActivity(
+//                Intent(holder.itemView.context, DeceasedPageActivity::class.java)
+//                .putExtra("DeceasedId" , listDeceased.get(holder.adapterPosition).id)
+//            )
+
         }
     }
 

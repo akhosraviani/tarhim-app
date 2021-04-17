@@ -26,14 +26,18 @@ import kotlinx.android.synthetic.main.gallery_image_dialog.view.*
 import kotlinx.android.synthetic.main.row_add_image_gallery.view.*
 import kotlinx.android.synthetic.main.row_gallery_recycler.view.*
 
-class GalleryRecyclerAdapter(
-
+class AdminGalleryRecyclerAdapter(
     var data: GalleryDataModel,
     var galleryCallBack: GalleryListener,
-    var repostCallback: RepostListener
+    var postCallback: PostListener,
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+
+    companion object {
+        const val VIEW_TYPE_ONE = 1
+        const val VIEW_TYPE_TWO = 2
+    }
 
     class GalleryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val galleryIv: AppCompatImageView
@@ -82,28 +86,53 @@ class GalleryRecyclerAdapter(
         }
     }
 
+    class AddImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        public lateinit var IvAddImage: AppCompatImageView
+
+        init {
+            this.IvAddImage = view.IvAddImage
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+
+        return when (position) {
+            0 -> return VIEW_TYPE_ONE
+            else -> return VIEW_TYPE_TWO
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-                return GalleryViewHolder(
+//            if (viewType == VIEW_TYPE_ONE) {
+                return AddImageViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.row_gallery_recycler, parent, false)
+                        .inflate(R.layout.row_add_image_gallery, parent, false)
                 )
-
+//            } else {
+//
+//                return GalleryViewHolder(
+//                    LayoutInflater.from(parent.context)
+//                        .inflate(R.layout.row_gallery_recycler, parent, false)
+//                )
+//            }
 
 
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-            GalleryViewHolder(holder.itemView)
-
-            (holder as GalleryViewHolder).bindTo(data.imagespath[position])
-            (holder as GalleryViewHolder).galleryIv.setOnClickListener {
-                galleryCallBack.galleryRecyclerCallBack(data.imagespath[holder.adapterPosition])
+//            if (holder.itemViewType == VIEW_TYPE_ONE) {
+                AddImageViewHolder(holder.itemView)
+                (holder as AddImageViewHolder).IvAddImage.setOnClickListener {
+                    postCallback.postcallBack(data.id)
+//                }
+//            } else {
+//                GalleryViewHolder(holder.itemView)
+//                (holder as GalleryViewHolder).bindTo(data.imagespath[position])
+//                (holder as GalleryViewHolder).galleryIv.setOnClickListener {
+//                    galleryCallBack.galleryRecyclerCallBack(data.imagespath[holder.adapterPosition])
+//                }
             }
-
-
     }
 
     override fun getItemCount(): Int {

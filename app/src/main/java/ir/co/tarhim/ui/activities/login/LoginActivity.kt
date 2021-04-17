@@ -55,6 +55,10 @@ class LoginActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         initUi()
 
+        if(Hawk.get(TarhimConfig.FIRST_VISIT,false)){
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+
         viewModel.ldSignUp.observe(this, Observer { x ->
             showLoading(false)
             if (x.registered) {

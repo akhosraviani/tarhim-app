@@ -1,5 +1,6 @@
 package ir.co.tarhim.ui.repository
 
+import android.support.v4.app.INotificationSideChannel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
@@ -29,6 +30,7 @@ class LoginRepository {
     val mldSignUp = MutableLiveData<CheckRegisterModel>()
     val mldOtp = MutableLiveData<OtpDataModel>()
     val mldError = MutableLiveData<Throwable>()
+    val mldInBox = MutableLiveData<List<MyInboxDataModel>>()
     val mldConfirmOtp = MutableLiveData<ConfirmDataModel>()
     val mldCreateDeceased = MutableLiveData<userRedirect>()
     val mldEditDeceased = MutableLiveData<ConfirmDataModel>()
@@ -48,6 +50,8 @@ class LoginRepository {
     val mldNews = MutableLiveData<List<NewsDataModel>>()
     val mldFollow = MutableLiveData<ConfirmDataModel>()
     val mldUnFollow = MutableLiveData<ConfirmDataModel>()
+    val mldInvite = MutableLiveData<ConfirmDataModel>()
+    val mldPostGallery = MutableLiveData<ConfirmDataModel>()
 
     fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumberRequest) {
         RequestClient.makeRequest().requestCheckRegister(checkRegisterRequest)
@@ -62,6 +66,61 @@ class LoginRepository {
                     response: Response<CheckRegisterModel>
                 ) {
                     mldSignUp.value = CheckRegisterModel(response.body()!!.registered)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestMyInbox(mobile:String) {
+        RequestClient.makeRequest().requestMyInbox(mobile)
+            .enqueue(object : Callback<List<MyInboxDataModel>> {
+                override fun onFailure(call: retrofit2.Call<List<MyInboxDataModel>>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<List<MyInboxDataModel>>,
+                    response: Response<List<MyInboxDataModel>>
+                ) {
+                    mldInBox.value = response.body()
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+
+    fun requestPostGallery(deceasedId:Int,path :String) {
+        RequestClient.makeRequest().requestPostGallery(deceasedId,path)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldPostGallery.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestInvite(userId:Int,mobile:String) {
+        RequestClient.makeRequest().requestInvite(userId,mobile)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value=t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldInvite.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })

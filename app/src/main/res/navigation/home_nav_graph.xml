@@ -8,15 +8,7 @@
         android:id="@+id/fragment_profile"
         android:name="ir.co.tarhim.ui.fragments.profile.ProfileFragment"
         tools:layout="@layout/fragment_profile">
-        <action
-            android:id="@+id/action_fragment_profile_to_fragment_deceased_page"
-            app:destination="@id/fragment_deceased_page"
-            />
-        <action
-            android:id="@+id/action_fragment_profile_to_fragment_create_deceased"
-            app:destination="@id/fragment_create_deceased"
 
-           />
         <action
             android:id="@+id/action_fragment_profile_to_user_edit_fragment"
             app:destination="@id/user_edit_fragment"
@@ -31,49 +23,17 @@
             android:id="@+id/action_fragment_news_to_details_news_fragment"
             app:destination="@id/details_news_fragment"
 
-             />
+            />
     </fragment>
     <fragment
         android:id="@+id/fragment_cemetery"
         android:name="ir.co.tarhim.ui.fragments.cemetery.CemeteryFragment"
         tools:layout="@layout/fragment_cemetery">
-        <action
-            android:id="@+id/action_fragment_cemetery_to_fragment_deceased_page"
-            app:destination="@id/fragment_deceased_page"
-
-            />
-        <action
-            android:id="@+id/action_fragment_cemetery_to_fragment_create_deceased"
-            app:destination="@id/fragment_create_deceased"
-            />
 
     </fragment>
 
-    <fragment
-        android:id="@+id/fragment_deceased_page"
-        android:name="ir.co.tarhim.ui.fragments.deceased.DeceasedPageFragment"
-        tools:layout="@layout/deceased_profile">
-        <action
-            android:id="@+id/action_fragment_deceased_page_to_fragment_create_deceased"
-            app:destination="@id/fragment_create_deceased"
 
-           />
-    </fragment>
 
-    <fragment
-        android:id="@+id/fragment_create_deceased"
-        android:name="ir.co.tarhim.ui.fragments.deceased.CreateDeceased"
-        tools:layout="@layout/create_deceased">
-        <action
-            android:id="@+id/action_fragment_create_deceased_to_maps_fragment"
-            app:destination="@id/maps_fragment"
-             />
-        <action
-            android:id="@+id/action_fragment_create_deceased_to_fragment_deceased_page"
-            app:destination="@id/fragment_deceased_page"
-            />
-
-    </fragment>
 
     <fragment
         android:id="@+id/maps_fragment"
@@ -97,7 +57,7 @@
             android:id="@+id/action_user_edit_fragment_to_fragment_profile"
             app:destination="@id/fragment_profile"
 
-             />
+            />
     </fragment>
 
     <fragment
