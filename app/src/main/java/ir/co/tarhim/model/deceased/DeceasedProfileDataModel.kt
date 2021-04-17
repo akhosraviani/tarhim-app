@@ -2,44 +2,54 @@ package ir.co.tarhim.model.deceased
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.nio.channels.FileLock
 
 data class DeceasedProfileDataModel(
-    val name: String?,
-    val description: String?,
-    val birthday: String?,
-    val deathday: String?,
-    val deathloc: String?,
-    val imageurl: String?,
-    val isowner: Boolean?,
-    val isfollow: Boolean?,
-    val isrequested: Boolean?,
-    val accesstype: String?,
+    val accesstype: String,
+    val birthday: String,
+    val deathday: String,
+    val deathloc: String,
+    val description: String,
+    val followerCount: Int,
+    val imageurl: String,
+    val isfollow: Boolean,
+    val isowner: Boolean,
+    val isrequested: Boolean,
+    val latitude: Double,
+    val longitude: Double,
+    val name: String
 ):Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readString()
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readInt(),
+        parcel.readString()!!,
+        parcel.readByte() != 0.toByte()!!,
+        parcel.readByte() != 0.toByte()!!,
+        parcel.readByte() != 0.toByte()!!,
+        parcel.readDouble()!!,
+        parcel.readDouble()!!,
+        parcel.readString()!!
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(name)
-        parcel.writeString(description)
+        parcel.writeString(accesstype)
         parcel.writeString(birthday)
         parcel.writeString(deathday)
         parcel.writeString(deathloc)
+        parcel.writeString(description)
+        parcel.writeInt(followerCount)
         parcel.writeString(imageurl)
-        parcel.writeValue(isowner)
-        parcel.writeValue(isfollow)
-        parcel.writeValue(isrequested)
-        parcel.writeString(accesstype)
+        parcel.writeByte(if (isfollow) 1 else 0)
+        parcel.writeByte(if (isowner) 1 else 0)
+        parcel.writeByte(if (isrequested) 1 else 0)
+        parcel.writeDouble(latitude)
+        parcel.writeDouble(longitude)
+        parcel.writeString(name)
     }
 
     override fun describeContents(): Int {
@@ -56,5 +66,6 @@ data class DeceasedProfileDataModel(
         }
     }
 }
+
 
 

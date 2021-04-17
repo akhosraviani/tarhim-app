@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
+import ir.co.tarhim.model.deceased.GalleryDataModel
 import ir.co.tarhim.ui.callback.RepostListener
 import kotlinx.android.synthetic.main.gallery_image_dialog.view.*
 
@@ -25,7 +26,7 @@ class DialogProvider {
     }
 
 
-    public fun showImageDialog(activity: Activity, imgPath: String) {
+    public fun showImageDialog(activity: Activity, item: GalleryDataModel) {
         var viewGroup = activity.findViewById<ViewGroup>(android.R.id.content)
 
         var view =
@@ -35,7 +36,7 @@ class DialogProvider {
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         Glide.with(activity)
-            .load(imgPath)
+            .load(item.imagespath)
             .centerInside()
             .into(view.img_load_gallery)
 

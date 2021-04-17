@@ -1,15 +1,13 @@
 package ir.co.tarhim.ui.adapter
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -17,20 +15,16 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import ir.co.tarhim.R
-import ir.co.tarhim.model.deceased.CommentDataModel
 import ir.co.tarhim.model.deceased.GalleryDataModel
 import ir.co.tarhim.ui.callback.GalleryListener
 import ir.co.tarhim.ui.callback.PostListener
-import ir.co.tarhim.ui.callback.RepostListener
-import kotlinx.android.synthetic.main.gallery_image_dialog.view.*
-import kotlinx.android.synthetic.main.row_add_image_gallery.view.*
 import kotlinx.android.synthetic.main.row_gallery_recycler.view.*
 
-class GalleryRecyclerAdapter(
-
-    var data: GalleryDataModel,
-    var galleryCallBack: GalleryListener,
-    var repostCallback: RepostListener
+class GalleryRecyclerViewAdapter(
+    val context: Context,
+    var data: List<GalleryDataModel>,
+    val galleryListener: GalleryListener,
+    val postListener: PostListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -45,10 +39,11 @@ class GalleryRecyclerAdapter(
         }
 
 
-        open fun bindTo(pathImage: String) {
+        open fun bindTo(item: GalleryDataModel) {
 
+            Log.e("bindTo", "bindTo: " + item.imagespath)
             Glide.with(itemView.context)
-                .load(pathImage)
+                .load(item.imagespath)
                 .centerCrop()
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
@@ -77,37 +72,39 @@ class GalleryRecyclerAdapter(
                 })
                 .into(galleryIv)
 
-
-
         }
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-                return GalleryViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.row_gallery_recycler, parent, false)
-                )
-
-
-
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-            GalleryViewHolder(holder.itemView)
-
-            (holder as GalleryViewHolder).bindTo(data.imagespath[position])
-            (holder as GalleryViewHolder).galleryIv.setOnClickListener {
-                galleryCallBack.galleryRecyclerCallBack(data.imagespath[holder.adapterPosition])
-            }
-
+        return GalleryViewHolder(
+            LayoutInflater.from(context).inflate(R.layout.row_gallery_recycler, parent, false)
+        )
 
     }
 
     override fun getItemCount(): Int {
-        return data.imagespath.size
+        return data.size
     }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        (holder as GalleryViewHolder)
+        holder.bindTo(data.get(position))
+
+
+        holder.galleryIv.setOnClickListener {
+            if (position == 0) {
+                postListener.postcallBack()
+            } else {
+                galleryListener.galleryRecyclerCallBack(data[holder.adapterPosition])
+
+            }
+        }
+
+
+    }
+
 
 }

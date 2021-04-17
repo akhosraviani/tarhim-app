@@ -34,7 +34,6 @@ class LatestSearchRecyclerAdapter(private val latestListener: LatestRecyclerList
         }
 
 
-
         override fun areContentsTheSame(
             oldItem: DeceasedDataModel,
             newItem: DeceasedDataModel
@@ -44,7 +43,7 @@ class LatestSearchRecyclerAdapter(private val latestListener: LatestRecyclerList
 
     }
 
-    class ViewHolder(v: View, val listener: LatestRecyclerListener) : RecyclerView.ViewHolder(v) {
+    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val imageDeceased: AppCompatImageView
         val nameDeceased: AppCompatTextView
         val birth_DeathDay: AppCompatTextView
@@ -77,10 +76,6 @@ class LatestSearchRecyclerAdapter(private val latestListener: LatestRecyclerList
 
             birth_DeathDay.text = "${deceased.birthday} - ${deceased.deathday}"
 
-            itemView.setOnClickListener {
-
-                listener.latestCallBack(deceased.id)
-            }
 
         }
 
@@ -91,11 +86,17 @@ class LatestSearchRecyclerAdapter(private val latestListener: LatestRecyclerList
         val view =
             LayoutInflater.from(group.context).inflate(R.layout.row_latest_deceased, group, false)
 
-        return ViewHolder(view, latestListener)
+        return ViewHolder(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindTo(getItem(position))
+
+        holder.itemView.setOnClickListener {
+
+            latestListener.latestCallBack(getItem(position).id)
+        }
+
     }
 }

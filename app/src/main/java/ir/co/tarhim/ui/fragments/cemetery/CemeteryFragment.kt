@@ -11,16 +11,10 @@ import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
@@ -33,11 +27,7 @@ import ir.co.tarhim.ui.fragments.deceased.CreateDeceasedActivity
 import ir.co.tarhim.ui.fragments.deceased.DeceasedPageActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.TarhimConfig.Companion.FIRST_VISIT
-import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.fragment_cemetery.*
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
@@ -66,7 +56,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        Hawk.put(FIRST_VISIT,true)
+        Hawk.put(FIRST_VISIT, true)
         initUi()
 
         //<editor-fold desc="show EllipizeTitle">
@@ -84,11 +74,11 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
             showLoading(false)
             it.let {
                 if (it != null) {
-                    if(it.size > 0)
-                    latestAdapter.submitList(it)
+                    if (it.size > 0)
+                        latestAdapter.submitList(it)
                     else
-                    TvNullLatest.text = "محتوایی برای نمایش وجود ندارد"
-                }else
+                        TvNullLatest.text = "محتوایی برای نمایش وجود ندارد"
+                } else
                     TvNullLatest.text = "محتوایی برای نمایش وجود ندارد"
 
             }
@@ -129,7 +119,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
             showLoading(false)
             data.let {
 
-                searchAdapter . submitList (it)
+                searchAdapter.submitList(it)
             }
             if (data == null)
                 Toast.makeText(getActivity(), "موردی یافت نشد", Toast.LENGTH_SHORT).show()
@@ -152,7 +142,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
 
 
         BtnCreateDeceased.setOnClickListener({
-            startActivity(Intent(requireActivity(),CreateDeceasedActivity::class.java))
+            startActivity(Intent(requireActivity(), CreateDeceasedActivity::class.java))
 
         })
     }
@@ -200,7 +190,6 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
         }
     }
 
-
     private fun showView(status: Boolean) {
         if (!status) {
             SearchRoot.visibility = View.VISIBLE
@@ -222,20 +211,23 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
     }
 
     override fun latestCallBack(decId: Int) {
+
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
-        startActivity(Intent(requireActivity(),DeceasedPageActivity::class.java)
-            .putExtra("FromPersonal" , decId)
+        SearchView.setText("")
+        SearchView.clearFocus()
+        startActivity(
+            Intent(requireActivity(), DeceasedPageActivity::class.java)
+                .putExtra("FromPersonal", decId)
         )
     }
 
     override fun serachClickCallBack(deceasedId: Int) {
-        val args: Bundle
-        args = bundleOf("GetFromSearch" to deceasedId)
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
         SearchView.setText("")
         SearchView.clearFocus()
-        startActivity(Intent(requireActivity(),DeceasedPageActivity::class.java)
-            .putExtra("GetFromSearch" , deceasedId)
+        startActivity(
+            Intent(requireActivity(), DeceasedPageActivity::class.java)
+                .putExtra("SearchPersonal", deceasedId)
         )
 
     }

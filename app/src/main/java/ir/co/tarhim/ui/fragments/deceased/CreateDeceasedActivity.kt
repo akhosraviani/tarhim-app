@@ -3,7 +3,7 @@ package ir.co.tarhim.ui.fragments.deceased
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Rect
@@ -11,7 +11,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
-import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -29,7 +28,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
-import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.CreateDeceasedRequest
 import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
@@ -47,6 +45,7 @@ import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import okhttp3.MultipartBody
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 
@@ -56,30 +55,20 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
         private const val TAG = "CreateDeceased"
 
     }
-    //35.5303902,51.3763243
 
+    private lateinit var mapsFragment: MapsFragment
     private var imagePath: String? = ""
-    private lateinit var location: LatLng
-    private lateinit var pathImage: String
+    private lateinit var locationBurial: LatLng
     private lateinit var editBirth: String
     private lateinit var editDeath: String
-    private lateinit var cursor: Cursor
     private var editProfile = false
     private var DeceasedId: Int? = -1
     private lateinit var viewModel: HomeViewModel
     private lateinit var picker: PersianDatePickerDialog
-    private var editDetailsStatus: Boolean? = false
     private lateinit var details: MyDeceasedDataModel
     private lateinit var deceasedInfo: DeceasedProfileDataModel
     private lateinit var inputMethodManager: InputMethodManager
-    private var yearBirth: Int? = -1
-    private var monthBirth: Int? = -1
-    private var dayBirth: Int? = -1
     private lateinit var accessType: String
-    private var yearDeath: Int? = -1
-    private var monthDeath: Int? = -1
-    private var dayDeath: Int? = -1
-    private var adminStatus = false
 
     private var listBirth: List<String>? = null
     private var listDeath: List<String>? = null
@@ -89,7 +78,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
         setContentView(R.layout.create_deceased)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         picker = PersianDatePickerDialog(this)
-
+        mapsFragment = MapsFragment()
         inputMethodManager =
             this?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         viewModel.ldImageUpload.observe(this, Observer {
@@ -134,14 +123,16 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
         }
 
         BtnOpenMap.setOnClickListener {
-//            findNavController().navigate(R.id.action_fragment_create_deceased_to_maps_fragment)
+            mapFragment.visibility = View.VISIBLE
+            supportFragmentManager.beginTransaction()
+                .add(R.id.mapFragment, mapsFragment)
+                .commit();
         }
 
         BtnExitDeceasedPage.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
 
         }
-        location = Hawk.get("Location", LatLng(0.0, 0.0))
 
         BtnSaveEditUser.setOnClickListener {
             if (deceasedInfo != null) {
@@ -155,8 +146,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
                         ETBurialLocation.text.toString(),
                         ETdeceasedDescription.text.toString(),
                         imagePath!!,
-                        0,
-                        0,
+                        locationBurial.latitude,
+                        locationBurial.longitude,
                         ETNameDeceased.text.toString()
                     ), DeceasedId!!
                 )
@@ -171,7 +162,10 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
                     ETDeathDeceased.text.toString().length > 0
                 ) {
                     showLoading(true)
-
+                    locationBurial = LatLng(
+                        (deceasedInfo.latitude).toDouble(),
+                        (deceasedInfo.longitude).toDouble()
+                    )
                     viewModel.requestCreateDeceased(
                         CreateDeceasedRequest(
                             accessType,
@@ -180,12 +174,13 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
                             ETBurialLocation.text.toString(),
                             ETdeceasedDescription.text.toString(),
                             imagePath!!,
-                            0,
-                            0,
+                            locationBurial.latitude,
+                            locationBurial.longitude,
                             ETNameDeceased.text.toString()
                         )
                     )
 
+                    Log.e(TAG, "onCreate:locationBurial " + locationBurial.latitude + locationBurial.longitude)
                 } else {
                     Toast.makeText(this, "لطفا تمام قسمت ها را تکمیل کنید", Toast.LENGTH_SHORT)
                         .show()
@@ -197,6 +192,14 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
         TvChangeImg.setOnClickListener {
             openGallery()
         }
+        mapsFragment.setLocation(object : MapsFragment.LocateListenr {
+            override fun locationCallback(location: LatLng) {
+                Log.e(TAG, "locationCallback: " + location)
+                locationBurial = location
+            }
+
+        })
+
         viewModel.ldcreateDeceased.observe(this, Observer {
 
             showLoading(false)
@@ -325,23 +328,21 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
                 TarhimCompress().compressImage(BitmapFactory.decodeStream(imagestream), 500)
 
             Glide.with(this)
-                .load(getRealPathFromURI(dataUri!!))
+                .load(imgBitmap)
                 .centerInside()
                 .circleCrop()
                 .into(IvDeceased)
 
-//            var byte = ByteArrayOutputStream()
-//            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
-//            val path = MediaStore.Images.Media.insertImage(
-//                this.contentResolver,
-//                imgBitmap,
-//                ETNameDeceased.text.toString(),
-//                null
-//            )
+            var byte = ByteArrayOutputStream()
+            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
+            val path = MediaStore.Images.Media.insertImage(
+                this.contentResolver,
+                getRealPathFromURI(dataUri!!),
+                "",
+                ""
+            )
 
-
-            viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(dataUri!!))))
-
+            viewModel.requestUploadImage(uploadFile(Uri.parse(path)))
         }
     }
 
@@ -368,7 +369,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
 
         return multiPart
     }
-
 
     fun showCalendarInDarkMode(editText: AppCompatEditText, year: Int, month: Int, day: Int) {
         val typeface = ResourcesCompat.getFont(this, R.font.iran_sans_medium)
@@ -410,7 +410,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
     override fun updateProgress(interceptare: Int) {
         Log.e(TAG, "updateProgress: " + interceptare)
     }
-
 
     private fun showLoading(status: Boolean) {
         when (status) {
@@ -462,7 +461,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
         ETdeceasedDescription.setText(details.description)
     }
 
-
     fun hideSoftKeyboard(activity: Activity) {
         inputMethodManager.hideSoftInputFromWindow(activity.currentFocus!!.windowToken, 0)
     }
@@ -470,7 +468,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
     fun showSoftKeyboard(activity: Activity) {
         inputMethodManager.showSoftInput(activity.currentFocus, 0)
     }
-
 
     fun setUpView(view: View) {
         var contentView = this?.findViewById<View>(android.R.id.content)

@@ -1,6 +1,6 @@
 package ir.co.tarhim.ui.activities.inbox.adapter
 
-import android.text.Layout
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.MyInboxDataModel
+import ir.co.tarhim.utils.PersianDate
 import kotlinx.android.synthetic.main.row_inbox_recycler.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class InboxRecyclerAdapter() :
     ListAdapter<MyInboxDataModel, InboxRecyclerAdapter.ViewHolder>(InboxDiffUnit()) {
@@ -22,6 +25,7 @@ class InboxRecyclerAdapter() :
         private lateinit var TvDesc: AppCompatTextView
 
         init {
+
             this.TvDate = view.Tv_Inbox_message_date
             this.TvFrom = view.Tv_Inbox_from
             this.TvStatus = view.Tv_Inbox_message_status
@@ -30,7 +34,16 @@ class InboxRecyclerAdapter() :
 
 
         open fun bindTo(item: MyInboxDataModel) {
-            TvDate.setText(item.date)
+
+            var d = (item.date).toLong()
+            val formatData = SimpleDateFormat("yyyy/MM/dd")
+            var time = formatData.format(d)
+
+            var year = PersianDate.SolarCalendar(Date(time)).year
+            var month = PersianDate.SolarCalendar(Date(time)).month
+            var day = PersianDate.SolarCalendar(Date(time)).date
+            TvDate.setText("${year}-${month}-${day}")
+
             TvFrom.setText(item.name)
             var description: String
             TvStatus.setText(item.subject)

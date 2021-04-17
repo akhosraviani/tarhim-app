@@ -1,16 +1,11 @@
 package ir.co.tarhim.ui.fragments.deceased
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavDestination
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -19,7 +14,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import kotlinx.android.synthetic.main.fragment_maps.*
 
@@ -27,13 +21,23 @@ class MapsFragment : Fragment(),
     GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraIdleListener,
     GoogleMap.OnMarkerClickListener {
 
+    private lateinit var locationListener: LocateListenr
+
+    fun setLocation(location: LocateListenr) {
+        locationListener = location
+    }
+
+    companion object {
+        private const val TAG = "MapsFragment"
+    }
+
     private lateinit var mGoogleMap: GoogleMap
-    private  var lastedLocation: LatLng?=null
+    private var lastedLocation: LatLng? = null
 
     private val callback = OnMapReadyCallback { googleMap ->
         mGoogleMap = googleMap
-        val sydney = LatLng(35.536270, 51.370183)
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15f))
+        val cemeteryLocate = LatLng(35.536270, 51.370183)
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(cemeteryLocate, 15f))
         ImMarkerMap.visibility = View.VISIBLE
         mGoogleMap.setOnCameraMoveListener(this)
         mGoogleMap.setOnCameraIdleListener(this)
@@ -56,8 +60,9 @@ class MapsFragment : Fragment(),
 
 
         BtnSubmitLocation.setOnClickListener {
-           Hawk.put("Location",lastedLocation)
-            Navigation.findNavController(BtnSubmitLocation).navigateUp()
+            locationListener.locationCallback(lastedLocation!!)
+            requireActivity().supportFragmentManager.beginTransaction()
+                .remove(this).commit();
         }
 
 
@@ -79,12 +84,17 @@ class MapsFragment : Fragment(),
         )
 
 
-
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         lastedLocation = marker!!.position
+        Log.e(TAG, "onMarkerClick: " + lastedLocation)
         BtnSubmitLocation.visibility = View.VISIBLE
         return false
+    }
+
+
+    interface LocateListenr {
+        fun locationCallback(location: LatLng)
     }
 }

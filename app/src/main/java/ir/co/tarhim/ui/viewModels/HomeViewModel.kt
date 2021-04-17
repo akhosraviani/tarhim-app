@@ -37,7 +37,7 @@ class HomeViewModel : ViewModel() {
     var ldcreateDeceased: LiveData<userRedirect>
     var ldEditDeceased: LiveData<ConfirmDataModel>
     var ldImageUpload: LiveData<UploadFileDataModel>
-    var ldGetGallery: LiveData<GalleryDataModel>
+    var ldGetGallery: LiveData<List<GalleryDataModel>>
     var ldGetCommnet: LiveData<List<CommentDataModel>>
     var ldSendCommnet: LiveData<ConfirmDataModel>
     var ldRegisterUser: LiveData<ConfirmDataModel>

@@ -217,9 +217,10 @@ class EditProfileFragment : Fragment(), UploadCallBack {
                 TAG,
                 "onActivityResult: " + realFilePath(dataUri!!)
             )
-//            var imagestream = requireActivity().contentResolver.openInputStream(dataUri)
-//            var imgBitmap =
-//                TarhimCompress().compressImage(BitmapFactory.decodeStream(imagestream), 1000)
+            var imagestream = requireActivity().contentResolver.openInputStream(dataUri)
+            var imgBitmap =
+                TarhimCompress().compressImage(BitmapFactory.decodeStream(imagestream), 1000)
+
 
             Glide.with(requireContext())
                 .load(realFilePath(dataUri!!))
@@ -231,11 +232,10 @@ class EditProfileFragment : Fragment(), UploadCallBack {
 //            imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
 //            val path = MediaStore.Images.Media.insertImage(
 //                requireActivity().contentResolver,
-//                imgBitmap,
+//                realFilePath(dataUri!!),
 //                ETNameDeceased.text.toString(),
 //                null
 //            )
-
 
             viewModel.requestUploadImage(uploadFile(Uri.parse(realFilePath(dataUri!!))))
 
@@ -247,7 +247,6 @@ class EditProfileFragment : Fragment(), UploadCallBack {
         var contentFile = File(fileUri.path)
         var uploadFile = UploadProgress(contentFile, this)
         var part = MultipartBody.Part.createFormData("file", contentFile.name, uploadFile)
-
         return part
     }
 

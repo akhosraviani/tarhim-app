@@ -73,7 +73,7 @@ interface RequestApi {
     fun requestUploadFile(@Part file: MultipartBody.Part): Call<UploadFileDataModel>
 
     @GET("api/v1/deceased/mygallery")
-    fun requestGetGallery(@Query("id") id: Int): Call<GalleryDataModel>
+    fun requestGetGallery(@Query("id") id: Int): Call<List<GalleryDataModel>>
 
 
     @GET("api/v1/comments")

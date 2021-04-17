@@ -240,6 +240,7 @@
                         android:drawablePadding="5dp"
                         android:fontFamily="@font/iran_sans"
                         android:text="مسیریابی"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         android:visibility="invisible"
                         app:layout_constraintBottom_toBottomOf="parent"

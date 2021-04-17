@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import ir.co.tarhim.R
@@ -38,13 +40,12 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
     }
 
     private lateinit var viewModel: HomeViewModel
-    private var deceasedId: Int = -1
+    private var deceasedId: Int? = null
     private var tabsTitle = arrayListOf<String>("تالارگفتگو", "گالری تصاویر", "خیرات")
     private lateinit var briefBio: String
     private var expandable = false
-    private var latitude: Long? = null
-    private var longtude: Long? = null
-    private lateinit var deceasedInfo: DeceasedProfileDataModel
+    private lateinit var locationBurial:LatLng
+    private  var deceasedInfo: DeceasedProfileDataModel?=null
     private var bioDeceased: String? = null
     private lateinit var pagerAdapter: ViewPagerAdapter
     private var checkFollow = false
@@ -58,28 +59,33 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
 
         showLoading(true)
 
-        if (intent?.getIntExtra("FromPersonal", -1) != 0) {
+
+
+        if (intent?.extras != null) {
             deceasedId = intent?.getIntExtra("FromPersonal", -1)!!
-            viewModel.requestDeceasedPersonal(deceasedId)
+            viewModel.requestDeceasedPersonal(deceasedId!!)
             Log.e(TAG, "onViewCreated: deceasedId" + deceasedId)
+            initTabAndViewPager()
+        }
+        if (intent.hasExtra("SearchPersonal")) {
+                deceasedId = intent?.getIntExtra("SearchPersonal", -1)!!
+                viewModel.requestDeceasedFromSearch(deceasedId!!)
+                initTabAndViewPager()
 
         }
-        if (intent?.getIntExtra("GetFromSearch", -1) != 0) {
-            deceasedId = intent?.getIntExtra("GetFromSearch", -1)!!
-            Log.e(TAG, "onViewCreated: GetFromSearch" + deceasedId)
-            viewModel.requestDeceasedFromSearch(deceasedId)
-        }
-        initTabAndViewPager()
         viewModel.ldDeceasedProfile.observe(this, Observer {
             showLoading(false)
 
-            Log.e(TAG, "onCreate: " + it.isowner)
-            if (it.isowner != null) {
-                adminStatus = it.isowner
-            }
 
             it?.let {
+                if (!TextUtils.isEmpty(it.isowner.toString())) {
+                    adminStatus = it.isowner
+                }
 
+                if (it.latitude!= null) {
+                    locationBurial = LatLng(it.latitude, it.longitude)
+                    btnFindBurialLocation.visibility = View.VISIBLE
+                }
                 deceasedInfo = it
                 when (it.accesstype) {
                     AccessTypeDeceased.Public.name -> {
@@ -161,10 +167,14 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
             showLoading(false)
 
             it?.let {
-                it.isowner.also {
-                    adminStatus = it!!
+                if (!TextUtils.isEmpty(it.isowner!!.toString())) {
+                    adminStatus = it.isowner!!
                 }
                 deceasedInfo = it
+                if (it.latitude!= null) {
+                    locationBurial = LatLng(it.latitude, it.longitude)
+                    btnFindBurialLocation.visibility = View.VISIBLE
+                }
                 when (it.accesstype) {
                     AccessTypeDeceased.Public.name -> {
                         if (!it.isowner!!) {
@@ -238,8 +248,6 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
 
                     }
                 }
-
-
             }
         })
 
@@ -254,21 +262,19 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
             }
         })
 
-        Log.e(TAG, "onViewCreated:latitude " + latitude)
+
         btnFindBurialLocation.setOnClickListener {
-            if (latitude != null && longtude != null) {
+
                 val uri = java.lang.String.format(
                     Locale.ENGLISH,
                     "http://maps.google.com/maps?q=loc:%f,%f",
-                    latitude,
-                    longtude
+                    locationBurial!!.latitude,
+                    locationBurial!!.longitude
                 )
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
                 startActivity(intent)
-            } else {
-                btnFindBurialLocation.visibility = View.GONE
             }
-        }
+
 
 
         BtnEditDeceased.setOnClickListener {
@@ -297,26 +303,24 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayList)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         btnRequestFollow.setOnClickListener {
-            if (deceasedInfo.isrequested == null || !deceasedInfo.isrequested!!) {
+            if (deceasedInfo!!.isrequested == null || !deceasedInfo!!.isrequested!!) {
 
                 showLoading(true)
-                viewModel.requestFollowDeceased(deceasedId)
+                viewModel.requestFollowDeceased(deceasedId!!)
 
 
-            } else if (deceasedInfo.isrequested!!) {
+            } else if (deceasedInfo!!.isrequested!!) {
                 showLoading(true)
-                viewModel.requestUnFollowDeceased(deceasedId)
+                viewModel.requestUnFollowDeceased(deceasedId!!)
 
                 checkFollow = false
 
             }
         }
-
-
         viewModel.ldFollow.observe(this, Observer {
             showLoading(false)
             if (it.code == 200) {
-                viewModel.requestDeceasedPersonal(deceasedId)
+                viewModel.requestDeceasedPersonal(deceasedId!!)
                 btnRequestFollow.setBackgroundResource(R.drawable.waiting_request_follow_shape)
                 btnRequestFollow.text = "در انتظار تایید"
                 btnRequestFollow.setTextColor(resources.getColor(R.color.tradewind))
@@ -328,7 +332,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
         viewModel.ldUnFollow.observe(this, Observer {
             showLoading(false)
             if (it.code == 200) {
-                viewModel.requestDeceasedPersonal(deceasedId)
+                viewModel.requestDeceasedPersonal(deceasedId!!)
                 btnRequestFollow.setBackgroundResource(R.drawable.shape_button)
                 btnRequestFollow.text = "دنبال کردن"
                 btnRequestFollow.setTextColor(resources.getColor(R.color.white))
@@ -344,17 +348,19 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
     }
 
     override fun getContent(item: Int): Fragment {
+        Log.e(TAG, "getContent deceasedId: " + deceasedId)
         when (item) {
             1 -> {
-                return GalleryFragment().newInstance(deceasedId, adminStatus)
+                return GalleryFragment().newInstance(deceasedId!!,adminStatus)
             }
             2 -> {
                 return CharityFragment()
             }
             else -> {
-                return ForumFragment().newInstance(deceasedId)
+                return ForumFragment().newInstance(deceasedId!!)
             }
         }
+
     }
 
     override fun getCount(): Int {
@@ -431,7 +437,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
             txttitleDeceaedPage.visibility = GONE
             BtnNotifBell.visibility = GONE
             BtInbox.visibility = GONE
-
+            coordinateLayout.visibility = View.GONE
             PrivateLayout.visibility = View.VISIBLE
             btnRequestFollow.setBackgroundResource(R.drawable.shape_button)
             btnRequestFollow.text = "دنبال کردن"
@@ -440,6 +446,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
         if (deceasedInfo.isrequested != null && deceasedInfo.isrequested!! && !deceasedInfo.isfollow!!) {
             btnRequestFollow.setBackgroundResource(R.drawable.waiting_request_follow_shape)
             btnRequestFollow.text = "در انتظار تایید"
+            coordinateLayout.visibility = View.GONE
             btnRequestFollow.setTextColor(resources.getColor(R.color.tradewind))
             txttitleDeceaedPage.visibility = GONE
             BtnNotifBell.visibility = GONE

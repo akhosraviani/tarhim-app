@@ -6,5 +6,6 @@ data class DeceasedDataModel(
     val id: Int,
     val imageurl: String,
     val name: String,
-    val timestamp: Long
+    val timestamp: Long,
+    val recordid: Int
 )

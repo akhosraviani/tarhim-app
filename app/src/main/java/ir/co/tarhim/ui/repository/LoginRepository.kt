@@ -42,7 +42,7 @@ class LoginRepository {
     val mldDeceaedFromSearch = MutableLiveData<DeceasedProfileDataModel>()
     val mldMyDeceaed = MutableLiveData<List<MyDeceasedDataModel>>()
     val mldUploadImage = MutableLiveData<UploadFileDataModel>()
-    val mldGetGallery = MutableLiveData<GalleryDataModel>()
+    val mldGetGallery = MutableLiveData<List<GalleryDataModel>>()
     val mldGetComment = MutableLiveData<List<CommentDataModel>>()
     val mldSendComment = MutableLiveData<ConfirmDataModel>()
     val mldRegisterUser = MutableLiveData<ConfirmDataModel>()
@@ -214,19 +214,19 @@ class LoginRepository {
 
     fun requestGetGallery(id: Int) {
         RequestClient.makeRequest().requestGetGallery(id)
-            .enqueue(object : Callback<GalleryDataModel> {
-                override fun onFailure(call: retrofit2.Call<GalleryDataModel>, t: Throwable) {
+            .enqueue(object : Callback<List<GalleryDataModel>> {
+                override fun onFailure(call: retrofit2.Call<List<GalleryDataModel>>, t: Throwable) {
                     Log.e(TAG, "onFailure getGallery: " + t.message)
                     mldError.value=t
 
                 }
 
                 override fun onResponse(
-                    call: retrofit2.Call<GalleryDataModel>,
-                    response: Response<GalleryDataModel>
+                    call: retrofit2.Call<List<GalleryDataModel>>,
+                    response: Response<List<GalleryDataModel>>
                 ) {
                     mldGetGallery.value = response.body()
-                    Log.i("testTag", "im here=" + response.body())
+                    Log.i(TAG, "im here=" + response.body())
                 }
             })
 

@@ -2,24 +2,24 @@ package ir.co.tarhim.model.deceased
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.util.*
 
 data class GalleryDataModel(
     val id: Int,
-    val imagespath: List<String>
-) : Parcelable {
+    val imagespath: Any
+):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
-        parcel.createStringArrayList()!!
+        TODO("imagespath")
     ) {
     }
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
-        parcel.writeStringList(imagespath)
+    override fun describeContents(): Int {
+        TODO("Not yet implemented")
     }
 
-    override fun describeContents(): Int {
-        return 0
+    override fun writeToParcel(p0: Parcel?, p1: Int) {
+        TODO("Not yet implemented")
     }
 
     companion object CREATOR : Parcelable.Creator<GalleryDataModel> {
