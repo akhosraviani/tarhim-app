@@ -13,11 +13,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
-import ir.co.tarhim.ui.fragments.add_firends.adapter.ContactAdapterRecycler
+import ir.co.tarhim.ui.fragments.add_firends.adapter.FollowersAdapterRecycler
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.TarhimToast
 import kotlinx.android.synthetic.main.contact_fragment.*
-import kotlinx.android.synthetic.main.fragment_cemetery.*
 
 class AddFriendsDialogActivity() : AppCompatActivity() {
 
@@ -27,7 +26,7 @@ class AddFriendsDialogActivity() : AppCompatActivity() {
     private var deceasedId: Int = -1
     private lateinit var viewModel: HomeViewModel
     private lateinit var imm: InputMethodManager
-    private lateinit var contactAdapter: ContactAdapterRecycler
+    private lateinit var followersAdapter: FollowersAdapterRecycler
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,9 +37,14 @@ class AddFriendsDialogActivity() : AppCompatActivity() {
             deceasedId = intent?.getIntExtra("DeceasedId", -1)!!
         }
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        imm =
-            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        viewModel.requestFollowes(deceasedId)
 
+        viewModel.ldFollowersList.observe(this, Observer {
+            it.also{
+                followersAdapter.submitList(it)
+            }
+        })
 
         viewModel.ldInvite.observe(this, Observer {
             it.also {
@@ -49,6 +53,8 @@ class AddFriendsDialogActivity() : AppCompatActivity() {
                         TarhimToast.Builder()
                             .setActivity(this)
                             .message(it.message)
+                        viewModel.requestFollowes(deceasedId)
+
                     }
                 }
             }
@@ -65,8 +71,8 @@ class AddFriendsDialogActivity() : AppCompatActivity() {
 
 
     private fun initContactRecycler() {
-        contactAdapter = ContactAdapterRecycler()
-//        contactRecycler.adapter=contactAdapter
+        followersAdapter = FollowersAdapterRecycler()
+        contactRecycler.adapter = followersAdapter
         manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         contactRecycler.layoutManager = manager
     }
@@ -78,8 +84,7 @@ class AddFriendsDialogActivity() : AppCompatActivity() {
             if (!TextUtils.isEmpty(ETInputNumber.text) && ETInputNumber.text!!.length == 11) {
                 viewModel.requestInvite(deceasedId, ETInputNumber.text.toString())
                 ETInputNumber.setText("")
-                ETInputNumber.setHint(getString(R.string.text_hint_add_friends))
-                this.currentFocus!!.clearFocus()
+                imm.hideSoftInputFromWindow(this.currentFocus!!.windowToken,0)
             } else {
                 TarhimToast.Builder()
                     .setActivity(this)
@@ -100,9 +105,9 @@ class AddFriendsDialogActivity() : AppCompatActivity() {
             object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     var contentView = view.findViewById<View>(android.R.id.content)
-                    var rect=Rect()
+                    var rect = Rect()
                     view.getWindowVisibleDisplayFrame(rect)
-                    var screenHeight=contentView.height
+                    var screenHeight = contentView.height
                     val keypadHeight: Int = screenHeight - rect.bottom
                     if (keypadHeight > screenHeight * 0.15) {
                     } else {

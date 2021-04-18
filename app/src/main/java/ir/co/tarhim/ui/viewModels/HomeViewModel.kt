@@ -4,20 +4,19 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.orhanobut.hawk.Hawk
-import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.ConfirmDataModel
-import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.deceased.*
+import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
+import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
 import ir.co.tarhim.model.login.mobile.CheckRegisterModel
 import ir.co.tarhim.model.login.otp.OtpDataModel
+import ir.co.tarhim.model.user.FollowersDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.ui.repository.LoginRepository
-import ir.co.tarhim.utils.TarhimConfig.Companion.DECEASED_ID
 import ir.co.tarhim.utils.TarhimConfig.Companion.USER_NUMBER
 import okhttp3.MultipartBody
-import retrofit2.http.Multipart
 
 class HomeViewModel : ViewModel() {
 
@@ -45,10 +44,12 @@ class HomeViewModel : ViewModel() {
     var ldUnFollow: LiveData<ConfirmDataModel>
     var ldUserInfo: LiveData<UserInfoDataModel>
     var ldError: LiveData<Throwable>
-    var ldPray: LiveData<List<PrayDataModel>>
+    var ldPray: LiveData<List<RequirementDataModel>>
     var ldInvite: LiveData<ConfirmDataModel>
     var ldPostGallery: LiveData<ConfirmDataModel>
     var ldCharity: LiveData<List<CharityDataModel>>
+    var ldSendPray: LiveData<ConfirmDataModel>
+    var ldFollowersList: LiveData<List<FollowersDataModel>>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -75,19 +76,25 @@ class HomeViewModel : ViewModel() {
         ldError = loginRepository.mldError
         ldFollow = loginRepository.mldFollow
         ldUnFollow = loginRepository.mldUnFollow
-        ldPray=loginRepository.mldPray
-        ldCharity=loginRepository.mldCharity
-
+        ldPray = loginRepository.mldPray
+        ldCharity = loginRepository.mldCharity
+        ldSendPray=loginRepository.mldSendPray
+        ldFollowersList=loginRepository.mldFollowers
     }
 
-    fun requestPostGallery(deceasedId: Int, path :String ) {
-        loginRepository.requestPostGallery(deceasedId, path )
+    fun requestPostGallery(deceasedId: Int, path: String) {
+        loginRepository.requestPostGallery(deceasedId, path)
     }
-    fun requestGetPray( ) {
-        loginRepository.requestGetPray( )
+
+    fun requestGetPray() {
+        loginRepository.requestGetPray()
     }
-    fun requestGetCharity( ) {
-        loginRepository.requestGetCharity( )
+
+    fun requestGetCharity() {
+        loginRepository.requestGetCharity()
+    }
+    fun requestFollowes(deceasedId:Int) {
+        loginRepository.requestFollowersList(deceasedId)
     }
 
     fun requestInboxMessage() {
@@ -140,7 +147,12 @@ class HomeViewModel : ViewModel() {
     }
 
     fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumberRequest) {
-        loginRepository.requestCheckRegister(checkRegisterRequest)
+        loginRepository.requestSendPray(checkRegisterRequest)
+        Log.i("testTag", "hi model view" + ldSignUp)
+    }
+
+    fun requestSendPray(body: PrayDataRequest) {
+        loginRepository.requestSendPray(Hawk.get(USER_NUMBER), body)
         Log.i("testTag", "hi model view" + ldSignUp)
     }
 

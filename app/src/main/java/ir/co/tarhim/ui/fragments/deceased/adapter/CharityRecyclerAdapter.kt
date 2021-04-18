@@ -45,13 +45,10 @@ class CharityRecyclerAdapter(var charityListener: CharityListener) :
 
         init {
             TvNameCharity = view.TvCharityName
-            ImCharity = view.IvCharity
+
         }
 
         open fun bind(charityItem: CharityDataModel) {
-            Glide.with(itemView.context)
-                .load(charityItem.imageurl)
-                .into(ImCharity)
 
             TvNameCharity.setText(charityItem.name)
 

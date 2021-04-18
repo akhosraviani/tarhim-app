@@ -230,7 +230,7 @@ class LoginActivity : AppCompatActivity() {
 
     public fun showLoading(status: Boolean) {
         if (status) {
-            loginLogo.visibility = View.GONE
+            loginLogo.visibility = View.INVISIBLE
             loading_lottie.visibility = View.VISIBLE
             window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         } else {

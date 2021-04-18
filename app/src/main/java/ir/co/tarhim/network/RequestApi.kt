@@ -8,6 +8,7 @@ import ir.co.tarhim.model.login.mobile.CheckRegisterModel
 import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
 import ir.co.tarhim.model.login.otp.OtpDataModel
 import ir.co.tarhim.model.news.NewsDataModel
+import ir.co.tarhim.model.user.FollowersDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import okhttp3.MultipartBody
@@ -137,10 +138,15 @@ interface RequestApi {
         ): Call<List<MyInboxDataModel>>
 
     @GET("api/v1/pray")
-    fun requestPray(): Call<List<PrayDataModel>>
+    fun requestPray(): Call<List<RequirementDataModel>>
+
+    @POST("api/v1/pray")
+    fun requestSendPray(@Query("mobile")mobile:String,@Body prayBody:PrayDataRequest): Call<ConfirmDataModel>
 
     @GET("api/v1/deceased/charity")
     fun requestGetCharity(): Call<List<CharityDataModel>>
+  @GET("api/v1/admin/followerlist")
+    fun requestFollowesList(@Query("id")deceaseId:Int): Call<List<FollowersDataModel>>
 
 
 }

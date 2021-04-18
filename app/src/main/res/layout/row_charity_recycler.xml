@@ -1,37 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.appcompat.widget.AppCompatTextView android:id="@+id/TvCharityName"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_7sdp"
-    android:background="@drawable/shape_row_charity_recycler">
-
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IvCharity"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
-        android:adjustViewBounds="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_5sdp"
-        android:fontFamily="@font/iran_sans_medium"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:id="@+id/TvCharityName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/IvCharity"
-        app:layout_constraintVertical_bias=".02"
-        tools:text="text chatiry" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:layout_height="@dimen/_30sdp"
+    android:layout_margin="@dimen/_5sdp"
+    android:fontFamily="@font/iran_sans_medium"
+    android:textColor="@color/white"
+    android:textStyle="bold"
+    android:background="@drawable/shape_button"
+    android:gravity="center"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias=".02"
+    tools:text="text chatiry"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" />

@@ -116,10 +116,6 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
 
                         } else {
                             coordinateLayout.visibility = View.VISIBLE
-                            btnAddFriends.visibility = View.VISIBLE
-                            typeSpinner.visibility = View.VISIBLE
-                            appCompatTextView6.visibility = View.VISIBLE
-                            typeSpinner.setText(resources.getStringArray(R.array.list_type)[1])
                             TvDeseacesName.text = it.name
                             TvDeathDateDeseaces.text = it.birthday
                             TvBornDateDeseaces.text = it.deathday
@@ -141,8 +137,8 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                             coordinateLayout.visibility = View.VISIBLE
                             btnAddFriends.visibility = View.VISIBLE
                             typeSpinner.visibility = View.VISIBLE
-                            appCompatTextView6.visibility = View.VISIBLE
-                            typeSpinner.setText(resources.getStringArray(R.array.list_type)[2])
+                            TvTypeDeceasedPage.visibility = View.VISIBLE
+                            typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[2])
                             TvDeseacesName.text = it.name
                             TvDeathDateDeseaces.text = it.birthday
                             TvBornDateDeseaces.text = it.deathday
@@ -207,8 +203,8 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                             coordinateLayout.visibility = View.VISIBLE
                             btnAddFriends.visibility = View.VISIBLE
                             typeSpinner.visibility = View.VISIBLE
-                            appCompatTextView6.visibility = View.VISIBLE
-                            typeSpinner.setText(resources.getStringArray(R.array.list_type)[1])
+                            TvTypeDeceasedPage.visibility = View.VISIBLE
+                            typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[1])
                             TvDeseacesName.text = it.name
                             TvDeathDateDeseaces.text = it.birthday
                             TvBornDateDeseaces.text = it.deathday
@@ -230,8 +226,8 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                             coordinateLayout.visibility = View.VISIBLE
                             btnAddFriends.visibility = View.VISIBLE
                             typeSpinner.visibility = View.VISIBLE
-                            appCompatTextView6.visibility = View.VISIBLE
-                            typeSpinner.setText(resources.getStringArray(R.array.list_type)[2])
+                            TvTypeDeceasedPage.visibility = View.VISIBLE
+                            typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[2])
                             TvDeseacesName.text = it.name
                             TvDeathDateDeseaces.text = it.birthday
                             TvBornDateDeseaces.text = it.deathday
@@ -246,15 +242,12 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                             initCollapsToolbar(this, it.imageurl!!, it.name!!)
                         }
 
-                    }
-                }
-            }
+                    }}}
         })
 
         appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (collapsToolbar.height + verticalOffset < 2 * ViewCompat.getMinimumHeight(
-                    collapsToolbar
-                )
+                    collapsToolbar)
             ) {
                 cToolbar.animate().alpha(1f).duration = 600
             } else {
@@ -299,7 +292,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                     .putExtra("DeceasedId", deceasedId)
             )
         }
-        val arrayList: Array<String> = resources.getStringArray(R.array.list_type)
+        val arrayList: Array<String> = resources.getStringArray(R.array.list_access_type)
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayList)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         btnRequestFollow.setOnClickListener {

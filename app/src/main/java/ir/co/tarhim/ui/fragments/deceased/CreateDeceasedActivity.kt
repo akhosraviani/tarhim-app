@@ -492,7 +492,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
 
 
     private fun setUpSpinner() {
-        val listAccessType: Array<String> = resources.getStringArray(R.array.list_type)
+        val listAccessType: Array<String> = resources.getStringArray(R.array.list_access_type)
         var spinnerAdapter = ArrayAdapter(this, R.layout.row_spinner, listAccessType)
         spinnerAdapter.setDropDownViewResource(R.layout.row_spinner)
         AccessTypeSpinner.adapter = spinnerAdapter
