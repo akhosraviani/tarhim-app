@@ -15,6 +15,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
@@ -22,8 +23,10 @@ import ir.co.tarhim.model.deceased.PrayDataRequest
 import ir.co.tarhim.ui.callback.SpinnerListener
 import ir.co.tarhim.ui.fragments.require.adapter.RequirementRecyclerAdapter
 import ir.co.tarhim.ui.viewModels.HomeViewModel
-import ir.co.tarhim.utils.*
-import kotlinx.android.synthetic.main.dialog_requirement_pray.*
+import ir.co.tarhim.utils.OnBackPressed
+import ir.co.tarhim.utils.SpinnerTarhim
+import ir.co.tarhim.utils.TarhimToast
+import ir.co.tarhim.utils.TypePray
 import kotlinx.android.synthetic.main.dialog_requirement_pray.view.*
 import kotlinx.android.synthetic.main.fragment_requirement.*
 
@@ -34,7 +37,7 @@ class RequirementFragment : Fragment(), SpinnerListener {
     }
 
     private lateinit var viewModel: HomeViewModel
-    private lateinit var dialog:AlertDialog
+    private lateinit var dialog: AlertDialog
     private lateinit var prayType: String
     private lateinit var requirementAdapter: RequirementRecyclerAdapter
     override fun onCreateView(
@@ -48,6 +51,7 @@ class RequirementFragment : Fragment(), SpinnerListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         showLoading(true)
+
         initRequirementRecycler()
         viewModel.requestGetPray()
         OnBackPressed().pressedCallBack(findNavController())
@@ -57,6 +61,11 @@ class RequirementFragment : Fragment(), SpinnerListener {
                 requirementAdapter.submitList(it)
             }
         })
+        if (arguments != null) {
+            if (requireArguments().getBoolean("PrayLink")) {
+                showRequirementPray(requireActivity())
+            }
+        }
 
 
         viewModel.ldSendPray.observe(viewLifecycleOwner, Observer {
@@ -78,9 +87,8 @@ class RequirementFragment : Fragment(), SpinnerListener {
 
 
         BtnAddREquirementPray.setOnClickListener {
-           showRequirementPray(requireActivity())
-            }
-
+            showRequirementPray(requireActivity())
+        }
 
 
     }
@@ -131,7 +139,10 @@ class RequirementFragment : Fragment(), SpinnerListener {
             LayoutInflater.from(activity).inflate(R.layout.dialog_requirement_pray, view, false)
 
         dialog = AlertDialog.Builder(activity).setView(root).create()
-        dialog.window!!.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+        dialog.window!!.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
 

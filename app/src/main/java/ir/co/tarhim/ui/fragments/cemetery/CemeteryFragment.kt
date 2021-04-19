@@ -3,6 +3,7 @@ package ir.co.tarhim.ui.fragments.cemetery
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Rect
+import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -19,18 +20,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedDataModel
+import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
 import ir.co.tarhim.ui.adapter.LatestSearchRecyclerAdapter
 import ir.co.tarhim.ui.adapter.SearchRecyclerAdapter
+import ir.co.tarhim.ui.callback.DeleteLatestListener
 import ir.co.tarhim.ui.callback.LatestRecyclerListener
 import ir.co.tarhim.ui.callback.SearchListener
 import ir.co.tarhim.ui.fragments.deceased.CreateDeceasedActivity
 import ir.co.tarhim.ui.fragments.deceased.DeceasedPageActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.TarhimConfig.Companion.FIRST_VISIT
+import ir.co.tarhim.utils.TarhimToast
 import kotlinx.android.synthetic.main.fragment_cemetery.*
 
 
-class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
+class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, DeleteLatestListener {
 
 
     companion object {
@@ -73,14 +77,12 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
         viewModel.ldLatestSearch.observe(viewLifecycleOwner, Observer {
             showLoading(false)
             it.let {
-                if (it != null) {
-                    if (it.size > 0)
+                    if (it!=null && it.size > 0) {
                         latestAdapter.submitList(it)
-                    else
-                        TvNullLatest.text = "محتوایی برای نمایش وجود ندارد"
-                } else
-                    TvNullLatest.text = "محتوایی برای نمایش وجود ندارد"
-
+                    }else{
+                        latestAdapter.submitList(null)
+                        TvLatestSearch.visibility=View.GONE
+                    }
             }
         })
 
@@ -126,9 +128,29 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
         }
         )
 
+        viewModel.ldDeleteLatest.observe(viewLifecycleOwner, Observer {
+            it.also {x->
+                when(x.code){
+                    200->{
+                        viewModel.requestlatestSearch()
 
-
-
+                        TarhimToast.Builder()
+                            .setActivity(requireActivity())
+                            .message(x.message)
+                            .build()
+                    }
+                    else->{
+                        TarhimToast.Builder()
+                            .setActivity(requireActivity())
+                            .message(x.message)
+                            .build()
+                    }
+                }
+            }
+        })
+        BtnInboxCemetery.setOnClickListener {
+            startActivity(Intent(requireActivity(),InboxMessageActivity::class.java))
+        }
         closeSearchBtn.setOnClickListener {
             imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
             SearchView.clearFocus()
@@ -139,8 +161,6 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
 
 
         }
-
-
         BtnCreateDeceased.setOnClickListener({
             startActivity(Intent(requireActivity(), CreateDeceasedActivity::class.java))
 
@@ -159,7 +179,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
 
 
     private fun initLatestRecycler() {
-        latestAdapter = LatestSearchRecyclerAdapter(this)
+        latestAdapter = LatestSearchRecyclerAdapter(this,this)
         var resanim = R.anim.up_to_bottom
         var animation = AnimationUtils.loadLayoutAnimation(requireContext(), resanim)
         LatestSearchRecycler.adapter = latestAdapter
@@ -254,6 +274,11 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
                 }
             })
 
+    }
+
+    override fun deleteCallback(recordedId: Int) {
+        viewModel.requestDeleteLatest(recordedId)
+        showLoading(true)
     }
 
 

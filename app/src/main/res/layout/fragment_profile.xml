@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtInbox"
+                android:id="@+id/BtnInboxProfile"
                 android:layout_width="@dimen/_17sdp"
                 android:layout_height="@dimen/_14sdp"
                 android:background="@drawable/inbox_icon"
@@ -37,10 +37,10 @@
                 android:visibility="gone"
                 android:layout_height="@dimen/_7sdp"
                 android:background="@drawable/notif_dot"
-                app:layout_constraintBottom_toTopOf="@id/BtInbox"
-                app:layout_constraintEnd_toEndOf="@id/BtInbox"
-                app:layout_constraintStart_toEndOf="@id/BtInbox"
-                app:layout_constraintTop_toTopOf="@id/BtInbox" />
+                app:layout_constraintBottom_toTopOf="@id/BtnInboxProfile"
+                app:layout_constraintEnd_toEndOf="@id/BtnInboxProfile"
+                app:layout_constraintStart_toEndOf="@id/BtnInboxProfile"
+                app:layout_constraintTop_toTopOf="@id/BtnInboxProfile" />
 
 
             <androidx.appcompat.widget.AppCompatTextView

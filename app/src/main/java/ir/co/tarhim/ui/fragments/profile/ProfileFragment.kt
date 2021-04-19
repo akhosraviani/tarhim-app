@@ -5,21 +5,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import ir.co.tarhim.R
+import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
 import ir.co.tarhim.ui.adapter.ViewPagerAdapter
 import ir.co.tarhim.ui.callback.ViewPagerCallBack
 import ir.co.tarhim.ui.fragments.deceased.CreateDeceasedActivity
-import ir.co.tarhim.ui.fragments.deceased.DeceasedPageActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.OnBackPressed
-import kotlinx.android.synthetic.main.fragment_cemetery.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : Fragment(), ViewPagerCallBack {
@@ -38,8 +38,9 @@ class ProfileFragment : Fragment(), ViewPagerCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         OnBackPressed().pressedCallBack(findNavController())
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        NavOptions.Builder().setPopUpTo(R.id.fragment_cemetery, true).build()
         viewModel.requestUserInfo()
-        pagerAdapter = ViewPagerAdapter(requireActivity().supportFragmentManager,lifecycle, this)
+        pagerAdapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle, this)
         VPagerProfile.adapter = pagerAdapter
 
 
@@ -57,27 +58,39 @@ class ProfileFragment : Fragment(), ViewPagerCallBack {
             }
         })
 
+
+        BtnNeedToPray.setOnClickListener {
+
+            var args = bundleOf("PrayLink" to true)
+            findNavController().navigate(R.id.action_fragment_profile_to_fragment_requirement, args)
+        }
         TabLayoutMediator(tabProfile, VPagerProfile) { tab, position ->
             tab.text = tabs[position]
         }.attach()
         for (i in 0 until tabProfile.tabCount) {
             val tab = (tabProfile.getChildAt(0) as ViewGroup).getChildAt(i)
-            var p=tab.layoutParams as ViewGroup.MarginLayoutParams
-            p.setMargins(0,0,5,0)
+            var p = tab.layoutParams as ViewGroup.MarginLayoutParams
+            p.setMargins(0, 0, 5, 0)
             tab.requestLayout()
         }
 
 
         BtnCreatePageDeceased.setOnClickListener {
-            startActivity(Intent(requireActivity(),CreateDeceasedActivity::class.java))
+            startActivity(Intent(requireActivity(), CreateDeceasedActivity::class.java))
         }
 
         BtnEditProfile.setOnClickListener {
             findNavController().navigate(R.id.action_fragment_profile_to_user_edit_fragment)
         }
-        
+
         BtnNeedToPray.setOnClickListener {
-            Toast.makeText(requireContext(), "در حال پیاده سازی یا اطلاعاتی برای نمایش وجود ندارد", Toast.LENGTH_SHORT).show()
+            var args = bundleOf("PrayLink" to true)
+            findNavController().navigate(R.id.action_fragment_profile_to_fragment_requirement, args)
+
+        }
+
+        BtnInboxProfile.setOnClickListener {
+            startActivity(Intent(requireActivity(), InboxMessageActivity::class.java))
         }
 
 
@@ -85,7 +98,7 @@ class ProfileFragment : Fragment(), ViewPagerCallBack {
 
     override fun getContent(item: Int): Fragment {
         when (item) {
-            1 -> return FollowDeceasedFragment().newInstance(true)
+            1 -> return FollowingDeceasedFragment().newInstance(true)
             else -> return MyDeceasedFragment().newInstance(true)
         }
 

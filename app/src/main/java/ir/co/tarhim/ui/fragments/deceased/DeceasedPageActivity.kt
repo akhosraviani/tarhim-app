@@ -24,12 +24,14 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
+import ir.co.tarhim.ui.activities.home.HomeActivity
 import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
 import ir.co.tarhim.ui.adapter.ViewPagerAdapter
 import ir.co.tarhim.ui.callback.ViewPagerCallBack
-import ir.co.tarhim.ui.fragments.add_firends.AddFriendsDialogActivity
+import ir.co.tarhim.ui.fragments.add_firends.InviteFriendsActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.AccessTypeDeceased
+import ir.co.tarhim.utils.SeperateNumber
 import kotlinx.android.synthetic.main.deceased_profile.*
 import java.util.*
 
@@ -95,6 +97,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                         }
                         coordinateLayout.visibility = View.VISIBLE
                         TvDeseacesName.text = it.name
+                        TvFollowersCount.setText("${SeperateNumber().splitDigit(it.followerCount).toInt()} دنبال کننده ")
                         TvDeathDateDeseaces.text = it.birthday
                         TvBornDateDeseaces.text = it.deathday
                         TvBurialLocation.text = "${it.deathloc}"
@@ -117,6 +120,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                         } else {
                             coordinateLayout.visibility = View.VISIBLE
                             TvDeseacesName.text = it.name
+                            TvFollowersCount.setText("${SeperateNumber().splitDigit(it.followerCount).toInt()} دنبال کننده ")
                             TvDeathDateDeseaces.text = it.birthday
                             TvBornDateDeseaces.text = it.deathday
                             TvBurialLocation.text = "${it.deathloc}"
@@ -179,6 +183,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                         }
                         coordinateLayout.visibility = View.VISIBLE
                         TvDeseacesName.text = it.name
+                        TvFollowersCount.setText("${SeperateNumber().splitDigit(it.followerCount).toInt()} دنبال کننده ")
                         TvDeathDateDeseaces.text = it.birthday
                         TvBornDateDeseaces.text = it.deathday
                         TvBurialLocation.text = "${it.deathloc}"
@@ -202,6 +207,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                         } else {
                             coordinateLayout.visibility = View.VISIBLE
                             btnAddFriends.visibility = View.VISIBLE
+                            TvFollowersCount.setText("${SeperateNumber().splitDigit(it.followerCount).toInt()} دنبال کننده ")
                             typeSpinner.visibility = View.VISIBLE
                             TvTypeDeceasedPage.visibility = View.VISIBLE
                             typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[1])
@@ -288,7 +294,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
         }
         btnAddFriends.setOnClickListener {
             startActivity(
-                Intent(this, AddFriendsDialogActivity::class.java)
+                Intent(this, InviteFriendsActivity::class.java)
                     .putExtra("DeceasedId", deceasedId)
             )
         }
@@ -334,7 +340,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             }
         })
-        BtInbox.setOnClickListener {
+        BtnInboxDeceasedProfile.setOnClickListener {
             startActivity(Intent(this, InboxMessageActivity::class.java))
         }
 
@@ -429,7 +435,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
         if ((deceasedInfo.isrequested == null || !deceasedInfo.isrequested!!) && !deceasedInfo.isfollow!!) {
             txttitleDeceaedPage.visibility = GONE
             BtnNotifBell.visibility = GONE
-            BtInbox.visibility = GONE
+            BtnInboxDeceasedProfile.visibility = GONE
             coordinateLayout.visibility = View.GONE
             PrivateLayout.visibility = View.VISIBLE
             btnRequestFollow.setBackgroundResource(R.drawable.shape_button)
@@ -443,7 +449,7 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
             btnRequestFollow.setTextColor(resources.getColor(R.color.tradewind))
             txttitleDeceaedPage.visibility = GONE
             BtnNotifBell.visibility = GONE
-            BtInbox.visibility = GONE
+            BtnInboxDeceasedProfile.visibility = GONE
             PrivateLayout.visibility = View.VISIBLE
         }
         if (deceasedInfo.isfollow!!) {
@@ -492,5 +498,8 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
 
     }
 
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this,HomeActivity::class.java))
+    }
 }

@@ -28,6 +28,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
+import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.CreateDeceasedRequest
 import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
@@ -49,12 +50,13 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 
 
-class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
+class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.DetectLocationListenr {
 
     companion object {
         private const val TAG = "CreateDeceased"
 
     }
+
 
     private lateinit var mapsFragment: MapsFragment
     private var imagePath: String? = ""
@@ -93,6 +95,9 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
         setUpSpinner()
 
 
+        locationBurial = Hawk.get("LOCATION", LatLng(0.0, 0.0))
+
+
 
         if (intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased") != null) {
             txtToolbar.text = "ویرایش پروفایل"
@@ -100,6 +105,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
             editProfile = true
             deceasedInfo = intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased")!!
             DeceasedId = intent?.getIntExtra("DeceasedId", -1)!!
+            locationBurial =
+                LatLng((deceasedInfo.latitude).toDouble(), (deceasedInfo.longitude).toDouble())
             showDeceasedDetails(deceasedInfo)
 
         }
@@ -125,7 +132,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
         BtnOpenMap.setOnClickListener {
             mapFragment.visibility = View.VISIBLE
             supportFragmentManager.beginTransaction()
-                .add(R.id.mapFragment, mapsFragment)
+                .add(R.id.mapFragment, mapsFragment.newInstance(locationBurial))
                 .commit();
         }
 
@@ -134,7 +141,10 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
 
         }
 
+
         BtnSaveEditUser.setOnClickListener {
+
+
             if (deceasedInfo != null) {
                 showLoading(true)
 
@@ -162,10 +172,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
                     ETDeathDeceased.text.toString().length > 0
                 ) {
                     showLoading(true)
-                    locationBurial = LatLng(
-                        (deceasedInfo.latitude).toDouble(),
-                        (deceasedInfo.longitude).toDouble()
-                    )
+
                     viewModel.requestCreateDeceased(
                         CreateDeceasedRequest(
                             accessType,
@@ -180,7 +187,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
                         )
                     )
 
-                    Log.e(TAG, "onCreate:locationBurial " + locationBurial.latitude + locationBurial.longitude)
+
                 } else {
                     Toast.makeText(this, "لطفا تمام قسمت ها را تکمیل کنید", Toast.LENGTH_SHORT)
                         .show()
@@ -192,13 +199,13 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
         TvChangeImg.setOnClickListener {
             openGallery()
         }
-        mapsFragment.setLocation(object : MapsFragment.LocateListenr {
-            override fun locationCallback(location: LatLng) {
-                Log.e(TAG, "locationCallback: " + location)
-                locationBurial = location
-            }
+//        mapsFragment.setLocation(object : MapsFragment.DetectLocationListenr {
+//            override fun locationCallback(location: LatLng) {
+//                Log.e(TAG, "locationCallback: " + location)
 
-        })
+//            }
+//
+//        })
 
         viewModel.ldcreateDeceased.observe(this, Observer {
 
@@ -524,6 +531,12 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack {
                 accessType = AccessTypeDeceased.Public.name
             }
         }
+    }
+
+    override fun locationCallback(location: LatLng) {
+        Log.e("locationCallback", "locationCallback: "+location.latitude )
+        Log.e("locationCallback", "locationCallback: "+location.longitude )
+        locationBurial= LatLng(location.latitude,location.longitude )
     }
 
 

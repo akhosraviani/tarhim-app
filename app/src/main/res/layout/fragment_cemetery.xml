@@ -21,7 +21,7 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtInbox"
+                android:id="@+id/BtnInboxCemetery"
                 android:layout_width="@dimen/_17sdp"
                 android:layout_height="@dimen/_14sdp"
                 android:background="@drawable/inbox_icon"
@@ -37,10 +37,10 @@
                 android:layout_height="@dimen/_5sdp"
                 android:background="@drawable/notif_dot"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@id/BtInbox"
-                app:layout_constraintEnd_toEndOf="@id/BtInbox"
-                app:layout_constraintStart_toEndOf="@id/BtInbox"
-                app:layout_constraintTop_toTopOf="@id/BtInbox" />
+                app:layout_constraintBottom_toTopOf="@id/BtnInboxCemetery"
+                app:layout_constraintEnd_toEndOf="@id/BtnInboxCemetery"
+                app:layout_constraintStart_toEndOf="@id/BtnInboxCemetery"
+                app:layout_constraintTop_toTopOf="@id/BtnInboxCemetery" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

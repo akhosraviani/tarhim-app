@@ -49,7 +49,9 @@ class HomeViewModel : ViewModel() {
     var ldPostGallery: LiveData<ConfirmDataModel>
     var ldCharity: LiveData<List<CharityDataModel>>
     var ldSendPray: LiveData<ConfirmDataModel>
+    var ldDeleteLatest: LiveData<ConfirmDataModel>
     var ldFollowersList: LiveData<List<FollowersDataModel>>
+    var ldFollowing: LiveData<List<MyDeceasedDataModel>>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -80,10 +82,20 @@ class HomeViewModel : ViewModel() {
         ldCharity = loginRepository.mldCharity
         ldSendPray=loginRepository.mldSendPray
         ldFollowersList=loginRepository.mldFollowers
+        ldFollowing=loginRepository.mldFollowing
+        ldDeleteLatest=loginRepository.mldDeleteLatest
     }
 
     fun requestPostGallery(deceasedId: Int, path: String) {
         loginRepository.requestPostGallery(deceasedId, path)
+    }
+
+    fun requestDeleteLatest(deceasedId: Int) {
+        loginRepository.requestDeleteLatestItem(deceasedId,Hawk.get(USER_NUMBER))
+    }
+
+    fun requestFollowing() {
+        loginRepository.requestFollowing(Hawk.get(USER_NUMBER))
     }
 
     fun requestGetPray() {
@@ -101,8 +113,8 @@ class HomeViewModel : ViewModel() {
         loginRepository.requestMyInbox(Hawk.get(USER_NUMBER))
     }
 
-    fun requestInvite(deceasedId: Int, mobile: String) {
-        loginRepository.requestInvite(deceasedId, mobile)
+    fun requestInvite(id: Int, mobile: String) {
+        loginRepository.requestInvite(id, mobile)
     }
 
     fun requestCreateDeceased(dataRequest: CreateDeceasedRequest) {

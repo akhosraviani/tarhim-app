@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
@@ -38,6 +39,7 @@ class NewsFragment : Fragment(),NewsListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
+        NavOptions.Builder().setPopUpTo(R.id.fragment_cemetery, true).build()
         listNews=ArrayList()
         initializeRecycler()
         viewModel.requestNews()

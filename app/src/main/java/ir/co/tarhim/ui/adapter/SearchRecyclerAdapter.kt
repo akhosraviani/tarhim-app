@@ -50,10 +50,10 @@ class SearchRecyclerAdapter(var searchCallBack:SearchListener) :
         val btnRemoveDeceased: AppCompatButton
 
         init {
-            imageDeceased = v.IVDeceased
-            nameDeceased = v.TvDeceasedName
-            birth_DeathDay = v.TvBornDeceased
-            btnRemoveDeceased = v.BtnRemoveDeceased
+            imageDeceased = v.IvFollowingImage
+            nameDeceased = v.TvFollowingName
+            birth_DeathDay = v.TvFollowingDate
+            btnRemoveDeceased = v.BtnRemovelatest
             btnRemoveDeceased.visibility = View.GONE
         }
 

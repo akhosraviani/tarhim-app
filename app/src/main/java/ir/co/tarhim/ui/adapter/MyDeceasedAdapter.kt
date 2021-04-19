@@ -6,18 +6,15 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.MyDeceasedDataModel
 import ir.co.tarhim.ui.callback.ProfileListener
 import kotlinx.android.synthetic.main.row_deceased_pages_recycler.view.*
-import kotlinx.android.synthetic.main.row_latest_deceased.view.*
-import kotlinx.android.synthetic.main.row_latest_deceased.view.IVDeceased
-import kotlinx.android.synthetic.main.row_latest_deceased.view.TvBornDeceased
-import kotlinx.android.synthetic.main.row_latest_deceased.view.TvDeceasedName
+import kotlinx.android.synthetic.main.row_latest_deceased.view.IvFollowingImage
+import kotlinx.android.synthetic.main.row_latest_deceased.view.TvFollowingDate
+import kotlinx.android.synthetic.main.row_latest_deceased.view.TvFollowingName
 
 class MyDeceasedAdapter(
     private val listDeceased: List<MyDeceasedDataModel>,
@@ -34,9 +31,9 @@ class MyDeceasedAdapter(
         val editDeceased: AppCompatButton
 
         init {
-            imageDeceased = v.IVDeceased
-            nameDeceased = v.TvDeceasedName
-            birth_DeathDay = v.TvBornDeceased
+            imageDeceased = v.IvFollowingImage
+            nameDeceased = v.TvFollowingName
+            birth_DeathDay = v.TvFollowingDate
             editDeceased = v.BtnEditDeceased
 
 

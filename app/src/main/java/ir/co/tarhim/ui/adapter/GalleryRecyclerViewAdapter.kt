@@ -24,7 +24,6 @@ class GalleryRecyclerViewAdapter(
     val context: Context,
     val data: List<GalleryDataModel>,
     val galleryListener: GalleryListener,
-    val postListener: PostListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -92,18 +91,13 @@ class GalleryRecyclerViewAdapter(
         (holder as GalleryViewHolder)
         holder.bindTo(data.get(position))
 
-
         holder.galleryIv.setOnClickListener {
-            if (position == 0) {
-                postListener.postcallBack()
-            } else {
-                galleryListener.galleryRecyclerCallBack(data[holder.adapterPosition])
+
+                galleryListener.galleryRecyclerCallBack(position,data[holder.adapterPosition])
 
             }
         }
 
-
-    }
 
 
 }

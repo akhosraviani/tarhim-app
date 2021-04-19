@@ -2,6 +2,7 @@ package ir.co.tarhim.ui.activities.login
 
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -10,6 +11,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.toSpannable
 import androidx.lifecycle.Observer
@@ -25,9 +27,12 @@ import ir.co.tarhim.ui.activities.login.state.LoginState
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.TarhimConfig
 import ir.co.tarhim.utils.TarhimToast
+import kotlinx.android.synthetic.main.details_news.*
 import kotlinx.android.synthetic.main.fragment_login.*
 
+
 class LoginActivity : AppCompatActivity() {
+
 
     private lateinit var viewModel: HomeViewModel
         private set
@@ -41,6 +46,8 @@ class LoginActivity : AppCompatActivity() {
         private const val CONDITION_WORDS_END_INDEX: Int = 48
         private const val RULES_WORDS_START_INDEX: Int = 77
         private const val RULES_WORDS_END_INDEX: Int = 97
+        private const val TAG = "LoginActivity"
+
     }
 
     private lateinit var state: LoginState
@@ -54,8 +61,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.fragment_login)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         initUi()
-
-        if(Hawk.get(TarhimConfig.FIRST_VISIT,false)){
+        if (Hawk.get(TarhimConfig.FIRST_VISIT, false)) {
             startActivity(Intent(this, HomeActivity::class.java))
         }
 
@@ -136,6 +142,12 @@ class LoginActivity : AppCompatActivity() {
             viewModel.requestOtp(CheckPhoneNumberRequest(Hawk.get(TarhimConfig.USER_NUMBER)))
 
         }
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
 
 
     }

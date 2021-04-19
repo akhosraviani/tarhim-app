@@ -22,7 +22,6 @@ import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.GalleryDataModel
 import ir.co.tarhim.ui.adapter.GalleryRecyclerViewAdapter
 import ir.co.tarhim.ui.callback.GalleryListener
-import ir.co.tarhim.ui.callback.PostListener
 import ir.co.tarhim.ui.callback.UploadCallBack
 import ir.co.tarhim.ui.callback.UploadProgress
 import ir.co.tarhim.ui.viewModels.HomeViewModel
@@ -33,7 +32,7 @@ import kotlinx.android.synthetic.main.fragment_gallery.*
 import okhttp3.MultipartBody
 import java.io.File
 
-class GalleryFragment : Fragment(), GalleryListener, PostListener, UploadCallBack {
+class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
 
     companion object {
         private const val TAG = "GalleryFragment"
@@ -70,18 +69,7 @@ class GalleryFragment : Fragment(), GalleryListener, PostListener, UploadCallBac
         deceasedId = arguments?.getInt("Id")!!
         adminStatus = arguments?.getBoolean("AdminStatus")!!
 
-        if (adminStatus) {
-            listsGallery.add(
-                0,
-                GalleryDataModel(
-                    0,
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.shape_upload_img_gallery
-                    )!!
-                )
-            )
-        }
+
 
         viewModel.requestGetGallery(deceasedId)
 
@@ -90,12 +78,23 @@ class GalleryFragment : Fragment(), GalleryListener, PostListener, UploadCallBac
         viewModel.ldGetGallery.observe(viewLifecycleOwner, Observer {
 
             it!!.let {
-
+                if (adminStatus) {
+                    listsGallery.add(
+                        0,
+                        GalleryDataModel(
+                            0,
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.shape_upload_img_gallery
+                            )!!
+                        )
+                    )
+                }
                 Log.e(TAG, "onViewCreated: " + it.size)
 
                 for (i in 0 until it.size) {
                     listsGallery.add(
-                         GalleryDataModel(
+                        GalleryDataModel(
                             it[i].id, it[i].imagespath
                         )
                     )
@@ -112,6 +111,7 @@ class GalleryFragment : Fragment(), GalleryListener, PostListener, UploadCallBac
                 Log.e(TAG, "onViewCreated: " + it.path)
                 Log.e(TAG, "onViewCreated: " + it.id)
                 viewModel.requestPostGallery(deceasedId, it.path)
+
             }
         })
 
@@ -120,6 +120,7 @@ class GalleryFragment : Fragment(), GalleryListener, PostListener, UploadCallBac
             it.also {
                 when (it.code) {
                     200 -> {
+                        listsGallery.clear()
                         viewModel.requestGetGallery(deceasedId)
                         showLoading(false, it.message)
                     }
@@ -132,7 +133,7 @@ class GalleryFragment : Fragment(), GalleryListener, PostListener, UploadCallBac
 
     private fun initRecycler(paths: List<GalleryDataModel>) {
 
-        adminGalleryAdapter = GalleryRecyclerViewAdapter(requireContext(), paths, this, this)
+        adminGalleryAdapter = GalleryRecyclerViewAdapter(requireContext(), paths, this)
         galleryrecycler.adapter = adminGalleryAdapter
         galleryrecycler.layoutAnimation =
             AnimationUtils.loadLayoutAnimation(context, R.anim.up_to_bottom)
@@ -150,7 +151,6 @@ class GalleryFragment : Fragment(), GalleryListener, PostListener, UploadCallBac
 
         return body
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -193,27 +193,26 @@ class GalleryFragment : Fragment(), GalleryListener, PostListener, UploadCallBac
     }
 
 
-    private fun openGallery() {
-        when {
+    public fun openGallery() {
+        if (
             ContextCompat.checkSelfPermission(
                 requireActivity(),
                 android.Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                Intent(Intent.ACTION_PICK).also { intent ->
-                    intent.type = "image/*"
-                    startActivityForResult(intent, CHOSE_IMAGE_FROM_GALLERY)
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            Intent(Intent.ACTION_PICK).also { intent ->
+                intent.type = "image/*"
+                startActivityForResult(intent, CHOSE_IMAGE_FROM_GALLERY)
 
-                }
             }
-
-            else -> {
-                ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                    CHOSE_IMAGE_FROM_GALLERY
-                )
-            }
+        } else {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                CHOSE_IMAGE_FROM_GALLERY
+            )
         }
+
     }
 
 
@@ -257,12 +256,13 @@ class GalleryFragment : Fragment(), GalleryListener, PostListener, UploadCallBac
     }
 
 
-    override fun galleryRecyclerCallBack(item: GalleryDataModel) {
-        DialogProvider().showImageDialog(requireActivity(), item)
+    override fun galleryRecyclerCallBack(position: Int, item: GalleryDataModel) {
+        if (adminStatus && position == 0) {
+            openGallery()
+        } else {
+            DialogProvider().showImageDialog(requireActivity(), item)
+        }
     }
 
-    override fun postcallBack() {
-        openGallery()
-    }
 
 }

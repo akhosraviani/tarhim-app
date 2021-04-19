@@ -34,7 +34,6 @@ class HomeActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
-        NavOptions.Builder().setPopUpTo(R.id.fragment_cemetery, true).build()
         NavigationUI.setupWithNavController(bottom_navigation, navController)
         bottom_navigation.setOnNavigationItemReselectedListener { }
         bottom_navigation.itemIconTintList = null

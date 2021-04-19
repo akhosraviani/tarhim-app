@@ -5,20 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedDataModel
+import ir.co.tarhim.ui.callback.DeleteLatestListener
 import ir.co.tarhim.ui.callback.LatestRecyclerListener
 import kotlinx.android.synthetic.main.row_latest_deceased.view.*
-import java.util.*
 
 
-class LatestSearchRecyclerAdapter(private val latestListener: LatestRecyclerListener) :
+class LatestSearchRecyclerAdapter(
+    private val latestListener: LatestRecyclerListener,
+    var deleteLatestListener: DeleteLatestListener
+) :
     ListAdapter<DeceasedDataModel, LatestSearchRecyclerAdapter.ViewHolder>(DeceasedDiffCallBack()) {
 
     companion object {
@@ -47,11 +52,15 @@ class LatestSearchRecyclerAdapter(private val latestListener: LatestRecyclerList
         val imageDeceased: AppCompatImageView
         val nameDeceased: AppCompatTextView
         val birth_DeathDay: AppCompatTextView
+        val BtnRemoveLatest: AppCompatButton
+        val rowRoot: ConstraintLayout
 
         init {
-            imageDeceased = v.IVDeceased
-            nameDeceased = v.TvDeceasedName
-            birth_DeathDay = v.TvBornDeceased
+            imageDeceased = v.IvFollowingImage
+            nameDeceased = v.TvFollowingName
+            birth_DeathDay = v.TvFollowingDate
+            BtnRemoveLatest = v.BtnRemovelatest
+            rowRoot = v.latest_row_root
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
@@ -64,7 +73,6 @@ class LatestSearchRecyclerAdapter(private val latestListener: LatestRecyclerList
 
             nameDeceased.text = deceased.name
 
-            val loc = Locale("en_US")
 //
 //            var dateBirthDay = Date(deceased.birthday)
 //            var dateDeathDay = Date(deceased.deathday)
@@ -82,6 +90,16 @@ class LatestSearchRecyclerAdapter(private val latestListener: LatestRecyclerList
 
     }
 
+    public fun clearAdapter() {
+        var size = itemCount
+        if (size > 0) {
+            for (i in 0..size) {
+                currentList.removeAt(i)
+            }
+            notifyItemRangeRemoved(0, size)
+        }
+    }
+
     override fun onCreateViewHolder(group: ViewGroup, p1: Int): ViewHolder {
         val view =
             LayoutInflater.from(group.context).inflate(R.layout.row_latest_deceased, group, false)
@@ -93,9 +111,12 @@ class LatestSearchRecyclerAdapter(private val latestListener: LatestRecyclerList
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindTo(getItem(position))
 
-        holder.itemView.setOnClickListener {
+        holder.BtnRemoveLatest.setOnClickListener {
+            deleteLatestListener.deleteCallback(getItem(holder.adapterPosition).recordid)
+        }
 
-            latestListener.latestCallBack(getItem(position).id)
+        holder.rowRoot.setOnClickListener {
+            latestListener.latestCallBack(getItem(holder.adapterPosition).id)
         }
 
     }
