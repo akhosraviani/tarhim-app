@@ -1,8 +1,10 @@
-package ir.co.tarhim.ui.fragments.deceased
+package ir.co.tarhim.ui.activities.deceased
 
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -28,14 +30,20 @@ import ir.co.tarhim.ui.activities.home.HomeActivity
 import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
 import ir.co.tarhim.ui.adapter.ViewPagerAdapter
 import ir.co.tarhim.ui.callback.ViewPagerCallBack
-import ir.co.tarhim.ui.fragments.add_firends.InviteFriendsActivity
+import ir.co.tarhim.ui.activities.invite_friend.InviteFriendsActivity
+import ir.co.tarhim.ui.fragments.deceased.CharityFragment
+import ir.co.tarhim.ui.fragments.deceased.ForumFragment
+import ir.co.tarhim.ui.fragments.deceased.GalleryFragment
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.AccessTypeDeceased
+import ir.co.tarhim.utils.NetworkConnectionReceiver
 import ir.co.tarhim.utils.SeperateNumber
 import kotlinx.android.synthetic.main.deceased_profile.*
+import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.*
+import kotlin.concurrent.schedule
 
-class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
+class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkConnectionReceiver.NetworkListener {
 
     companion object {
         private const val TAG = "DeceasedPageFragment"
@@ -52,11 +60,16 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
     private lateinit var pagerAdapter: ViewPagerAdapter
     private var checkFollow = false
     private var adminStatus = false
+    private var br=NetworkConnectionReceiver()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.deceased_profile)
+        var intentFilter=IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
+            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+        }
+        registerReceiver(br,intentFilter)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         showLoading(true)
@@ -98,8 +111,8 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                         coordinateLayout.visibility = View.VISIBLE
                         TvDeseacesName.text = it.name
                         TvFollowersCount.setText("${SeperateNumber().splitDigit(it.followerCount).toInt()} دنبال کننده ")
-                        TvDeathDateDeseaces.text = it.birthday
-                        TvBornDateDeseaces.text = it.deathday
+                        TvDeathDateDeseaces.text = it.deathday
+                        TvBornDateDeseaces.text = it.birthday
                         TvBurialLocation.text = "${it.deathloc}"
                         bioDeceased = it.description
                         configBioText(it.description!!)
@@ -121,8 +134,8 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                             coordinateLayout.visibility = View.VISIBLE
                             TvDeseacesName.text = it.name
                             TvFollowersCount.setText("${SeperateNumber().splitDigit(it.followerCount).toInt()} دنبال کننده ")
-                            TvDeathDateDeseaces.text = it.birthday
-                            TvBornDateDeseaces.text = it.deathday
+                            TvDeathDateDeseaces.text = it.deathday
+                            TvBornDateDeseaces.text = it.birthday
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
@@ -144,8 +157,8 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
                             TvTypeDeceasedPage.visibility = View.VISIBLE
                             typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[2])
                             TvDeseacesName.text = it.name
-                            TvDeathDateDeseaces.text = it.birthday
-                            TvBornDateDeseaces.text = it.deathday
+                            TvDeathDateDeseaces.text = it.deathday
+                            TvBornDateDeseaces.text = it.birthday
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
@@ -502,4 +515,29 @@ class DeceasedPageActivity : AppCompatActivity(), ViewPagerCallBack {
         super.onBackPressed()
         startActivity(Intent(this,HomeActivity::class.java))
     }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.unregisterReceiver(br)
+    }
+
+    override fun networkcallback(isConnected: Boolean) {
+
+        if (isConnected) {
+            deceasedRoot.visibility = View.VISIBLE
+            noIntenterroot.visibility=View.GONE
+
+        } else {
+            deceasedRoot.visibility = View.GONE
+            noIntenterroot.visibility= View.VISIBLE
+            Timer("Network", false).schedule(4000) {
+                finishAffinity()
+            }
+        }
+    }
+
 }

@@ -14,19 +14,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
 import ir.co.tarhim.ui.callback.ProfileListener
-import ir.co.tarhim.ui.fragments.deceased.DeceasedPageActivity
+import ir.co.tarhim.ui.activities.deceased.DeceasedProfileActivity
 import ir.co.tarhim.ui.fragments.profile.adapter.FollowingRecyclerAdapter
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.TarhimToast
 import kotlinx.android.synthetic.main.my_deceased_fragment.*
 
-class FollowingDeceasedFragment : Fragment(), ProfileListener.MyDeceasedListener,
+class MyFollowingFragment : Fragment(), ProfileListener.MyDeceasedListener,
     ProfileListener.UnFollowDeceasedListener {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var followingAdapter: FollowingRecyclerAdapter
-    fun newInstance(layout: Boolean): FollowingDeceasedFragment {
-        val fragment = FollowingDeceasedFragment()
+    fun newInstance(layout: Boolean): MyFollowingFragment {
+        val fragment = MyFollowingFragment()
         val args = Bundle()
         fragment.arguments = args
         args.putBoolean("Condition", layout)
@@ -116,8 +116,8 @@ class FollowingDeceasedFragment : Fragment(), ProfileListener.MyDeceasedListener
     }
 
     override fun myDeceasedCallBack(deceasedId: Int) {
-        Intent(requireActivity(), DeceasedPageActivity::class.java)
-            .putExtra("FromPersonal", deceasedId)
+       startActivity( Intent(requireActivity(), DeceasedProfileActivity::class.java)
+           .putExtra("FromPersonal", deceasedId))
     }
 
     override fun unFollowCallBack(deceasedId: Int) {

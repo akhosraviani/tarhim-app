@@ -9,8 +9,10 @@
          location permissions for the "MyLocation" functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -54,10 +56,17 @@
             android:name=".ui.activities.home.HomeActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <activity android:name=".ui.fragments.deceased.CreateDeceasedActivity"/>
-        <activity android:name=".ui.fragments.deceased.DeceasedPageActivity"/>
-        <activity android:name=".ui.fragments.add_firends.InviteFriendsActivity"/>
+        <activity android:name=".ui.activities.deceased.CreateDeceasedActivity"/>
+        <activity android:name=".ui.activities.deceased.DeceasedProfileActivity"/>
+        <activity android:name="ir.co.tarhim.ui.activities.invite_friend.InviteFriendsActivity"/>
         <activity android:name=".ui.activities.inbox.InboxMessageActivity"/>
+
+        <receiver android:name=".utils.NetworkConnectionReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

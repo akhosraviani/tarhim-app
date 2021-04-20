@@ -11,30 +11,27 @@ import android.view.WindowManager
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.GalleryDataModel
-import ir.co.tarhim.ui.viewModels.HomeViewModel
-import kotlinx.android.synthetic.main.dialog_requirement_pray.view.*
 import kotlinx.android.synthetic.main.gallery_image_dialog.view.*
+import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 
 class DialogProvider {
 
-    private lateinit var dialog: AlertDialog
 
+    private var alertDialog:AlertDialog? = null
 
-    public fun dismiss() {
-        if (dialog != null)
-            dialog.dismiss()
-        else return;
+    fun dismiss() {
+        alertDialog?.dismiss()
     }
 
 
-    public fun showImageDialog(activity: Activity, item: GalleryDataModel) {
+     fun showImageDialog(activity: Activity, item: GalleryDataModel) {
         var viewGroup = activity.findViewById<ViewGroup>(android.R.id.content)
 
         var view =
             LayoutInflater.from(activity).inflate(R.layout.gallery_image_dialog, viewGroup, false)
-        dialog = AlertDialog.Builder(activity).create()
-        dialog.setView(view)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog = AlertDialog.Builder(activity).create()
+        alertDialog!!.setView(view)
+        alertDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         Glide.with(activity)
             .load(item.imagespath)
@@ -42,9 +39,38 @@ class DialogProvider {
             .into(view.img_load_gallery)
 
 
-        dialog.show()
+        alertDialog!!.show()
     }
 
+
+     fun showConfirm(
+        activity: Activity,
+        image: Int,
+        message: String,
+        accept: View.OnClickListener,
+        cancel: View.OnClickListener
+    ) {
+        val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
+        val view =
+            LayoutInflater.from(activity).inflate(R.layout.tarhim_dialog, viewGroup, false)
+        alertDialog = AlertDialog.Builder(activity).setView(view).create()
+        alertDialog!!.setCancelable(false)
+        alertDialog!!.setCanceledOnTouchOutside(false)
+        alertDialog!!.show()
+        alertDialog!!.window!!.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        view.TvMessageDialog.setText(message)
+
+        view.BtnAcceptDialog.setOnClickListener(accept)
+        view.BtnCloseDialog.setOnClickListener(cancel)
+
+        view.IvImageDialog.setBackgroundResource(image)
+
+    }
 
 
 }

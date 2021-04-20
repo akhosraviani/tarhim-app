@@ -1,8 +1,11 @@
 package ir.co.tarhim.ui.activities.login
 
 
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Rect
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -25,18 +28,23 @@ import ir.co.tarhim.ui.activities.login.state.InputPasswordState
 import ir.co.tarhim.ui.activities.login.state.InputPhoneState
 import ir.co.tarhim.ui.activities.login.state.LoginState
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import ir.co.tarhim.utils.NetworkConnectionReceiver
 import ir.co.tarhim.utils.TarhimConfig
 import ir.co.tarhim.utils.TarhimToast
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.details_news.*
 import kotlinx.android.synthetic.main.fragment_login.*
+import java.util.*
+import kotlin.concurrent.schedule
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListener {
 
 
     private lateinit var viewModel: HomeViewModel
         private set
 
+    private val  br=NetworkConnectionReceiver()
     fun getViewModel(): HomeViewModel {
         return viewModel;
     }
@@ -59,6 +67,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_login)
+        var intentFilter=IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
+            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+        }
+        registerReceiver(br,intentFilter)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         initUi()
         if (Hawk.get(TarhimConfig.FIRST_VISIT, false)) {
@@ -252,5 +264,30 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onStart() {
+        super.onStart()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.unregisterReceiver(br)
+    }
+
+    override fun networkcallback(isConnected: Boolean) {
+
+        if (isConnected) {
+            loginCv.visibility = View.VISIBLE
+            noIntenterLogroot.visibility=View.GONE
+
+        } else {
+            loginCv.visibility = View.GONE
+            noIntenterLogroot.visibility= View.VISIBLE
+            Timer("Network", false).schedule(4000) {
+                finishAffinity()
+            }
+        }
+    }
 
 }

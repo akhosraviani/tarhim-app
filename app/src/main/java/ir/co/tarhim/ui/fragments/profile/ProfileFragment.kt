@@ -9,7 +9,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
@@ -17,7 +16,7 @@ import ir.co.tarhim.R
 import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
 import ir.co.tarhim.ui.adapter.ViewPagerAdapter
 import ir.co.tarhim.ui.callback.ViewPagerCallBack
-import ir.co.tarhim.ui.fragments.deceased.CreateDeceasedActivity
+import ir.co.tarhim.ui.activities.deceased.CreateDeceasedActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.OnBackPressed
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -38,7 +37,6 @@ class ProfileFragment : Fragment(), ViewPagerCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         OnBackPressed().pressedCallBack(findNavController())
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        NavOptions.Builder().setPopUpTo(R.id.fragment_cemetery, true).build()
         viewModel.requestUserInfo()
         pagerAdapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle, this)
         VPagerProfile.adapter = pagerAdapter
@@ -60,8 +58,8 @@ class ProfileFragment : Fragment(), ViewPagerCallBack {
 
 
         BtnNeedToPray.setOnClickListener {
-
             var args = bundleOf("PrayLink" to true)
+
             findNavController().navigate(R.id.action_fragment_profile_to_fragment_requirement, args)
         }
         TabLayoutMediator(tabProfile, VPagerProfile) { tab, position ->
@@ -98,7 +96,7 @@ class ProfileFragment : Fragment(), ViewPagerCallBack {
 
     override fun getContent(item: Int): Fragment {
         when (item) {
-            1 -> return FollowingDeceasedFragment().newInstance(true)
+            1 -> return MyFollowingFragment().newInstance(true)
             else -> return MyDeceasedFragment().newInstance(true)
         }
 

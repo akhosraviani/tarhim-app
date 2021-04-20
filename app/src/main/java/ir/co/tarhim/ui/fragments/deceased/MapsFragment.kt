@@ -24,9 +24,7 @@ class MapsFragment : Fragment(),
     GoogleMap.OnMarkerClickListener {
 
 
-    fun setLocation(location: DetectLocationListenr) {
-        detectLocationListenr = location
-    }
+
 
     companion object {
         private const val TAG = "MapsFragment"

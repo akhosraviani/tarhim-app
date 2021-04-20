@@ -1,291 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_page">
-    <FrameLayout
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/noIntenterroot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/mapFragment"
-        android:elevation="@dimen/_5sdp"
-        android:visibility="gone"
-        />
+        android:visibility="gone">
 
-    <ProgressBar
-        android:id="@+id/loadingSavePofile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="@dimen/_3sdp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prayToolbar" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableStart="@drawable/ic_baseline_cloud_off_24"
+            android:drawablePadding="@dimen/_5sdp"
+            android:fontFamily="@font/iran_sans_bold"
+            android:gravity="center"
+            android:text="انترنت خود را بررسی کنید و دوباره وارد شوید "
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView2"
+            app:layout_constraintVertical_bias="0.107" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/prayToolbar"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView2"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:background="@drawable/no_internet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/createDeceasedPageRoot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0">
+        android:layout_height="match_parent"
+        android:background="@color/background_page">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnExitDeceasedPage"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:background="@drawable/close"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnSaveEditUser"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:background="@drawable/done"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias=".95"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtToolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/iran_sans_bold"
-                android:text="@string/msg_edit_deceased_profile"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <androidx.core.widget.ContentLoadingProgressBar
-        android:id="@+id/loadingImg"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:elevation="@dimen/_7sdp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/IvDeceased"
-        app:layout_constraintEnd_toEndOf="@+id/IvDeceased"
-        app:layout_constraintStart_toStartOf="@+id/IvDeceased"
-        app:layout_constraintTop_toTopOf="@+id/IvDeceased" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IvDeceased"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:background="@drawable/add_image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prayToolbar"
-        app:layout_constraintVertical_bias="0.05" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/TvChangeImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/iran_sans"
-        android:text="@string/msg_add_image"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/color_green"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/IvDeceased"
-        app:layout_constraintStart_toStartOf="@+id/IvDeceased"
-        app:layout_constraintTop_toBottomOf="@+id/IvDeceased"
-        app:layout_constraintVertical_bias=".02" />
-
-    <Spinner
-        android:id="@+id/AccessTypeSpinner"
-        android:layout_width="@dimen/_90sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:background="@drawable/shape_spinner"
-        app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView9"
-        app:layout_constraintEnd_toStartOf="@+id/appCompatTextView9"
-        app:layout_constraintHorizontal_bias=".9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/appCompatTextView9" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/iran_sans_light"
-        android:text="حالت نمایش صفحه : "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.834"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TvChangeImg"
-        app:layout_constraintVertical_bias="0.05" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_7sdp"
-        android:layout_marginEnd="@dimen/_7sdp"
-        android:hint=" نام و نام خانوادگی"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AccessTypeSpinner"
-        app:layout_constraintVertical_bias=".03">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/ETNameDeceased"
+        <FrameLayout
+            android:id="@+id/mapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background_page"
-            android:fontFamily="@font/iran_sans_light"
-            android:gravity="right"
-            android:imeOptions="actionNext"
-            android:maxLines="1"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:elevation="@dimen/_5sdp"
+            android:visibility="gone" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_7sdp"
-        android:layout_marginTop="@dimen/_3sdp"
-        android:layout_marginEnd="@dimen/_7sdp"
-        android:hint=" تاریخ تولد"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        app:layout_constraintVertical_bias=".01">
+        <ProgressBar
+            android:id="@+id/loadingSavePofile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/_3sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prayToolbar" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/EtBirthDateDeceased"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:background="@color/background_page"
-            android:focusableInTouchMode="false"
-            android:fontFamily="@font/iran_sans_light"
-            android:gravity="right"
-            android:maxLines="1"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_7sdp"
-        android:layout_marginTop="@dimen/_3sdp"
-        android:layout_marginEnd="@dimen/_7sdp"
-        android:hint=" تاریخ وفات"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
-        app:layout_constraintVertical_bias=".01">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/ETDeathDeceased"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:background="@color/background_page"
-            android:focusableInTouchMode="false"
-            android:fontFamily="@font/iran_sans_light"
-            android:gravity="right"
-            android:imeOptions="actionNext"
-            android:maxLines="1"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_3sdp"
-        android:layout_marginEnd="@dimen/_7sdp"
-        android:hint="محل دفن"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"
-        app:layout_constraintStart_toEndOf="@+id/BtnOpenMap"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
-        app:layout_constraintVertical_bias=".01">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/ETBurialLocation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background_page"
-            android:fontFamily="@font/iran_sans_light"
-            android:gravity="right"
-            android:imeOptions="actionNext"
-            android:maxLines="1"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/BtnOpenMap"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:background="@drawable/shape_button"
-        android:fontFamily="@font/iran_sans"
-        android:text="@string/msg_open_map"
-        android:textColor="@color/white"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.032"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textInputLayout4"
-        />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/_7sdp"
-        android:layout_marginTop="@dimen/_3sdp"
-        android:layout_marginEnd="@dimen/_7sdp"
-        android:hint="بیوگرافی"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4"
-        app:layout_constraintVertical_bias=".01">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/ETdeceasedDescription"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/prayToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background_page"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/BtnExitDeceasedPage"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:background="@drawable/close"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/BtnSaveEditUser"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:background="@drawable/done"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias=".95"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtToolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/iran_sans_bold"
+                    android:text="@string/msg_edit_deceased_profile"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/loadingImg"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:elevation="@dimen/_7sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/IvDeceased"
+            app:layout_constraintEnd_toEndOf="@+id/IvDeceased"
+            app:layout_constraintStart_toStartOf="@+id/IvDeceased"
+            app:layout_constraintTop_toTopOf="@+id/IvDeceased" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/IvDeceased"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:background="@drawable/add_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prayToolbar"
+            app:layout_constraintVertical_bias="0.05" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/TvChangeImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iran_sans"
+            android:text="@string/msg_add_image"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/color_green"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/IvDeceased"
+            app:layout_constraintStart_toStartOf="@+id/IvDeceased"
+            app:layout_constraintTop_toBottomOf="@+id/IvDeceased"
+            app:layout_constraintVertical_bias=".02" />
+
+        <Spinner
+            android:id="@+id/AccessTypeSpinner"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:background="@drawable/shape_spinner"
+            app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView9"
+            app:layout_constraintEnd_toStartOf="@+id/appCompatTextView9"
+            app:layout_constraintHorizontal_bias=".9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/appCompatTextView9" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/iran_sans_light"
-            android:gravity="right"
-            android:imeOptions="actionDone"
-            android:isScrollContainer="true"
-            android:scrollbars="vertical" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="حالت نمایش صفحه : "
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.834"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TvChangeImg"
+            app:layout_constraintVertical_bias="0.05" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:hint=" نام و نام خانوادگی"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/AccessTypeSpinner"
+            app:layout_constraintVertical_bias=".03">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ETNameDeceased"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background_page"
+                android:fontFamily="@font/iran_sans_light"
+                android:gravity="right"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:hint=" تاریخ تولد"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+            app:layout_constraintVertical_bias=".01">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/EtBirthDateDeceased"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:background="@color/background_page"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/iran_sans_light"
+                android:gravity="right"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:hint=" تاریخ وفات"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+            app:layout_constraintVertical_bias=".01">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ETDeathDeceased"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:background="@color/background_page"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/iran_sans_light"
+                android:gravity="right"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:hint="محل دفن"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"
+            app:layout_constraintStart_toEndOf="@+id/BtnOpenMap"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
+            app:layout_constraintVertical_bias=".01">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ETBurialLocation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background_page"
+                android:fontFamily="@font/iran_sans_light"
+                android:gravity="right"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/BtnOpenMap"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/shape_button"
+            android:fontFamily="@font/iran_sans"
+            android:text="@string/msg_open_map"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/textInputLayout4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.032"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textInputLayout4" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:hint="بیوگرافی"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout4"
+            app:layout_constraintVertical_bias=".01">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/ETdeceasedDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_page"
+                android:fontFamily="@font/iran_sans_light"
+                android:gravity="right"
+                android:imeOptions="actionDone"
+                android:isScrollContainer="true"
+                android:scrollbars="vertical" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

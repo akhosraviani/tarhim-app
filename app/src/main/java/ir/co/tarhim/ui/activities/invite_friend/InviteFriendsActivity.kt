@@ -1,4 +1,4 @@
-package ir.co.tarhim.ui.fragments.add_firends
+package ir.co.tarhim.ui.activities.invite_friend
 
 import android.app.Activity
 import android.graphics.Rect
@@ -15,7 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
-import ir.co.tarhim.ui.fragments.add_firends.adapter.FollowersAdapterRecycler
+import ir.co.tarhim.ui.activities.invite_friend.adapter.FollowersAdapterRecycler
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.TarhimToast
 import kotlinx.android.synthetic.main.contact_fragment.*

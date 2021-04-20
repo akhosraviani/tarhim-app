@@ -15,8 +15,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.PrayDataRequest
@@ -28,6 +27,7 @@ import ir.co.tarhim.utils.SpinnerTarhim
 import ir.co.tarhim.utils.TarhimToast
 import ir.co.tarhim.utils.TypePray
 import kotlinx.android.synthetic.main.dialog_requirement_pray.view.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_requirement.*
 
 class RequirementFragment : Fragment(), SpinnerListener {
@@ -54,7 +54,7 @@ class RequirementFragment : Fragment(), SpinnerListener {
 
         initRequirementRecycler()
         viewModel.requestGetPray()
-        OnBackPressed().pressedCallBack(findNavController())
+//        OnBackPressed().pressedCallBack(findNavController())
         viewModel.ldPray.observe(viewLifecycleOwner, Observer {
             showLoading(false)
             it.also {

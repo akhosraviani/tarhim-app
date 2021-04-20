@@ -7,22 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.MyDeceasedDataModel
 import ir.co.tarhim.ui.adapter.MyDeceasedAdapter
 import ir.co.tarhim.ui.callback.ProfileListener
-import ir.co.tarhim.ui.fragments.deceased.DeceasedPageActivity
+import ir.co.tarhim.ui.activities.deceased.DeceasedProfileActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
-import kotlinx.android.synthetic.main.contact_fragment.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.my_deceased_fragment.*
 
 class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack,
@@ -87,14 +82,14 @@ class MyDeceasedFragment : Fragment(), ProfileListener.MyDeceasedEditCallBack,
     override fun editDeceased(item: MyDeceasedDataModel) {
 
         startActivity(
-            Intent(requireActivity(), DeceasedPageActivity::class.java)
+            Intent(requireActivity(), DeceasedProfileActivity::class.java)
                 .putExtra("EditDetails", item)
         )
     }
 
     override fun myDeceasedCallBack(deceasedId: Int) {
         startActivity(
-            Intent(requireActivity(), DeceasedPageActivity::class.java)
+            Intent(requireActivity(), DeceasedProfileActivity::class.java)
                 .putExtra("FromPersonal", deceasedId)
         )
 

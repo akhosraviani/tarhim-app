@@ -3,7 +3,6 @@ package ir.co.tarhim.ui.fragments.cemetery
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Rect
-import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -26,8 +25,8 @@ import ir.co.tarhim.ui.adapter.SearchRecyclerAdapter
 import ir.co.tarhim.ui.callback.DeleteLatestListener
 import ir.co.tarhim.ui.callback.LatestRecyclerListener
 import ir.co.tarhim.ui.callback.SearchListener
-import ir.co.tarhim.ui.fragments.deceased.CreateDeceasedActivity
-import ir.co.tarhim.ui.fragments.deceased.DeceasedPageActivity
+import ir.co.tarhim.ui.activities.deceased.CreateDeceasedActivity
+import ir.co.tarhim.ui.activities.deceased.DeceasedProfileActivity
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.TarhimConfig.Companion.FIRST_VISIT
 import ir.co.tarhim.utils.TarhimToast
@@ -236,7 +235,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
         SearchView.setText("")
         SearchView.clearFocus()
         startActivity(
-            Intent(requireActivity(), DeceasedPageActivity::class.java)
+            Intent(requireActivity(), DeceasedProfileActivity::class.java)
                 .putExtra("FromPersonal", decId)
         )
     }
@@ -246,7 +245,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
         SearchView.setText("")
         SearchView.clearFocus()
         startActivity(
-            Intent(requireActivity(), DeceasedPageActivity::class.java)
+            Intent(requireActivity(), DeceasedProfileActivity::class.java)
                 .putExtra("SearchPersonal", deceasedId)
         )
 

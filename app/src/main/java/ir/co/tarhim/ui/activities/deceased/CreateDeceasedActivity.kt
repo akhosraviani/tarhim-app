@@ -1,12 +1,14 @@
-package ir.co.tarhim.ui.fragments.deceased
+package ir.co.tarhim.ui.activities.deceased
 
 import android.app.Activity
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Rect
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -36,8 +38,10 @@ import ir.co.tarhim.model.deceased.MyDeceasedDataModel
 import ir.co.tarhim.ui.activities.home.HomeActivity
 import ir.co.tarhim.ui.callback.UploadCallBack
 import ir.co.tarhim.ui.callback.UploadProgress
+import ir.co.tarhim.ui.fragments.deceased.MapsFragment
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.AccessTypeDeceased
+import ir.co.tarhim.utils.NetworkConnectionReceiver
 import ir.co.tarhim.utils.TarhimCompress
 import ir.co.tarhim.utils.TarhimConfig.Companion.CHOSE_IMAGE_FROM_GALLERY
 import ir.hamsaa.persiandatepicker.Listener
@@ -45,12 +49,17 @@ import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.fragment_gallery.*
+import kotlinx.android.synthetic.main.fragment_login.*
 import okhttp3.MultipartBody
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.*
+import kotlin.concurrent.schedule
 
 
-class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.DetectLocationListenr {
+class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
+    MapsFragment.DetectLocationListenr,
+    NetworkConnectionReceiver.NetworkListener {
 
     companion object {
         private const val TAG = "CreateDeceased"
@@ -71,13 +80,20 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.
     private lateinit var deceasedInfo: DeceasedProfileDataModel
     private lateinit var inputMethodManager: InputMethodManager
     private lateinit var accessType: String
-
     private var listBirth: List<String>? = null
     private var listDeath: List<String>? = null
+
+    private var br = NetworkConnectionReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_deceased)
+
+        var intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
+            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+        }
+        registerReceiver(br, intentFilter)
+
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         picker = PersianDatePickerDialog(this)
         mapsFragment = MapsFragment()
@@ -122,11 +138,10 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.
 
         EtBirthDateDeceased.setOnClickListener {
             setUpBirthDayCalendar()
-//            showCalendarInDarkMode()
+
         }
         ETDeathDeceased.setOnClickListener {
             setUpDeathDayCalendar()
-//            showCalendarInDarkMode()
         }
 
         BtnOpenMap.setOnClickListener {
@@ -135,45 +150,22 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.
                 .add(R.id.mapFragment, mapsFragment.newInstance(locationBurial))
                 .commit();
         }
-
         BtnExitDeceasedPage.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
 
         }
-
-
         BtnSaveEditUser.setOnClickListener {
 
 
             if (deceasedInfo != null) {
                 showLoading(true)
-
-                viewModel.requestEditDeceased(
-                    CreateDeceasedRequest(
-                        accessType,
-                        EtBirthDateDeceased.text.toString(),
-                        ETDeathDeceased.text.toString(),
-                        ETBurialLocation.text.toString(),
-                        ETdeceasedDescription.text.toString(),
-                        imagePath!!,
-                        locationBurial.latitude,
-                        locationBurial.longitude,
-                        ETNameDeceased.text.toString()
-                    ), DeceasedId!!
-                )
-
-
-            } else {
-                //<editor-fold desc="Create Deceaed Profile">
-                if (
-                    ETNameDeceased.text.toString().length > 0 &&
-                    ETBurialLocation.text.toString().length > 0 &&
-                    EtBirthDateDeceased.text.toString().length > 0 &&
-                    ETDeathDeceased.text.toString().length > 0
-                ) {
-                    showLoading(true)
-
-                    viewModel.requestCreateDeceased(
+//
+//                DialogProvider().showConfirm(
+//                    this,
+//                    R.drawable.request,
+//                    "از ثبت اطلاعات مطمن هستید؟",
+//                    {
+                        viewModel.requestEditDeceased(
                         CreateDeceasedRequest(
                             accessType,
                             EtBirthDateDeceased.text.toString(),
@@ -184,8 +176,49 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.
                             locationBurial.latitude,
                             locationBurial.longitude,
                             ETNameDeceased.text.toString()
-                        )
-                    )
+                        ), DeceasedId!!)
+
+//                       DialogProvider().dismiss()
+//                    },
+//                    {
+//                        DialogProvider().dismiss()
+//                    }
+//                )
+
+            } else {
+                //<editor-fold desc="Create Deceaed Profile">
+                if (
+                    ETNameDeceased.text.toString().length > 0 &&
+                    ETBurialLocation.text.toString().length > 0 &&
+                    EtBirthDateDeceased.text.toString().length > 0 &&
+                    ETDeathDeceased.text.toString().length > 0
+                ) {
+                    showLoading(true)
+//                    DialogProvider().showConfirm(
+//                        this,
+//                        R.drawable.request,
+//                        "از ثبت اطلاعات متوفی مطمن هستید؟",
+//                        {
+                            viewModel.requestCreateDeceased(
+                                CreateDeceasedRequest(
+                                    accessType,
+                                    EtBirthDateDeceased.text.toString(),
+                                    ETDeathDeceased.text.toString(),
+                                    ETBurialLocation.text.toString(),
+                                    ETdeceasedDescription.text.toString(),
+                                    imagePath!!,
+                                    locationBurial.latitude,
+                                    locationBurial.longitude,
+                                    ETNameDeceased.text.toString()
+                                )
+                            )
+//                            DialogProvider().dismiss()
+//
+//                        },
+//                        {
+//                            DialogProvider().dismiss()
+//                        })
+
 
 
                 } else {
@@ -195,18 +228,9 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.
                 //</editor-fold>
             }
         }
-
         TvChangeImg.setOnClickListener {
             openGallery()
         }
-//        mapsFragment.setLocation(object : MapsFragment.DetectLocationListenr {
-//            override fun locationCallback(location: LatLng) {
-//                Log.e(TAG, "locationCallback: " + location)
-
-//            }
-//
-//        })
-
         viewModel.ldcreateDeceased.observe(this, Observer {
 
             showLoading(false)
@@ -216,7 +240,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.
                 Handler().postDelayed({
 
                     startActivity(
-                        Intent(this, DeceasedPageActivity::class.java)
+                        Intent(this, DeceasedProfileActivity::class.java)
                             .putExtra("FromPersonal", it.id!!)
                     )
                     editProfile = true
@@ -225,11 +249,9 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.
             }
 
         })
-
         viewModel.ldError.observe(this, Observer {
             Toast.makeText(this, "ورودی های خود را چک کنید!", Toast.LENGTH_SHORT).show()
         })
-
         viewModel.ldEditDeceased.observe(this, Observer {
 
             if (it != null) {
@@ -240,7 +262,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.
                     Handler().postDelayed({
 
                         startActivity(
-                            Intent(this, DeceasedPageActivity::class.java)
+                            Intent(this, DeceasedProfileActivity::class.java)
                                 .putExtra("FromPersonal", DeceasedId!!)
                         )
 
@@ -256,23 +278,11 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.
 
 
     private fun setUpBirthDayCalendar() {
-////        if (TextUtils.isEmpty(EtBirthDateDeceased.text)) {
-////            showDialogCalendar(EtBirthDateDeceased, 1370, 3, 13)
-////        } else {
         showCalendarInDarkMode(EtBirthDateDeceased, 1370, 3, 13)
-//
-////        }
-
     }
 
     private fun setUpDeathDayCalendar() {
-//        hideSoftKeyboard(this)
-//        if (TextUtils.isEmpty(ETDeathDeceased.text)) {
-//            showDialogCalendar(ETDeathDeceased, 1370, 3, 13)
-//        } else {
         showCalendarInDarkMode(ETDeathDeceased, 1370, 3, 13)
-
-//        }
 
     }
 
@@ -534,10 +544,31 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,MapsFragment.
     }
 
     override fun locationCallback(location: LatLng) {
-        Log.e("locationCallback", "locationCallback: "+location.latitude )
-        Log.e("locationCallback", "locationCallback: "+location.longitude )
-        locationBurial= LatLng(location.latitude,location.longitude )
+        Log.e("locationCallback", "locationCallback: " + location.latitude)
+        Log.e("locationCallback", "locationCallback: " + location.longitude)
+        locationBurial = LatLng(location.latitude, location.longitude)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        this.unregisterReceiver(br)
+    }
 
+    override fun networkcallback(isConnected: Boolean) {
+        if (isConnected) {
+            createDeceasedPageRoot.visibility = View.VISIBLE
+            noIntenterroot.visibility = View.GONE
+
+        } else {
+            createDeceasedPageRoot.visibility = View.GONE
+            noIntenterroot.visibility = View.VISIBLE
+            Timer("Network", false).schedule(4000) {
+                finishAffinity()
+            }
+        }
+    }
+
+    fun setUpeyboard(view:View){
+
+    }
 }

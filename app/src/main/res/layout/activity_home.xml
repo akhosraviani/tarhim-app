@@ -1,38 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/homePageRoot"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
-        android:background="@color/black"
-        android:layoutDirection="rtl"
-        app:itemBackground="@drawable/shape_bottom_navigation"
-        app:itemTextColor="@color/white"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1"
-        app:menu="@menu/navigation_menu" />
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
-    <fragment
-        android:id="@+id/navHostFragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@color/black"
+            android:layoutDirection="rtl"
+
+            app:itemBackground="@drawable/shape_bottom_navigation"
+            app:itemTextColor="@color/white"
+            app:labelVisibilityMode="labeled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1"
+            app:menu="@menu/navigation_menu" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/profile_sheet"
+            android:visibility="gone"
+            />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/navHostFragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/home_nav_graph" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/noIntenterroot"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/home_nav_graph" />
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableStart="@drawable/ic_baseline_cloud_off_24"
+            android:drawablePadding="@dimen/_5sdp"
+            android:fontFamily="@font/iran_sans_bold"
+            android:gravity="center"
+            android:text="انترنت خود را بررسی کنید و دوباره وارد شوید "
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView2"
+            app:layout_constraintVertical_bias="0.107" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView2"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:background="@drawable/no_internet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
