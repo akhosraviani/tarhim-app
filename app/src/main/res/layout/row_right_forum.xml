@@ -81,7 +81,7 @@
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/BtnLikeComment"
             android:layout_width="@dimen/_13sdp"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_height="@dimen/_13sdp"
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_3sdp"

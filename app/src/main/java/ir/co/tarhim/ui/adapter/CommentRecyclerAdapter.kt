@@ -2,9 +2,12 @@ package ir.co.tarhim.ui.adapter
 
 
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
@@ -17,26 +20,33 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.CommentDataModel
+import ir.co.tarhim.ui.LikeCommentClicked
 import ir.co.tarhim.ui.callback.TipsListener
+import ir.co.tarhim.ui.fragments.LikedCommentChangeColor
 import kotlinx.android.synthetic.main.row_left_forum.view.*
 import kotlinx.android.synthetic.main.row_right_forum.view.*
 import kotlinx.android.synthetic.main.row_right_forum.view.TVCommentForum
 import kotlinx.android.synthetic.main.row_right_forum.view.TVNameRightForum
 
-class CommentRecyclerAdapter(var callBack:TipsListener) :
-    ListAdapter<CommentDataModel, CommentRecyclerAdapter.ViewHolder>(CommentDiffUnit()) {
+class CommentRecyclerAdapter(private var likeCommentClicked: LikeCommentClicked,var callBack:TipsListener) :
+    ListAdapter<CommentDataModel, CommentRecyclerAdapter.ViewHolder>(CommentDiffUnit()) , LikedCommentChangeColor {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         val txtComment: AppCompatTextView
         val nameUser: AppCompatTextView
         val imageUser: AppCompatImageView
+        val likeIcon : AppCompatImageButton
 
         init {
+            var likedState : Boolean
             txtComment = view.TVCommentForum
             nameUser = view.TVNameRightForum
             imageUser = view.IVRightForum
+            likeIcon = view.BtnLikeComment
         }
 
         open fun bindTo(comment: CommentDataModel) {
+
             txtComment.text = comment.message
             nameUser.text = comment.name
             Glide.with(itemView.context)
@@ -44,6 +54,11 @@ class CommentRecyclerAdapter(var callBack:TipsListener) :
                 .circleCrop()
                 .into(imageUser)
 
+            if(comment.favourite){
+                likeIcon.setImageResource(R.drawable.heart_full)
+            }else{
+                likeIcon.setImageResource(R.drawable.heart_none)
+            }
 
         }
     }
@@ -79,6 +94,19 @@ class CommentRecyclerAdapter(var callBack:TipsListener) :
         holder.itemView.BtnMore.setOnClickListener {
             callBack.tipsCallback(getItem(holder.adapterPosition).id)
         }
+
+        holder.likeIcon.setOnClickListener {
+            if(getItem(holder.adapterPosition).favourite){
+                likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id , true)
+            }else{
+                likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id , false)
+            }
+
+        }
+
+    }
+
+    override fun changeColor(liked : Boolean) {
 
     }
 }

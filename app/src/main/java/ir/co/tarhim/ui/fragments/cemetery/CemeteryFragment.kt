@@ -115,16 +115,16 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener {
         })
 
 
-        viewModel.ldSearch.observe(viewLifecycleOwner, { data ->
-            showLoading(false)
-            data.let {
-
-                searchAdapter.submitList(it)
-            }
-            if (data == null)
-                Toast.makeText(getActivity(), "موردی یافت نشد", Toast.LENGTH_SHORT).show()
-        }
-        )
+//        viewModel.ldSearch.observe(viewLifecycleOwner, { data ->
+//            showLoading(false)
+//            data.let {
+//
+//                searchAdapter.submitList(it)
+//            }
+//            if (data == null)
+//                Toast.makeText(getActivity(), "موردی یافت نشد", Toast.LENGTH_SHORT).show()
+//        }
+//        )
 
 
 

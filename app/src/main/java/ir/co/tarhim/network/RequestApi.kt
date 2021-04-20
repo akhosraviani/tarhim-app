@@ -4,6 +4,8 @@ import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.ConfirmDataModel
 import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.deceased.*
+import ir.co.tarhim.model.deceased.like.LikeCommentDataModel
+import ir.co.tarhim.model.deceased.like.LikeCommentRequest
 import ir.co.tarhim.model.login.mobile.CheckRegisterModel
 import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
 import ir.co.tarhim.model.login.otp.OtpDataModel
@@ -136,6 +138,12 @@ interface RequestApi {
 
         ): Call<List<MyInboxDataModel>>
 
+
+    @POST("api/v1/likes/favourite")
+    fun requestLikeComment(
+        @Body body: LikeCommentRequest,
+        @Query("mobile") mobile: String,
+    ): Call<LikeCommentDataModel>
 
 }
 
