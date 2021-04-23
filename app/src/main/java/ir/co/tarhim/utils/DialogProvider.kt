@@ -17,33 +17,33 @@ import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 class DialogProvider {
 
 
-    private var alertDialog:AlertDialog? = null
+    private lateinit var alertDialog: AlertDialog
 
     fun dismiss() {
         alertDialog?.dismiss()
     }
 
 
-     fun showImageDialog(activity: Activity, item: GalleryDataModel) {
+    fun showImageDialog(activity: Activity, item: GalleryDataModel) {
         var viewGroup = activity.findViewById<ViewGroup>(android.R.id.content)
-
         var view =
             LayoutInflater.from(activity).inflate(R.layout.gallery_image_dialog, viewGroup, false)
-        alertDialog = AlertDialog.Builder(activity).create()
-        alertDialog!!.setView(view)
-        alertDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog = AlertDialog.Builder(activity)
+            .setView(view).create()
+        alertDialog.show()
+        alertDialog.setCanceledOnTouchOutside(true)
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.window!!.setLayout(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT)
+
 
         Glide.with(activity)
             .load(item.imagespath)
-            .centerInside()
-            .into(view.img_load_gallery)
+            .into(view.ImgGalleryDialog)
 
-
-        alertDialog!!.show()
     }
 
 
-     fun showConfirm(
+    fun showConfirmDialog(
         activity: Activity,
         image: Int,
         message: String,
@@ -54,14 +54,14 @@ class DialogProvider {
         val view =
             LayoutInflater.from(activity).inflate(R.layout.tarhim_dialog, viewGroup, false)
         alertDialog = AlertDialog.Builder(activity).setView(view).create()
-        alertDialog!!.setCancelable(false)
-        alertDialog!!.setCanceledOnTouchOutside(false)
-        alertDialog!!.show()
-        alertDialog!!.window!!.setLayout(
+        alertDialog.setCancelable(false)
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
+        alertDialog.window!!.setLayout(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
-        alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         view.TvMessageDialog.setText(message)
 

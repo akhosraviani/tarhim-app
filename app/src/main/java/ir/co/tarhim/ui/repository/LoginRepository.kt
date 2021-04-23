@@ -41,6 +41,7 @@ class LoginRepository {
     val mldDeceaedProfile = MutableLiveData<DeceasedProfileDataModel>()
     val mldDeceaedFromSearch = MutableLiveData<DeceasedProfileDataModel>()
     val mldMyDeceaed = MutableLiveData<List<MyDeceasedDataModel>>()
+    val mldGetSiritual = MutableLiveData<List<PrayDeceasedDataModel>>()
     val mldUploadImage = MutableLiveData<UploadFileDataModel>()
     val mldGetGallery = MutableLiveData<List<GalleryDataModel>>()
     val mldGetComment = MutableLiveData<List<CommentDataModel>>()
@@ -51,6 +52,7 @@ class LoginRepository {
     val mldFollow = MutableLiveData<ConfirmDataModel>()
     val mldUnFollow = MutableLiveData<ConfirmDataModel>()
     val mldInvite = MutableLiveData<ConfirmDataModel>()
+    val mldSiritual = MutableLiveData<ConfirmDataModel>()
     val mldPostGallery = MutableLiveData<ConfirmDataModel>()
     val mldPray = MutableLiveData<List<RequirementDataModel>>()
     val mldCharity = MutableLiveData<List<CharityDataModel>>()
@@ -58,6 +60,7 @@ class LoginRepository {
     val mldFollowers = MutableLiveData<List<FollowersDataModel>>()
     val mldFollowing = MutableLiveData<List<MyDeceasedDataModel>>()
     val mldDeleteLatest = MutableLiveData<ConfirmDataModel>()
+    val mldReport = MutableLiveData<ConfirmDataModel>()
     val mldUnFollowDeceased = MutableLiveData<ConfirmDataModel>()
 
     fun requestSendPray(checkRegisterRequest: CheckPhoneNumberRequest) {
@@ -109,6 +112,60 @@ class LoginRepository {
                     response: Response<ConfirmDataModel>
                 ) {
                     mldDeleteLatest.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestSiritual(mobile:String,body:PrayDeceasedRequest) {
+        RequestClient.makeRequest().requestSiritual(mobile,body)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldSiritual.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestGetSiritualRes(id:Int,mobile:String) {
+        RequestClient.makeRequest().requestGetSiritualDeceased(id,mobile)
+            .enqueue(object : Callback<List<PrayDeceasedDataModel>> {
+                override fun onFailure(call: retrofit2.Call<List<PrayDeceasedDataModel>>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<List<PrayDeceasedDataModel>>,
+                    response: Response<List<PrayDeceasedDataModel>>
+                ) {
+                    mldGetSiritual.value = response.body()
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestReport(mobile:String,body:ReportRequest) {
+        RequestClient.makeRequest().requestReport(mobile,body)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldReport.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })

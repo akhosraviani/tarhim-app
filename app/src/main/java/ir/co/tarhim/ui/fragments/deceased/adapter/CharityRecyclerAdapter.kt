@@ -1,18 +1,13 @@
 package ir.co.tarhim.ui.fragments.deceased.adapter
 
-import android.content.Context
-import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.contentValuesOf
-import androidx.navigation.navOptions
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.CharityDataModel
 import ir.co.tarhim.ui.callback.CharityListener
@@ -20,7 +15,6 @@ import kotlinx.android.synthetic.main.row_charity_recycler.view.*
 
 class CharityRecyclerAdapter(var charityListener: CharityListener) :
     ListAdapter<CharityDataModel, CharityRecyclerAdapter.ViewHolder>(CharityDiffUnit()) {
-
 
     class CharityDiffUnit() : DiffUtil.ItemCallback<CharityDataModel>() {
         override fun areItemsTheSame(
@@ -40,17 +34,19 @@ class CharityRecyclerAdapter(var charityListener: CharityListener) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        lateinit var ImCharity: AppCompatImageView
-        lateinit var TvNameCharity: AppCompatTextView
+        lateinit var TvBadgeNotif: AppCompatTextView
+        lateinit var BtnCharity: AppCompatButton
 
         init {
-            TvNameCharity = view.TvCharityName
+            BtnCharity = view.BtnCharity
+            TvBadgeNotif = view.badge_notification
 
         }
 
         open fun bind(charityItem: CharityDataModel) {
 
-            TvNameCharity.setText(charityItem.name)
+            TvBadgeNotif.visibility = View.GONE
+            BtnCharity.setText(charityItem.name)
 
 
         }

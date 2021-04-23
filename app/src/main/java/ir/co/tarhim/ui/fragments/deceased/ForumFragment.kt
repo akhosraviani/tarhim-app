@@ -19,6 +19,7 @@ import ir.co.tarhim.ui.callback.TipsListener
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_forum.*
 import kotlinx.android.synthetic.main.row_right_forum.*
+import java.util.*
 
 class ForumFragment : Fragment(), TipsListener {
 
@@ -86,6 +87,18 @@ class ForumFragment : Fragment(), TipsListener {
         var popup = PopupMenu(requireActivity(), BtnMore)
         popup.menuInflater.inflate(R.menu.tool_tip_menu, popup.menu)
         popup.show()
+
+        popup.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.deleteTool->{}
+                R.id.replayTool->{}
+                R.id.replayTool->{
+                    
+                }
+            }
+
+            false
+        }
     }
 
     private fun initRecycler() {

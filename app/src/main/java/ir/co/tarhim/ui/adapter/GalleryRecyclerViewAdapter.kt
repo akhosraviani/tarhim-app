@@ -92,7 +92,6 @@ class GalleryRecyclerViewAdapter(
         holder.bindTo(data.get(position))
 
         holder.galleryIv.setOnClickListener {
-
                 galleryListener.galleryRecyclerCallBack(position,data[holder.adapterPosition])
 
             }

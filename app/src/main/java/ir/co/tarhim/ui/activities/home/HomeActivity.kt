@@ -48,13 +48,13 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(bottom_navigation, navController)
-        if (!Hawk.get(FIRST_VISIT, false)){
-           homePageRoot.visibility=View.GONE
-           profile_sheet.visibility=View.VISIBLE
-            supportFragmentManager.beginTransaction()
-                .add(R.id.profile_sheet,EditProfileFragment())
-                .commit()
-        }
+//        if (!Hawk.get(FIRST_VISIT, false)){
+//           homePageRoot.visibility=View.GONE
+//           profile_sheet.visibility=View.VISIBLE
+//            supportFragmentManager.beginTransaction()
+//                .add(R.id.profile_sheet,EditProfileFragment())
+//                .commit()
+//        }
 
             bottom_navigation.setOnNavigationItemReselectedListener { }
         bottom_navigation.itemIconTintList = null

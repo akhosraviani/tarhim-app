@@ -42,6 +42,8 @@ class HomeViewModel : ViewModel() {
     var ldRegisterUser: LiveData<ConfirmDataModel>
     var ldFollow: LiveData<ConfirmDataModel>
     var ldUnFollow: LiveData<ConfirmDataModel>
+    var ldSiritual: LiveData<ConfirmDataModel>
+    var ldGetSiritual: LiveData<List<PrayDeceasedDataModel>>
     var ldUserInfo: LiveData<UserInfoDataModel>
     var ldError: LiveData<Throwable>
     var ldPray: LiveData<List<RequirementDataModel>>
@@ -50,6 +52,7 @@ class HomeViewModel : ViewModel() {
     var ldCharity: LiveData<List<CharityDataModel>>
     var ldSendPray: LiveData<ConfirmDataModel>
     var ldDeleteLatest: LiveData<ConfirmDataModel>
+    var ldReport: LiveData<ConfirmDataModel>
     var ldFollowersList: LiveData<List<FollowersDataModel>>
     var ldFollowing: LiveData<List<MyDeceasedDataModel>>
 
@@ -58,9 +61,11 @@ class HomeViewModel : ViewModel() {
         ldOtp = loginRepository.mldOtp
         ldConfirmOtp = loginRepository.mldConfirmOtp
         ldConfirmPass = loginRepository.mldConfirmPassword
+        ldSiritual=loginRepository.mldSiritual
         ldSetPass = loginRepository.mldConfirmSetPassword
         ldSearch = loginRepository.mldSearchList
         ldInboxMessage = loginRepository.mldInBox
+        ldGetSiritual = loginRepository.mldGetSiritual
         ldLatestSearch = loginRepository.mldLatestSearch
         ldDeceasedProfile = loginRepository.mldDeceaedProfile
         ldDeceasedFromSearch = loginRepository.mldDeceaedFromSearch
@@ -69,6 +74,7 @@ class HomeViewModel : ViewModel() {
         ldcreateDeceased = loginRepository.mldCreateDeceased
         ldImageUpload = loginRepository.mldUploadImage
         ldGetGallery = loginRepository.mldGetGallery
+        ldReport=loginRepository.mldReport
         ldInvite = loginRepository.mldInvite
         ldGetCommnet = loginRepository.mldGetComment
         ldEditDeceased = loginRepository.mldEditDeceased
@@ -80,10 +86,10 @@ class HomeViewModel : ViewModel() {
         ldUnFollow = loginRepository.mldUnFollow
         ldPray = loginRepository.mldPray
         ldCharity = loginRepository.mldCharity
-        ldSendPray=loginRepository.mldSendPray
-        ldFollowersList=loginRepository.mldFollowers
-        ldFollowing=loginRepository.mldFollowing
-        ldDeleteLatest=loginRepository.mldDeleteLatest
+        ldSendPray = loginRepository.mldSendPray
+        ldFollowersList = loginRepository.mldFollowers
+        ldFollowing = loginRepository.mldFollowing
+        ldDeleteLatest = loginRepository.mldDeleteLatest
     }
 
     fun requestPostGallery(deceasedId: Int, path: String) {
@@ -91,7 +97,17 @@ class HomeViewModel : ViewModel() {
     }
 
     fun requestDeleteLatest(deceasedId: Int) {
-        loginRepository.requestDeleteLatestItem(deceasedId,Hawk.get(USER_NUMBER))
+        loginRepository.requestDeleteLatestItem(deceasedId, Hawk.get(USER_NUMBER))
+    }
+
+    fun requestSiritual(body: PrayDeceasedRequest) {
+        loginRepository.requestSiritual(Hawk.get(USER_NUMBER), body)
+    }
+    fun getSiritualRes(id:Int) {
+        loginRepository.requestGetSiritualRes(id,Hawk.get(USER_NUMBER))
+    }
+    fun grequestReport(body:ReportRequest) {
+        loginRepository.requestReport(Hawk.get(USER_NUMBER),body)
     }
 
     fun requestFollowing() {
@@ -105,7 +121,8 @@ class HomeViewModel : ViewModel() {
     fun requestGetCharity() {
         loginRepository.requestGetCharity()
     }
-    fun requestFollowes(deceasedId:Int) {
+
+    fun requestFollowes(deceasedId: Int) {
         loginRepository.requestFollowersList(deceasedId)
     }
 

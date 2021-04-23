@@ -156,9 +156,29 @@ interface RequestApi {
     fun requestFollowingList(@Query("mobile") mobile: String): Call<List<MyDeceasedDataModel>>
 
     @DELETE("api/v1/deceased/deleteonelatestsearch")
-    fun requestDeleteLatestItem(@Query("id") deceasedId: Int,@Query("mobile") mobile: String): Call<ConfirmDataModel>
+    fun requestDeleteLatestItem(
+        @Query("id") deceasedId: Int,
+        @Query("mobile") mobile: String
+    ): Call<ConfirmDataModel>
 
 
+    @GET("api/v1/deceased/prayDeceased")
+    fun requestGetSiritualDeceased(
+        @Query("id") id: Int,
+        @Query("mobile") mobile: String
+    ): Call<List<PrayDeceasedDataModel>>
+
+    @POST("api/v1/deceased/prayDeceased")
+    fun requestSiritual(
+        @Query("mobile") mobile: String,
+        @Body pratRequest: PrayDeceasedRequest
+    ): Call<ConfirmDataModel>
+
+    @POST("api/v1/reports")
+    fun requestReport(
+        @Query("mobile") mobile: String,
+        @Body reportRequest: ReportRequest
+    ): Call<ConfirmDataModel>
 
 
 }

@@ -131,8 +131,6 @@ class EditProfileFragment : Fragment(), UploadCallBack {
 
 
 
-
-
         BtnSaveUser.setOnClickListener {
             if (ETNameUser.text.toString().length > 0) {
 

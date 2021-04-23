@@ -37,10 +37,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/deceasedRoot"
+        android:id="@+id/deceasedPageRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_page"
@@ -120,12 +121,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.appcompat.widget.Toolbar>
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinateLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fitsSystemWindows="true"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -292,6 +294,7 @@
                             android:layout_height="@dimen/_30sdp"
                             android:background="@drawable/edit_icon"
                             android:drawablePadding="5dp"
+                            android:visibility="gone"
                             android:textColor="@color/white"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
@@ -444,6 +447,7 @@
                                 android:layout_height="@dimen/_30sdp"
                                 android:background="@drawable/edit_icon"
                                 android:drawablePadding="5dp"
+                                android:visibility="gone"
                                 android:textColor="@color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/TvNameToolbar"

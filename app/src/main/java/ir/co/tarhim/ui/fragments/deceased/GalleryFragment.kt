@@ -31,6 +31,7 @@ import ir.co.tarhim.utils.TarhimToast
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import okhttp3.MultipartBody
 import java.io.File
+import java.util.jar.Manifest
 
 class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
 
@@ -181,7 +182,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
                         intent.type = "image/*"
                         startActivityForResult(intent, CHOSE_IMAGE_FROM_GALLERY)
                     }
-                } else {
+                } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     ActivityCompat.requestPermissions(
                         requireActivity(),
                         arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),

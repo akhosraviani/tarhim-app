@@ -11,8 +11,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.GONE
-import android.view.ViewGroup.MarginLayoutParams
+import android.view.ViewGroup.*
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -39,11 +38,11 @@ import ir.co.tarhim.utils.AccessTypeDeceased
 import ir.co.tarhim.utils.NetworkConnectionReceiver
 import ir.co.tarhim.utils.SeperateNumber
 import kotlinx.android.synthetic.main.deceased_profile.*
-import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.*
 import kotlin.concurrent.schedule
 
-class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkConnectionReceiver.NetworkListener {
+class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
+    NetworkConnectionReceiver.NetworkListener {
 
     companion object {
         private const val TAG = "DeceasedPageFragment"
@@ -54,28 +53,24 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
     private var tabsTitle = arrayListOf<String>("تالارگفتگو", "گالری تصاویر", "خیرات")
     private lateinit var briefBio: String
     private var expandable = false
-    private lateinit var locationBurial:LatLng
-    private  var deceasedInfo: DeceasedProfileDataModel?=null
+    private lateinit var locationBurial: LatLng
+    private var deceasedInfo: DeceasedProfileDataModel? = null
     private var bioDeceased: String? = null
     private lateinit var pagerAdapter: ViewPagerAdapter
     private var checkFollow = false
     private var adminStatus = false
-    private var br=NetworkConnectionReceiver()
+    private var br = NetworkConnectionReceiver()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.deceased_profile)
-        var intentFilter=IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
+        var intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
             addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
         }
-        registerReceiver(br,intentFilter)
+        registerReceiver(br, intentFilter)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-
         showLoading(true)
-
-
-
         if (intent?.extras != null) {
             deceasedId = intent?.getIntExtra("FromPersonal", -1)!!
             viewModel.requestDeceasedPersonal(deceasedId!!)
@@ -83,34 +78,40 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
             initTabAndViewPager()
         }
         if (intent.hasExtra("SearchPersonal")) {
-                deceasedId = intent?.getIntExtra("SearchPersonal", -1)!!
-                viewModel.requestDeceasedFromSearch(deceasedId!!)
-                initTabAndViewPager()
+            deceasedId = intent?.getIntExtra("SearchPersonal", -1)!!
+            viewModel.requestDeceasedFromSearch(deceasedId!!)
+            initTabAndViewPager()
 
         }
+
+
         viewModel.ldDeceasedProfile.observe(this, Observer {
             showLoading(false)
-
 
             it?.let {
                 if (!TextUtils.isEmpty(it.isowner.toString())) {
                     adminStatus = it.isowner
                 }
 
-                if (it.latitude!= null) {
+                if (it.latitude != null) {
                     locationBurial = LatLng(it.latitude, it.longitude)
                     btnFindBurialLocation.visibility = View.VISIBLE
                 }
                 deceasedInfo = it
+
                 when (it.accesstype) {
                     AccessTypeDeceased.Public.name -> {
-                        if (!it.isowner!!) {
+                        if (!it.isowner) {
                             BtnEditToolbar.visibility = View.GONE
                             BtnEditDeceased.visibility = View.GONE
                         }
                         coordinateLayout.visibility = View.VISIBLE
                         TvDeseacesName.text = it.name
-                        TvFollowersCount.setText("${SeperateNumber().splitDigit(it.followerCount).toInt()} دنبال کننده ")
+                        TvFollowersCount.setText(
+                            "${
+                                SeperateNumber().splitDigit(it.followerCount).toInt()
+                            } دنبال کننده "
+                        )
                         TvDeathDateDeseaces.text = it.deathday
                         TvBornDateDeseaces.text = it.birthday
                         TvBurialLocation.text = "${it.deathloc}"
@@ -126,14 +127,21 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
                     }
                     AccessTypeDeceased.SemiPublic.name -> {
                         if (!it.isowner!!) {
+
+
                             BtnEditToolbar.visibility = View.GONE
                             BtnEditDeceased.visibility = View.GONE
+                            coordinateLayout.visibility = View.GONE
                             requestFollow(it)
 
                         } else {
                             coordinateLayout.visibility = View.VISIBLE
                             TvDeseacesName.text = it.name
-                            TvFollowersCount.setText("${SeperateNumber().splitDigit(it.followerCount).toInt()} دنبال کننده ")
+                            TvFollowersCount.setText(
+                                "${
+                                    SeperateNumber().splitDigit(it.followerCount).toInt()
+                                } دنبال کننده "
+                            )
                             TvDeathDateDeseaces.text = it.deathday
                             TvBornDateDeseaces.text = it.birthday
                             TvBurialLocation.text = "${it.deathloc}"
@@ -184,7 +192,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
                     adminStatus = it.isowner!!
                 }
                 deceasedInfo = it
-                if (it.latitude!= null) {
+                if (it.latitude != null) {
                     locationBurial = LatLng(it.latitude, it.longitude)
                     btnFindBurialLocation.visibility = View.VISIBLE
                 }
@@ -195,23 +203,11 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
                             BtnEditDeceased.visibility = View.GONE
                         }
                         coordinateLayout.visibility = View.VISIBLE
-                        TvDeseacesName.text = it.name
-                        TvFollowersCount.setText("${SeperateNumber().splitDigit(it.followerCount).toInt()} دنبال کننده ")
-                        TvDeathDateDeseaces.text = it.birthday
-                        TvBornDateDeseaces.text = it.deathday
-                        TvBurialLocation.text = "${it.deathloc}"
-                        bioDeceased = it.description
-                        configBioText(it.description!!)
-                        Glide.with(this)
-                            .load(it.imageurl)
-                            .circleCrop()
-                            .into(ImVDeceased)
 
-                        initCollapsToolbar(this, it.imageurl!!, it.name!!)
 
                     }
                     AccessTypeDeceased.SemiPublic.name -> {
-                        if (!it.isowner!!) {
+                        if (!it.isowner) {
                             BtnEditToolbar.visibility = View.GONE
                             BtnEditDeceased.visibility = View.GONE
                             coordinateLayout.visibility = View.GONE
@@ -220,7 +216,11 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
                         } else {
                             coordinateLayout.visibility = View.VISIBLE
                             btnAddFriends.visibility = View.VISIBLE
-                            TvFollowersCount.setText("${SeperateNumber().splitDigit(it.followerCount).toInt()} دنبال کننده ")
+                            TvFollowersCount.setText(
+                                "${
+                                    SeperateNumber().splitDigit(it.followerCount).toInt()
+                                } دنبال کننده "
+                            )
                             typeSpinner.visibility = View.VISIBLE
                             TvTypeDeceasedPage.visibility = View.VISIBLE
                             typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[1])
@@ -261,12 +261,15 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
                             initCollapsToolbar(this, it.imageurl!!, it.name!!)
                         }
 
-                    }}}
+                    }
+                }
+            }
         })
 
         appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (collapsToolbar.height + verticalOffset < 2 * ViewCompat.getMinimumHeight(
-                    collapsToolbar)
+                    collapsToolbar
+                )
             ) {
                 cToolbar.animate().alpha(1f).duration = 600
             } else {
@@ -277,15 +280,15 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
 
         btnFindBurialLocation.setOnClickListener {
 
-                val uri = java.lang.String.format(
-                    Locale.ENGLISH,
-                    "http://maps.google.com/maps?q=loc:%f,%f",
-                    locationBurial!!.latitude,
-                    locationBurial!!.longitude
-                )
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-                startActivity(intent)
-            }
+            val uri = java.lang.String.format(
+                Locale.ENGLISH,
+                "http://maps.google.com/maps?q=loc:%f,%f",
+                locationBurial!!.latitude,
+                locationBurial!!.longitude
+            )
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+            startActivity(intent)
+        }
 
 
 
@@ -314,6 +317,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
         val arrayList: Array<String> = resources.getStringArray(R.array.list_access_type)
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, arrayList)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
         btnRequestFollow.setOnClickListener {
             if (deceasedInfo!!.isrequested == null || !deceasedInfo!!.isrequested!!) {
 
@@ -363,10 +367,10 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
         Log.e(TAG, "getContent deceasedId: " + deceasedId)
         when (item) {
             1 -> {
-                return GalleryFragment().newInstance(deceasedId!!,adminStatus)
+                return GalleryFragment().newInstance(deceasedId!!, adminStatus)
             }
             2 -> {
-                return CharityFragment()
+                return CharityFragment().newInstance(deceasedId!!)
             }
             else -> {
                 return ForumFragment().newInstance(deceasedId!!)
@@ -453,6 +457,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
             PrivateLayout.visibility = View.VISIBLE
             btnRequestFollow.setBackgroundResource(R.drawable.shape_button)
             btnRequestFollow.text = "دنبال کردن"
+
             btnRequestFollow.setTextColor(resources.getColor(R.color.white))
         }
         if (deceasedInfo.isrequested != null && deceasedInfo.isrequested!! && !deceasedInfo.isfollow!!) {
@@ -479,9 +484,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
                 .into(ImVDeceased)
 
             initCollapsToolbar(this, deceasedInfo.imageurl!!, deceasedInfo.name!!)
-
         }
-
     }
 
     private fun showPrivateDetailsPage(itemDeceased: DeceasedProfileDataModel) {
@@ -507,13 +510,9 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
     }
 
 
-    private fun showContactList() {
-
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this,HomeActivity::class.java))
+        startActivity(Intent(this, HomeActivity::class.java))
     }
 
     override fun onStart() {
@@ -526,14 +525,13 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,NetworkCo
     }
 
     override fun networkcallback(isConnected: Boolean) {
-
         if (isConnected) {
-            deceasedRoot.visibility = View.VISIBLE
-            noIntenterroot.visibility=View.GONE
+            deceasedPageRoot.visibility = View.VISIBLE
+            noIntenterroot.visibility = View.GONE
 
         } else {
-            deceasedRoot.visibility = View.GONE
-            noIntenterroot.visibility= View.VISIBLE
+            deceasedPageRoot.visibility = View.GONE
+            noIntenterroot.visibility = View.VISIBLE
             Timer("Network", false).schedule(4000) {
                 finishAffinity()
             }

@@ -45,9 +45,12 @@ class InviteFriendsActivity() : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         viewModel.requestFollowes(deceasedId)
+
         Log.e(TAG, "onCreate: "+deceasedId )
         viewModel.ldFollowersList.observe(this, Observer {
             it.also {
+
+                Log.e(TAG, "onCreate: "+it.size )
                 followersAdapter.submitList(it)
             }
         })
