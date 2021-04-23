@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -38,7 +39,6 @@ class CommentRecyclerAdapter(private var likeCommentClicked: LikeCommentClicked,
         val likeIcon : AppCompatImageButton
 
         init {
-            var likedState : Boolean
             txtComment = view.TVCommentForum
             nameUser = view.TVNameRightForum
             imageUser = view.IVRightForum
@@ -55,8 +55,10 @@ class CommentRecyclerAdapter(private var likeCommentClicked: LikeCommentClicked,
                 .into(imageUser)
 
             if(comment.favourite){
+                Log.i("testTag","liked adapter red")
                 likeIcon.setImageResource(R.drawable.heart_full)
             }else{
+                Log.i("testTag","liked adapter grey")
                 likeIcon.setImageResource(R.drawable.heart_none)
             }
 
@@ -96,10 +98,12 @@ class CommentRecyclerAdapter(private var likeCommentClicked: LikeCommentClicked,
         }
 
         holder.likeIcon.setOnClickListener {
-            if(getItem(holder.adapterPosition).favourite){
-                likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id , true)
-            }else{
+            if(!getItem(holder.adapterPosition).favourite){
+                Log.i("testTag","liked adapter red2")
                 likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id , false)
+            }else{
+                Log.i("testTag","liked adapter red3")
+                likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id , true)
             }
 
         }

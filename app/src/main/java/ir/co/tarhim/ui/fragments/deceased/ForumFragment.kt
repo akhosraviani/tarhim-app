@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -68,14 +69,17 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
             }
         })
 
+
         deceasedViewModel.ldLikeComment.observe(viewLifecycleOwner, Observer {
             it.let {
-                likedCommentChangeColor.changeColor(it.liked)
+                Log.i("testTag","liked fragment")
+                Log.i("testTag","liked fragment= "+it.toString())
+                commentAdapter.notifyDataSetChanged()
             }
         })
 
         BtnSendComment.setOnClickListener {
-            if (ETComment.text.toString().length > 0) {
+            if (ETComment.text.toString().isNotEmpty()) {
                 viewModel.requestSendComment(
                     SendCommentRequest(
                         deceasedId!!,
@@ -121,8 +125,10 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
 
     override fun likeCommentClicked(id: Int , like : Boolean) {
         if(like){
+            //mikhaym toosi she
             deceasedViewModel.requestLikeComment(LikeCommentRequest(id,true))
         }else{
+            //mikhaym ghermez she
             deceasedViewModel.requestLikeComment(LikeCommentRequest(id,false))
         }
 
