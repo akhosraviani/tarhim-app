@@ -14,17 +14,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.CommentDataModel
 import ir.co.tarhim.ui.LikeCommentClicked
 import ir.co.tarhim.ui.callback.TipsListener
 import ir.co.tarhim.ui.fragments.LikedCommentChangeColor
 import kotlinx.android.synthetic.main.row_left_forum.view.*
-import kotlinx.android.synthetic.main.row_right_forum.*
 import kotlinx.android.synthetic.main.row_right_forum.view.*
 import kotlinx.android.synthetic.main.row_right_forum.view.BtnMore
 import kotlinx.android.synthetic.main.row_right_forum.view.TVCommentForum

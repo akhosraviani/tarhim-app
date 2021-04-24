@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.SendCommentRequest
+import ir.co.tarhim.model.deceased.comment.ReplyCommentRequest
 import ir.co.tarhim.model.deceased.like.LikeCommentRequest
 import ir.co.tarhim.ui.LikeCommentClicked
 import ir.co.tarhim.ui.adapter.CommentRecyclerAdapter
@@ -41,6 +42,7 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
     private lateinit var deceasedViewModel: DeceasedViewModel
     private lateinit var likedCommentChangeColor: LikedCommentChangeColor
     private lateinit var popState : PopUpState
+    private  var selectedCommentId : Int = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,21 +80,40 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
             }
         })
 
+        deceasedViewModel.ldReplayComment.observe(viewLifecycleOwner, Observer {
+            it.let {
+              if(it.code==200){
+
+              }
+            }
+        })
+
         BtnSendComment.setOnClickListener {
-            if (ETComment.text.toString().isNotEmpty()) {
-                viewModel.requestSendComment(
-                    SendCommentRequest(
-                        deceasedId!!,
-                        ETComment.text.toString(),
-                        (System.currentTimeMillis()).toInt()
+            if(popState==PopUpState.REPLAY){
+                  deceasedViewModel.requestReplyComment(
+                      ReplyCommentRequest(
+                      selectedCommentId,
+                          deceasedId!!,
+                          BtnSendComment.text.toString()
+                  )
+                  )
+            }else{
+                if (ETComment.text.toString().isNotEmpty()) {
+                    viewModel.requestSendComment(
+                        SendCommentRequest(
+                            deceasedId!!,
+                            ETComment.text.toString(),
+                            (System.currentTimeMillis()).toInt()
+                        )
+
                     )
 
-                )
+                    ETComment.setText("")
+                } else {
 
-                ETComment.setText("")
-            } else {
-
+                }
             }
+
         }
 
 
@@ -118,29 +139,13 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
             InputMethodManager.SHOW_FORCED,
             InputMethodManager.HIDE_IMPLICIT_ONLY
         )
-
-//            val imm =
-//                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun tipsCallback(msgId: Int) {
         popState = PopUpState.REPLAY
         ETComment.requestFocus()
         showSoftKeyboard(requireContext(),ETComment)
-
-//                  deceasedViewModel.requestReplyComment(ReplyCommentRequest(
-//
-//                  ))
-//                      .requestSendComment(
-//                      SendCommentRequest(
-//                          deceasedId!!,
-//                          ETComment.text.toString(),
-//                          (System.currentTimeMillis()).toInt()
-//                      )
-//
-//                  )
-
+        selectedCommentId = msgId
     }
 
     override fun likeCommentClicked(id: Int , like : Boolean) {
