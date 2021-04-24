@@ -65,7 +65,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="@dimen/_3sdp"
-
                 android:textSize="@dimen/_11sdp"
                 android:textColorHint="@color/text_color_lighter"
                 android:background="@android:color/transparent"

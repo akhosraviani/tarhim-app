@@ -1,15 +1,14 @@
 package ir.co.tarhim.ui.fragments.deceased
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.PopupMenu
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,7 +23,7 @@ import ir.co.tarhim.ui.fragments.LikedCommentChangeColor
 import ir.co.tarhim.ui.viewModels.DeceasedViewModel
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_forum.*
-import kotlinx.android.synthetic.main.row_right_forum.*
+
 
 class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
 
@@ -41,6 +40,7 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
     private lateinit var viewModel: HomeViewModel
     private lateinit var deceasedViewModel: DeceasedViewModel
     private lateinit var likedCommentChangeColor: LikedCommentChangeColor
+    private lateinit var popState : PopUpState
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +54,7 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         deceasedViewModel = ViewModelProvider(this).get(DeceasedViewModel::class.java)
         initRecycler()
-        deceasedId = requireArguments()!!.getInt("Id")
+        deceasedId = requireArguments().getInt("Id")
         viewModel.requestGetComment(deceasedId!!)
 
         viewModel.ldGetCommnet.observe(viewLifecycleOwner, Observer {
@@ -99,14 +99,8 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
     }
 
 
-    private fun showPopupMenu() {
-        var popup = PopupMenu(requireActivity(), BtnMore)
-        popup.menuInflater.inflate(R.menu.tool_tip_menu, popup.menu)
-        popup.show()
-    }
-
     private fun initRecycler() {
-        commentAdapter = CommentRecyclerAdapter(this,this)
+        commentAdapter = CommentRecyclerAdapter(requireContext(),this,this)
         ForumRecycler.adapter = commentAdapter
         ForumRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -117,9 +111,35 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
 
     }
 
-    override fun tipsCallback(msgId: Int) {
+    private fun showSoftKeyboard(context: Context, view: View) {
+        ETComment.requestFocus()
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm!!.toggleSoftInput(
+            InputMethodManager.SHOW_FORCED,
+            InputMethodManager.HIDE_IMPLICIT_ONLY
+        )
 
-        showPopupMenu()
+//            val imm =
+//                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    override fun tipsCallback(msgId: Int) {
+        popState = PopUpState.REPLAY
+        ETComment.requestFocus()
+        showSoftKeyboard(requireContext(),ETComment)
+
+//                  deceasedViewModel.requestReplyComment(ReplyCommentRequest(
+//
+//                  ))
+//                      .requestSendComment(
+//                      SendCommentRequest(
+//                          deceasedId!!,
+//                          ETComment.text.toString(),
+//                          (System.currentTimeMillis()).toInt()
+//                      )
+//
+//                  )
 
     }
 

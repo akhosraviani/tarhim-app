@@ -1,16 +1,15 @@
 package ir.co.tarhim.ui.adapter
 
 
-import android.graphics.drawable.Drawable
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import android.widget.PopupMenu
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -25,11 +24,13 @@ import ir.co.tarhim.ui.LikeCommentClicked
 import ir.co.tarhim.ui.callback.TipsListener
 import ir.co.tarhim.ui.fragments.LikedCommentChangeColor
 import kotlinx.android.synthetic.main.row_left_forum.view.*
+import kotlinx.android.synthetic.main.row_right_forum.*
 import kotlinx.android.synthetic.main.row_right_forum.view.*
+import kotlinx.android.synthetic.main.row_right_forum.view.BtnMore
 import kotlinx.android.synthetic.main.row_right_forum.view.TVCommentForum
 import kotlinx.android.synthetic.main.row_right_forum.view.TVNameRightForum
 
-class CommentRecyclerAdapter(private var likeCommentClicked: LikeCommentClicked,var callBack:TipsListener) :
+class CommentRecyclerAdapter(private val context : Context, private var likeCommentClicked: LikeCommentClicked, var callBack:TipsListener) :
     ListAdapter<CommentDataModel, CommentRecyclerAdapter.ViewHolder>(CommentDiffUnit()) , LikedCommentChangeColor {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -84,7 +85,7 @@ class CommentRecyclerAdapter(private var likeCommentClicked: LikeCommentClicked,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var view = LayoutInflater.from(parent.getContext())
+        var view = LayoutInflater.from(parent.context)
             .inflate(R.layout.row_right_forum, parent, false)
         return ViewHolder(view)
 
@@ -94,7 +95,18 @@ class CommentRecyclerAdapter(private var likeCommentClicked: LikeCommentClicked,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindTo(getItem(position))
         holder.itemView.BtnMore.setOnClickListener {
-            callBack.tipsCallback(getItem(holder.adapterPosition).id)
+            val popup = PopupMenu(context, holder.itemView.BtnMore)
+            popup.menuInflater.inflate(R.menu.tool_tip_menu, popup.menu)
+            popup.show()
+
+            popup.setOnMenuItemClickListener { item ->
+            when(item.itemId){
+                R.id.replayTool ->{
+                  callBack.tipsCallback(getItem(holder.adapterPosition).id)
+                }
+            }
+            true
+        }
         }
 
         holder.likeIcon.setOnClickListener {
@@ -113,4 +125,5 @@ class CommentRecyclerAdapter(private var likeCommentClicked: LikeCommentClicked,
     override fun changeColor(liked : Boolean) {
 
     }
+
 }

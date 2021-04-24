@@ -3,6 +3,7 @@ package ir.co.tarhim.ui.repository.deceasad
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import ir.co.tarhim.model.ConfirmDataModel
+import ir.co.tarhim.model.deceased.comment.ReplyCommentRequest
 import ir.co.tarhim.model.deceased.like.LikeCommentDataModel
 import ir.co.tarhim.model.deceased.like.LikeCommentRequest
 import ir.co.tarhim.model.user.RegisterUser
@@ -15,6 +16,7 @@ class DeceasedRepository {
 
     val mldError = MutableLiveData<Throwable>()
     val mldLikeComment = MutableLiveData<LikeCommentDataModel>()
+    val mldReplyComment = MutableLiveData<ConfirmDataModel>()
 
 
     fun likeComments(dataRequest: LikeCommentRequest, mobile: String) {
@@ -30,6 +32,24 @@ class DeceasedRepository {
                 ) {
                     mldLikeComment.value =
                         LikeCommentDataModel(response.body()!!.message, response.body()!!.code,response.body()!!.userId,response.body()!!.likeCount,response.body()!!.liked)
+                }
+            })
+
+    }
+
+    fun replyComment(dataRequest: ReplyCommentRequest, mobile: String){
+        RequestClient.makeRequest().requestReplyComment(dataRequest, mobile)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    mldError.value=t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldReplyComment.value = response.body()
+                    Log.i("testTag", "im here in deceasedRepo= " + response.body())
                 }
             })
 
