@@ -55,9 +55,9 @@
             android:layout_marginStart="@dimen/_3sdp"
             android:fontFamily="@font/iran_sans_light"
             android:padding="@dimen/_3sdp"
-            android:textSize="12sp"
             android:text="مهرداد میناوند بیش از علی دایی، علی کریمی، مهدی مهدوی‌کیا و وحید هاشمیان، سابقه بازی در لیگ قهرمانان اروپا را دارد."
             android:textColor="@color/text_color_light"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/TVNameRightForum"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,30 +80,41 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/BtnLikeComment"
-            android:layout_width="@dimen/_13sdp"
-            android:visibility="invisible"
-            android:layout_height="@dimen/_13sdp"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_3sdp"
             android:layout_marginBottom="@dimen/_3sdp"
-            android:background="@drawable/heart_none"
+            android:background="@drawable/ic_non_favorite"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/TVCommentForum"
             app:layout_constraintHorizontal_bias="0.02"
             app:layout_constraintStart_toStartOf="@+id/TVCommentForum"
             app:layout_constraintTop_toBottomOf="@+id/TVCommentForum" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/TVCountLike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iran_sans_light"
+            android:textColor="@color/text_color_lighter"
+            app:layout_constraintBottom_toBottomOf="@+id/BtnLikeComment"
+            app:layout_constraintEnd_toEndOf="@+id/TVCommentForum"
+            app:layout_constraintHorizontal_bias=".05"
+            app:layout_constraintStart_toEndOf="@+id/BtnLikeComment"
+            app:layout_constraintTop_toTopOf="@+id/BtnLikeComment" />
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/BtnMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintVertical_bias="0"
             android:background="@drawable/ic_baseline_more_"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/TVNameRightForum"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@+id/TVCommentForum"
-            app:layout_constraintTop_toTopOf="@+id/TVNameRightForum" />
+            app:layout_constraintTop_toTopOf="@+id/TVNameRightForum"
+            app:layout_constraintVertical_bias="0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

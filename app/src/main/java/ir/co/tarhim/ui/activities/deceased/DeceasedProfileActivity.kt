@@ -126,9 +126,9 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
                     }
                     AccessTypeDeceased.SemiPublic.name -> {
+
+                        Log.e(TAG, "onCreate: "+deceasedInfo.toString() )
                         if (!it.isowner!!) {
-
-
                             BtnEditToolbar.visibility = View.GONE
                             BtnEditDeceased.visibility = View.GONE
                             coordinateLayout.visibility = View.GONE
@@ -198,12 +198,28 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                 }
                 when (it.accesstype) {
                     AccessTypeDeceased.Public.name -> {
-                        if (!it.isowner!!) {
+                        if (!it.isowner) {
                             BtnEditToolbar.visibility = View.GONE
                             BtnEditDeceased.visibility = View.GONE
                         }
                         coordinateLayout.visibility = View.VISIBLE
+                        TvDeseacesName.text = it.name
+                        TvFollowersCount.setText(
+                            "${
+                                SeperateNumber().splitDigit(it.followerCount).toInt()
+                            } دنبال کننده "
+                        )
+                        TvDeathDateDeseaces.text = it.deathday
+                        TvBornDateDeseaces.text = it.birthday
+                        TvBurialLocation.text = "${it.deathloc}"
+                        bioDeceased = it.description
+                        configBioText(it.description!!)
+                        Glide.with(this)
+                            .load(it.imageurl)
+                            .circleCrop()
+                            .into(ImVDeceased)
 
+                        initCollapsToolbar(this, it.imageurl!!, it.name!!)
 
                     }
                     AccessTypeDeceased.SemiPublic.name -> {
@@ -336,7 +352,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         viewModel.ldFollow.observe(this, Observer {
             showLoading(false)
             if (it.code == 200) {
-                viewModel.requestDeceasedPersonal(deceasedId!!)
+//                viewModel.requestDeceasedPersonal(deceasedId!!)
                 btnRequestFollow.setBackgroundResource(R.drawable.waiting_request_follow_shape)
                 btnRequestFollow.text = "در انتظار تایید"
                 btnRequestFollow.setTextColor(resources.getColor(R.color.tradewind))
@@ -348,7 +364,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         viewModel.ldUnFollow.observe(this, Observer {
             showLoading(false)
             if (it.code == 200) {
-                viewModel.requestDeceasedPersonal(deceasedId!!)
+//                viewModel.requestDeceasedPersonal(deceasedId!!)
                 btnRequestFollow.setBackgroundResource(R.drawable.shape_button)
                 btnRequestFollow.text = "دنبال کردن"
                 btnRequestFollow.setTextColor(resources.getColor(R.color.white))
@@ -373,7 +389,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                 return CharityFragment().newInstance(deceasedId!!)
             }
             else -> {
-                return ForumFragment().newInstance(deceasedId!!)
+                return ForumFragment().newInstance(deceasedId!!,adminStatus)
             }
         }
 
@@ -457,7 +473,6 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             PrivateLayout.visibility = View.VISIBLE
             btnRequestFollow.setBackgroundResource(R.drawable.shape_button)
             btnRequestFollow.text = "دنبال کردن"
-
             btnRequestFollow.setTextColor(resources.getColor(R.color.white))
         }
         if (deceasedInfo.isrequested != null && deceasedInfo.isrequested!! && !deceasedInfo.isfollow!!) {

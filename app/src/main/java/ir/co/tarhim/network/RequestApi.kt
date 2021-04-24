@@ -2,6 +2,8 @@ package ir.co.tarhim.network
 
 import ir.co.tarhim.model.ConfirmDataModel
 import ir.co.tarhim.model.deceased.*
+import ir.co.tarhim.model.deceased.like.LikeCommentDataModel
+import ir.co.tarhim.model.deceased.like.LikeCommentRequest
 import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
@@ -180,6 +182,12 @@ interface RequestApi {
         @Body reportRequest: ReportRequest
     ): Call<ConfirmDataModel>
 
+
+    @POST("api/v1/likes/favourite")
+    fun requestLikeComment(
+        @Body body: LikeCommentRequest,
+        @Query("mobile") mobile: String,
+    ): Call<LikeCommentDataModel>
 
 }
 

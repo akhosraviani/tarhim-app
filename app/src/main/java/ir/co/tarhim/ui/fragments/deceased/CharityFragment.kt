@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -22,7 +21,6 @@ import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.PrayDeceasedType
 import ir.co.tarhim.utils.TarhimToast
 import kotlinx.android.synthetic.main.fragment_charity.*
-import kotlinx.android.synthetic.main.fragment_gallery.*
 
 class CharityFragment : Fragment(), CharityListener, SpiritualListener {
 
@@ -97,13 +95,11 @@ class CharityFragment : Fragment(), CharityListener, SpiritualListener {
             it.also {
                 Log.e(TAG, "onViewCreated: " + it.size)
 
-                if (it != null) {
+                if (it != null && it.size > 0) {
                     initSpiritualRecycler(it)
                 } else {
                     initSpiritualRecycler(ArrayList())
-
                 }
-
             }
         })
 
@@ -121,7 +117,7 @@ class CharityFragment : Fragment(), CharityListener, SpiritualListener {
     }
 
     private fun initSpiritualRecycler(list: List<PrayDeceasedDataModel>) {
-        spiritualAdapter = SpiritualRecyclerAdapter(prayList, this)
+        spiritualAdapter = SpiritualRecyclerAdapter(prayList, list, this)
         spiritualRecycler.adapter = spiritualAdapter
         spiritualRecycler.layoutAnimation =
             AnimationUtils.loadLayoutAnimation(context, R.anim.up_to_bottom)
@@ -135,7 +131,7 @@ class CharityFragment : Fragment(), CharityListener, SpiritualListener {
     }
 
     override fun spiritualCallback(Id: Int) {
-        Toast.makeText(requireContext(), "$Id", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(requireContext(), "$Id", Toast.LENGTH_SHORT).show()
         when (Id) {
             0 -> viewModel.requestSiritual(
                 PrayDeceasedRequest(

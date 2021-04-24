@@ -5,6 +5,7 @@ data class CommentDataModel(
     val id: Int,
     val imageurl: String,
     val message: String,
+    val likes:Int,
     val name: String,
 
 )

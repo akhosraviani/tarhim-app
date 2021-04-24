@@ -3,9 +3,11 @@ package ir.co.tarhim.ui.fragments.deceased.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.co.tarhim.R
@@ -36,16 +38,18 @@ class CharityRecyclerAdapter(var charityListener: CharityListener) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var TvBadgeNotif: AppCompatTextView
         lateinit var BtnCharity: AppCompatButton
+        lateinit var badgeViewRoot: LinearLayout
 
         init {
             BtnCharity = view.BtnCharity
             TvBadgeNotif = view.badge_notification
+            badgeViewRoot = view.badgeViewRoot
 
         }
 
         open fun bind(charityItem: CharityDataModel) {
 
-            TvBadgeNotif.visibility = View.GONE
+            badgeViewRoot.visibility = View.GONE
             BtnCharity.setText(charityItem.name)
 
 
