@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/prayToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtInbox"
+                android:id="@+id/BtnInboxProfile"
                 android:layout_width="@dimen/_17sdp"
                 android:layout_height="@dimen/_14sdp"
                 android:background="@drawable/inbox_icon"
@@ -37,10 +37,10 @@
                 android:visibility="gone"
                 android:layout_height="@dimen/_7sdp"
                 android:background="@drawable/notif_dot"
-                app:layout_constraintBottom_toTopOf="@id/BtInbox"
-                app:layout_constraintEnd_toEndOf="@id/BtInbox"
-                app:layout_constraintStart_toEndOf="@id/BtInbox"
-                app:layout_constraintTop_toTopOf="@id/BtInbox" />
+                app:layout_constraintBottom_toTopOf="@id/BtnInboxProfile"
+                app:layout_constraintEnd_toEndOf="@id/BtnInboxProfile"
+                app:layout_constraintStart_toEndOf="@id/BtnInboxProfile"
+                app:layout_constraintTop_toTopOf="@id/BtnInboxProfile" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -67,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".85"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/prayToolbar"
         app:layout_constraintVertical_bias=".03" />
 
     <androidx.appcompat.widget.AppCompatTextView

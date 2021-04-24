@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -15,35 +16,6 @@
             android:layoutDirection="rtl"
             android:orientation="vertical">
 
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/appCompatTextView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/iran_sans"
-                android:gravity="center"
-                android:text="@string/charity_msg"
-                android:textColor="@color/text_color_light"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.05" />
-
-            <View
-                android:id="@+id/view3"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/divider"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView2"
-                app:layout_constraintVertical_bias="0.05" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appCompatTextView3"
@@ -58,86 +30,36 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view3"
-                app:layout_constraintVertical_bias="0.05" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.02" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnMahakInstitute"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:background="@drawable/shape_button"
-                android:fontFamily="@font/iran_sans"
-                android:gravity="center"
-                android:text="موسسه محک"
-                android:textColor="@color/white"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/charitycenterRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.76"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appCompatTextView3"
-                app:layout_constraintVertical_bias="0.05" />
+                app:layout_constraintVertical_bias=".05" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnEmKhomeiniInstitute"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:background="@drawable/shape_button"
-                android:fontFamily="@font/iran_sans"
-                app:layout_constraintStart_toStartOf="parent"
-                android:gravity="center"
-                app:layout_constraintHorizontal_bias=".24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0"
-                android:text="کمیته امام خمینی"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/BtnMahakInstitute" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnFemaleGuardians"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:background="@drawable/shape_button"
-                android:fontFamily="@font/iran_sans"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="زنان سرپرست خانوار"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/BtnMahakInstitute"
-                app:layout_constraintStart_toStartOf="@+id/BtnMahakInstitute"
-                app:layout_constraintTop_toBottomOf="@+id/BtnMahakInstitute"
-                app:layout_constraintVertical_bias=".01" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnMohsenienInstitute"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:background="@drawable/shape_button"
-                android:fontFamily="@font/iran_sans"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="خیریه محسنین"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/BtnEmKhomeiniInstitute"
-                app:layout_constraintStart_toStartOf="@+id/BtnEmKhomeiniInstitute"
-                app:layout_constraintTop_toBottomOf="@+id/BtnEmKhomeiniInstitute"
-                app:layout_constraintVertical_bias=".01" />
 
             <View
                 android:id="@+id/view4"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="11dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/divider"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/BtnMohsenienInstitute"
-                app:layout_constraintVertical_bias="0.057" />
+                app:layout_constraintTop_toBottomOf="@+id/charitycenterRecycler"
+                app:layout_constraintVertical_bias="0.02" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/appCompatTextView4"
@@ -154,109 +76,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/view4"
                 app:layout_constraintVertical_bias="0.06" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnReadQuran"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_25sdp"
-
-                android:background="@drawable/shape_button"
-                android:fontFamily="@font/iran_sans"
-                android:gravity="center"
-                android:text="ختم قرآن"
-                android:textColor="@color/white"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:id="@+id/spiritualRecycler"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.76"
+                android:layout_marginTop="@dimen/_5sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatTextView4"
-                app:layout_constraintVertical_bias="0.05"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@id/appCompatTextView4"
                 />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnSalavat"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:background="@drawable/shape_button"
-                android:fontFamily="@font/iran_sans"
-                android:gravity="center"
-                android:text="ذکر صلوات"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.24"
-                app:layout_constraintVertical_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/BtnReadQuran"
-               />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnPrayer"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/shape_button"
-                android:fontFamily="@font/iran_sans_medium"
-                android:gravity="center"
-                android:text="نماز"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/BtnReadQuran"
-                app:layout_constraintStart_toStartOf="@+id/BtnReadQuran"
-                app:layout_constraintTop_toBottomOf="@+id/BtnReadQuran"
-                app:layout_constraintVertical_bias=".05" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnFasting"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/shape_button"
-                android:fontFamily="@font/iran_sans"
-                android:gravity="center"
-                android:text="روزه"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/BtnSalavat"
-                app:layout_constraintStart_toStartOf="@+id/BtnSalavat"
-                app:layout_constraintTop_toBottomOf="@+id/BtnSalavat"
-                app:layout_constraintVertical_bias=".05" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnHorrorPrayer"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/shape_button"
-                android:fontFamily="@font/iran_sans"
-                android:gravity="center"
-                android:text="نماز وحشت"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/BtnPrayer"
-                app:layout_constraintStart_toStartOf="@+id/BtnPrayer"
-                app:layout_constraintTop_toBottomOf="@+id/BtnPrayer"
-                app:layout_constraintVertical_bias=".05" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnSelectedQuran"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/shape_button"
-                android:fontFamily="@font/iran_sans"
-                android:gravity="center"
-                android:text="سوره های برگزیده"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/BtnFasting"
-                app:layout_constraintStart_toStartOf="@+id/BtnFasting"
-                app:layout_constraintTop_toBottomOf="@+id/BtnFasting"
-                app:layout_constraintVertical_bias=".05" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

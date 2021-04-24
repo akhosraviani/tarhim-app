@@ -9,4 +9,7 @@ interface ProfileListener {
     interface MyDeceasedListener{
         fun myDeceasedCallBack(deceasedId:Int)
     }
+    interface UnFollowDeceasedListener{
+        fun unFollowCallBack(deceasedId:Int)
+    }
 }

@@ -27,12 +27,16 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
+import ir.co.tarhim.model.deceased.CreateDeceasedRequest
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.ui.callback.UploadCallBack
 import ir.co.tarhim.ui.callback.UploadProgress
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import ir.co.tarhim.utils.DialogProvider
 import ir.co.tarhim.utils.OnBackPressed
 import ir.co.tarhim.utils.TarhimCompress
+import ir.co.tarhim.utils.TarhimConfig
+import ir.co.tarhim.utils.TarhimConfig.Companion.FIRST_VISIT
 import ir.co.tarhim.utils.TarhimConfig.Companion.USER_NUMBER
 import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.edit_user_profile.*
@@ -106,6 +110,7 @@ class EditProfileFragment : Fragment(), UploadCallBack {
                 when (it.code) {
                     200 -> {
                         showLoading(false)
+                        Hawk.put(FIRST_VISIT,true)
                         Toast.makeText(activity, "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show()
                         Handler().postDelayed({
                             findNavController().navigate(R.id.action_user_edit_fragment_to_fragment_profile)
@@ -126,8 +131,6 @@ class EditProfileFragment : Fragment(), UploadCallBack {
 
 
 
-
-
         BtnSaveUser.setOnClickListener {
             if (ETNameUser.text.toString().length > 0) {
 
@@ -135,13 +138,25 @@ class EditProfileFragment : Fragment(), UploadCallBack {
                     Patterns.EMAIL_ADDRESS.matcher(ETUserEmail.text!!.trim().toString()).matches()
                 ) {
                     showLoading(true)
-                    viewModel.requestRegisterUser(
-                        RegisterUser(
-                            ETUserEmail.text.toString(),
-                            imagePath!!,
-                            ETNameUser.text.toString()
-                        )
-                    )
+//                    DialogProvider().showConfirm(
+//                        requireActivity(),
+//                        R.drawable.request,
+//                        "از ثبت اطلاعات خود مطمن هستید؟",
+//                        {
+                            viewModel.requestRegisterUser(
+                                RegisterUser(
+                                    ETUserEmail.text.toString(),
+                                    imagePath!!,
+                                    ETNameUser.text.toString()
+                                )
+                            )
+//                            DialogProvider().dismiss()
+//
+//                        },
+//                        {
+//                            DialogProvider().dismiss()
+//                        })
+
                 } else {
                     ETUserEmail.error = "ایمیل نامعتبر"
                 }

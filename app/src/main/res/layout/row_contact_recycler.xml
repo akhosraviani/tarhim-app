@@ -7,7 +7,7 @@
     android:background="@drawable/shape_bg_box_contact_row">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/TvContactName"
+        android:id="@+id/TvFollowersName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/iran_sans"
@@ -21,7 +21,7 @@
         tools:text="مریم زندی" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/TvContactPhone"
+        android:id="@+id/TvFollowersPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/iran_sans_medium"
@@ -36,7 +36,7 @@
         tools:text="مریم زندی" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/TvStatusContact"
+        android:id="@+id/TvFollowersStatus"
         android:layout_width="@dimen/_65sdp"
         android:layout_height="@dimen/_18sdp"
         android:background="@drawable/check_status_add_number"
@@ -45,14 +45,14 @@
         android:visibility="visible"
         android:textColor="@color/text_color_lighter"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/TvContactPhone"
+        app:layout_constraintEnd_toStartOf="@+id/TvFollowersPhone"
         app:layout_constraintHorizontal_bias="0.593"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="در حال بررسی" />
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/BtnContactMore"
+        android:id="@+id/BtnFollowersMore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_baseline_more_"

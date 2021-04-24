@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
 import ir.co.tarhim.ui.activities.inbox.adapter.InboxRecyclerAdapter
 import ir.co.tarhim.ui.viewModels.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_cemetery.*
 import kotlinx.android.synthetic.main.inbox_message_activity.*
 
 class InboxMessageActivity : AppCompatActivity() {
@@ -26,8 +25,10 @@ class InboxMessageActivity : AppCompatActivity() {
 
         viewModel.ldInboxMessage.observe(this, Observer {
             it.let {
-                if (it.size > 0) {
-                    inboxAdapter.submitList(it)
+                if (it != null) {
+                    if (it.size > 0) {
+                        inboxAdapter.submitList(it)
+                    }
                 }
             }
         })

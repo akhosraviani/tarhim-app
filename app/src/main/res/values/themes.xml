@@ -52,4 +52,12 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="actionOverflowMenuStyle">@style/popupOverflowMenu</item>
+    </style>
+
+    <style name="popupOverflowMenu" parent="@style/Widget.MaterialComponents.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/popupmenu_background</item>
+    </style>
+
 </resources>

@@ -1,15 +1,15 @@
 package ir.co.tarhim.network
 
-import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.ConfirmDataModel
-import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.deceased.*
 import ir.co.tarhim.model.deceased.like.LikeCommentDataModel
 import ir.co.tarhim.model.deceased.like.LikeCommentRequest
 import ir.co.tarhim.model.login.mobile.CheckRegisterModel
 import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
+import ir.co.tarhim.model.login.mobile.CheckRegisterModel
 import ir.co.tarhim.model.login.otp.OtpDataModel
 import ir.co.tarhim.model.news.NewsDataModel
+import ir.co.tarhim.model.user.FollowersDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import okhttp3.MultipartBody
@@ -137,6 +137,49 @@ interface RequestApi {
         @Query("mobile") mobile: String,
 
         ): Call<List<MyInboxDataModel>>
+
+    @GET("api/v1/pray")
+    fun requestPray(): Call<List<RequirementDataModel>>
+
+    @POST("api/v1/pray")
+    fun requestSendPray(
+        @Query("mobile") mobile: String,
+        @Body prayBody: PrayDataRequest
+    ): Call<ConfirmDataModel>
+
+    @GET("api/v1/deceased/charity")
+    fun requestGetCharity(): Call<List<CharityDataModel>>
+
+    @GET("api/v1/admin/followerlist")
+    fun requestFollowesList(@Query("id") deceaseId: Int): Call<List<FollowersDataModel>>
+
+    @GET("api/v1/deceased/following\n")
+    fun requestFollowingList(@Query("mobile") mobile: String): Call<List<MyDeceasedDataModel>>
+
+    @DELETE("api/v1/deceased/deleteonelatestsearch")
+    fun requestDeleteLatestItem(
+        @Query("id") deceasedId: Int,
+        @Query("mobile") mobile: String
+    ): Call<ConfirmDataModel>
+
+
+    @GET("api/v1/deceased/prayDeceased")
+    fun requestGetSiritualDeceased(
+        @Query("id") id: Int,
+        @Query("mobile") mobile: String
+    ): Call<List<PrayDeceasedDataModel>>
+
+    @POST("api/v1/deceased/prayDeceased")
+    fun requestSiritual(
+        @Query("mobile") mobile: String,
+        @Body pratRequest: PrayDeceasedRequest
+    ): Call<ConfirmDataModel>
+
+    @POST("api/v1/reports")
+    fun requestReport(
+        @Query("mobile") mobile: String,
+        @Body reportRequest: ReportRequest
+    ): Call<ConfirmDataModel>
 
 
     @POST("api/v1/likes/favourite")

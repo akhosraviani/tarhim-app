@@ -1,19 +1,14 @@
 package ir.co.tarhim.ui.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedDataModel
-import ir.co.tarhim.ui.fragments.deceased.DeceasedPageActivity
 import kotlinx.android.synthetic.main.row_latest_deceased.view.*
 
 class DeceasedSearchRecyclerAdapter(private val listDeceased: List<DeceasedDataModel>) :
@@ -25,9 +20,9 @@ class DeceasedSearchRecyclerAdapter(private val listDeceased: List<DeceasedDataM
         val birth_DeathDay: AppCompatTextView
 
         init {
-            imageDeceased = v.IVDeceased
-            nameDeceased = v.TvDeceasedName
-            birth_DeathDay = v.TvBornDeceased
+            imageDeceased = v.IvFollowingImage
+            nameDeceased = v.TvFollowingName
+            birth_DeathDay = v.TvFollowingDate
             v.rootView.setOnClickListener(this)
         }
 

@@ -1,5 +1,6 @@
 package ir.co.tarhim.ui.fragments.deceased
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
 import kotlinx.android.synthetic.main.fragment_maps.*
 
@@ -21,11 +23,8 @@ class MapsFragment : Fragment(),
     GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraIdleListener,
     GoogleMap.OnMarkerClickListener {
 
-    private lateinit var locationListener: LocateListenr
 
-    fun setLocation(location: LocateListenr) {
-        locationListener = location
-    }
+
 
     companion object {
         private const val TAG = "MapsFragment"
@@ -33,16 +32,33 @@ class MapsFragment : Fragment(),
 
     private lateinit var mGoogleMap: GoogleMap
     private var lastedLocation: LatLng? = null
+    private var cemeteryLocate: DoubleArray? = null
 
     private val callback = OnMapReadyCallback { googleMap ->
         mGoogleMap = googleMap
-        val cemeteryLocate = LatLng(35.536270, 51.370183)
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(cemeteryLocate, 15f))
+
+        googleMap.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                    cemeteryLocate!![0],
+                    cemeteryLocate!![1]
+                ), 15f
+            )
+        )
         ImMarkerMap.visibility = View.VISIBLE
         mGoogleMap.setOnCameraMoveListener(this)
         mGoogleMap.setOnCameraIdleListener(this)
         mGoogleMap.setOnMarkerClickListener(this)
 
+    }
+
+
+    fun newInstance(latLong: LatLng): MapsFragment {
+        val fragment = MapsFragment()
+        val args = Bundle()
+        fragment.arguments = args
+        args.putDoubleArray("LOCATION", doubleArrayOf(latLong.latitude, latLong.longitude))
+        return fragment
     }
 
     override fun onCreateView(
@@ -53,14 +69,26 @@ class MapsFragment : Fragment(),
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
 
 
+        if (arguments != null) {
+            cemeteryLocate = requireArguments().getDoubleArray("LOCATION")
+
+            Log.e(TAG, "onViewCreated: " + cemeteryLocate!!.get(0))
+            Log.e(TAG, "onViewCreated: " + cemeteryLocate!!.get(1))
+        } else {
+            cemeteryLocate = doubleArrayOf(35.53, 51.37)
+            Log.e(TAG, "onViewCreated: Locate " + cemeteryLocate!!.get(0))
+            Log.e(TAG, "onViewCreated: Locate " + cemeteryLocate!!.get(1))
+        }
         BtnSubmitLocation.setOnClickListener {
-            locationListener.locationCallback(lastedLocation!!)
+
+            detectLocationListenr.locationCallback(lastedLocation!!)
             requireActivity().supportFragmentManager.beginTransaction()
                 .remove(this).commit();
         }
@@ -88,13 +116,21 @@ class MapsFragment : Fragment(),
 
     override fun onMarkerClick(marker: Marker?): Boolean {
         lastedLocation = marker!!.position
-        Log.e(TAG, "onMarkerClick: " + lastedLocation)
+        Log.e("locationBurial", "onMarkerClick: " + lastedLocation)
         BtnSubmitLocation.visibility = View.VISIBLE
         return false
     }
 
+    private lateinit var detectLocationListenr: DetectLocationListenr
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        detectLocationListenr=context as DetectLocationListenr
+    }
 
-    interface LocateListenr {
+    interface DetectLocationListenr {
         fun locationCallback(location: LatLng)
     }
 }
+
+
+

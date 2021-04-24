@@ -33,6 +33,7 @@ class InputPasswordState(
 
     override fun decorateView() {
         loginEnterEt.setHint("")
+        loginEnterEt.inputType=InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD
         helpTv.visibility= View.GONE
         loginStartTv.setText(activity.getString(R.string.signIn_title))
         loginEnterTv.setText(activity.getString(R.string.signIn_start_description))

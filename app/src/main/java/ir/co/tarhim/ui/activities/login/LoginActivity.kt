@@ -1,7 +1,11 @@
 package ir.co.tarhim.ui.activities.login
 
 
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.graphics.Rect
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -10,6 +14,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.toSpannable
 import androidx.lifecycle.Observer
@@ -23,15 +28,23 @@ import ir.co.tarhim.ui.activities.login.state.InputPasswordState
 import ir.co.tarhim.ui.activities.login.state.InputPhoneState
 import ir.co.tarhim.ui.activities.login.state.LoginState
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import ir.co.tarhim.utils.NetworkConnectionReceiver
 import ir.co.tarhim.utils.TarhimConfig
 import ir.co.tarhim.utils.TarhimToast
+import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.details_news.*
 import kotlinx.android.synthetic.main.fragment_login.*
+import java.util.*
+import kotlin.concurrent.schedule
 
-class LoginActivity : AppCompatActivity() {
+
+class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListener {
+
 
     private lateinit var viewModel: HomeViewModel
         private set
 
+    private val  br=NetworkConnectionReceiver()
     fun getViewModel(): HomeViewModel {
         return viewModel;
     }
@@ -41,6 +54,8 @@ class LoginActivity : AppCompatActivity() {
         private const val CONDITION_WORDS_END_INDEX: Int = 48
         private const val RULES_WORDS_START_INDEX: Int = 77
         private const val RULES_WORDS_END_INDEX: Int = 97
+        private const val TAG = "LoginActivity"
+
     }
 
     private lateinit var state: LoginState
@@ -52,10 +67,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_login)
+        var intentFilter=IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
+            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+        }
+        registerReceiver(br,intentFilter)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         initUi()
-
-        if(Hawk.get(TarhimConfig.FIRST_VISIT,false)){
+        if (Hawk.get(TarhimConfig.FIRST_VISIT, false)) {
             startActivity(Intent(this, HomeActivity::class.java))
         }
 
@@ -136,6 +154,12 @@ class LoginActivity : AppCompatActivity() {
             viewModel.requestOtp(CheckPhoneNumberRequest(Hawk.get(TarhimConfig.USER_NUMBER)))
 
         }
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
 
 
     }
@@ -230,7 +254,7 @@ class LoginActivity : AppCompatActivity() {
 
     public fun showLoading(status: Boolean) {
         if (status) {
-            loginLogo.visibility = View.GONE
+            loginLogo.visibility = View.INVISIBLE
             loading_lottie.visibility = View.VISIBLE
             window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         } else {
@@ -240,5 +264,30 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onStart() {
+        super.onStart()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.unregisterReceiver(br)
+    }
+
+    override fun networkcallback(isConnected: Boolean) {
+
+        if (isConnected) {
+            loginCv.visibility = View.VISIBLE
+            noIntenterLogroot.visibility=View.GONE
+
+        } else {
+            loginCv.visibility = View.GONE
+            noIntenterLogroot.visibility= View.VISIBLE
+            Timer("Network", false).schedule(4000) {
+                finishAffinity()
+            }
+        }
+    }
 
 }

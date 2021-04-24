@@ -3,6 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/loginRoot"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -11,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_12sdp"
+        android:visibility="visible"
         android:background="@drawable/shape_login_card_view_border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,14 +29,16 @@
                 android:layout_height="@dimen/size_login_logo"
                 android:layout_marginTop="@dimen/all_xlarge_space"
                 android:src="@drawable/sample_logo"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias=".05" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loading_lottie"
-                android:layout_width="@dimen/size_login_logo"
-                android:layout_height="@dimen/size_login_logo"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_120sdp"
                 android:layout_marginTop="@dimen/all_xlarge_space"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -62,13 +66,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/all_xlarge_space"
-                android:layout_marginTop="@dimen/all_xlarge_space"
+                android:layout_marginTop="35dp"
                 android:layout_marginEnd="@dimen/all_xlarge_space"
                 android:fontFamily="@font/iran_sans"
                 android:textColor="@color/grey_900"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/loginStartTv" />
+                app:layout_constraintTop_toBottomOf="@+id/loginLogo" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/loginEnterEt"
@@ -135,5 +139,41 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/noIntenterLogroot"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableStart="@drawable/ic_baseline_cloud_off_24"
+            android:drawablePadding="@dimen/_5sdp"
+            android:fontFamily="@font/iran_sans_bold"
+            android:gravity="center"
+            android:text="اینترنت خود را بررسی کنید و دوباره وارد شوید "
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView2"
+            app:layout_constraintVertical_bias="0.107" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView2"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:background="@drawable/no_internet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

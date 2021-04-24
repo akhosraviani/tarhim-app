@@ -31,6 +31,7 @@
     <color name="color_right_comment">#f0f1f6</color>
     <color name="color_left_comment">#d1e0e1</color>
     <color name="color_navigation_selected">#414d4f</color>
+    <color name="color_red">#EA6F66</color>
 
 
 </resources>

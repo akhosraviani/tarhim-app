@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_7sdp"
+    app:cardCornerRadius="@dimen/_5sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/_11sdp">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/IvtypeRequirement"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.022" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/IvUserRequirement"
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="@dimen/_55sdp"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".95"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".04" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/TvNameRequirement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/iran_sans"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/IvUserRequirement"
+            app:layout_constraintHorizontal_bias="0.951"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/IvUserRequirement"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="user name" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/background_grey"
+            app:layout_constraintBottom_toBottomOf="@+id/IvUserRequirement"
+            app:layout_constraintEnd_toEndOf="@+id/TvNameRequirement"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TvNameRequirement"
+            app:layout_constraintVertical_bias=".1" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/TvTypeRequirement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:fontFamily="@font/iran_sans_ultra_light"
+            android:textColor="@color/text_color_light"
+            app:layout_constraintBottom_toBottomOf="@+id/IvUserRequirement"
+            app:layout_constraintEnd_toStartOf="@+id/IvUserRequirement"
+            app:layout_constraintHorizontal_bias="0.951"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintVertical_bias=".8"
+            tools:text="user name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/TvSubjectRequirement"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_11sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:fontFamily="@font/iran_sans_medium"
+            android:maxLines="3"
+            android:paddingBottom="@dimen/_30sdp"
+            android:text="username username username username username username"
+            android:textColor="@color/text_color_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/IvUserRequirement"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/IvUserRequirement"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/BtnMoreDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:drawableLeft="@drawable/ic_arrow_down"
+            android:elevation="@dimen/_5sdp"
+            android:fontFamily="@font/iran_sans_bold"
+            android:text="بیشتر"
+            android:textAllCaps="false"
+            android:textColor="@color/color_green"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/TvSubjectRequirement"
+            app:layout_constraintEnd_toEndOf="@id/TvSubjectRequirement"
+            app:layout_constraintHorizontal_bias=".03"
+            app:layout_constraintStart_toStartOf="@id/TvSubjectRequirement"
+            app:layout_constraintTop_toTopOf="@id/TvSubjectRequirement"
+            app:layout_constraintVertical_bias="1" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

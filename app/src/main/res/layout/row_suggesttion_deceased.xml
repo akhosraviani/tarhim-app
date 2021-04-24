@@ -8,7 +8,7 @@
     android:padding="@dimen/_3sdp">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/IVDeceased"
+        android:id="@+id/IvFollowingImage"
         android:layout_width="@dimen/_60sdp"
         android:layout_height="@dimen/_60sdp"
         tools:background="@drawable/download"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/TvDeceasedName"
+        android:id="@+id/TvFollowingName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="خسرو شکیبایی"
@@ -27,27 +27,27 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/IVDeceased"
+        app:layout_constraintEnd_toStartOf="@+id/IvFollowingImage"
         app:layout_constraintHorizontal_bias=".9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias=".3" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/TvBornDeceased"
+        android:id="@+id/TvFollowingDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1336/05/08 - 1399/08/28"
         android:textColor="@color/blue_grey_200"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/TvDeceasedName"
+        app:layout_constraintEnd_toEndOf="@+id/TvFollowingName"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TvDeceasedName"
+        app:layout_constraintTop_toBottomOf="@+id/TvFollowingName"
         app:layout_constraintVertical_bias=".3" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/BtnRemoveDeceased"
+        android:id="@+id/BtnRemovelatest"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_20sdp"
         android:background="@drawable/green_buttton"

@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home_nav_graph"
     app:startDestination="@id/fragment_cemetery">
     <fragment
         android:id="@+id/fragment_profile"
@@ -10,10 +9,16 @@
         tools:layout="@layout/fragment_profile">
 
         <action
-            android:id="@+id/action_fragment_profile_to_user_edit_fragment"
-            app:destination="@id/user_edit_fragment"
 
-            />
+            android:id="@+id/action_fragment_profile_to_user_edit_fragment"
+            app:destination="@id/user_edit_fragment" />
+        <action
+            android:id="@+id/action_fragment_profile_to_fragment_requirement"
+            app:destination="@id/fragment_requirement"
+            app:popUpTo="@+id/fragment_profile"
+            app:popUpToInclusive="false" />
+
+
     </fragment>
     <fragment
         android:id="@+id/fragment_news"
@@ -31,8 +36,6 @@
         tools:layout="@layout/fragment_cemetery">
 
     </fragment>
-
-
 
 
     <fragment
@@ -55,13 +58,15 @@
         tools:layout="@layout/edit_user_profile">
         <action
             android:id="@+id/action_user_edit_fragment_to_fragment_profile"
-            app:destination="@id/fragment_profile"
+            app:destination="@id/fragment_profile" />
 
-            />
     </fragment>
 
     <fragment
         android:id="@+id/fragment_requirement"
         android:name="ir.co.tarhim.ui.fragments.require.RequirementFragment"
-        tools:layout="@layout/fragment_requirement" />
+        tools:layout="@layout/fragment_requirement">
+
+    </fragment>
+
 </navigation>
