@@ -16,7 +16,7 @@
             android:id="@+id/action_fragment_profile_to_fragment_requirement"
             app:destination="@id/fragment_requirement"
             app:popUpTo="@+id/fragment_profile"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="true" />
 
 
     </fragment>
