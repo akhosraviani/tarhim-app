@@ -147,9 +147,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
                 }
             }
         })
-        BtnInboxCemetery.setOnClickListener {
-            startActivity(Intent(requireActivity(),InboxMessageActivity::class.java))
-        }
+
         closeSearchBtn.setOnClickListener {
             imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
             SearchView.clearFocus()

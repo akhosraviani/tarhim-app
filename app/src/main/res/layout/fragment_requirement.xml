@@ -6,46 +6,6 @@
     android:id="@+id/requirementRoot"
     android:layout_height="match_parent"
     android:background="@color/background_page">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/prayToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtToolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/iran_sans_bold"
-                android:text="التماس دعا"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnInboxRequirement"
-                android:layout_width="@dimen/_17sdp"
-                android:layout_height="@dimen/_14sdp"
-                android:background="@drawable/inbox_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.appcompat.widget.Toolbar>
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/BtnAddREquirementPray"
         android:layout_width="match_parent"
@@ -64,7 +24,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/prayToolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias=".01"
         tools:layout_editor_absoluteX="13dp" />
 

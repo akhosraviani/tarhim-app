@@ -13,16 +13,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.google.android.gms.dynamic.SupportFragmentWrapper
-import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
-import ir.co.tarhim.ui.fragments.profile.EditProfileFragment
+import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
 import ir.co.tarhim.utils.NetworkConnectionReceiver
-import ir.co.tarhim.utils.TarhimConfig.Companion.FIRST_VISIT
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -50,13 +47,6 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(bottom_navigation, navController)
-//        if (!Hawk.get(FIRST_VISIT, false)){
-//           homePageRoot.visibility=View.GONE
-//           profile_sheet.visibility=View.VISIBLE
-//            supportFragmentManager.beginTransaction()
-//                .add(R.id.profile_sheet,EditProfileFragment())
-//                .commit()
-//        }
 
         bottom_navigation.setOnNavigationItemReselectedListener { }
         bottom_navigation.itemIconTintList = null
@@ -71,32 +61,52 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             true
         }
 
+        toolbarLayout.BtnInboxToolbar.setOnClickListener {
+            startActivity(
+                Intent(
+                    this, InboxMessageActivity::class.java
+                )
+            )
+        }
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean = navController.navigateUp()
     fun changeBottomIcon(menu: Menu, menuItem: MenuItem, focusedItemDrwable: Int) {
-        menu.getItem(0).setIcon(R.drawable.behesht_icon)
+        menu.getItem(0).setIcon(R.drawable.behest_icon)
         menu.getItem(1).setIcon(R.drawable.news_icon)
         menu.getItem(2).setIcon(R.drawable.niazmandiha_icon)
         menu.getItem(3).setIcon(R.drawable.profil_icon)
         menuItem.setChecked(false)
         menuItem.setIcon(focusedItemDrwable)
+        setTitleToolbar(menuItem.itemId)
         navController.navigate(menuItem.itemId)
+
     }
 
     private fun getEnableSelectedIcon(): SparseIntArray {
         var sparseIcon = SparseIntArray()
-        sparseIcon.put(R.id.fragment_profile, R.drawable.profil_icon_selected)
-        sparseIcon.put(R.id.fragment_news, R.drawable.news_icon_selected)
         sparseIcon.put(R.id.fragment_cemetery, R.drawable.behesht_icon_selected)
+        sparseIcon.put(R.id.fragment_news, R.drawable.news_icon_selected)
         sparseIcon.put(R.id.fragment_requirement, R.drawable.niazmandiha_icon_selected)
-
+        sparseIcon.put(R.id.fragment_profile, R.drawable.profil_icon_selected)
         return sparseIcon
     }
 
-    override fun onBackPressed() {
 
-        if (!navController.popBackStack()) {
+    private fun setTitleToolbar(itemId: Int) {
+        when (itemId) {
+            R.id.fragment_cemetery -> toolbarLayout.TitleToolbar.setText("بهشت زهرا")
+            R.id.fragment_news -> toolbarLayout.TitleToolbar.setText("اخبار")
+            R.id.fragment_requirement -> toolbarLayout.TitleToolbar.setText("التماس دعا")
+            R.id.fragment_profile -> toolbarLayout.TitleToolbar.setText("پروفایل")
+        }
+    }
+
+    override fun onBackPressed() {
+        Log.e(TAG, "onBackPressed: "+bottom_navigation.selectedItemId.toString() )
+        if (R.id.fragment_cemetery==bottom_navigation.selectedItemId) {
             if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
                 super.onBackPressed();
                 finishAffinity()
@@ -106,13 +116,13 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
 
             mBackPressed = System.currentTimeMillis()
         }
-            navController.popBackStack()
-            changeBottomIcon(
-                bottom_navigation.menu,
-                bottom_navigation.menu.findItem(bottom_navigation.selectedItemId),
-                getEnableSelectedIcon()
-                    .get(bottom_navigation.selectedItemId)
-            )
+        navController.popBackStack()
+        changeBottomIcon(
+            bottom_navigation.menu,
+            bottom_navigation.menu.findItem(bottom_navigation.selectedItemId),
+            getEnableSelectedIcon()
+                .get(bottom_navigation.selectedItemId)
+        )
 
     }
 
