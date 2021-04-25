@@ -2,6 +2,7 @@ package ir.co.tarhim.ui.fragments.require
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,6 +20,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.PrayDataRequest
+import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
 import ir.co.tarhim.ui.callback.SpinnerListener
 import ir.co.tarhim.ui.fragments.require.adapter.RequirementRecyclerAdapter
 import ir.co.tarhim.ui.viewModels.HomeViewModel
@@ -84,7 +86,9 @@ class RequirementFragment : Fragment(), SpinnerListener {
             }
         })
 
-
+        BtnInboxRequirement.setOnClickListener {
+            startActivity(Intent(requireActivity(), InboxMessageActivity::class.java))
+        }
 
         BtnAddREquirementPray.setOnClickListener {
             showRequirementPray(requireActivity())

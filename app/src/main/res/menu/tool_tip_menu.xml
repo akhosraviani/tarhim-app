@@ -6,12 +6,15 @@
 
     <item
         android:id="@+id/deleteTool"
-        android:title="حذف" />
+        android:title="حذف"
+        android:visible="true" />
     <item
         android:id="@+id/reportTool"
-        android:title="گزارش" />
+        android:title="گزارش"
+        android:visible="true" />
     <item
         android:id="@+id/replayTool"
-        android:title="پاسخ" />
+        android:title="پاسخ"
+        android:visible="true" />
 
 </menu>

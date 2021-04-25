@@ -1,12 +1,10 @@
 package ir.co.tarhim.ui.adapter
 
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -19,30 +17,36 @@ import ir.co.tarhim.model.deceased.CommentDataModel
 import ir.co.tarhim.ui.LikeCommentClicked
 import ir.co.tarhim.ui.callback.TipsListener
 import ir.co.tarhim.ui.fragments.LikedCommentChangeColor
-import kotlinx.android.synthetic.main.row_left_forum.view.*
 import kotlinx.android.synthetic.main.row_right_forum.view.*
-import kotlinx.android.synthetic.main.row_right_forum.view.BtnMore
-import kotlinx.android.synthetic.main.row_right_forum.view.TVCommentForum
-import kotlinx.android.synthetic.main.row_right_forum.view.TVNameRightForum
 
-class CommentRecyclerAdapter(private val context : Context, private var likeCommentClicked: LikeCommentClicked, var callBack:TipsListener) :
-    ListAdapter<CommentDataModel, CommentRecyclerAdapter.ViewHolder>(CommentDiffUnit()) , LikedCommentChangeColor {
+class CommentRecyclerAdapter(
+    private var likeCommentClicked: LikeCommentClicked,
+    var callBack: TipsListener,
+    var status: Boolean
+) :
+    ListAdapter<CommentDataModel, CommentRecyclerAdapter.ViewHolder>(CommentDiffUnit()),
+    LikedCommentChangeColor {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val txtComment: AppCompatTextView
         val nameUser: AppCompatTextView
+        val TVCountLike: AppCompatTextView
         val imageUser: AppCompatImageView
-        val likeIcon : AppCompatImageButton
+        val likeIcon: AppCompatImageButton
 
         init {
             txtComment = view.TVCommentForum
             nameUser = view.TVNameRightForum
             imageUser = view.IVRightForum
+            TVCountLike = view.TVCountLike
             likeIcon = view.BtnLikeComment
         }
 
-        open fun bindTo(comment: CommentDataModel) {
-
+        open fun bindTo(comment: CommentDataModel, status: Boolean) {
+//            if (!status) {
+                itemView.BtnMore.visibility = View.VISIBLE
+//            }
+            TVCountLike.setText("${comment.likes}")
             txtComment.text = comment.message
             nameUser.text = comment.name
             Glide.with(itemView.context)
@@ -50,12 +54,13 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
                 .circleCrop()
                 .into(imageUser)
 
-            if(comment.favourite){
-                Log.i("testTag","liked adapter red")
-                likeIcon.setImageResource(R.drawable.heart_full)
-            }else{
-                Log.i("testTag","liked adapter grey")
-                likeIcon.setImageResource(R.drawable.heart_none)
+            Log.e("testTag", "bindTo: " + comment.favourite)
+            if (comment.favourite) {
+                Log.i("testTag", "liked adapter red")
+                likeIcon.setImageResource(R.drawable.ic_do_favorite)
+            } else {
+                Log.i("testTag", "liked adapter grey")
+                likeIcon.setImageResource(R.drawable.ic_non_favorite)
             }
 
         }
@@ -80,7 +85,7 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var view = LayoutInflater.from(parent.context)
+        var view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.row_right_forum, parent, false)
         return ViewHolder(view)
 
@@ -88,37 +93,25 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindTo(getItem(position))
+        holder.bindTo(getItem(position), status)
         holder.itemView.BtnMore.setOnClickListener {
-            val popup = PopupMenu(context, holder.itemView.BtnMore)
-            popup.menuInflater.inflate(R.menu.tool_tip_menu, popup.menu)
-            popup.show()
-
-            popup.setOnMenuItemClickListener { item ->
-            when(item.itemId){
-                R.id.replayTool ->{
-                  callBack.tipsCallback(getItem(holder.adapterPosition).id)
-                }
-            }
-            true
-        }
+            callBack.tipsCallback(getItem(holder.adapterPosition).id)
         }
 
         holder.likeIcon.setOnClickListener {
-            if(!getItem(holder.adapterPosition).favourite){
-                Log.i("testTag","liked adapter red2")
-                likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id , false)
-            }else{
-                Log.i("testTag","liked adapter red3")
-                likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id , true)
+            if (!getItem(holder.adapterPosition).favourite) {
+                Log.i("testTag", "liked adapter red2")
+                likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id, false)
+            } else {
+                Log.i("testTag", "liked adapter red3")
+                likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id, true)
             }
 
         }
 
     }
 
-    override fun changeColor(liked : Boolean) {
+    override fun changeColor(liked: Boolean) {
 
     }
-
 }

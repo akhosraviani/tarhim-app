@@ -1,5 +1,6 @@
 package ir.co.tarhim.ui.fragments.news
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
 import ir.co.tarhim.model.news.NewsDataModel
+import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
 import ir.co.tarhim.ui.adapter.NewsAdapter
 import ir.co.tarhim.ui.callback.NewsListener
 import ir.co.tarhim.ui.viewModels.NewsViewModel
@@ -63,6 +65,10 @@ class NewsFragment : Fragment(),NewsListener {
 //
 //        })
 
+
+        BtnInboxNews.setOnClickListener {
+            startActivity(Intent(requireActivity(), InboxMessageActivity::class.java))
+        }
 
 
     }

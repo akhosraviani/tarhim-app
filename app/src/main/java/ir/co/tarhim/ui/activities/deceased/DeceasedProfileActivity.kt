@@ -127,7 +127,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                     }
                     AccessTypeDeceased.SemiPublic.name -> {
 
-                        Log.e(TAG, "onCreate: "+deceasedInfo.toString() )
+                        Log.e(TAG, "onCreate: " + deceasedInfo.toString())
                         if (!it.isowner!!) {
                             BtnEditToolbar.visibility = View.GONE
                             BtnEditDeceased.visibility = View.GONE
@@ -336,8 +336,9 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
         btnRequestFollow.setOnClickListener {
             if (deceasedInfo!!.isrequested == null || !deceasedInfo!!.isrequested!!) {
-
+                checkFollow = true
                 showLoading(true)
+
                 viewModel.requestFollowDeceased(deceasedId!!)
 
 
@@ -352,7 +353,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         viewModel.ldFollow.observe(this, Observer {
             showLoading(false)
             if (it.code == 200) {
-//                viewModel.requestDeceasedPersonal(deceasedId!!)
+                viewModel.requestDeceasedPersonal(deceasedId!!)
                 btnRequestFollow.setBackgroundResource(R.drawable.waiting_request_follow_shape)
                 btnRequestFollow.text = "در انتظار تایید"
                 btnRequestFollow.setTextColor(resources.getColor(R.color.tradewind))
@@ -364,7 +365,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         viewModel.ldUnFollow.observe(this, Observer {
             showLoading(false)
             if (it.code == 200) {
-//                viewModel.requestDeceasedPersonal(deceasedId!!)
+                viewModel.requestDeceasedPersonal(deceasedId!!)
                 btnRequestFollow.setBackgroundResource(R.drawable.shape_button)
                 btnRequestFollow.text = "دنبال کردن"
                 btnRequestFollow.setTextColor(resources.getColor(R.color.white))
@@ -389,7 +390,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                 return CharityFragment().newInstance(deceasedId!!)
             }
             else -> {
-                return ForumFragment().newInstance(deceasedId!!,adminStatus)
+                return ForumFragment().newInstance(deceasedId!!, adminStatus)
             }
         }
 

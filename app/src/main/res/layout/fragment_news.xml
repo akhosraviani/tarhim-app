@@ -16,7 +16,7 @@
         app:layout_constraintVertical_bias="1"
          />
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/prayToolbar"
+        android:id="@+id/NewsToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"
@@ -28,37 +28,28 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_height="match_parent">
 
+
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnExitDeceasedPage"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:background="@drawable/close"
+                android:id="@+id/BtnInboxNews"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_14sdp"
+                android:background="@drawable/inbox_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/BtnSaveEditUser"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:background="@drawable/done"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias=".95"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtToolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/iran_sans_bold"
-                android:text="@string/msg_edit_deceased_profile"
+                android:text="@string/msg_title_news"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -76,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prayToolbar"
+        app:layout_constraintTop_toBottomOf="@+id/NewsToolbar"
         app:layout_constraintVertical_bias="0"
         tools:listitem="@layout/row_news_recycler" />
 

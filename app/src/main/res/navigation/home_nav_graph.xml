@@ -9,13 +9,12 @@
         tools:layout="@layout/fragment_profile">
 
         <action
-
             android:id="@+id/action_fragment_profile_to_user_edit_fragment"
             app:destination="@id/user_edit_fragment" />
         <action
             android:id="@+id/action_fragment_profile_to_fragment_requirement"
             app:destination="@id/fragment_requirement"
-            app:popUpTo="@+id/fragment_profile"
+            app:popUpTo="@+id/fragment_requirement"
             app:popUpToInclusive="true" />
 
 
@@ -27,7 +26,8 @@
         <action
             android:id="@+id/action_fragment_news_to_details_news_fragment"
             app:destination="@id/details_news_fragment"
-
+            app:popUpTo="@id/details_news_fragment"
+            app:popUpToInclusive="true"
             />
     </fragment>
     <fragment
@@ -58,7 +58,9 @@
         tools:layout="@layout/edit_user_profile">
         <action
             android:id="@+id/action_user_edit_fragment_to_fragment_profile"
-            app:destination="@id/fragment_profile" />
+            app:destination="@id/fragment_profile"
+
+            />
 
     </fragment>
 
