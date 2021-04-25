@@ -44,16 +44,18 @@
         tools:layout="@layout/fragment_maps">
 
     </fragment>
-    <fragment
+    <dialog
+        android:label="اخبار"
         android:id="@+id/details_news_fragment"
         android:name="ir.co.tarhim.ui.fragments.news.DetailsNewsFragment"
         tools:layout="@layout/details_news">
 
-    </fragment>
+    </dialog>
 
 
-    <fragment
+    <dialog
         android:id="@+id/user_edit_fragment"
+
         android:name="ir.co.tarhim.ui.fragments.profile.EditProfileFragment"
         tools:layout="@layout/edit_user_profile">
         <action
@@ -62,7 +64,7 @@
 
             />
 
-    </fragment>
+    </dialog>
 
     <fragment
         android:id="@+id/fragment_requirement"

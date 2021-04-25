@@ -86,9 +86,7 @@ class RequirementFragment : Fragment(), SpinnerListener {
             }
         })
 
-        BtnInboxRequirement.setOnClickListener {
-            startActivity(Intent(requireActivity(), InboxMessageActivity::class.java))
-        }
+
 
         BtnAddREquirementPray.setOnClickListener {
             showRequirementPray(requireActivity())

@@ -66,11 +66,6 @@ class NewsFragment : Fragment(),NewsListener {
 //        })
 
 
-        BtnInboxNews.setOnClickListener {
-            startActivity(Intent(requireActivity(), InboxMessageActivity::class.java))
-        }
-
-
     }
 
 

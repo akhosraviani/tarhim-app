@@ -2,14 +2,15 @@ package ir.co.tarhim.ui.fragments.profile
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -20,41 +21,59 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.R
-import ir.co.tarhim.model.deceased.CreateDeceasedRequest
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.ui.callback.UploadCallBack
 import ir.co.tarhim.ui.callback.UploadProgress
 import ir.co.tarhim.ui.viewModels.HomeViewModel
-import ir.co.tarhim.utils.DialogProvider
+import ir.co.tarhim.utils.BaseBottomSheetDialog
 import ir.co.tarhim.utils.OnBackPressed
 import ir.co.tarhim.utils.TarhimCompress
-import ir.co.tarhim.utils.TarhimConfig
 import ir.co.tarhim.utils.TarhimConfig.Companion.FIRST_VISIT
 import ir.co.tarhim.utils.TarhimConfig.Companion.USER_NUMBER
-import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.edit_user_profile.*
 import okhttp3.MultipartBody
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.regex.Pattern
 
-class EditProfileFragment : Fragment(), UploadCallBack {
+class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
 
     companion object {
         private const val TAG = "EditProfileFragment"
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        var dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setOnShowListener {
+            var bottomSheet =
+                (it as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
+            var behavior = BottomSheetBehavior.from(bottomSheet)
+            behavior.isDraggable = false
+            var layoutParams = bottomSheet.layoutParams
+            var dispayMetric = DisplayMetrics()
+            (context as Activity)?.windowManager.defaultDisplay.getMetrics(dispayMetric)
+
+            var widthHeight = dispayMetric.heightPixels
+            if (layoutParams != null) {
+                layoutParams.height = widthHeight
+            }
+            bottomSheet.layoutParams = layoutParams
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
+        return dialog
+    }
+
     private lateinit var viewModel: HomeViewModel
     private val GALLERY_CODE = 101
     private lateinit var imm: InputMethodManager
-    private var imagePath:String?= ""
+    private var imagePath: String? = ""
     private lateinit var bottomSheet: FrameLayout
 
     override fun onCreateView(
@@ -110,7 +129,7 @@ class EditProfileFragment : Fragment(), UploadCallBack {
                 when (it.code) {
                     200 -> {
                         showLoading(false)
-                        Hawk.put(FIRST_VISIT,true)
+                        Hawk.put(FIRST_VISIT, true)
                         Toast.makeText(activity, "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show()
                         Handler().postDelayed({
                             findNavController().navigate(R.id.action_user_edit_fragment_to_fragment_profile)
@@ -143,13 +162,13 @@ class EditProfileFragment : Fragment(), UploadCallBack {
 //                        R.drawable.request,
 //                        "از ثبت اطلاعات خود مطمن هستید؟",
 //                        {
-                            viewModel.requestRegisterUser(
-                                RegisterUser(
-                                    ETUserEmail.text.toString(),
-                                    imagePath!!,
-                                    ETNameUser.text.toString()
-                                )
-                            )
+                    viewModel.requestRegisterUser(
+                        RegisterUser(
+                            ETUserEmail.text.toString(),
+                            imagePath!!,
+                            ETNameUser.text.toString()
+                        )
+                    )
 //                            DialogProvider().dismiss()
 //
 //                        },

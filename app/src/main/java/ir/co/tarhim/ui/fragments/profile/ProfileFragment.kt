@@ -87,11 +87,6 @@ class ProfileFragment : Fragment(), ViewPagerCallBack {
 
         }
 
-        BtnInboxProfile.setOnClickListener {
-            startActivity(Intent(requireActivity(), InboxMessageActivity::class.java))
-        }
-
-
     }
 
     override fun getContent(item: Int): Fragment {

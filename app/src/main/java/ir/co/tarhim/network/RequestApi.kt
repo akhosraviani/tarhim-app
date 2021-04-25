@@ -2,6 +2,7 @@ package ir.co.tarhim.network
 
 import ir.co.tarhim.model.ConfirmDataModel
 import ir.co.tarhim.model.deceased.*
+import ir.co.tarhim.model.deceased.comment.ReplyCommentRequest
 import ir.co.tarhim.model.deceased.like.LikeCommentDataModel
 import ir.co.tarhim.model.deceased.like.LikeCommentRequest
 import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
@@ -90,6 +91,16 @@ interface RequestApi {
         @Body body: SendCommentRequest,
         @Query("mobile") mobile: String
     ): Call<ConfirmDataModel>
+
+
+    @POST("api/v1/comments/reply")
+    fun requestReplyComment(
+        @Body body: ReplyCommentRequest,
+        @Query("mobile") mobile: String
+    ): Call<ConfirmDataModel>
+
+
+
 
     @PUT("api/v1/account/edit")
     fun requestRegisterUser(

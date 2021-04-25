@@ -100,7 +100,6 @@ class MapsFragment : Fragment(),
         mGoogleMap.clear()
         ImMarkerMap.visibility = View.VISIBLE
     }
-
     override fun onCameraIdle() {
         ImMarkerMap.visibility = View.GONE
         mGoogleMap.addMarker(
@@ -113,7 +112,6 @@ class MapsFragment : Fragment(),
 
 
     }
-
     override fun onMarkerClick(marker: Marker?): Boolean {
         lastedLocation = marker!!.position
         Log.e("locationBurial", "onMarkerClick: " + lastedLocation)

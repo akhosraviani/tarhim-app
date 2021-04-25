@@ -3,7 +3,10 @@ package ir.co.tarhim.ui.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.orhanobut.hawk.Hawk
+import ir.co.tarhim.model.ConfirmDataModel
 import ir.co.tarhim.model.deceased.DeceasedDataModel
+import ir.co.tarhim.model.deceased.SendCommentRequest
+import ir.co.tarhim.model.deceased.comment.ReplyCommentRequest
 import ir.co.tarhim.model.deceased.like.LikeCommentDataModel
 import ir.co.tarhim.model.deceased.like.LikeCommentRequest
 import ir.co.tarhim.model.user.RegisterUser
@@ -14,12 +17,18 @@ import ir.co.tarhim.utils.TarhimConfig
 class DeceasedViewModel: ViewModel() {
     private var deceasedRepository: DeceasedRepository = DeceasedRepository()
      var ldLikeComment: LiveData<LikeCommentDataModel>
+     var ldReplayComment: LiveData<ConfirmDataModel>
 
     init {
         ldLikeComment = deceasedRepository.mldLikeComment
+        ldReplayComment = deceasedRepository.mldReplyComment
     }
 
     fun requestLikeComment(dataRequest: LikeCommentRequest) {
         deceasedRepository.likeComments(dataRequest, Hawk.get(TarhimConfig.USER_NUMBER))
+    }
+
+    fun requestReplyComment(body: ReplyCommentRequest) {
+        deceasedRepository.replyComment(body ,Hawk.get(TarhimConfig.USER_NUMBER) )
     }
 }
