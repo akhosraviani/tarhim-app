@@ -1,41 +1,38 @@
 package ir.co.tarhim.ui.fragments.deceased
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
-import ir.co.tarhim.model.deceased.ReportRequest
 import ir.co.tarhim.model.deceased.SendCommentRequest
+import ir.co.tarhim.model.deceased.comment.ReplyCommentRequest
 import ir.co.tarhim.model.deceased.like.LikeCommentRequest
 import ir.co.tarhim.ui.LikeCommentClicked
 import ir.co.tarhim.ui.adapter.CommentRecyclerAdapter
 import ir.co.tarhim.ui.callback.TipsListener
+import ir.co.tarhim.ui.fragments.LikedCommentChangeColor
 import ir.co.tarhim.ui.viewModels.DeceasedViewModel
 import ir.co.tarhim.ui.viewModels.HomeViewModel
-import ir.co.tarhim.utils.ReportEntityType
-import ir.co.tarhim.utils.TarhimToast
 import kotlinx.android.synthetic.main.fragment_forum.*
-import kotlinx.android.synthetic.main.row_right_forum.*
 
-class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
-    private val ADMIN_STATUE = "adminStatus"
-    private var adminStatus: Boolean? = false
+class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
 
-    fun newInstance(id: Int, adminStatus: Boolean): ForumFragment {
+    fun newInstance(id: Int): ForumFragment {
         val fragment = ForumFragment()
         val args = Bundle()
         fragment.arguments = args
         args.putInt("Id", id)
-        args.putBoolean(ADMIN_STATUE, adminStatus)
         return fragment
     }
 
@@ -43,6 +40,9 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
     private lateinit var commentAdapter: CommentRecyclerAdapter
     private lateinit var viewModel: HomeViewModel
     private lateinit var deceasedViewModel: DeceasedViewModel
+    private lateinit var likedCommentChangeColor: LikedCommentChangeColor
+    private lateinit var popState : PopUpState
+    private  var selectedCommentId : Int = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,9 +55,8 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         deceasedViewModel = ViewModelProvider(this).get(DeceasedViewModel::class.java)
-        deceasedId = requireArguments()!!.getInt("Id")
-        adminStatus = requireArguments()!!.getBoolean(ADMIN_STATUE)
-        initRecycler(adminStatus!!)
+        initRecycler()
+        deceasedId = requireArguments().getInt("Id")
         viewModel.requestGetComment(deceasedId!!)
 
         viewModel.ldGetCommnet.observe(viewLifecycleOwner, Observer {
@@ -75,95 +74,54 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
         deceasedViewModel.ldLikeComment.observe(viewLifecycleOwner, Observer {
             it.let {
-                Log.i("testTag", "liked fragment")
-                Log.i("testTag", "liked fragment= " + it.toString())
-                viewModel.requestGetComment(deceasedId!!)
-                TarhimToast
-                    .Builder()
-                    .setActivity(requireActivity())
-
-                    .message(it.message)
-                    .build()
+                Log.i("testTag","liked fragment")
+                Log.i("testTag","liked fragment= "+it.toString())
                 commentAdapter.notifyDataSetChanged()
             }
         })
 
-        BtnSendComment.setOnClickListener {
-            if (ETComment.text.toString().isNotEmpty()) {
-                viewModel.requestSendComment(
-                    SendCommentRequest(
-                        deceasedId!!,
-                        ETComment.text.toString(),
-                        (System.currentTimeMillis()).toInt()
-                    )
+        deceasedViewModel.ldReplayComment.observe(viewLifecycleOwner, Observer {
+            it.let {
+              if(it.code==200){
 
-                )
-
-                ETComment.setText("")
-            } else {
-
-            }
-        }
-
-
-        viewModel.ldReport.observe(viewLifecycleOwner, Observer {
-            it.also {
-                when (it.code) {
-                    200 -> TarhimToast.Builder()
-                        .setActivity(requireActivity())
-                        .message(it.message)
-                        .build()
-                    else -> TarhimToast.Builder()
-                        .setActivity(requireActivity())
-                        .message(it.message)
-                        .build()
-                }
+              }
             }
         })
-    }
 
-
-    private fun showPopupMenu(commentId: Int) {
-        var popup = PopupMenu(requireActivity(), BtnMore)
-        popup.menuInflater.inflate(R.menu.tool_tip_menu, popup.menu)
-        if (!adminStatus!!) {
-            popup.menu.findItem(R.id.deleteTool).setVisible(false)
-            popup.menu.findItem(R.id.replayTool).setVisible(false)
-        }
-        popup.setOnMenuItemClickListener {
-
-            when (it.itemId) {
-                R.id.deleteTool -> {
-                    TarhimToast.Builder()
-                        .setActivity(requireActivity())
-                        .message("در حال پیاده سازی")
-
-                        .build()
-                }
-                R.id.reportTool -> {
-                    viewModel.grequestReport(
-                        ReportRequest(
-                            true,
-                            ReportEntityType.Comment.name,
-                            commentId
+        BtnSendComment.setOnClickListener {
+            if(popState==PopUpState.REPLAY){
+                  deceasedViewModel.requestReplyComment(
+                      ReplyCommentRequest(
+                      selectedCommentId,
+                          deceasedId!!,
+                          BtnSendComment.text.toString()
+                  )
+                  )
+            }else{
+                if (ETComment.text.toString().isNotEmpty()) {
+                    viewModel.requestSendComment(
+                        SendCommentRequest(
+                            deceasedId!!,
+                            ETComment.text.toString(),
+                            (System.currentTimeMillis()).toInt()
                         )
-                    )
-                }
-                R.id.replayTool -> {
-                    TarhimToast.Builder()
-                        .setActivity(requireActivity())
-                        .message("در حال پیاده سازی")
-                        .build()
-                }
 
+                    )
+
+                    ETComment.setText("")
+                } else {
+
+                }
             }
-            popup.show()
-            true
+
         }
+
+
     }
 
-    private fun initRecycler(status: Boolean) {
-        commentAdapter = CommentRecyclerAdapter(this, this, status)
+
+    private fun initRecycler() {
+        commentAdapter = CommentRecyclerAdapter(requireContext(),this,this)
         ForumRecycler.adapter = commentAdapter
         ForumRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -174,19 +132,29 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
     }
 
-    override fun tipsCallback(msgId: Int) {
-
-        showPopupMenu(msgId)
-
+    private fun showSoftKeyboard(context: Context, view: View) {
+        ETComment.requestFocus()
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm!!.toggleSoftInput(
+            InputMethodManager.SHOW_FORCED,
+            InputMethodManager.HIDE_IMPLICIT_ONLY
+        )
     }
 
-    override fun likeCommentClicked(id: Int, like: Boolean) {
-        if (like) {
+    override fun tipsCallback(msgId: Int) {
+        popState = PopUpState.REPLAY
+        ETComment.requestFocus()
+        showSoftKeyboard(requireContext(),ETComment)
+        selectedCommentId = msgId
+    }
+
+    override fun likeCommentClicked(id: Int , like : Boolean) {
+        if(like){
             //mikhaym toosi she
-            deceasedViewModel.requestLikeComment(LikeCommentRequest(id, false))
-        } else {
+            deceasedViewModel.requestLikeComment(LikeCommentRequest(id,true))
+        }else{
             //mikhaym ghermez she
-            deceasedViewModel.requestLikeComment(LikeCommentRequest(id, true))
+            deceasedViewModel.requestLikeComment(LikeCommentRequest(id,false))
         }
 
     }
