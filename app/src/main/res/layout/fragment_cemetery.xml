@@ -30,7 +30,18 @@
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtToolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/iran_sans_bold"
+                android:text="بهشت زهرا"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/NotifDotDeceased"
                 android:layout_width="@dimen/_5sdp"

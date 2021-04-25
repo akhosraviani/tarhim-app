@@ -27,6 +27,11 @@ import kotlinx.android.synthetic.main.row_right_forum.*
 
 class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
+    
+    companion object{
+        private const val TAG = "ForumFragment"
+    }
+    
     private val ADMIN_STATUE = "adminStatus"
     private var adminStatus: Boolean? = false
 
@@ -60,6 +65,8 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
         initRecycler(adminStatus!!)
         viewModel.requestGetComment(deceasedId!!)
 
+
+        Log.e(TAG, "onViewCreated :adminStatus "+adminStatus )
         viewModel.ldGetCommnet.observe(viewLifecycleOwner, Observer {
             it.let {
                 commentAdapter.submitList(it)
@@ -126,6 +133,8 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
     private fun showPopupMenu(commentId: Int) {
         var popup = PopupMenu(requireActivity(), BtnMore)
         popup.menuInflater.inflate(R.menu.tool_tip_menu, popup.menu)
+        popup.show()
+
         if (!adminStatus!!) {
             popup.menu.findItem(R.id.deleteTool).setVisible(false)
             popup.menu.findItem(R.id.replayTool).setVisible(false)
@@ -157,7 +166,6 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
                 }
 
             }
-            popup.show()
             true
         }
     }
@@ -183,10 +191,10 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
     override fun likeCommentClicked(id: Int, like: Boolean) {
         if (like) {
             //mikhaym toosi she
-            deceasedViewModel.requestLikeComment(LikeCommentRequest(id, false))
+            deceasedViewModel.requestLikeComment(LikeCommentRequest(id, true))
         } else {
             //mikhaym ghermez she
-            deceasedViewModel.requestLikeComment(LikeCommentRequest(id, true))
+            deceasedViewModel.requestLikeComment(LikeCommentRequest(id, false))
         }
 
     }

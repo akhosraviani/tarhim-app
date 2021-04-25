@@ -44,7 +44,7 @@ class CommentRecyclerAdapter(
 
         open fun bindTo(comment: CommentDataModel, status: Boolean) {
 //            if (!status) {
-                itemView.BtnMore.visibility = View.INVISIBLE
+                itemView.BtnMore.visibility = View.VISIBLE
 //            }
             TVCountLike.setText("${comment.likes}")
             txtComment.text = comment.message

@@ -52,6 +52,7 @@
     <string name="enter_pray_txt">ثبت درخواست</string>
     <string name="accept_msg_dialog">تایید</string>
     <string name="close_msg_dialog">لغو</string>
+    <string name="msg_title_news">اخبار</string>
 
     <string-array name="list_pray_type">
         <item>صلوات</item>

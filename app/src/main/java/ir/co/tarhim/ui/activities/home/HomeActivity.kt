@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import android.util.SparseIntArray
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.gms.dynamic.SupportFragmentWrapper
@@ -56,7 +58,7 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
 //                .commit()
 //        }
 
-            bottom_navigation.setOnNavigationItemReselectedListener { }
+        bottom_navigation.setOnNavigationItemReselectedListener { }
         bottom_navigation.itemIconTintList = null
         changeBottomIcon(
             bottom_navigation.menu,
@@ -73,10 +75,10 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
 
     override fun onSupportNavigateUp(): Boolean = navController.navigateUp()
     fun changeBottomIcon(menu: Menu, menuItem: MenuItem, focusedItemDrwable: Int) {
-        menu.getItem(0).setIcon(R.drawable.profil_icon)
+        menu.getItem(0).setIcon(R.drawable.behesht_icon)
         menu.getItem(1).setIcon(R.drawable.news_icon)
-        menu.getItem(2).setIcon(R.drawable.behesht_icon)
-        menu.getItem(3).setIcon(R.drawable.niazmandiha_icon)
+        menu.getItem(2).setIcon(R.drawable.niazmandiha_icon)
+        menu.getItem(3).setIcon(R.drawable.profil_icon)
         menuItem.setChecked(false)
         menuItem.setIcon(focusedItemDrwable)
         navController.navigate(menuItem.itemId)
@@ -94,7 +96,7 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
 
     override fun onBackPressed() {
 
-        if (navController.currentDestination?.id == R.id.fragment_cemetery) {
+        if (!navController.popBackStack()) {
             if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
                 super.onBackPressed();
                 finishAffinity()
@@ -103,15 +105,14 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             }
 
             mBackPressed = System.currentTimeMillis()
-        } else {
-            navController.navigate(R.id.fragment_cemetery)
+        }
+            navController.popBackStack()
             changeBottomIcon(
                 bottom_navigation.menu,
                 bottom_navigation.menu.findItem(bottom_navigation.selectedItemId),
-                getEnableSelectedIcon().get(R.id.fragment_cemetery)
+                getEnableSelectedIcon()
+                    .get(bottom_navigation.selectedItemId)
             )
-
-        }
 
     }
 
