@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="@dimen/_5sdp"
-    android:layout_height="@dimen/_70sdp">
+    android:layout_height="@dimen/_70sdp"
+    android:padding="@dimen/_5sdp">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/Tv_Inbox_message_date"
@@ -23,10 +23,10 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/Tv_Inbox_from"
         android:layout_width="wrap_content"
-        android:textStyle="bold"
         android:layout_height="wrap_content"
         android:fontFamily="@font/iran_sans_bold"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/appCompatTextView10"
         app:layout_constraintHorizontal_bias="0.952"
@@ -40,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/iran_sans"
-        android:textStyle="bold"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/Tv_Inbox_from"
         app:layout_constraintHorizontal_bias="1.0"
@@ -54,9 +54,9 @@
         android:id="@+id/Tv_Inbox_message_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:fontFamily="@font/iran_sans_light"
         android:textColor="@color/text_color_lighter"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/Tv_Inbox_message_status"
         app:layout_constraintHorizontal_bias="0.992"
@@ -80,15 +80,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.017" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
-        android:background="@color/background_grey"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Tv_Inbox_message_description" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/BtnDeclineRequest"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:background="@drawable/ic_baseline_clear"
 
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/BtnAcceptRequest"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.491" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/BtnAcceptRequest"
+        android:layout_width="@dimen/_65sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:background="@drawable/shape_button"
+        android:fontFamily="@font/iran_sans_medium"
+        android:text="قبول کردن"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/Tv_Inbox_message_status"
+        app:layout_constraintHorizontal_bias="0.246"
+        app:layout_constraintStart_toEndOf="@+id/Tv_Inbox_message_date"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.491" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

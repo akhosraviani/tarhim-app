@@ -52,6 +52,7 @@ class HomeViewModel : ViewModel() {
     var ldSendPray: LiveData<ConfirmDataModel>
     var ldDeleteLatest: LiveData<ConfirmDataModel>
     var ldReport: LiveData<ConfirmDataModel>
+    var ldDeleteComment: LiveData<ConfirmDataModel>
     var ldFollowersList: LiveData<List<FollowersDataModel>>
     var ldFollowing: LiveData<List<MyDeceasedDataModel>>
     var ldDeceasedFollowers: LiveData<List<FollowersDataModel>>
@@ -91,6 +92,7 @@ class HomeViewModel : ViewModel() {
         ldFollowing = loginRepository.mldFollowing
         ldDeleteLatest = loginRepository.mldDeleteLatest
         ldDeceasedFollowers = loginRepository.mldDeceasedFollowers
+        ldDeleteComment=loginRepository.mldDeleteComment
     }
 
     fun requestPostGallery(deceasedId: Int, path: String) {
@@ -99,6 +101,9 @@ class HomeViewModel : ViewModel() {
 
     fun requestDeceasedFollowers(deceasedId: Int) {
         loginRepository.requestDeceasedFollowersList(deceasedId)
+    }
+    fun requestDeleteComment(body:DeleteCommentRequestModel) {
+        loginRepository.requestDeleteComment(body,Hawk.get(USER_NUMBER))
     }
 
     fun requestDeleteLatest(deceasedId: Int) {

@@ -56,6 +56,7 @@ class LoginRepository {
     val mldPray = MutableLiveData<List<RequirementDataModel>>()
     val mldCharity = MutableLiveData<List<CharityDataModel>>()
     val mldSendPray = MutableLiveData<ConfirmDataModel>()
+    val mldDeleteComment = MutableLiveData<ConfirmDataModel>()
     val mldFollowers = MutableLiveData<List<FollowersDataModel>>()
     val mldFollowing = MutableLiveData<List<MyDeceasedDataModel>>()
     val mldDeleteLatest = MutableLiveData<ConfirmDataModel>()
@@ -130,6 +131,24 @@ class LoginRepository {
                     response: Response<List<FollowersDataModel>>
                 ) {
                     mldDeceasedFollowers.value = response.body()
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestDeleteComment(body:DeleteCommentRequestModel,mobile:String) {
+        RequestClient.makeRequest().requestDeleteComment(body,mobile)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldDeleteComment.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })

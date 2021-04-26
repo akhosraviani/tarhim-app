@@ -204,6 +204,12 @@ interface RequestApi {
         @Query("id") id:Int,
     ): Call<List<FollowersDataModel>>
 
+  @DELETE("api/v1/comments/delete")
+    fun requestDeleteComment(
+      @Body body:DeleteCommentRequestModel,
+        @Query("mobile") mobile:String,
+    ): Call<ConfirmDataModel>
+
 
 }
 

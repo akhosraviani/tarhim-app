@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -15,7 +16,7 @@ import kotlinx.android.synthetic.main.row_inbox_recycler.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class InboxRecyclerAdapter() :
+class InboxRecyclerAdapter(var admin:Boolean) :
     ListAdapter<MyInboxDataModel, InboxRecyclerAdapter.ViewHolder>(InboxDiffUnit()) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -23,17 +24,26 @@ class InboxRecyclerAdapter() :
         private lateinit var TvFrom: AppCompatTextView
         private lateinit var TvStatus: AppCompatTextView
         private lateinit var TvDesc: AppCompatTextView
+        private lateinit var BtnAcceptRequest: AppCompatButton
+        private lateinit var BtnDeclineRequest: AppCompatButton
 
         init {
 
-            this.TvDate = view.Tv_Inbox_message_date
-            this.TvFrom = view.Tv_Inbox_from
-            this.TvStatus = view.Tv_Inbox_message_status
-            this.TvDesc = view.Tv_Inbox_message_description
+            TvDate = view.Tv_Inbox_message_date
+            TvFrom = view.Tv_Inbox_from
+            TvStatus = view.Tv_Inbox_message_status
+            TvDesc = view.Tv_Inbox_message_description
+            BtnAcceptRequest = view.BtnAcceptRequest
+            BtnDeclineRequest = view.BtnDeclineRequest
         }
 
 
-        open fun bindTo(item: MyInboxDataModel) {
+        open fun bindTo(item: MyInboxDataModel,admin:Boolean) {
+
+            if(admin){
+                BtnAcceptRequest.visibility=View.GONE
+                BtnDeclineRequest.visibility=View.GONE
+            }
 
             var d = (item.date).toLong()
             val formatData = SimpleDateFormat("yyyy/MM/dd")
@@ -86,7 +96,7 @@ class InboxRecyclerAdapter() :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindTo(getItem(position))
+        holder.bindTo(getItem(position),admin)
 
     }
 

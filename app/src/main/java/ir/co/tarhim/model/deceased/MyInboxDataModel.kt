@@ -6,5 +6,6 @@ data class MyInboxDataModel(
     val name: String,
     val notificationId: Int,
     val requestId: Int,
-    val subject: String
+    val subject: String,
+    val type: String
 )

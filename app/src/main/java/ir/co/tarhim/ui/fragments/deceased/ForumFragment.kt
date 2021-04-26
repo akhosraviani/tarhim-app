@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
+import ir.co.tarhim.model.deceased.DeleteCommentRequestModel
 import ir.co.tarhim.model.deceased.ReportRequest
 import ir.co.tarhim.model.deceased.SendCommentRequest
 import ir.co.tarhim.model.deceased.like.LikeCommentRequest
@@ -27,11 +28,11 @@ import kotlinx.android.synthetic.main.row_right_forum.*
 
 class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
-    
-    companion object{
+
+    companion object {
         private const val TAG = "ForumFragment"
     }
-    
+
     private val ADMIN_STATUE = "adminStatus"
     private var adminStatus: Boolean? = false
 
@@ -66,7 +67,7 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
         viewModel.requestGetComment(deceasedId!!)
 
 
-        Log.e(TAG, "onViewCreated :adminStatus "+adminStatus )
+        Log.e(TAG, "onViewCreated :adminStatus " + adminStatus)
         viewModel.ldGetCommnet.observe(viewLifecycleOwner, Observer {
             it.let {
                 commentAdapter.submitList(it)
@@ -127,6 +128,26 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
                 }
             }
         })
+
+        viewModel.ldDeleteComment.observe(viewLifecycleOwner, Observer {
+            it.also {
+                when (it.code) {
+                    200 -> {
+                        TarhimToast.Builder()
+                            .setActivity(requireActivity())
+                            .message(it.message)
+                            .build()
+                        viewModel.requestGetComment(deceasedId!!)
+
+                    }
+                    else -> TarhimToast.Builder()
+                        .setActivity(requireActivity())
+                        .message(it.message)
+                        .build()
+                }
+            }
+        })
+
     }
 
 
@@ -143,11 +164,12 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
             when (it.itemId) {
                 R.id.deleteTool -> {
-                    TarhimToast.Builder()
-                        .setActivity(requireActivity())
-                        .message("در حال پیاده سازی")
-
-                        .build()
+                    viewModel.requestDeleteComment(
+                        DeleteCommentRequestModel(
+                            commentId,
+                            deceasedId!!
+                        )
+                    )
                 }
                 R.id.reportTool -> {
                     viewModel.grequestReport(
