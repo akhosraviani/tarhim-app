@@ -11,7 +11,6 @@ import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
 import ir.co.tarhim.model.login.mobile.CheckRegisterModel
 import ir.co.tarhim.model.login.otp.OtpDataModel
 import ir.co.tarhim.model.news.NewsDataModel
-import ir.co.tarhim.model.user.FollowersDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import okhttp3.MultipartBody
@@ -199,6 +198,12 @@ interface RequestApi {
         @Body body: LikeCommentRequest,
         @Query("mobile") mobile: String,
     ): Call<LikeCommentDataModel>
+
+    @GET("api/v1/deceased/followerlist")
+    fun requesDeceasedFollowersList(
+        @Query("id") id:Int,
+    ): Call<List<FollowersDataModel>>
+
 
 }
 

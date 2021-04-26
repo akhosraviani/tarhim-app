@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.co.tarhim.R
-import ir.co.tarhim.model.user.FollowersDataModel
+import ir.co.tarhim.model.deceased.FollowersDataModel
 import kotlinx.android.synthetic.main.row_contact_recycler.view.*
 
-class FollowersAdapterRecycler() :
-    ListAdapter<FollowersDataModel, FollowersAdapterRecycler.ViewHolder>(FollowersDiffUnit()) {
+class InviteAdapterRecycler() :
+    ListAdapter<FollowersDataModel, InviteAdapterRecycler.ViewHolder>(FollowersDiffUnit()) {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         lateinit var TvFollowersName: AppCompatTextView
@@ -53,13 +53,13 @@ class FollowersAdapterRecycler() :
 
     }
 
-    override fun onCreateViewHolder(view: ViewGroup, p1: Int): FollowersAdapterRecycler.ViewHolder {
+    override fun onCreateViewHolder(view: ViewGroup, p1: Int): InviteAdapterRecycler.ViewHolder {
         return ViewHolder(
             LayoutInflater.from(view.context).inflate(R.layout.row_contact_recycler, view, false)
         )
     }
 
-    override fun onBindViewHolder(holder: FollowersAdapterRecycler.ViewHolder, p1: Int) {
+    override fun onBindViewHolder(holder: InviteAdapterRecycler.ViewHolder, p1: Int) {
         holder.bind(getItem(p1))
 
         holder.BtnMoreFollowers.setOnClickListener {

@@ -5,13 +5,13 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.util.Log
 import android.util.SparseIntArray
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -73,6 +73,7 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
     }
 
     override fun onSupportNavigateUp(): Boolean = navController.navigateUp()
+
     fun changeBottomIcon(menu: Menu, menuItem: MenuItem, focusedItemDrwable: Int) {
         menu.getItem(0).setIcon(R.drawable.behest_icon)
         menu.getItem(1).setIcon(R.drawable.news_icon)
@@ -105,8 +106,9 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
     }
 
     override fun onBackPressed() {
-        Log.e(TAG, "onBackPressed: "+bottom_navigation.selectedItemId.toString() )
-        if (R.id.fragment_cemetery==bottom_navigation.selectedItemId) {
+        val homeItem: MenuItem = bottom_navigation.getMenu().getItem(0)
+
+        if (bottom_navigation.selectedItemId == homeItem.getItemId()) {
             if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
                 super.onBackPressed();
                 finishAffinity()
@@ -115,15 +117,30 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             }
 
             mBackPressed = System.currentTimeMillis()
-        }
-        navController.popBackStack()
-        changeBottomIcon(
-            bottom_navigation.menu,
-            bottom_navigation.menu.findItem(bottom_navigation.selectedItemId),
-            getEnableSelectedIcon()
-                .get(bottom_navigation.selectedItemId)
-        )
+        } else {
+            super.onBackPressed()
+            when (bottom_navigation.selectedItemId) {
+                R.id.fragment_cemetery -> Toast.makeText(this, "fragment_cemetery", Toast.LENGTH_SHORT).show()
+                R.id.fragment_news ->bottom_navigation.menu.get(1).setIcon( R.drawable.news_icon_selected)
 
+                R.id.fragment_requirement -> Toast.makeText(this, "fragment_requirement", Toast.LENGTH_SHORT).show()
+                R.id.fragment_profile -> Toast.makeText(this, "fragment_profile", Toast.LENGTH_SHORT).show()
+            }
+
+
+
+//            bottom_navigation.menu..setChecked(false)
+//            menuItem.setIcon(focusedItemDrwable)
+//            setTitleToolbar(menuItem.itemId)
+//            bottom_navigation.itemIconTintList = null
+//            changeBottomIcon(
+//                bottom_navigation.menu,
+//                bottom_navigation.menu.findItem(bottom_navigation.selectedItemId),
+//                getEnableSelectedIcon().get(R.id.fragment_cemetery)
+//            )
+
+
+        }
     }
 
     override fun networkcallback(isConnected: Boolean) {

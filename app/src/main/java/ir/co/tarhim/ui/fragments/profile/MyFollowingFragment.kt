@@ -1,6 +1,10 @@
 package ir.co.tarhim.ui.fragments.profile
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +17,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
-import ir.co.tarhim.ui.callback.ProfileListener
 import ir.co.tarhim.ui.activities.deceased.DeceasedProfileActivity
+import ir.co.tarhim.ui.callback.ProfileListener
 import ir.co.tarhim.ui.fragments.profile.adapter.FollowingRecyclerAdapter
 import ir.co.tarhim.ui.viewModels.HomeViewModel
+import ir.co.tarhim.utils.DialogProvider
 import ir.co.tarhim.utils.TarhimToast
 import kotlinx.android.synthetic.main.my_deceased_fragment.*
+import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 
 class MyFollowingFragment : Fragment(), ProfileListener.MyDeceasedListener,
     ProfileListener.UnFollowDeceasedListener {
@@ -68,7 +74,9 @@ class MyFollowingFragment : Fragment(), ProfileListener.MyDeceasedListener,
                         TarhimToast.Builder()
                             .setActivity(requireActivity())
                             .message(x.message).build()
+                     alertDialog.dismiss()
                         viewModel.requestFollowing()
+
 
                     }
                     else -> {
@@ -116,13 +124,54 @@ class MyFollowingFragment : Fragment(), ProfileListener.MyDeceasedListener,
     }
 
     override fun myDeceasedCallBack(deceasedId: Int) {
-       startActivity( Intent(requireActivity(), DeceasedProfileActivity::class.java)
-           .putExtra("FromPersonal", deceasedId))
+        startActivity(
+            Intent(requireActivity(), DeceasedProfileActivity::class.java)
+                .putExtra("FromPersonal", deceasedId)
+        )
     }
 
     override fun unFollowCallBack(deceasedId: Int) {
-        viewModel.requestUnFollowDeceased(deceasedId)
-        showLoading(true)
+
+       showConfirmDialog(
+            requireActivity(), R.drawable.request,
+            "آیا مطمن هستید؟",
+            {
+                viewModel.requestUnFollowDeceased(deceasedId)
+                showLoading(true)
+            },
+            {alertDialog.dismiss()
+            }
+        )
+
     }
 
+    private lateinit var alertDialog:AlertDialog
+     fun showConfirmDialog(
+        activity: Activity,
+        image: Int,
+        message: String,
+        accept: View.OnClickListener,
+        cancel: View.OnClickListener
+    ) {
+        val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
+        val view =
+            LayoutInflater.from(activity).inflate(R.layout.tarhim_dialog, viewGroup, false)
+        alertDialog = AlertDialog.Builder(activity).setView(view).create()
+        alertDialog!!.setCancelable(false)
+        alertDialog!!.setCanceledOnTouchOutside(false)
+        alertDialog!!.window!!.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        view.TvMessageDialog.setText(message)
+
+        view.BtnAcceptDialog.setOnClickListener(accept)
+        view.BtnCloseDialog.setOnClickListener(cancel)
+
+        view.IvImageDialog.setBackgroundResource(image)
+
+        alertDialog.show()
+    }
 }

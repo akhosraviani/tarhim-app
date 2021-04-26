@@ -1,6 +1,7 @@
 package ir.co.tarhim.ui.activities.deceased
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
@@ -8,13 +9,16 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -50,6 +54,7 @@ import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import okhttp3.MultipartBody
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -194,11 +199,11 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                     ETDeathDeceased.text.toString().length > 0
                 ) {
                     showLoading(true)
-//                    DialogProvider().showConfirm(
-//                        this,
-//                        R.drawable.request,
-//                        "از ثبت اطلاعات متوفی مطمن هستید؟",
-//                        {
+                   showConfirmDialog(
+                        this,
+                        R.drawable.request,
+                        "از ثبت اطلاعات متوفی مطمن هستید؟",
+                        {
                             viewModel.requestCreateDeceased(
                                 CreateDeceasedRequest(
                                     accessType,
@@ -212,12 +217,12 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                                     ETNameDeceased.text.toString()
                                 )
                             )
-//                            DialogProvider().dismiss()
+                            alertDialog.dismiss()
 //
-//                        },
-//                        {
-//                            DialogProvider().dismiss()
-//                        })
+                        },
+                        {
+                            alertDialog.dismiss()
+                        })
 
 
 
@@ -568,7 +573,34 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         }
     }
 
-    fun setUpeyboard(view:View){
 
+    private lateinit var alertDialog: AlertDialog
+    fun showConfirmDialog(
+        activity: Activity,
+        image: Int,
+        message: String,
+        accept: View.OnClickListener,
+        cancel: View.OnClickListener
+    ) {
+        val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
+        val view =
+            LayoutInflater.from(activity).inflate(R.layout.tarhim_dialog, viewGroup, false)
+        alertDialog = AlertDialog.Builder(activity).setView(view).create()
+        alertDialog!!.setCancelable(false)
+        alertDialog!!.setCanceledOnTouchOutside(false)
+        alertDialog!!.window!!.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        view.TvMessageDialog.setText(message)
+
+        view.BtnAcceptDialog.setOnClickListener(accept)
+        view.BtnCloseDialog.setOnClickListener(cancel)
+
+        view.IvImageDialog.setBackgroundResource(image)
+
+        alertDialog.show()
     }
 }

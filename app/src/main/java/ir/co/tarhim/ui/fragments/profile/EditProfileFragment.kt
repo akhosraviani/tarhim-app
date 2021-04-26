@@ -2,10 +2,13 @@ package ir.co.tarhim.ui.fragments.profile
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -39,6 +42,7 @@ import ir.co.tarhim.utils.TarhimCompress
 import ir.co.tarhim.utils.TarhimConfig.Companion.FIRST_VISIT
 import ir.co.tarhim.utils.TarhimConfig.Companion.USER_NUMBER
 import kotlinx.android.synthetic.main.edit_user_profile.*
+import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import okhttp3.MultipartBody
 import java.io.File
 
@@ -157,11 +161,11 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
                     Patterns.EMAIL_ADDRESS.matcher(ETUserEmail.text!!.trim().toString()).matches()
                 ) {
                     showLoading(true)
-//                    DialogProvider().showConfirm(
-//                        requireActivity(),
-//                        R.drawable.request,
-//                        "از ثبت اطلاعات خود مطمن هستید؟",
-//                        {
+                    showConfirmDialog(
+                        requireActivity(),
+                        R.drawable.request,
+                        "از ثبت اطلاعات خود مطمن هستید؟",
+                        {
                     viewModel.requestRegisterUser(
                         RegisterUser(
                             ETUserEmail.text.toString(),
@@ -169,12 +173,11 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
                             ETNameUser.text.toString()
                         )
                     )
-//                            DialogProvider().dismiss()
-//
-//                        },
-//                        {
-//                            DialogProvider().dismiss()
-//                        })
+                            alertDialog.dismiss()
+                        },
+                        {
+                            alertDialog.dismiss()
+                        })
 
                 } else {
                     ETUserEmail.error = "ایمیل نامعتبر"
@@ -335,5 +338,35 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
         }
     }
 
+
+    private lateinit var alertDialog: AlertDialog
+    fun showConfirmDialog(
+        activity: Activity,
+        image: Int,
+        message: String,
+        accept: View.OnClickListener,
+        cancel: View.OnClickListener
+    ) {
+        val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
+        val view =
+            LayoutInflater.from(activity).inflate(R.layout.tarhim_dialog, viewGroup, false)
+        alertDialog = AlertDialog.Builder(activity).setView(view).create()
+        alertDialog!!.setCancelable(false)
+        alertDialog!!.setCanceledOnTouchOutside(false)
+        alertDialog!!.window!!.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        view.TvMessageDialog.setText(message)
+
+        view.BtnAcceptDialog.setOnClickListener(accept)
+        view.BtnCloseDialog.setOnClickListener(cancel)
+
+        view.IvImageDialog.setBackgroundResource(image)
+
+        alertDialog.show()
+    }
 
 }

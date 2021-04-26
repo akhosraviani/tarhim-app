@@ -1,4 +1,4 @@
-package ir.co.tarhim.model.user
+package ir.co.tarhim.model.deceased
 
 data class FollowersDataModel(
     val block: Boolean,

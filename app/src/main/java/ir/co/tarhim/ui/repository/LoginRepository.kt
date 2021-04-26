@@ -10,7 +10,6 @@ import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
 import ir.co.tarhim.model.login.mobile.CheckRegisterModel
 import ir.co.tarhim.model.login.otp.OtpDataModel
 import ir.co.tarhim.model.news.NewsDataModel
-import ir.co.tarhim.model.user.FollowersDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.network.RequestClient
@@ -62,6 +61,7 @@ class LoginRepository {
     val mldDeleteLatest = MutableLiveData<ConfirmDataModel>()
     val mldReport = MutableLiveData<ConfirmDataModel>()
     val mldUnFollowDeceased = MutableLiveData<ConfirmDataModel>()
+    val mldDeceasedFollowers = MutableLiveData<List<FollowersDataModel>>()
 
     fun requestSendPray(checkRegisterRequest: CheckPhoneNumberRequest) {
         RequestClient.makeRequest().requestCheckRegister(checkRegisterRequest)
@@ -117,6 +117,26 @@ class LoginRepository {
             })
 
     }
+    fun requestDeceasedFollowersList(deceasedId:Int) {
+        RequestClient.makeRequest().requesDeceasedFollowersList(deceasedId)
+            .enqueue(object : Callback<List<FollowersDataModel>> {
+                override fun onFailure(call: retrofit2.Call<List<FollowersDataModel>>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<List<FollowersDataModel>>,
+                    response: Response<List<FollowersDataModel>>
+                ) {
+                    mldDeceasedFollowers.value = response.body()
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+
+
     fun requestSiritual(mobile:String,body:PrayDeceasedRequest) {
         RequestClient.makeRequest().requestSiritual(mobile,body)
             .enqueue(object : Callback<ConfirmDataModel> {

@@ -11,7 +11,6 @@ import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
 import ir.co.tarhim.model.login.mobile.CheckRegisterModel
 import ir.co.tarhim.model.login.otp.OtpDataModel
-import ir.co.tarhim.model.user.FollowersDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.ui.repository.LoginRepository
@@ -55,6 +54,7 @@ class HomeViewModel : ViewModel() {
     var ldReport: LiveData<ConfirmDataModel>
     var ldFollowersList: LiveData<List<FollowersDataModel>>
     var ldFollowing: LiveData<List<MyDeceasedDataModel>>
+    var ldDeceasedFollowers: LiveData<List<FollowersDataModel>>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -90,10 +90,15 @@ class HomeViewModel : ViewModel() {
         ldFollowersList = loginRepository.mldFollowers
         ldFollowing = loginRepository.mldFollowing
         ldDeleteLatest = loginRepository.mldDeleteLatest
+        ldDeceasedFollowers = loginRepository.mldDeceasedFollowers
     }
 
     fun requestPostGallery(deceasedId: Int, path: String) {
         loginRepository.requestPostGallery(deceasedId, path)
+    }
+
+    fun requestDeceasedFollowers(deceasedId: Int) {
+        loginRepository.requestDeceasedFollowersList(deceasedId)
     }
 
     fun requestDeleteLatest(deceasedId: Int) {

@@ -11,7 +11,8 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.*
+import android.view.ViewGroup.GONE
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,14 +28,15 @@ import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeceasedProfileDataModel
 import ir.co.tarhim.ui.activities.home.HomeActivity
 import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
+import ir.co.tarhim.ui.activities.invite_friend.InviteFriendsActivity
 import ir.co.tarhim.ui.adapter.ViewPagerAdapter
 import ir.co.tarhim.ui.callback.ViewPagerCallBack
-import ir.co.tarhim.ui.activities.invite_friend.InviteFriendsActivity
 import ir.co.tarhim.ui.fragments.deceased.CharityFragment
 import ir.co.tarhim.ui.fragments.deceased.ForumFragment
 import ir.co.tarhim.ui.fragments.deceased.GalleryFragment
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.AccessTypeDeceased
+import ir.co.tarhim.utils.DialogProvider
 import ir.co.tarhim.utils.NetworkConnectionReceiver
 import ir.co.tarhim.utils.SeperateNumber
 import kotlinx.android.synthetic.main.deceased_profile.*
@@ -378,6 +380,19 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             startActivity(Intent(this, InboxMessageActivity::class.java))
         }
 
+
+        TvFollowersCount.setOnClickListener {
+            viewModel.requestDeceasedFollowers(deceasedId!!)
+        }
+
+
+        viewModel.ldDeceasedFollowers.observe(this, Observer {
+            it.also {
+                DialogProvider().showFollowerListDialog(this, it)
+            }
+        })
+
+
     }
 
     override fun getContent(item: Int): Fragment {
@@ -553,5 +568,6 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             }
         }
     }
+
 
 }

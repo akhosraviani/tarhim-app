@@ -15,7 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
-import ir.co.tarhim.ui.activities.invite_friend.adapter.FollowersAdapterRecycler
+import ir.co.tarhim.ui.activities.invite_friend.adapter.InviteAdapterRecycler
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.TarhimToast
 import kotlinx.android.synthetic.main.contact_fragment.*
@@ -32,7 +32,7 @@ class InviteFriendsActivity() : AppCompatActivity() {
     private var deceasedId: Int = -1
     private lateinit var viewModel: HomeViewModel
     private lateinit var imm: InputMethodManager
-    private lateinit var followersAdapter: FollowersAdapterRecycler
+    private lateinit var inviteAdapter: InviteAdapterRecycler
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +51,7 @@ class InviteFriendsActivity() : AppCompatActivity() {
             it.also {
 
                 Log.e(TAG, "onCreate: "+it.size )
-                followersAdapter.submitList(it)
+                inviteAdapter.submitList(it)
             }
         })
 
@@ -84,8 +84,8 @@ class InviteFriendsActivity() : AppCompatActivity() {
 
 
     private fun initContactRecycler() {
-        followersAdapter = FollowersAdapterRecycler()
-        contactRecycler.adapter = followersAdapter
+        inviteAdapter = InviteAdapterRecycler()
+        contactRecycler.adapter = inviteAdapter
         manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         contactRecycler.layoutManager = manager
         contactRecycler.layoutAnimation =
