@@ -20,6 +20,7 @@
         app:layout_constraintVertical_bias="0.024" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rightLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_7sdp"
@@ -66,7 +67,7 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/TVDateComment"
+            android:id="@+id/RightTVDateComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/iran_sans_light"
@@ -104,6 +105,120 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@+id/TVCommentForum"
             app:layout_constraintTop_toTopOf="@+id/TVNameRightForum" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/IVLeftForum"
+        android:layout_width="@dimen/_65sdp"
+        android:layout_height="@dimen/_65sdp"
+        tools:background="@drawable/download"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rightLayout"
+        app:layout_constraintVertical_bias="0.024" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/leftLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_7sdp"
+        android:background="@drawable/chat_left_forum"
+        android:padding="@dimen/_3sdp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/IVLeftForum"
+        app:layout_constraintTop_toBottomOf="@+id/rightLayout"
+        app:layout_constraintVertical_bias="0">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/TVNameLeftForum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="مهرداد میناوند"
+            android:fontFamily="@font/iran_sans"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.032" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/leftTVCommentForum"
+            android:layout_width="0dp"
+            android:fontFamily="@font/iran_sans_medium"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:background="@color/white"
+            android:textColor="@color/text_color_light"
+            android:padding="@dimen/_3sdp"
+            android:text="مهرداد میناوند بیش از علی دایی، علی کریمی، مهدی مهدوی‌کیا و وحید هاشمیان، سابقه بازی در لیگ قهرمانان اروپا را دارد."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/TVNameLeftForum"
+            app:layout_constraintVertical_bias=".01" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/adminComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_7sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:padding="@dimen/_3sdp"
+            android:gravity="left"
+            android:fontFamily="@font/iran_sans_light"
+            android:textColor="@color/text_color_lighter"
+            android:text=" بازیکن پیشین تیم ملی فوتبال ایران بود."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/leftTVCommentForum"
+            app:layout_constraintVertical_bias=".01" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/LeftTVDateComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:fontFamily="@font/iran_sans_ultra_light"
+            android:text="سه روز پیش"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/adminComment"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="@+id/adminComment"
+            app:layout_constraintTop_toBottomOf="@+id/adminComment" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/TVSelectReplayComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:fontFamily="@font/iran_sans_ultra_light"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:text="پاسخ"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/adminComment"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@+id/adminComment"
+            app:layout_constraintTop_toBottomOf="@+id/adminComment" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

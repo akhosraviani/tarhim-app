@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,26 +22,38 @@ import ir.co.tarhim.model.deceased.CommentDataModel
 import ir.co.tarhim.ui.LikeCommentClicked
 import ir.co.tarhim.ui.callback.TipsListener
 import ir.co.tarhim.ui.fragments.LikedCommentChangeColor
-import kotlinx.android.synthetic.main.row_left_forum.view.*
+import ir.co.tarhim.ui.fragments.deceased.ReplayMessage
 import kotlinx.android.synthetic.main.row_right_forum.view.*
 import kotlinx.android.synthetic.main.row_right_forum.view.BtnMore
 import kotlinx.android.synthetic.main.row_right_forum.view.TVCommentForum
 import kotlinx.android.synthetic.main.row_right_forum.view.TVNameRightForum
 
 class CommentRecyclerAdapter(private val context : Context, private var likeCommentClicked: LikeCommentClicked, var callBack:TipsListener) :
-    ListAdapter<CommentDataModel, CommentRecyclerAdapter.ViewHolder>(CommentDiffUnit()) , LikedCommentChangeColor {
+    ListAdapter<CommentDataModel, CommentRecyclerAdapter.ViewHolder>(CommentDiffUnit()) , LikedCommentChangeColor , ReplayMessage {
+    var x : String = ""
+    var selectedId : Int = 0
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+
 
         val txtComment: AppCompatTextView
         val nameUser: AppCompatTextView
         val imageUser: AppCompatImageView
         val likeIcon : AppCompatImageButton
 
+        val adminImage: AppCompatImageView
+        val replayLayout: ConstraintLayout
+        val adminComment: AppCompatTextView
+
         init {
             txtComment = view.TVCommentForum
             nameUser = view.TVNameRightForum
             imageUser = view.IVRightForum
             likeIcon = view.BtnLikeComment
+
+            adminImage = view.IVLeftForum
+            replayLayout = view.leftLayout
+            adminComment = view.adminComment
         }
 
         open fun bindTo(comment: CommentDataModel) {
@@ -57,6 +72,8 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
                 Log.i("testTag","liked adapter grey")
                 likeIcon.setImageResource(R.drawable.heart_none)
             }
+
+
 
         }
     }
@@ -105,6 +122,13 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
         }
 
         holder.likeIcon.setOnClickListener {
+            if(holder.likeIcon.drawable.constantState ==
+                ContextCompat.getDrawable(context, R.drawable.heart_full)!!.constantState){
+                holder.likeIcon.setImageResource(R.drawable.heart_none)
+            }else{
+                holder.likeIcon.setImageResource(R.drawable.heart_full)
+            }
+
             if(!getItem(holder.adapterPosition).favourite){
                 Log.i("testTag","liked adapter red2")
                 likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id , false)
@@ -115,10 +139,27 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
 
         }
 
+
+
+        holder.adminComment.text = x
+
+        if(x != "" && selectedId==getItem(holder.adapterPosition).id){
+            holder.replayLayout.visibility=View.VISIBLE
+            holder.adminImage.visibility=View.VISIBLE
+            holder.adminComment.text=x
+        }else{
+            holder.replayLayout.visibility=View.GONE
+            holder.adminImage.visibility=View.GONE
+        }
+
     }
 
     override fun changeColor(liked : Boolean) {
 
+    }
+
+    override fun replayMessage(message: String) {
+        x=message
     }
 
 }

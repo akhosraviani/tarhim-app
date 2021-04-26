@@ -43,6 +43,9 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
     private lateinit var likedCommentChangeColor: LikedCommentChangeColor
     private lateinit var popState : PopUpState
     private  var selectedCommentId : Int = 0
+    private  lateinit var selectedCommentResponse : String
+    private lateinit var replayMessage : ReplayMessage
+    private var recyclerBody : MutableList<String> = mutableListOf()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,20 +79,21 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
             it.let {
                 Log.i("testTag","liked fragment")
                 Log.i("testTag","liked fragment= "+it.toString())
-                commentAdapter.notifyDataSetChanged()
             }
         })
 
         deceasedViewModel.ldReplayComment.observe(viewLifecycleOwner, Observer {
             it.let {
               if(it.code==200){
-
+                  replayMessage.replayMessage(selectedCommentResponse)
+                  commentAdapter.notifyDataSetChanged()
               }
             }
         })
 
         BtnSendComment.setOnClickListener {
             if(popState==PopUpState.REPLAY){
+                selectedCommentResponse= BtnSendComment.text.toString()
                   deceasedViewModel.requestReplyComment(
                       ReplyCommentRequest(
                       selectedCommentId,
