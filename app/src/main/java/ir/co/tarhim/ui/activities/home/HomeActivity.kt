@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -94,7 +95,14 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
         sparseIcon.put(R.id.fragment_profile, R.drawable.profil_icon_selected)
         return sparseIcon
     }
-
+    private fun getunSelectedIcon(): SparseIntArray {
+        var sparseIcon = SparseIntArray()
+        sparseIcon.put(0, R.drawable.behest_icon)
+        sparseIcon.put(1, R.drawable.news_icon)
+        sparseIcon.put(2, R.drawable.niazmandiha_icon)
+        sparseIcon.put(3, R.drawable.profil_icon)
+        return sparseIcon
+    }
 
     private fun setTitleToolbar(itemId: Int) {
         when (itemId) {
@@ -106,40 +114,43 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
     }
 
     override fun onBackPressed() {
-        val homeItem: MenuItem = bottom_navigation.getMenu().getItem(0)
-        var id = -1
 
-        if (id== homeItem.getItemId()) {
+        if (bottom_navigation.selectedItemId != R.id.fragment_cemetery) {
+            val size: Int = bottom_navigation.getMenu().size()
+            for (i in 0 until size) {
+                bottom_navigation.getMenu().getItem(i).setChecked(false)
+                bottom_navigation.menu.getItem(i).setIcon(getunSelectedIcon().get(i))
+            }
+            super.onBackPressed()
+            when (bottom_navigation.getSelectedItemId()) {
+                R.id.fragment_cemetery -> {
+                    bottom_navigation.menu.getItem(0)
+                        .setIcon(getEnableSelectedIcon().get(R.id.fragment_cemetery))
+                }
+                R.id.fragment_news -> {
+                    bottom_navigation.menu.getItem(1)
+                        .setIcon(getEnableSelectedIcon().get(R.id.fragment_news))
+                }
+                R.id.fragment_requirement -> {
+                    bottom_navigation.menu.getItem(2)
+                        .setIcon(getEnableSelectedIcon().get(R.id.fragment_requirement))
+                }
+                R.id.fragment_profile -> {
+                    bottom_navigation.menu.get(3)
+                        .setIcon(getEnableSelectedIcon().get(R.id.fragment_profile ))
+
+                }
+            }
+
+        }
+        else {
             if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
                 super.onBackPressed();
                 finishAffinity()
             } else {
                 Toast.makeText(this, "برای خروج دوباره کلیک کنید", Toast.LENGTH_SHORT).show()
             }
-
             mBackPressed = System.currentTimeMillis()
-        } else {
-            super.onBackPressed()
-            bottom_navigation.menu.getItem(0).setIcon(R.drawable.behest_icon).setCheckable(false)
-            bottom_navigation.menu.getItem(1).setIcon(R.drawable.news_icon).setCheckable(false)
-            bottom_navigation.menu.getItem(2).setIcon(R.drawable.niazmandiha_icon).setCheckable(false)
-            bottom_navigation.menu.getItem(3).setIcon(R.drawable.profil_icon).setCheckable(false)
-            when (bottom_navigation.selectedItemId) {
-                R.id.fragment_cemetery -> {
-                    bottom_navigation.menu.findItem( R.id.fragment_cemetery ).setIcon(getEnableSelectedIcon().get(bottom_navigation.selectedItemId))
-                }
-                R.id.fragment_news -> {
-                    bottom_navigation.menu.findItem(R.id.fragment_news).setIcon(getEnableSelectedIcon().get(bottom_navigation.selectedItemId))
-                }
-                R.id.fragment_requirement -> {
-
-                    bottom_navigation.menu.findItem(R.id.fragment_requirement).setIcon(getEnableSelectedIcon().get(bottom_navigation.selectedItemId))
-                }
-                R.id.fragment_profile -> {
-                    bottom_navigation.menu.findItem(R.id.fragment_profile).setIcon(getEnableSelectedIcon().get(bottom_navigation.selectedItemId))
-                }
-            }
-
         }
     }
 
