@@ -204,10 +204,22 @@ interface RequestApi {
         @Query("id") id:Int,
     ): Call<List<FollowersDataModel>>
 
-  @DELETE("api/v1/comments/delete")
+    @HTTP(method = "DELETE", path = "api/v1/comments/delete", hasBody = true)
     fun requestDeleteComment(
-      @Body body:DeleteCommentRequestModel,
+      @Body body: DeleteCommentRequestModel,
         @Query("mobile") mobile:String,
+    ): Call<ConfirmDataModel>
+
+@POST("api/v1/inbox/accept")
+    fun requestAcceptRequest(
+    @Query("mobile") mobile:String,
+    @Query("notificationId") notificationId:Int,
+    ): Call<ConfirmDataModel>
+
+    @DELETE("api/v1/inbox/reject")
+    fun requestRejectRequest(
+    @Query("mobile") mobile:String,
+    @Query("notificationId") notificationId:Int,
     ): Call<ConfirmDataModel>
 
 

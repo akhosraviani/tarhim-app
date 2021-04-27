@@ -62,6 +62,8 @@ class LoginRepository {
     val mldDeleteLatest = MutableLiveData<ConfirmDataModel>()
     val mldReport = MutableLiveData<ConfirmDataModel>()
     val mldUnFollowDeceased = MutableLiveData<ConfirmDataModel>()
+    val mldAcceptRequest = MutableLiveData<ConfirmDataModel>()
+    val mldRejectRequest = MutableLiveData<ConfirmDataModel>()
     val mldDeceasedFollowers = MutableLiveData<List<FollowersDataModel>>()
 
     fun requestSendPray(checkRegisterRequest: CheckPhoneNumberRequest) {
@@ -149,6 +151,42 @@ class LoginRepository {
                     response: Response<ConfirmDataModel>
                 ) {
                     mldDeleteComment.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestAcceptRequest(mobile:String,notificationId:Int) {
+        RequestClient.makeRequest().requestAcceptRequest(mobile,notificationId)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldAcceptRequest.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestRejectRequest(mobile:String,notificationId:Int) {
+        RequestClient.makeRequest().requestRejectRequest(mobile,notificationId)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldRejectRequest.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })

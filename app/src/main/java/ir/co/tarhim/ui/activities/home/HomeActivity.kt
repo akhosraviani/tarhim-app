@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -30,6 +29,7 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
         private const val TAG = "HomeActivity"
     }
 
+    private lateinit var menuItem: MenuItem
     private lateinit var navController: NavController
     private var TIME_INTERVAL: Long = 2000
     private var mBackPressed: Long? = 0
@@ -107,8 +107,9 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
 
     override fun onBackPressed() {
         val homeItem: MenuItem = bottom_navigation.getMenu().getItem(0)
+        var id = -1
 
-        if (bottom_navigation.selectedItemId == homeItem.getItemId()) {
+        if (id== homeItem.getItemId()) {
             if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
                 super.onBackPressed();
                 finishAffinity()
@@ -119,29 +120,29 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             mBackPressed = System.currentTimeMillis()
         } else {
             super.onBackPressed()
+            bottom_navigation.menu.getItem(0).setIcon(R.drawable.behest_icon).setCheckable(false)
+            bottom_navigation.menu.getItem(1).setIcon(R.drawable.news_icon).setCheckable(false)
+            bottom_navigation.menu.getItem(2).setIcon(R.drawable.niazmandiha_icon).setCheckable(false)
+            bottom_navigation.menu.getItem(3).setIcon(R.drawable.profil_icon).setCheckable(false)
             when (bottom_navigation.selectedItemId) {
-                R.id.fragment_cemetery -> Toast.makeText(this, "fragment_cemetery", Toast.LENGTH_SHORT).show()
-                R.id.fragment_news ->bottom_navigation.menu.get(1).setIcon( R.drawable.news_icon_selected)
+                R.id.fragment_cemetery -> {
+                    bottom_navigation.menu.findItem( R.id.fragment_cemetery ).setIcon(getEnableSelectedIcon().get(bottom_navigation.selectedItemId))
+                }
+                R.id.fragment_news -> {
+                    bottom_navigation.menu.findItem(R.id.fragment_news).setIcon(getEnableSelectedIcon().get(bottom_navigation.selectedItemId))
+                }
+                R.id.fragment_requirement -> {
 
-                R.id.fragment_requirement -> Toast.makeText(this, "fragment_requirement", Toast.LENGTH_SHORT).show()
-                R.id.fragment_profile -> Toast.makeText(this, "fragment_profile", Toast.LENGTH_SHORT).show()
+                    bottom_navigation.menu.findItem(R.id.fragment_requirement).setIcon(getEnableSelectedIcon().get(bottom_navigation.selectedItemId))
+                }
+                R.id.fragment_profile -> {
+                    bottom_navigation.menu.findItem(R.id.fragment_profile).setIcon(getEnableSelectedIcon().get(bottom_navigation.selectedItemId))
+                }
             }
-
-
-
-//            bottom_navigation.menu..setChecked(false)
-//            menuItem.setIcon(focusedItemDrwable)
-//            setTitleToolbar(menuItem.itemId)
-//            bottom_navigation.itemIconTintList = null
-//            changeBottomIcon(
-//                bottom_navigation.menu,
-//                bottom_navigation.menu.findItem(bottom_navigation.selectedItemId),
-//                getEnableSelectedIcon().get(R.id.fragment_cemetery)
-//            )
-
 
         }
     }
+
 
     override fun networkcallback(isConnected: Boolean) {
         if (isConnected) {

@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_70sdp"
-    android:padding="@dimen/_5sdp">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_3sdp">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/Tv_Inbox_message_date"
@@ -52,24 +52,29 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/Tv_Inbox_message_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:paddingStart="@dimen/_3sdp"
+        android:paddingEnd="@dimen/_3sdp"
+        android:layout_height="match_parent"
+        android:gravity="right"
         android:fontFamily="@font/iran_sans_light"
         android:textColor="@color/text_color_lighter"
+        android:textSize="9sp"
+        android:layout_marginTop="@dimen/_3sdp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/Tv_Inbox_message_status"
+        app:layout_constraintEnd_toEndOf="@+id/appCompatTextView10"
         app:layout_constraintHorizontal_bias="0.992"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Tv_Inbox_message_status"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView10"
         app:layout_constraintVertical_bias="0.007"
         tools:text="12548" />
 
     <androidx.appcompat.widget.AppCompatTextView
 
         android:id="@+id/appCompatTextView10"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
         android:background="@drawable/shape_inbox_circule"
         android:fontFamily="@font/iran_sans_light"
         android:textColor="@color/text_color_lighter"
@@ -85,7 +90,7 @@
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
         android:background="@drawable/ic_baseline_clear"
-
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/BtnAcceptRequest"
         app:layout_constraintHorizontal_bias="0.9"
@@ -101,6 +106,7 @@
         android:fontFamily="@font/iran_sans_medium"
         android:text="قبول کردن"
         android:textColor="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/Tv_Inbox_message_status"
         app:layout_constraintHorizontal_bias="0.246"

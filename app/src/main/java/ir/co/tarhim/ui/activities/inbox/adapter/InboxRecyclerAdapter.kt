@@ -1,6 +1,5 @@
 package ir.co.tarhim.ui.activities.inbox.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,21 +10,22 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.MyInboxDataModel
+import ir.co.tarhim.ui.callback.InboxListener
 import ir.co.tarhim.utils.PersianDate
 import kotlinx.android.synthetic.main.row_inbox_recycler.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class InboxRecyclerAdapter(var admin:Boolean) :
+class InboxRecyclerAdapter( var inboxListener: InboxListener) :
     ListAdapter<MyInboxDataModel, InboxRecyclerAdapter.ViewHolder>(InboxDiffUnit()) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private lateinit var TvDate: AppCompatTextView
-        private lateinit var TvFrom: AppCompatTextView
-        private lateinit var TvStatus: AppCompatTextView
-        private lateinit var TvDesc: AppCompatTextView
-        private lateinit var BtnAcceptRequest: AppCompatButton
-        private lateinit var BtnDeclineRequest: AppCompatButton
+        lateinit var TvDate: AppCompatTextView
+        lateinit var TvFrom: AppCompatTextView
+        lateinit var TvStatus: AppCompatTextView
+        lateinit var TvDesc: AppCompatTextView
+        lateinit var BtnAcceptRequest: AppCompatButton
+        lateinit var BtnDeclineRequest: AppCompatButton
 
         init {
 
@@ -38,12 +38,14 @@ class InboxRecyclerAdapter(var admin:Boolean) :
         }
 
 
-        open fun bindTo(item: MyInboxDataModel,admin:Boolean) {
+        open fun bindTo(item: MyInboxDataModel) {
 
-            if(admin){
-                BtnAcceptRequest.visibility=View.GONE
-                BtnDeclineRequest.visibility=View.GONE
+            if (item.type.equals("FollowReq")) {
+                BtnAcceptRequest.visibility = View.VISIBLE
+                BtnDeclineRequest.visibility = View.VISIBLE
             }
+
+
 
             var d = (item.date).toLong()
             val formatData = SimpleDateFormat("yyyy/MM/dd")
@@ -55,15 +57,15 @@ class InboxRecyclerAdapter(var admin:Boolean) :
             TvDate.setText("${year}-${month}-${day}")
 
             TvFrom.setText(item.name)
-            var description: String
             TvStatus.setText(item.subject)
-            if (item.message.length > 30) {
-                description = "${item.message.substring(0, 30)} ..."
-
-            } else {
-                description = item.message
-            }
-            TvDesc.setText(description)
+            var description: String
+//            if (item.message.length > 30) {
+//                description = "${item.message.substring(0, 30)} ..."
+//
+//            } else {
+//                description = item.message
+//            }
+            TvDesc.setText(item.message)
         }
 
     }
@@ -96,7 +98,16 @@ class InboxRecyclerAdapter(var admin:Boolean) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindTo(getItem(position),admin)
+        holder.bindTo(getItem(position))
+
+
+        holder.BtnAcceptRequest.setOnClickListener {
+            inboxListener.acceptRequestCallback(getItem(holder.adapterPosition).notificationId)
+        }
+
+        holder.BtnDeclineRequest.setOnClickListener {
+            inboxListener.declineRequestCallback(getItem(holder.adapterPosition).notificationId)
+        }
 
     }
 
