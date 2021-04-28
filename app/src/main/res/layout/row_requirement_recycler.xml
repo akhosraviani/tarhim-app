@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/_10sdp"
-    android:layout_marginEnd="@dimen/_10sdp"
     android:layout_marginTop="@dimen/_7sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
     app:cardCornerRadius="@dimen/_5sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,8 +91,9 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:fontFamily="@font/iran_sans_medium"
+            android:inputType="textMultiLine"
+            android:maxLength="150"
             android:maxLines="3"
-            android:paddingBottom="@dimen/_30sdp"
             android:text="username username username username username username"
             android:textColor="@color/text_color_light"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -100,7 +101,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/IvUserRequirement"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/BtnMoreDescription"

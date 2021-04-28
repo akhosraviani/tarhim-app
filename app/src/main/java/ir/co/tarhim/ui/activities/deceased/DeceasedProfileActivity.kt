@@ -482,9 +482,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
     private fun requestFollow(deceasedInfo: DeceasedProfileDataModel) {
         showPrivateDetailsPage(deceasedInfo)
         if ((deceasedInfo.isrequested == null || !deceasedInfo.isrequested!!) && !deceasedInfo.isfollow!!) {
-            txttitleDeceaedPage.visibility = GONE
             BtnNotifBell.visibility = GONE
-            BtnInboxDeceasedProfile.visibility = GONE
             coordinateLayout.visibility = View.GONE
             PrivateLayout.visibility = View.VISIBLE
             btnRequestFollow.setBackgroundResource(R.drawable.shape_button)

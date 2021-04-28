@@ -2,11 +2,9 @@ package ir.co.tarhim.ui.fragments.require
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,20 +14,16 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.PrayDataRequest
-import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
 import ir.co.tarhim.ui.callback.SpinnerListener
 import ir.co.tarhim.ui.fragments.require.adapter.RequirementRecyclerAdapter
 import ir.co.tarhim.ui.viewModels.HomeViewModel
-import ir.co.tarhim.utils.OnBackPressed
 import ir.co.tarhim.utils.SpinnerTarhim
 import ir.co.tarhim.utils.TarhimToast
 import ir.co.tarhim.utils.TypePray
 import kotlinx.android.synthetic.main.dialog_requirement_pray.view.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_requirement.*
 
 class RequirementFragment : Fragment(), SpinnerListener {
@@ -158,14 +152,17 @@ class RequirementFragment : Fragment(), SpinnerListener {
         )
 
 
+
         root.BtnSubmitPray.setOnClickListener {
-            if (!TextUtils.isEmpty(root.EtSubjectPray.text) && !TextUtils.isEmpty(root.EtMessagePray.text)) {
+            if (root.EtSubjectPray.text!!.length > 0
+             && root.EtMessagePray.text!!.length > 0
+            ) {
 
                 viewModel.requestSendPray(
                     PrayDataRequest(
+                        root.EtMessagePray.text.toString(),
                         root.EtSubjectPray.text.toString(),
-                        root.EtMessagePray.text.toString(), prayType
-
+                        prayType
                     )
                 )
                 showLoading(true)
@@ -173,7 +170,7 @@ class RequirementFragment : Fragment(), SpinnerListener {
             } else {
                 TarhimToast.Builder()
                     .setActivity(requireActivity())
-                    .message("لطفا تمام قسمت ها را تکمیل کنید.")
+                    .message("لطفا تمام قسمت ها را به درستی تکمیل کنید.")
             }
         }
     }

@@ -1,7 +1,7 @@
 <resources>
 
     <!--region all -->
-    <string name="app_name">ترحیم</string>
+    <string name="app_name">مزار</string>
     <string name="all_timer_style">%02d:%02d</string>
     <!--endregion -->
 
@@ -11,7 +11,7 @@
     <string name="login_slash">/</string>
     <string name="login_start_description">شماره موبایل خود را وارد کنید</string>
     <string name="login_start_button">ارسال کد تایید</string>
-    <string name="login_rules_description">با ورود و ثبت نام در ترحیم ، شما قوانین و شرایط استفاده از سرویس های ترحیم و قوانین حریم خصوصی آن را میپذیرید</string>
+    <string name="login_rules_description">با ورود و ثبت نام در مزار ، شما قوانین و شرایط استفاده از سرویس های ترحیم و قوانین حریم خصوصی آن را میپذیرید</string>
     <!-- endregion -->
     <string name="salavat">الّلهُمَّ صَلِّ عَلَی مُحَمَّدٍ وَ آلِ مُحَمَّدٍ و عَجّل فَرَجَهم</string>
     <string name="ill">اللّهُمَّ اشْفِ كُلَّ مَرِیضٍ</string>

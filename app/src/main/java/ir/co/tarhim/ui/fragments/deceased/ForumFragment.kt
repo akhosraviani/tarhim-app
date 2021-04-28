@@ -213,10 +213,10 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
     override fun likeCommentClicked(id: Int, like: Boolean) {
         if (like) {
             //mikhaym toosi she
-            deceasedViewModel.requestLikeComment(LikeCommentRequest(id, true))
+            deceasedViewModel.requestLikeComment(LikeCommentRequest(id, false))
         } else {
             //mikhaym ghermez she
-            deceasedViewModel.requestLikeComment(LikeCommentRequest(id, false))
+            deceasedViewModel.requestLikeComment(LikeCommentRequest(id, true))
         }
 
     }

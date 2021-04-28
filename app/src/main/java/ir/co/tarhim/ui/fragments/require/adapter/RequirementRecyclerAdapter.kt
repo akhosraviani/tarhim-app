@@ -46,35 +46,35 @@ class RequirementRecyclerAdapter :
             TvDecs.setText(item.message)
             TvDecs.maxLines = 3
 
-            var lineCount = TvDecs.lineCount
-            if (lineCount > 3) {
-                popupState = true
-                BtnMore.visibility = View.VISIBLE
-            }
+//            var lineCount = TvDecs.lineCount
+//            if (lineCount > 3) {
+//                popupState = true
+//                BtnMore.visibility = View.VISIBLE
+//            }
 
-            BtnMore.setOnClickListener {
-                if (popupState) {
-                    popupState = false
-                    var animation = ObjectAnimator.ofInt(TvDecs, "maxLines", lineCount)
-                    animation.startDelay = 50
-                    BtnMore.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        R.drawable.ic_arrow_down,
-                        0,
-                        0,
-                        0
-                    )
-                } else {
-                    popupState = false
-                    var animation = ObjectAnimator.ofInt(TvDecs, "maxLines", 3)
-                    animation.startDelay = 50
-                    BtnMore.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        R.drawable.ic_arrow_up,
-                        0,
-                        0,
-                        0
-                    )
-                }
-            }
+//            BtnMore.setOnClickListener {
+//                if (popupState) {
+//                    popupState = false
+//                    var animation = ObjectAnimator.ofInt(TvDecs, "maxLines", lineCount)
+//                    animation.startDelay = 50
+//                    BtnMore.setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                        R.drawable.ic_arrow_down,
+//                        0,
+//                        0,
+//                        0
+//                    )
+//                } else {
+//                    popupState = false
+//                    var animation = ObjectAnimator.ofInt(TvDecs, "maxLines", 3)
+//                    animation.startDelay = 50
+//                    BtnMore.setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                        R.drawable.ic_arrow_up,
+//                        0,
+//                        0,
+//                        0
+//                    )
+//                }
+//            }
 
         }
 

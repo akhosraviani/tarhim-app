@@ -27,6 +27,8 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/EtSubjectPray"
                     android:layout_width="match_parent"
+                    android:maxLength="30"
+                    android:imeOptions="actionNext"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -39,6 +41,7 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/EtMessagePray"
                     android:layout_width="match_parent"
+                    android:imeOptions="actionDone"
                     android:layout_height="wrap_content"
                     android:scrollbars="vertical" />
             </com.google.android.material.textfield.TextInputLayout>
