@@ -44,7 +44,6 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
     private lateinit var popState : PopUpState
     private  var selectedCommentId : Int = 0
     private  lateinit var selectedCommentResponse : String
-    private lateinit var replayMessage : ReplayMessage
     private var recyclerBody : MutableList<String> = mutableListOf()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +55,8 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         deceasedViewModel = ViewModelProvider(this).get(DeceasedViewModel::class.java)
         initRecycler()
@@ -64,6 +65,7 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
 
         viewModel.ldGetCommnet.observe(viewLifecycleOwner, Observer {
             it.let {
+                Log.i("testTag" , "get comment"+it.toString())
                 commentAdapter.submitList(it)
             }
         })
@@ -77,23 +79,22 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
 
         deceasedViewModel.ldLikeComment.observe(viewLifecycleOwner, Observer {
             it.let {
-                Log.i("testTag","liked fragment")
-                Log.i("testTag","liked fragment= "+it.toString())
             }
         })
 
         deceasedViewModel.ldReplayComment.observe(viewLifecycleOwner, Observer {
             it.let {
               if(it.code==200){
-                  replayMessage.replayMessage(selectedCommentResponse)
-                  commentAdapter.notifyDataSetChanged()
+                  commentAdapter.setReplay(selectedCommentResponse)
+                  commentAdapter.setId(selectedCommentId)
+                  ForumRecycler.adapter = commentAdapter
               }
             }
         })
 
         BtnSendComment.setOnClickListener {
             if(popState==PopUpState.REPLAY){
-                selectedCommentResponse= BtnSendComment.text.toString()
+                selectedCommentResponse= ETComment.text.toString()
                   deceasedViewModel.requestReplyComment(
                       ReplyCommentRequest(
                       selectedCommentId,
@@ -164,3 +165,4 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
     }
 
 }
+

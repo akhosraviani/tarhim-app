@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.row_right_forum.view.TVCommentForum
 import kotlinx.android.synthetic.main.row_right_forum.view.TVNameRightForum
 
 class CommentRecyclerAdapter(private val context : Context, private var likeCommentClicked: LikeCommentClicked, var callBack:TipsListener) :
-    ListAdapter<CommentDataModel, CommentRecyclerAdapter.ViewHolder>(CommentDiffUnit()) , LikedCommentChangeColor , ReplayMessage {
+    ListAdapter<CommentDataModel, CommentRecyclerAdapter.ViewHolder>(CommentDiffUnit()) , LikedCommentChangeColor {
     var x : String = ""
     var selectedId : Int = 0
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -66,11 +66,18 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
                 .into(imageUser)
 
             if(comment.favourite){
-                Log.i("testTag","liked adapter red")
                 likeIcon.setImageResource(R.drawable.heart_full)
             }else{
-                Log.i("testTag","liked adapter grey")
                 likeIcon.setImageResource(R.drawable.heart_none)
+            }
+
+            if(comment.reply!=null){
+                replayLayout.visibility=View.VISIBLE
+                adminImage.visibility=View.VISIBLE
+                adminComment.text=comment.reply.toString()
+            }else{
+                replayLayout.visibility=View.GONE
+                adminImage.visibility=View.GONE
             }
 
 
@@ -104,6 +111,7 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
 
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindTo(getItem(position))
         holder.itemView.BtnMore.setOnClickListener {
@@ -130,26 +138,17 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
             }
 
             if(!getItem(holder.adapterPosition).favourite){
-                Log.i("testTag","liked adapter red2")
                 likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id , false)
             }else{
-                Log.i("testTag","liked adapter red3")
                 likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id , true)
             }
 
         }
 
-
-
-        holder.adminComment.text = x
-
         if(x != "" && selectedId==getItem(holder.adapterPosition).id){
             holder.replayLayout.visibility=View.VISIBLE
             holder.adminImage.visibility=View.VISIBLE
             holder.adminComment.text=x
-        }else{
-            holder.replayLayout.visibility=View.GONE
-            holder.adminImage.visibility=View.GONE
         }
 
     }
@@ -158,8 +157,13 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
 
     }
 
-    override fun replayMessage(message: String) {
-        x=message
+    fun setReplay(replay : String){
+        x = replay
     }
+
+    fun setId(id : Int){
+        selectedId = id
+    }
+
 
 }
