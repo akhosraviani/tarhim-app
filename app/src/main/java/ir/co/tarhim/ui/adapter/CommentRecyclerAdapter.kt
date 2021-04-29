@@ -39,31 +39,34 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
         val txtComment: AppCompatTextView
         val nameUser: AppCompatTextView
         val imageUser: AppCompatImageView
+        val IVRightForum: AppCompatImageView
         val likeIcon : AppCompatImageButton
+        val rightLayout : ConstraintLayout
 
         val adminImage: AppCompatImageView
         val replayLayout: ConstraintLayout
         val adminComment: AppCompatTextView
+        val leftTVCommentForum: AppCompatTextView
+        val TVNameLeftForum: AppCompatTextView
+
 
         init {
             txtComment = view.TVCommentForum
             nameUser = view.TVNameRightForum
             imageUser = view.IVRightForum
             likeIcon = view.BtnLikeComment
+            rightLayout = view.rightLayout
+            IVRightForum = view.IVRightForum
 
             adminImage = view.IVLeftForum
             replayLayout = view.leftLayout
             adminComment = view.adminComment
+            leftTVCommentForum = view.leftTVCommentForum
+            TVNameLeftForum = view.TVNameLeftForum
         }
 
         open fun bindTo(comment: CommentDataModel) {
 
-            txtComment.text = comment.message
-            nameUser.text = comment.name
-            Glide.with(itemView.context)
-                .load(comment.imageurl)
-                .circleCrop()
-                .into(imageUser)
 
             if(comment.favourite){
                 likeIcon.setImageResource(R.drawable.heart_full)
@@ -72,10 +75,27 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
             }
 
             if(comment.reply!=null){
+                txtComment.text = comment.reply
+                rightLayout.visibility=View.GONE
+                IVRightForum.visibility=View.GONE
                 replayLayout.visibility=View.VISIBLE
                 adminImage.visibility=View.VISIBLE
-                adminComment.text=comment.reply.toString()
+                Glide.with(itemView.context)
+                    .load(comment.imageurl)
+                    .circleCrop()
+                    .into(adminImage)
+                leftTVCommentForum.text=comment.reply
+                adminComment.text=comment.message
+                TVNameLeftForum.text=comment.name
             }else{
+                nameUser.text = comment.name
+                txtComment.text = comment.message
+                Glide.with(itemView.context)
+                    .load(comment.imageurl)
+                    .circleCrop()
+                    .into(imageUser)
+                rightLayout.visibility=View.VISIBLE
+                IVRightForum.visibility=View.VISIBLE
                 replayLayout.visibility=View.GONE
                 adminImage.visibility=View.GONE
             }
@@ -149,6 +169,7 @@ class CommentRecyclerAdapter(private val context : Context, private var likeComm
             holder.replayLayout.visibility=View.VISIBLE
             holder.adminImage.visibility=View.VISIBLE
             holder.adminComment.text=x
+            holder.leftTVCommentForum.text=getItem(holder.adapterPosition).message
         }
 
     }

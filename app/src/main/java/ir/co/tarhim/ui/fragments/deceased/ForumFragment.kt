@@ -88,6 +88,7 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
                   commentAdapter.setReplay(selectedCommentResponse)
                   commentAdapter.setId(selectedCommentId)
                   ForumRecycler.adapter = commentAdapter
+                  ETComment.setText("")
               }
             }
         })
@@ -99,7 +100,7 @@ class ForumFragment : Fragment(), TipsListener , LikeCommentClicked {
                       ReplyCommentRequest(
                       selectedCommentId,
                           deceasedId!!,
-                          BtnSendComment.text.toString()
+                          ETComment.text.toString()
                   )
                   )
             }else{
