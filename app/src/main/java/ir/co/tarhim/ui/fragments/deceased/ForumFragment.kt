@@ -15,10 +15,12 @@ import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.DeleteCommentRequestModel
 import ir.co.tarhim.model.deceased.ReportRequest
 import ir.co.tarhim.model.deceased.SendCommentRequest
+import ir.co.tarhim.model.deceased.comment.ReplyCommentRequest
 import ir.co.tarhim.model.deceased.like.LikeCommentRequest
 import ir.co.tarhim.ui.LikeCommentClicked
 import ir.co.tarhim.ui.adapter.CommentRecyclerAdapter
 import ir.co.tarhim.ui.callback.TipsListener
+import ir.co.tarhim.ui.fragments.LikedCommentChangeColor
 import ir.co.tarhim.ui.viewModels.DeceasedViewModel
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.ReportEntityType
@@ -49,6 +51,13 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
     private lateinit var commentAdapter: CommentRecyclerAdapter
     private lateinit var viewModel: HomeViewModel
     private lateinit var deceasedViewModel: DeceasedViewModel
+
+    private lateinit var likedCommentChangeColor: LikedCommentChangeColor
+    private lateinit var popState : PopUpState
+    private  var selectedCommentId : Int = 0
+    private  lateinit var selectedCommentResponse : String
+    private var recyclerBody : MutableList<String> = mutableListOf()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,6 +68,8 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         deceasedViewModel = ViewModelProvider(this).get(DeceasedViewModel::class.java)
         deceasedId = requireArguments()!!.getInt("Id")
@@ -70,6 +81,7 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
         Log.e(TAG, "onViewCreated :adminStatus " + adminStatus)
         viewModel.ldGetCommnet.observe(viewLifecycleOwner, Observer {
             it.let {
+                Log.i("testTag" , "get comment"+it.toString())
                 commentAdapter.submitList(it)
             }
         })
@@ -96,20 +108,55 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
             }
         })
 
+
+        deceasedViewModel.ldReplayComment.observe(viewLifecycleOwner, Observer {
+            it.let {
+              if(it.code==200){
+                  commentAdapter.setReplay(selectedCommentResponse)
+                  commentAdapter.setId(selectedCommentId)
+                  ForumRecycler.adapter = commentAdapter
+                  ETComment.setText("")
+              }
+            }
+        })
+        viewModel.ldDeleteComment.observe(viewLifecycleOwner, Observer {
+            it.also {
+                when (it.code) {
+                    200 -> {
+                        TarhimToast.Builder()
+                            .setActivity(requireActivity())
+                            .message(it.message)
+                            .build()
+                        viewModel.requestGetComment(deceasedId!!)
+
+                    }
+                    else -> TarhimToast.Builder()
+                        .setActivity(requireActivity())
+                        .message(it.message)
+                        .build()
+                }
+            }
+        })
+
+
         BtnSendComment.setOnClickListener {
-            if (ETComment.text.toString().isNotEmpty()) {
-                viewModel.requestSendComment(
-                    SendCommentRequest(
-                        deceasedId!!,
-                        ETComment.text.toString(),
-                        (System.currentTimeMillis()).toInt()
-                    )
-
-                )
-
-                ETComment.setText("")
-            } else {
-
+            if(popState==PopUpState.REPLAY){
+                selectedCommentResponse= ETComment.text.toString()
+                  deceasedViewModel.requestReplyComment(
+                      ReplyCommentRequest(
+                      selectedCommentId,
+                          deceasedId!!,
+                          ETComment.text.toString()
+                  )
+                  )
+            }else{
+                if (ETComment.text.toString().isNotEmpty()) {
+                    viewModel.requestSendComment(
+                        SendCommentRequest(
+                            deceasedId!!,
+                            ETComment.text.toString(),
+                            (System.currentTimeMillis()).toInt()
+                        ))
             }
         }
 
@@ -149,7 +196,7 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
         })
 
     }
-
+    }
 
     private fun showPopupMenu(commentId: Int) {
         var popup = PopupMenu(requireActivity(), BtnMore)
@@ -193,16 +240,13 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
     }
 
     private fun initRecycler(status: Boolean) {
-        commentAdapter = CommentRecyclerAdapter(this, this, status)
+        commentAdapter = CommentRecyclerAdapter(requireContext(), this,this)
         ForumRecycler.adapter = commentAdapter
         ForumRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
 
-    private fun controllKeyboard() {
-
-    }
 
     override fun tipsCallback(msgId: Int) {
 
@@ -222,3 +266,5 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
     }
 
 }
+
+

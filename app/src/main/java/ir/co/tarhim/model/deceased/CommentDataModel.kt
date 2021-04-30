@@ -7,5 +7,6 @@ data class CommentDataModel(
     val message: String,
     val likes:Int,
     val name: String,
+    val reply: String?
 
 )

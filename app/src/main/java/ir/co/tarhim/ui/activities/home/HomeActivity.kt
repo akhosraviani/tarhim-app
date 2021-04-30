@@ -137,13 +137,12 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
                 }
                 R.id.fragment_profile -> {
                     bottom_navigation.menu.get(3)
-                        .setIcon(getEnableSelectedIcon().get(R.id.fragment_profile ))
+                        .setIcon(getEnableSelectedIcon().get(R.id.fragment_profile))
 
                 }
             }
 
-        }
-        else {
+        } else {
             if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
                 super.onBackPressed();
                 finishAffinity()
