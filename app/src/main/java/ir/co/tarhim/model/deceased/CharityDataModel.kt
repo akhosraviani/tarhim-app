@@ -4,5 +4,6 @@ data class CharityDataModel(
     val disable: Boolean,
     val id: Int,
     val imageurl: String,
-    val name: String
+    val name: String,
+    val url: String
 )

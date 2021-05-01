@@ -165,10 +165,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
             var dataUri = data?.data
 
             showLoading(true, "در حال بارگذاری")
-            Log.e(
-                TAG,
-                "onActivityResult: " + getRealPathFromURI(dataUri)
-            )
+
 
             viewModel.requestUploadImage(uploadPost(Uri.parse(getRealPathFromURI(dataUri))))
 

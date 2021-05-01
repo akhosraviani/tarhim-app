@@ -1,24 +1,34 @@
 package ir.co.tarhim.ui.activities.home
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.util.SparseIntArray
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.orhanobut.hawk.Hawk
+import ir.co.tarhim.BuildConfig
 import ir.co.tarhim.R
 import ir.co.tarhim.ui.activities.inbox.InboxMessageActivity
+import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.NetworkConnectionReceiver
+import ir.co.tarhim.utils.TarhimConfig.Companion.CANCEL_UPDATE
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import java.util.*
 import kotlin.concurrent.schedule
@@ -34,6 +44,7 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
     private lateinit var navController: NavController
     private var TIME_INTERVAL: Long = 2000
     private var mBackPressed: Long? = 0
+    private lateinit var viewModel: HomeViewModel
     val br: BroadcastReceiver = NetworkConnectionReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,13 +53,14 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
         }
         registerReceiver(br, filter)
-
         setContentView(R.layout.activity_home)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(bottom_navigation, navController)
 
+        viewModel.requestSetting()
         bottom_navigation.setOnNavigationItemReselectedListener { }
         bottom_navigation.itemIconTintList = null
         changeBottomIcon(
@@ -62,6 +74,9 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             true
         }
 
+        toolbarLayout.BtnBackToolbar.setOnClickListener {
+            onBackPressed()
+        }
         toolbarLayout.BtnInboxToolbar.setOnClickListener {
             startActivity(
                 Intent(
@@ -69,6 +84,47 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
                 )
             )
         }
+
+        Log.e(TAG, "onCreate: " + appVersion())
+
+        viewModel.ldSetting.observe(this, androidx.lifecycle.Observer {
+            it.also { x ->
+
+                if (x.appversion.toFloat() > appVersion()) {
+                    if (x.forceupdate) {
+                        /// show update app
+                        showUpdateDialog(
+                            this, R.drawable.exclamation,
+                            getString(R.string.msg_force_update),
+                            {
+                                openWebBrowser(x.appurl)
+                                alertDialog.dismiss()
+                            },
+                            {
+                                alertDialog.dismiss()
+                                finishAffinity()
+                                System.exit(0)
+                            }
+                        )
+                    } else {
+                        if (!Hawk.get(CANCEL_UPDATE, false)) {
+                            showUpdateDialog(
+                                this, R.drawable.exclamation,
+                                getString(R.string.msg_update),
+                                {
+                                    openWebBrowser(x.appurl)
+                                    alertDialog.dismiss()
+                                },
+                                {
+                                    Hawk.put(CANCEL_UPDATE, true)
+                                    alertDialog.dismiss()
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        })
 
 
     }
@@ -87,6 +143,12 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
 
     }
 
+    private fun openWebBrowser(addressUrl: String) {
+        var i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(addressUrl)
+        startActivity(i)
+    }
+
     private fun getEnableSelectedIcon(): SparseIntArray {
         var sparseIcon = SparseIntArray()
         sparseIcon.put(R.id.fragment_cemetery, R.drawable.behesht_icon_selected)
@@ -95,6 +157,7 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
         sparseIcon.put(R.id.fragment_profile, R.drawable.profil_icon_selected)
         return sparseIcon
     }
+
     private fun getunSelectedIcon(): SparseIntArray {
         var sparseIcon = SparseIntArray()
         sparseIcon.put(0, R.drawable.behest_icon)
@@ -106,10 +169,10 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
 
     private fun setTitleToolbar(itemId: Int) {
         when (itemId) {
-            R.id.fragment_cemetery -> toolbarLayout.TitleToolbar.setText("بهشت زهرا")
-            R.id.fragment_news -> toolbarLayout.TitleToolbar.setText("اخبار")
-            R.id.fragment_requirement -> toolbarLayout.TitleToolbar.setText("التماس دعا")
-            R.id.fragment_profile -> toolbarLayout.TitleToolbar.setText("پروفایل")
+//            R.id.fragment_cemetery -> toolbarLayout.TitleToolbar.setText("بهشت زهرا")
+//            R.id.fragment_news -> toolbarLayout.TitleToolbar.setText("اخبار")
+//            R.id.fragment_requirement -> toolbarLayout.TitleToolbar.setText("التماس دعا")
+//            R.id.fragment_profile -> toolbarLayout.TitleToolbar.setText("پروفایل")
         }
     }
 
@@ -178,6 +241,51 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
         super.onDestroy()
         this.unregisterReceiver(br)
     }
+
+
+    private fun appVersion(): Float {
+
+        var versionCode = BuildConfig.VERSION_CODE
+        var versionName = BuildConfig.VERSION_NAME
+
+        val v = ("${versionCode}.$versionName").toFloat()
+
+        return v
+    }
+
+    private lateinit var alertDialog: AlertDialog
+    fun showUpdateDialog(
+        activity: Activity,
+        image: Int,
+        message: String,
+        accept: View.OnClickListener,
+        cancel: View.OnClickListener
+    ) {
+        val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
+        val view =
+            LayoutInflater.from(activity).inflate(R.layout.tarhim_dialog, viewGroup, false)
+        alertDialog = AlertDialog.Builder(activity).setView(view).create()
+        alertDialog.setCancelable(false)
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.window!!.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        view.TvMessageDialog.setText(message)
+        view.BtnAcceptDialog.text = "قبول"
+        view.BtnCloseDialog.text = "لغو"
+
+        view.BtnAcceptDialog.setOnClickListener(accept)
+        view.BtnCloseDialog.setOnClickListener(cancel)
+
+        view.IvImageDialog.setBackgroundResource(image)
+
+        alertDialog.show()
+    }
+
 
 }
 

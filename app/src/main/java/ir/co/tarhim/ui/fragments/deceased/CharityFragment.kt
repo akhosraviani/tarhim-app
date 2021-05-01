@@ -1,11 +1,14 @@
 package ir.co.tarhim.ui.fragments.deceased
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -126,7 +129,12 @@ class CharityFragment : Fragment(), CharityListener, SpiritualListener {
         spiritualAdapter.notifyDataSetChanged()
     }
 
-    override fun chalityCallback(charityId: Int) {
+    override fun chalityCallback(charityUrl: String) {
+//        Toast.makeText(requireActivity(), "test charity click button", Toast.LENGTH_SHORT).show()
+        Log.e(TAG, "chalityCallback: "+charityUrl )
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(charityUrl)
+        startActivity(i)
 
     }
 

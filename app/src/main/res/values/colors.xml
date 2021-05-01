@@ -12,7 +12,7 @@
     <color name="grey_500">#9B9A9A</color>
     <color name="blue_grey_200">#E0E1E3</color>
     <color name="iron_alpha_100">#FFE0E1E3</color>
-    <color name="tradewind">#5BB39D</color>
+    <color name="tradewind">#2AD581</color>
     <color name="grey_900">#161616</color>
     <color name="san_felix">#045E07</color>
     <color name="purple_100">#D7BDE2</color>
@@ -31,7 +31,7 @@
     <color name="color_right_comment">#f0f1f6</color>
     <color name="color_left_comment">#d1e0e1</color>
     <color name="color_navigation_selected">#414d4f</color>
-    <color name="color_red">#EA6F66</color>
+    <color name="color_red">#E33D76</color>
 
 
 </resources>

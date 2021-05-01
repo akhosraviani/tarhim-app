@@ -5,6 +5,7 @@ import ir.co.tarhim.model.deceased.*
 import ir.co.tarhim.model.deceased.comment.ReplyCommentRequest
 import ir.co.tarhim.model.deceased.like.LikeCommentDataModel
 import ir.co.tarhim.model.deceased.like.LikeCommentRequest
+import ir.co.tarhim.model.deceased.setting.SettingDataModel
 import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
@@ -221,6 +222,10 @@ interface RequestApi {
     @Query("mobile") mobile:String,
     @Query("notificationId") notificationId:Int,
     ): Call<ConfirmDataModel>
+
+@GET("api/v1/setting/setting")
+    fun requestSetting(
+    ): Call<SettingDataModel>
 
 
 }

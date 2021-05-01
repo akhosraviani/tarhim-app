@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.orhanobut.hawk.Hawk
 import ir.co.tarhim.model.ConfirmDataModel
 import ir.co.tarhim.model.deceased.*
+import ir.co.tarhim.model.deceased.setting.SettingDataModel
 import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
@@ -58,6 +59,7 @@ class HomeViewModel : ViewModel() {
     var ldFollowersList: LiveData<List<FollowersDataModel>>
     var ldFollowing: LiveData<List<MyDeceasedDataModel>>
     var ldDeceasedFollowers: LiveData<List<FollowersDataModel>>
+    var ldSetting: LiveData<SettingDataModel>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -97,6 +99,7 @@ class HomeViewModel : ViewModel() {
         ldDeleteComment=loginRepository.mldDeleteComment
         ldAcceptRequest=loginRepository.mldAcceptRequest
         ldRejectRequest=loginRepository.mldRejectRequest
+        ldSetting=loginRepository.mldSetting
     }
 
     fun requestPostGallery(deceasedId: Int, path: String) {
@@ -114,6 +117,8 @@ class HomeViewModel : ViewModel() {
     }
     fun requestRejectRequest(notificationId:Int) {
         loginRepository.requestRejectRequest(Hawk.get(USER_NUMBER),notificationId )
+    }fun requestSetting() {
+        loginRepository.requestSetting()
     }
 
     fun requestDeleteLatest(deceasedId: Int) {

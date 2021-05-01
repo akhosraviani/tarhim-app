@@ -1,10 +1,12 @@
 package ir.co.tarhim.ui.fragments.deceased
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -53,10 +55,12 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
     private lateinit var deceasedViewModel: DeceasedViewModel
 
     private lateinit var likedCommentChangeColor: LikedCommentChangeColor
-    private lateinit var popState : PopUpState
-    private  var selectedCommentId : Int = 0
-    private  lateinit var selectedCommentResponse : String
-    private var recyclerBody : MutableList<String> = mutableListOf()
+    private lateinit var popState: PopUpState
+    private var selectedCommentId: Int = 0
+    private lateinit var selectedCommentResponse: String
+    private lateinit var imm: InputMethodManager
+    private var checkReplay: Boolean = false
+    private var recyclerBody: MutableList<String> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,8 +72,7 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
+        imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         deceasedViewModel = ViewModelProvider(this).get(DeceasedViewModel::class.java)
         deceasedId = requireArguments()!!.getInt("Id")
@@ -81,7 +84,7 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
         Log.e(TAG, "onViewCreated :adminStatus " + adminStatus)
         viewModel.ldGetCommnet.observe(viewLifecycleOwner, Observer {
             it.let {
-                Log.i("testTag" , "get comment"+it.toString())
+                Log.i("testTag", "get comment" + it.toString())
                 commentAdapter.submitList(it)
             }
         })
@@ -111,12 +114,12 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
         deceasedViewModel.ldReplayComment.observe(viewLifecycleOwner, Observer {
             it.let {
-              if(it.code==200){
-                  commentAdapter.setReplay(selectedCommentResponse)
-                  commentAdapter.setId(selectedCommentId)
-                  ForumRecycler.adapter = commentAdapter
-                  ETComment.setText("")
-              }
+                if (it.code == 200) {
+                    commentAdapter.setReplay(selectedCommentResponse)
+                    commentAdapter.setId(selectedCommentId)
+                    ForumRecycler.adapter = commentAdapter
+                    ETComment.setText("")
+                }
             }
         })
         viewModel.ldDeleteComment.observe(viewLifecycleOwner, Observer {
@@ -140,117 +143,78 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
 
         BtnSendComment.setOnClickListener {
-            if(popState==PopUpState.REPLAY){
-                selectedCommentResponse= ETComment.text.toString()
-                  deceasedViewModel.requestReplyComment(
-                      ReplyCommentRequest(
-                      selectedCommentId,
-                          deceasedId!!,
-                          ETComment.text.toString()
-                  )
-                  )
-            }else{
+            if (checkReplay) {
+                selectedCommentResponse = ETComment.text.toString()
+                deceasedViewModel.requestReplyComment(
+                    ReplyCommentRequest(
+                        selectedCommentId,
+                        deceasedId!!,
+                        ETComment.text.toString()
+                    )
+                )
+            } else {
                 if (ETComment.text.toString().isNotEmpty()) {
                     viewModel.requestSendComment(
                         SendCommentRequest(
                             deceasedId!!,
                             ETComment.text.toString(),
                             (System.currentTimeMillis()).toInt()
-                        ))
-            }
-        }
-
-
-        viewModel.ldReport.observe(viewLifecycleOwner, Observer {
-            it.also {
-                when (it.code) {
-                    200 -> TarhimToast.Builder()
-                        .setActivity(requireActivity())
-                        .message(it.message)
-                        .build()
-                    else -> TarhimToast.Builder()
-                        .setActivity(requireActivity())
-                        .message(it.message)
-                        .build()
+                        )
+                    )
                 }
             }
-        })
 
-        viewModel.ldDeleteComment.observe(viewLifecycleOwner, Observer {
-            it.also {
-                when (it.code) {
-                    200 -> {
-                        TarhimToast.Builder()
+
+            viewModel.ldReport.observe(viewLifecycleOwner, Observer {
+                it.also {
+                    when (it.code) {
+                        200 -> TarhimToast.Builder()
                             .setActivity(requireActivity())
                             .message(it.message)
                             .build()
-                        viewModel.requestGetComment(deceasedId!!)
-
+                        else -> TarhimToast.Builder()
+                            .setActivity(requireActivity())
+                            .message(it.message)
+                            .build()
                     }
-                    else -> TarhimToast.Builder()
-                        .setActivity(requireActivity())
-                        .message(it.message)
-                        .build()
                 }
-            }
-        })
+            })
 
-    }
-    }
+            viewModel.ldDeleteComment.observe(viewLifecycleOwner, Observer {
+                it.also {
+                    when (it.code) {
+                        200 -> {
+                            TarhimToast.Builder()
+                                .setActivity(requireActivity())
+                                .message(it.message)
+                                .build()
+                            viewModel.requestGetComment(deceasedId!!)
 
-    private fun showPopupMenu(commentId: Int) {
-        var popup = PopupMenu(requireActivity(), BtnMore)
-        popup.menuInflater.inflate(R.menu.tool_tip_menu, popup.menu)
-        popup.show()
-
-        if (!adminStatus!!) {
-            popup.menu.findItem(R.id.deleteTool).setVisible(false)
-            popup.menu.findItem(R.id.replayTool).setVisible(false)
-        }
-        popup.setOnMenuItemClickListener {
-
-            when (it.itemId) {
-                R.id.deleteTool -> {
-                    viewModel.requestDeleteComment(
-                        DeleteCommentRequestModel(
-                            commentId,
-                            deceasedId!!
-                        )
-                    )
+                        }
+                        else -> TarhimToast.Builder()
+                            .setActivity(requireActivity())
+                            .message(it.message)
+                            .build()
+                    }
                 }
-                R.id.reportTool -> {
-                    viewModel.grequestReport(
-                        ReportRequest(
-                            true,
-                            ReportEntityType.Comment.name,
-                            commentId
-                        )
-                    )
-                }
-                R.id.replayTool -> {
-                    TarhimToast.Builder()
-                        .setActivity(requireActivity())
-                        .message("در حال پیاده سازی")
-                        .build()
-                }
+            })
 
-            }
-            true
         }
     }
+
+
 
     private fun initRecycler(status: Boolean) {
-        commentAdapter = CommentRecyclerAdapter(requireContext(), this,this)
+        commentAdapter = CommentRecyclerAdapter(requireContext(), this, this)
         ForumRecycler.adapter = commentAdapter
         ForumRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
 
+    override fun tipsCallback(msgId: Int, reply: Boolean) {
 
-    override fun tipsCallback(msgId: Int) {
-
-        showPopupMenu(msgId)
+        showPopupMenu(msgId, reply)
 
     }
 

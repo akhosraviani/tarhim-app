@@ -41,15 +41,17 @@ class DeceasedRepository {
         RequestClient.makeRequest().requestReplyComment(dataRequest, mobile)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
-                    mldError.value=t
+                    mldError.value = t
+                    Log.e("ReplyComment", "onFailure: "+t )
                 }
 
                 override fun onResponse(
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldReplyComment.value = response.body()
-                    Log.i("testTag", "im here in deceasedRepo= " + response.body())
+                    mldReplyComment.value =
+                        ConfirmDataModel(response.body()!!.message, response.body()!!.code)
+                    Log.i("ReplyComment", "im here in deceasedRepo= " + response.body())
                 }
             })
 

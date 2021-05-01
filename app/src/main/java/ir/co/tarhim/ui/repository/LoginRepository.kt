@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import ir.co.tarhim.model.ConfirmDataModel
 import ir.co.tarhim.model.deceased.*
+import ir.co.tarhim.model.deceased.setting.SettingDataModel
 import ir.co.tarhim.model.login.confirmotp.ConfirmOtpRequest
 import ir.co.tarhim.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.tarhim.model.login.mobile.CheckPhoneNumberRequest
@@ -64,6 +65,7 @@ class LoginRepository {
     val mldUnFollowDeceased = MutableLiveData<ConfirmDataModel>()
     val mldAcceptRequest = MutableLiveData<ConfirmDataModel>()
     val mldRejectRequest = MutableLiveData<ConfirmDataModel>()
+    val mldSetting = MutableLiveData<SettingDataModel>()
     val mldDeceasedFollowers = MutableLiveData<List<FollowersDataModel>>()
 
     fun requestSendPray(checkRegisterRequest: CheckPhoneNumberRequest) {
@@ -187,6 +189,24 @@ class LoginRepository {
                     response: Response<ConfirmDataModel>
                 ) {
                     mldRejectRequest.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+    fun requestSetting() {
+        RequestClient.makeRequest().requestSetting()
+            .enqueue(object : Callback<SettingDataModel> {
+                override fun onFailure(call: retrofit2.Call<SettingDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<SettingDataModel>,
+                    response: Response<SettingDataModel>
+                ) {
+                    mldSetting.value = response.body()
                     Log.i(TAG, "im here=" + response.body())
                 }
             })

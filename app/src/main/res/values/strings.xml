@@ -53,6 +53,22 @@
     <string name="accept_msg_dialog">تایید</string>
     <string name="close_msg_dialog">لغو</string>
     <string name="msg_title_news">اخبار</string>
+    <string name="msg_force_update">
+        <br>
+             نسخه جدید مزار در دسترس میباشد
+        </br>
+        <br>
+             لطفا برای ادامه کار آنرا دریافت کنید.
+        </br>
+    </string>
+    <string name="msg_update">
+        <br>
+             نسخه جدید مزار در دسترس میباشد
+        </br>
+        <br>
+             میتوانید آنرا دریافت کنید.
+        </br>
+    </string>
 
     <string-array name="list_pray_type">
         <item>صلوات</item>

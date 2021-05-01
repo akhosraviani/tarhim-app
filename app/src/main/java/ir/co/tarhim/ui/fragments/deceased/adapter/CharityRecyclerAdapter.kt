@@ -72,8 +72,8 @@ class CharityRecyclerAdapter(var charityListener: CharityListener) :
         holder.bind(getItem(position))
 
 
-        holder.itemView.setOnClickListener {
-            charityListener.chalityCallback(getItem(position).id)
+        holder.BtnCharity.setOnClickListener {
+            charityListener.chalityCallback(getItem(position).url)
         }
 
 
