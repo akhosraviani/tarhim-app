@@ -143,6 +143,13 @@ interface RequestApi {
         @Query("path") path: String
     ): Call<ConfirmDataModel>
 
+    @PUT("api/v1/deceased/gallery")
+    fun requestDeletePhotoFromGallery(
+        @Query("deceasedid ") deceasedid : Int,
+        @Query("mobile ") mobile : String,
+        @Query("path") path: String
+    ): Call<ConfirmDataModel>
+
 
     @GET("api/v1/inbox/mybox")
     fun requestMyInbox(

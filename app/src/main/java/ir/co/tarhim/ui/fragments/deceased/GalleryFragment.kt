@@ -26,14 +26,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import ir.co.tarhim.R
 import ir.co.tarhim.model.deceased.GalleryDataModel
+import ir.co.tarhim.model.deceased.ReportRequest
+import ir.co.tarhim.model.deceased.comment.ReplyCommentRequest
 import ir.co.tarhim.ui.adapter.GalleryRecyclerViewAdapter
 import ir.co.tarhim.ui.callback.GalleryListener
 import ir.co.tarhim.ui.callback.UploadCallBack
 import ir.co.tarhim.ui.callback.UploadProgress
+import ir.co.tarhim.ui.viewModels.DeceasedViewModel
 import ir.co.tarhim.ui.viewModels.HomeViewModel
 import ir.co.tarhim.utils.DialogProvider
 import ir.co.tarhim.utils.TarhimConfig.Companion.CHOSE_IMAGE_FROM_GALLERY
 import ir.co.tarhim.utils.TarhimToast
+import kotlinx.android.synthetic.main.fragment_forum.*
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import kotlinx.android.synthetic.main.gallery_image_dialog.view.*
 import okhttp3.MultipartBody
@@ -47,6 +51,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
 
     private lateinit var dialog: AlertDialog
     private lateinit var viewModel: HomeViewModel
+    private lateinit var deceasedViewModel: DeceasedViewModel
     private var deceasedId: Int = -1
     private var adminStatus: Boolean = false
     private lateinit var alertDialog:AlertDialog
@@ -77,6 +82,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         listsGallery = arrayListOf()
         deceasedId = arguments?.getInt("Id")!!
         adminStatus = arguments?.getBoolean("AdminStatus")!!
+        deceasedViewModel = ViewModelProvider(this).get(DeceasedViewModel::class.java)
 
 
 
@@ -112,6 +118,8 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
                 initRecycler(listsGallery)
             }
 
+            Log.i("testTag2","path list= "+listsGallery.toString())
+
         })
 
         viewModel.ldImageUpload.observe(viewLifecycleOwner, Observer {
@@ -137,7 +145,30 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
             }
         })
 
+        deceasedViewModel.ldDeletePhoto.observe(viewLifecycleOwner, Observer {
+            it.let {
+                if (it.code == 200) {
+                    Log.i("testTag2","hiii deleted")
+                    Toast.makeText(requireActivity(), "deleted", Toast.LENGTH_SHORT).show()
+//                    initRecycler(listsGallery)
+//                    adminGalleryAdapter.notifyDataSetChanged()
+                }
+            }
+        })
+
+        viewModel.ldReport.observe(viewLifecycleOwner, Observer {
+            it.let {
+                if (it.code == 200) {
+                    Toast.makeText(requireActivity(), "${it.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            })
+
     }
+
+
+
+
 
 
     private fun initRecycler(paths: List<GalleryDataModel>) {
@@ -268,11 +299,14 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         } else {
            showImageDialog(requireActivity(), item, adminStatus,
                 {
+                    viewModel.grequestReport(ReportRequest(true,"Picture",item.id))
                     alertDialog.dismiss()
-                    Toast.makeText(requireActivity(), "test report", Toast.LENGTH_SHORT).show()
                 },
-                {
-                    Toast.makeText(requireActivity(), "test report", Toast.LENGTH_SHORT).show()
+                {Log.i("testTag2","hi im in gallaryre")
+                    Log.i("testTag2","hi"+item.imagespath.toString())
+                    //inja request bede
+                    deceasedViewModel.deletePhotoFromGallery( deceasedId!! , item.imagespath.toString())
+                    Toast.makeText(requireActivity(), "test remove", Toast.LENGTH_SHORT).show()
                     alertDialog.dismiss()
 
                 })

@@ -250,6 +250,7 @@ class LoginRepository {
             })
 
     }
+
     fun requestReport(mobile:String,body:ReportRequest) {
         RequestClient.makeRequest().requestReport(mobile,body)
             .enqueue(object : Callback<ConfirmDataModel> {
