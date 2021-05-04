@@ -205,18 +205,14 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
 
     private fun initRecycler(status: Boolean) {
-        commentAdapter = CommentRecyclerAdapter(requireContext(), this, this)
+        commentAdapter = CommentRecyclerAdapter(requireContext(), this, this,adminStatus!!)
         ForumRecycler.adapter = commentAdapter
         ForumRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
 
-    override fun tipsCallback(msgId: Int, reply: Boolean) {
 
-        showPopupMenu(msgId, reply)
-
-    }
 
     override fun likeCommentClicked(id: Int, like: Boolean) {
         if (like) {
@@ -227,6 +223,45 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
             deceasedViewModel.requestLikeComment(LikeCommentRequest(id, true))
         }
 
+    }
+
+    override fun deleteCallback(msgId: Int, reply: Boolean) {
+        viewModel.requestDeleteComment(
+                                   DeleteCommentRequestModel(
+                                       msgId,
+                                       deceasedId!!
+                                   )
+                               )
+    }
+
+    override fun reportCallback(msgId: Int, reply: Boolean) {
+        viewModel.grequestReport(
+            ReportRequest(
+                true,
+                ReportEntityType.Comment.name,
+                msgId
+            )
+        )
+    }
+
+    override fun replyCallback(msgId: Int, reply: Boolean) {
+        if (!reply) {
+            imm.toggleSoftInput(
+                InputMethodManager.SHOW_FORCED,
+                InputMethodManager.HIDE_IMPLICIT_ONLY
+            );
+            ETComment.requestFocus()
+            if (commentAdapter.itemCount > 0) {
+                ForumRecycler.layoutManager?.scrollToPosition(commentAdapter.itemCount - 1)
+            }
+            selectedCommentId = msgId
+            checkReplay = true
+        } else {
+            TarhimToast.Builder()
+                .setActivity(requireActivity())
+                .message("شما به این نظر قبلا پاسخ داده اید ")
+                .build()
+        }
     }
 
 }

@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -48,6 +49,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
     private lateinit var viewModel: HomeViewModel
     private var deceasedId: Int = -1
     private var adminStatus: Boolean = false
+    private lateinit var alertDialog:AlertDialog
     private lateinit var listsGallery: MutableList<GalleryDataModel>
     private lateinit var adminGalleryAdapter: GalleryRecyclerViewAdapter
 
@@ -264,11 +266,46 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         if (adminStatus && position == 0) {
             openGallery()
         } else {
-            DialogProvider().showImageDialog(requireActivity(), item)
+           showImageDialog(requireActivity(), item, adminStatus,
+                {
+                    alertDialog.dismiss()
+                    Toast.makeText(requireActivity(), "test report", Toast.LENGTH_SHORT).show()
+                },
+                {
+                    Toast.makeText(requireActivity(), "test report", Toast.LENGTH_SHORT).show()
+                    alertDialog.dismiss()
+
+                })
         }
     }
 
+    fun showImageDialog(
+        activity: Activity, item: GalleryDataModel, adminStatus: Boolean,
+        report: View.OnClickListener, remove: View.OnClickListener
+    ) {
+        var view: ViewGroup = activity.findViewById(android.R.id.content)
+        var root =
+            LayoutInflater.from(activity).inflate(R.layout.gallery_image_dialog, view, false)
 
+        alertDialog = AlertDialog.Builder(activity).setView(root).create()
+        alertDialog.window!!.setLayout(
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
 
+        if (adminStatus) {
+            root.btn_report_image.visibility = View.VISIBLE
+//            root.btn_remove_image.visibility = View.VISIBLE
+        }
+        Glide.with(activity)
+            .load(item.imagespath)
+            .into(root.ImgGalleryDialog)
+
+        root.btn_report_image.setOnClickListener(report)
+        root.btn_remove_image.setOnClickListener(remove)
+
+    }
 
 }

@@ -27,7 +27,8 @@ import kotlinx.android.synthetic.main.row_right_forum.view.*
 class CommentRecyclerAdapter(
     private val context: Context,
     private var likeCommentClicked: LikeCommentClicked,
-    var tipsCallBack: TipsListener
+    var tipsCallBack: TipsListener,
+    var adminStatus:Boolean
 ) :
     ListAdapter<CommentDataModel, RecyclerView.ViewHolder>(CommentDiffUnit()),
     LikedCommentChangeColor {
@@ -177,49 +178,26 @@ class CommentRecyclerAdapter(
 
                var popup = PopupMenu(holder.itemView.context, holder.itemView)
                popup.inflate(R.menu.tool_tip_menu)
+               if (!adminStatus!!) {
+                   popup.menu.findItem(R.id.deleteTool).setVisible(false)
+                   popup.menu.findItem(R.id.replayTool).setVisible(false)
+               }
                holder.itemView.BtnMore.setOnClickListener {
                    popup.setOnMenuItemClickListener {
 
                        when (it.itemId) {
                            R.id.deleteTool -> {
-                               tipsCallBack.deleteCallback()
-//                               viewModel.requestDeleteComment(
-//                                   DeleteCommentRequestModel(
-//                                       commentId,
-//                                       deceasedId!!
-//                                   )
-//                               )
-
+                               tipsCallBack.deleteCallback(getItem(holder.adapterPosition).id,false)
                            }
                            R.id.reportTool -> {
-                               tipsCallBack.reportCallback()
-//                               viewModel.grequestReport(
-//                                   ReportRequest(
-//                                       true,
-//                                       ReportEntityType.Comment.name,
-//                                       commentId
-//                                   )
-//                               )
+                               tipsCallBack.reportCallback(getItem(holder.adapterPosition).id,false)
                            }
                            R.id.replayTool -> {
-                               tipsCallBack.replyCallback()
-//                               if (reply) {
-//                                   imm.toggleSoftInput(
-//                                       InputMethodManager.SHOW_FORCED,
-//                                       InputMethodManager.HIDE_IMPLICIT_ONLY
-//                                   );
-//                                   ETComment.requestFocus()
-//                                   if (commentAdapter.itemCount > 0) {
-//                                       ForumRecycler.layoutManager?.scrollToPosition(commentAdapter.itemCount - 1)
-//                                   }
-//                                   selectedCommentId = commentId
-//                                   checkReplay = true
-//                               } else {
-//                                   TarhimToast.Builder()
-//                                       .setActivity(requireActivity())
-//                                       .message("شما به این نظر قبلا پاسخ داده اید ")
-//                                       .build()
-//                               }
+                               if(getItem(holder.adapterPosition).reply!=null)
+                               tipsCallBack.replyCallback(getItem(holder.adapterPosition).id,true)
+                               else
+                               tipsCallBack.replyCallback(getItem(holder.adapterPosition).id,false)
+
                            }
                            else -> false
 
@@ -228,7 +206,6 @@ class CommentRecyclerAdapter(
                    }
                    popup.show()
 
-                       tipsCallBack.tipsCallback(getItem(holder.adapterPosition).id, false)
                }
                holder.likeIcon.setOnClickListener {
 
@@ -243,18 +220,5 @@ class CommentRecyclerAdapter(
            }
 
        }
-
     }
-
-    private fun showPopupMenu(commentId: Int, reply: Boolean) {
-
-        if (!adminStatus!!) {
-            popup.menu.findItem(R.id.deleteTool).setVisible(false)
-            popup.menu.findItem(R.id.replayTool).setVisible(false)
-        }
-
-        popup.show()
-
-    }
-
 }
