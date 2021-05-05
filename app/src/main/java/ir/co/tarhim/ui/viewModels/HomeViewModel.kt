@@ -15,6 +15,7 @@ import ir.co.tarhim.model.login.otp.OtpDataModel
 import ir.co.tarhim.model.user.RegisterUser
 import ir.co.tarhim.model.user.UserInfoDataModel
 import ir.co.tarhim.ui.repository.LoginRepository
+import ir.co.tarhim.utils.TarhimConfig.Companion.REFRESH_TOKEN
 import ir.co.tarhim.utils.TarhimConfig.Companion.USER_NUMBER
 import okhttp3.MultipartBody
 
@@ -118,7 +119,7 @@ class HomeViewModel : ViewModel() {
     fun requestRejectRequest(notificationId:Int) {
         loginRepository.requestRejectRequest(Hawk.get(USER_NUMBER),notificationId )
     }fun requestSetting() {
-        loginRepository.requestSetting()
+        loginRepository.requestSetting(Hawk.get(USER_NUMBER),Hawk.get(REFRESH_TOKEN))
     }
 
     fun requestDeleteLatest(deceasedId: Int) {

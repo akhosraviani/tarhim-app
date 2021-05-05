@@ -150,8 +150,8 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
                 if (it.code == 200) {
                     Log.i("testTag2","hiii deleted")
                     Toast.makeText(requireActivity(), "deleted", Toast.LENGTH_SHORT).show()
-//                    initRecycler(listsGallery)
-//                    adminGalleryAdapter.notifyDataSetChanged()
+                    initRecycler(listsGallery)
+
                 }
             }
         })
@@ -165,10 +165,6 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
             })
 
     }
-
-
-
-
 
 
     private fun initRecycler(paths: List<GalleryDataModel>) {

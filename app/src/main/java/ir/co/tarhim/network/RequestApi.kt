@@ -145,8 +145,8 @@ interface RequestApi {
 
     @PUT("api/v1/deceased/gallery")
     fun requestDeletePhotoFromGallery(
-        @Query("deceasedid ") deceasedid : Int,
-        @Query("mobile ") mobile : String,
+        @Query("deceasedid") deceasedid : Int,
+        @Query("mobile") mobile : String,
         @Query("path") path: String
     ): Call<ConfirmDataModel>
 
@@ -232,6 +232,8 @@ interface RequestApi {
 
 @GET("api/v1/setting/setting")
     fun requestSetting(
+    @Query("mobile") mobile:String,
+    @Query("token") token :String
     ): Call<SettingDataModel>
 
 

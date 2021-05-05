@@ -194,8 +194,8 @@ class LoginRepository {
             })
 
     }
-    fun requestSetting() {
-        RequestClient.makeRequest().requestSetting()
+    fun requestSetting(mobile:String , token : String) {
+        RequestClient.makeRequest().requestSetting(mobile , token )
             .enqueue(object : Callback<SettingDataModel> {
                 override fun onFailure(call: retrofit2.Call<SettingDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
