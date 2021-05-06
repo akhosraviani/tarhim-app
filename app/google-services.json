@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "251849277455",
+    "project_id": "mazaar-1efbf",
+    "storage_bucket": "mazaar-1efbf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251849277455:android:dc7d81e74821309a82237a",
+        "android_client_info": {
+          "package_name": "ir.co.mazar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "251849277455-3negej359q5fu13g5sr9e9kdk65sln60.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaNvA9_MeR46nN264uvtPxgxo6wsOH7pg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "251849277455-3negej359q5fu13g5sr9e9kdk65sln60.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

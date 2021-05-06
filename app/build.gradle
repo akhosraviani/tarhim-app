@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
@@ -9,7 +10,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "ir.co.tarhim"
+        applicationId "ir.co.mazar"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -79,9 +80,16 @@ dependencies {
     implementation 'com.github.aliab:Persian-Date-Picker-Dialog:1.5.2'
     implementation 'com.intuit.sdp:sdp-android:1.0.5'
 
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation 'com.google.firebase:firebase-inappmessaging-display'
+    implementation 'com.google.firebase:firebase-messaging-directboot:21.1.0'
+
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.1.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     def paging_version = "2.1.2"
 

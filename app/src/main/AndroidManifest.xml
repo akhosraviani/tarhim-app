@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="ir.co.tarhim">
+    package="ir.co.mazar">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -19,7 +19,7 @@
         tools:ignore="ScopedStorage" />
 
     <application
-        android:name=".utils.TarhimApplication"
+        android:name="ir.co.mazar.utils.TarhimApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
@@ -44,7 +44,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.activities.login.LoginActivity"
+            android:name="ir.co.mazar.ui.activities.login.LoginActivity"
             android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,20 +53,38 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.home.HomeActivity"
+            android:name="ir.co.mazar.ui.activities.home.HomeActivity"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <activity android:name=".ui.activities.deceased.CreateDeceasedActivity"/>
-        <activity android:name=".ui.activities.deceased.DeceasedProfileActivity"/>
-        <activity android:name="ir.co.tarhim.ui.activities.invite_friend.InviteFriendsActivity"/>
-        <activity android:name=".ui.activities.inbox.InboxMessageActivity"/>
+        <activity android:name="ir.co.mazar.ui.activities.deceased.CreateDeceasedActivity"/>
+        <activity android:name="ir.co.mazar.ui.activities.deceased.DeceasedProfileActivity"/>
+        <activity android:name="ir.co.mazar.ui.activities.invite_friend.InviteFriendsActivity"/>
+        <activity android:name="ir.co.mazar.ui.activities.inbox.InboxMessageActivity"/>
 
-        <receiver android:name=".utils.NetworkConnectionReceiver">
+        <receiver android:name="ir.co.mazar.utils.NetworkConnectionReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
         </receiver>
+
+
+        <!-- Firebase Notifications -->
+        <service android:name="ir.co.mazar.sevice.MyFirebaseMessagingService"
+            >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name="ir.co.mazar.sevice.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- ./Firebase Notifications -->
+
+
     </application>
 
 </manifest>
