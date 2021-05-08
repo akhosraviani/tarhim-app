@@ -658,6 +658,7 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     t: Throwable
                 ) {
+                    Log.i("testTag3","edited error repo")
                     mldError.value = t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
@@ -665,8 +666,9 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
+                    Log.i("testTag3","edited response repo")
                     mldEditDeceased.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
-                    Log.i("testTag", "im here=" + response.body())
+                    Log.i("testTag3", "edited response=" + response.body())
                 }
             })
 

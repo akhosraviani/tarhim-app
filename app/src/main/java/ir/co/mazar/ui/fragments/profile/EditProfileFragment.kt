@@ -167,7 +167,7 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
 
 
         BtnSaveUser.setOnClickListener {
-            if (ETNameUser.text.toString().length > 0) {
+            if (ETNameUser.text.toString().isNotEmpty()) {
 
                 if (ETUserEmail.text.isNullOrEmpty() ||
                     Patterns.EMAIL_ADDRESS.matcher(ETUserEmail.text!!.trim().toString()).matches()
