@@ -48,7 +48,7 @@
                 app:layout_constraintStart_toStartOf="@id/ImgGalleryDialog"
                 app:layout_constraintEnd_toEndOf="@id/ImgGalleryDialog"
                 app:layout_constraintHorizontal_bias=".03"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

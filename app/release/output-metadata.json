@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "ir.co.tarhim",
+  "applicationId": "ir.co.mazar",
   "variantName": "release",
   "elements": [
     {
@@ -12,7 +12,7 @@
       "filters": [],
       "properties": [],
       "versionCode": 1,
-      "versionName": "0.1",
+      "versionName": "01",
       "enabled": true,
       "outputFile": "app-release.apk"
     }

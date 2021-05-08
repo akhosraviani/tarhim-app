@@ -27,6 +27,7 @@ import com.orhanobut.hawk.Hawk
 import ir.co.mazar.BuildConfig
 import ir.co.mazar.R
 import ir.co.mazar.ui.activities.inbox.InboxMessageActivity
+import ir.co.mazar.ui.activities.inbox.NotificationMessageActivity
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.NetworkConnectionReceiver
 import ir.co.mazar.utils.TarhimConfig.Companion.CANCEL_UPDATE
@@ -64,7 +65,6 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
         navController = navHostFragment.navController
         NavigationUI.setupWithNavController(bottom_navigation, navController)
 
-        viewModel.requestSetting(token)
         bottom_navigation.setOnNavigationItemReselectedListener { }
         bottom_navigation.itemIconTintList = null
         changeBottomIcon(
@@ -82,17 +82,25 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             onBackPressed()
         }
         toolbarLayout.BtnInboxToolbar.setOnClickListener {
+
             startActivity(
                 Intent(
                     this, InboxMessageActivity::class.java
                 )
             )
         }
+        toolbarLayout.BtnNotifToolbar.setOnClickListener {
+            startActivity(
+                Intent(
+                    this, NotificationMessageActivity::class.java
+                )
+            )
+        }
 
         Log.e(TAG, "onCreate: " + appVersion())
 
-        viewModel.ldSetting.observe(this, androidx.lifecycle.Observer {
-            it.also { x ->
+        viewModel.ldSetting.observe(this, androidx.lifecycle.Observer {x->
+            if(x!=null){
 
                 if (x.appversion.toFloat() > appVersion()) {
                     if (x.forceupdate) {
@@ -140,10 +148,9 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
                 // Get new Instance ID token
                 token = task.result.token
 
-
                 // Log and toast
-                Log.i(TAG, token)
-//                Toast.makeText(this, ""+token, Toast.LENGTH_SHORT).show()
+                viewModel.requestSetting(token)
+
             })
         FirebaseMessaging.getInstance().isAutoInitEnabled = true
         try {
@@ -151,6 +158,7 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
 
 
 

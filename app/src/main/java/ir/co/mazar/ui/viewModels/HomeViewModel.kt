@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.orhanobut.hawk.Hawk
 import ir.co.mazar.model.ConfirmDataModel
+import ir.co.mazar.model.RemindeRequestModel
 import ir.co.mazar.model.deceased.*
 import ir.co.mazar.model.deceased.setting.SettingDataModel
 import ir.co.mazar.model.login.confirmotp.ConfirmOtpRequest
@@ -55,11 +56,13 @@ class HomeViewModel : ViewModel() {
     var ldReport: LiveData<ConfirmDataModel>
     var ldDeleteComment: LiveData<ConfirmDataModel>
     var ldAcceptRequest: LiveData<ConfirmDataModel>
+    var ldReminder: LiveData<ConfirmDataModel>
     var ldRejectRequest: LiveData<ConfirmDataModel>
     var ldFollowersList: LiveData<List<FollowersDataModel>>
     var ldFollowing: LiveData<List<MyDeceasedDataModel>>
     var ldDeceasedFollowers: LiveData<List<FollowersDataModel>>
     var ldSetting: LiveData<SettingDataModel>
+    var ldNotificationMessage:LiveData<List<NotificationMessageDataModel>>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -100,6 +103,8 @@ class HomeViewModel : ViewModel() {
         ldAcceptRequest=loginRepository.mldAcceptRequest
         ldRejectRequest=loginRepository.mldRejectRequest
         ldSetting=loginRepository.mldSetting
+        ldReminder=loginRepository.mldReminder
+        ldNotificationMessage=loginRepository.mldNotification
     }
 
     fun requestPostGallery(deceasedId: Int, path: String) {
@@ -198,6 +203,13 @@ class HomeViewModel : ViewModel() {
 
     fun requestGetGallery(id: Int) {
         loginRepository.requestGetGallery(id)
+    }
+    fun requestReminder(body:RemindeRequestModel) {
+        loginRepository.requestReminder(body)
+    }
+
+    fun requestNotification() {
+        loginRepository.requestNotification(Hawk.get(USER_NUMBER))
     }
 
     fun requestCheckRegister(checkRegisterRequest: CheckPhoneNumberRequest) {

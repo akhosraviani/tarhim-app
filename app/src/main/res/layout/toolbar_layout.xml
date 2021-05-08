@@ -22,6 +22,16 @@
             app:layout_constraintStart_toEndOf="@+id/BtnBackToolbar"
             app:layout_constraintTop_toTopOf="parent" />
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/BtnNotifToolbar"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_17sdp"
+            android:background="@drawable/bell_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".05"
+            app:layout_constraintStart_toEndOf="@+id/BtnInboxToolbar"
+            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/BtnBackToolbar"
             android:layout_width="@dimen/_18sdp"
             android:layout_height="@dimen/_17sdp"

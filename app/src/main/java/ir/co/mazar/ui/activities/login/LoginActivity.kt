@@ -24,10 +24,12 @@ import ir.co.mazar.ui.activities.login.state.InputOtpState
 import ir.co.mazar.ui.activities.login.state.InputPasswordState
 import ir.co.mazar.ui.activities.login.state.InputPhoneState
 import ir.co.mazar.ui.activities.login.state.LoginState
+import ir.co.mazar.ui.fragments.profile.EditProfileFragment
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.NetworkConnectionReceiver
 import ir.co.mazar.utils.TarhimConfig
 import ir.co.mazar.utils.TarhimToast
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.*
 import kotlin.concurrent.schedule
@@ -54,6 +56,7 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
     }
 
     private lateinit var state: LoginState
+    private  var register:Boolean=false
     private lateinit var inputPhoneState: InputPhoneState
     private lateinit var inputPasswordState: InputPasswordState
     private lateinit var otpInputState: InputOtpState
@@ -74,9 +77,15 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
 
         viewModel.ldSignUp.observe(this, Observer { x ->
             showLoading(false)
+            register=x.registered
+            TarhimToast.Builder()
+                .setActivity(this)
+                .message("تایید شد")
+                .build()
             if (x.registered) {
                 inputPhoneState.loginEnterEt.setText("")
                 state = inputPasswordState
+
                 inputPasswordState.serRegister(true)
                 state.decorateView()
             } else {
@@ -91,10 +100,10 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
         viewModel.ldOtp.observe(this, Observer {
             showLoading(false)
             if (it.IsSuccessful) {
-                TarhimToast.Builder()
-                    .setActivity(this)
-                    .message(it.Message)
-                    .build()
+//                TarhimToast.Builder()
+//                    .setActivity(this)
+//                    .message("it.Message")
+//                    .build()
             }
         })
 
@@ -102,6 +111,10 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
             showLoading(false)
             when (it.code) {
                 200 -> {
+                    TarhimToast.Builder()
+                        .setActivity(this)
+                        .message("ثبت شد")
+                        .build()
                     otpInputState.loginEnterEt.setText("")
                     state = inputPasswordState
                     state.decorateView()
@@ -119,6 +132,10 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
             showLoading(false)
             when (it.code) {
                 200 -> {
+                    TarhimToast.Builder()
+                        .setActivity(this)
+                        .message(it.message)
+                        .build()
                     startActivity(Intent(this, HomeActivity::class.java))
                 }
 
@@ -130,7 +147,18 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
             showLoading(false)
             when (it.code) {
                 200 -> {
+                    TarhimToast.Builder()
+                        .setActivity(this)
+                        .message(it.message)
+                        .build()
+//                    if(register){
                     startActivity(Intent(this, HomeActivity::class.java))
+//                    }else{
+//                        register_layout.visibility= View.VISIBLE
+//                        supportFragmentManager.beginTransaction()
+//                            .add(R.id.register_layout,EditProfileFragment())
+//                    }
+
                 }
                 400 -> {
                     TarhimToast.Builder()
@@ -271,14 +299,13 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
     }
 
     override fun networkcallback(isConnected: Boolean) {
-
         if (isConnected) {
             loginCv.visibility = View.VISIBLE
-            noIntenterLogroot.visibility=View.GONE
+            noIntenterLogroot.visibility = View.GONE
 
         } else {
             loginCv.visibility = View.GONE
-            noIntenterLogroot.visibility= View.VISIBLE
+            noIntenterLogroot.visibility = View.VISIBLE
             Timer("Network", false).schedule(4000) {
                 finishAffinity()
             }

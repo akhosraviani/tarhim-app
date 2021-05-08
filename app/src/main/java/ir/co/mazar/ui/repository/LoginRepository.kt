@@ -3,6 +3,7 @@ package ir.co.mazar.ui.repository
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import ir.co.mazar.model.ConfirmDataModel
+import ir.co.mazar.model.RemindeRequestModel
 import ir.co.mazar.model.deceased.*
 import ir.co.mazar.model.deceased.setting.SettingDataModel
 import ir.co.mazar.model.login.confirmotp.ConfirmOtpRequest
@@ -30,6 +31,7 @@ class LoginRepository {
     val mldSignUp = MutableLiveData<CheckRegisterModel>()
     val mldOtp = MutableLiveData<OtpDataModel>()
     val mldError = MutableLiveData<Throwable>()
+    val mldNotification = MutableLiveData<List<NotificationMessageDataModel>>()
     val mldInBox = MutableLiveData<List<MyInboxDataModel>>()
     val mldConfirmOtp = MutableLiveData<ConfirmDataModel>()
     val mldCreateDeceased = MutableLiveData<userRedirect>()
@@ -65,6 +67,7 @@ class LoginRepository {
     val mldUnFollowDeceased = MutableLiveData<ConfirmDataModel>()
     val mldAcceptRequest = MutableLiveData<ConfirmDataModel>()
     val mldRejectRequest = MutableLiveData<ConfirmDataModel>()
+    val mldReminder = MutableLiveData<ConfirmDataModel>()
     val mldSetting = MutableLiveData<SettingDataModel>()
     val mldDeceasedFollowers = MutableLiveData<List<FollowersDataModel>>()
 
@@ -86,10 +89,56 @@ class LoginRepository {
             })
 
     }
-    fun requestFollowing(mobile:String) {
+
+    fun requestReminder(body: RemindeRequestModel) {
+        RequestClient.makeRequest().requestReminder(body)
+            .enqueue(object : Callback<ConfirmDataModel> {
+                override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<ConfirmDataModel>,
+                    response: Response<ConfirmDataModel>
+                ) {
+                    mldReminder.value =
+                        ConfirmDataModel(response.body()!!.message, response.body()!!.code)
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+
+    fun requestNotification(mobile: String) {
+        RequestClient.makeRequest().requestNotification(mobile)
+            .enqueue(object : Callback<List<NotificationMessageDataModel>> {
+                override fun onFailure(
+                    call: retrofit2.Call<List<NotificationMessageDataModel>>,
+                    t: Throwable
+                ) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<List<NotificationMessageDataModel>>,
+                    response: Response<List<NotificationMessageDataModel>>
+                ) {
+                    mldNotification.value = response.body()
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+
+    fun requestFollowing(mobile: String) {
         RequestClient.makeRequest().requestFollowingList(mobile)
             .enqueue(object : Callback<List<MyDeceasedDataModel>> {
-                override fun onFailure(call: retrofit2.Call<List<MyDeceasedDataModel>>, t: Throwable) {
+                override fun onFailure(
+                    call: retrofit2.Call<List<MyDeceasedDataModel>>,
+                    t: Throwable
+                ) {
                     Log.e(TAG, "onFailure: " + t.message)
                     mldError.value = t
                 }
@@ -104,8 +153,9 @@ class LoginRepository {
             })
 
     }
-    fun requestDeleteLatestItem(deceasedId:Int,mobile:String) {
-        RequestClient.makeRequest().requestDeleteLatestItem(deceasedId,mobile)
+
+    fun requestDeleteLatestItem(deceasedId: Int, mobile: String) {
+        RequestClient.makeRequest().requestDeleteLatestItem(deceasedId, mobile)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -116,16 +166,21 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldDeleteLatest.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    mldDeleteLatest.value =
+                        ConfirmDataModel(response.body()!!.message, response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })
 
     }
-    fun requestDeceasedFollowersList(deceasedId:Int) {
+
+    fun requestDeceasedFollowersList(deceasedId: Int) {
         RequestClient.makeRequest().requesDeceasedFollowersList(deceasedId)
             .enqueue(object : Callback<List<FollowersDataModel>> {
-                override fun onFailure(call: retrofit2.Call<List<FollowersDataModel>>, t: Throwable) {
+                override fun onFailure(
+                    call: retrofit2.Call<List<FollowersDataModel>>,
+                    t: Throwable
+                ) {
                     Log.e(TAG, "onFailure: " + t.message)
                     mldError.value = t
                 }
@@ -140,8 +195,9 @@ class LoginRepository {
             })
 
     }
-    fun requestDeleteComment(body:DeleteCommentRequestModel,mobile:String) {
-        RequestClient.makeRequest().requestDeleteComment(body,mobile)
+
+    fun requestDeleteComment(body: DeleteCommentRequestModel, mobile: String) {
+        RequestClient.makeRequest().requestDeleteComment(body, mobile)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -152,14 +208,16 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldDeleteComment.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    mldDeleteComment.value =
+                        ConfirmDataModel(response.body()!!.message, response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })
 
     }
-    fun requestAcceptRequest(mobile:String,notificationId:Int) {
-        RequestClient.makeRequest().requestAcceptRequest(mobile,notificationId)
+
+    fun requestAcceptRequest(mobile: String, notificationId: Int) {
+        RequestClient.makeRequest().requestAcceptRequest(mobile, notificationId)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -170,14 +228,16 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldAcceptRequest.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    mldAcceptRequest.value =
+                        ConfirmDataModel(response.body()!!.message, response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })
 
     }
-    fun requestRejectRequest(mobile:String,notificationId:Int) {
-        RequestClient.makeRequest().requestRejectRequest(mobile,notificationId)
+
+    fun requestRejectRequest(mobile: String, notificationId: Int) {
+        RequestClient.makeRequest().requestRejectRequest(mobile, notificationId)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -188,14 +248,16 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldRejectRequest.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    mldRejectRequest.value =
+                        ConfirmDataModel(response.body()!!.message, response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })
 
     }
-    fun requestSetting(mobile:String , token : String) {
-        RequestClient.makeRequest().requestSetting(mobile,token)
+
+    fun requestSetting(mobile: String, token: String) {
+        RequestClient.makeRequest().requestSetting(mobile, token)
             .enqueue(object : Callback<SettingDataModel> {
                 override fun onFailure(call: retrofit2.Call<SettingDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -214,8 +276,8 @@ class LoginRepository {
     }
 
 
-    fun requestSiritual(mobile:String,body:PrayDeceasedRequest) {
-        RequestClient.makeRequest().requestSiritual(mobile,body)
+    fun requestSiritual(mobile: String, body: PrayDeceasedRequest) {
+        RequestClient.makeRequest().requestSiritual(mobile, body)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -226,16 +288,21 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldSiritual.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    mldSiritual.value =
+                        ConfirmDataModel(response.body()!!.message, response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })
 
     }
-    fun requestGetSiritualRes(id:Int,mobile:String) {
-        RequestClient.makeRequest().requestGetSiritualDeceased(id,mobile)
+
+    fun requestGetSiritualRes(id: Int, mobile: String) {
+        RequestClient.makeRequest().requestGetSiritualDeceased(id, mobile)
             .enqueue(object : Callback<List<PrayDeceasedDataModel>> {
-                override fun onFailure(call: retrofit2.Call<List<PrayDeceasedDataModel>>, t: Throwable) {
+                override fun onFailure(
+                    call: retrofit2.Call<List<PrayDeceasedDataModel>>,
+                    t: Throwable
+                ) {
                     Log.e(TAG, "onFailure: " + t.message)
                     mldError.value = t
                 }
@@ -251,8 +318,8 @@ class LoginRepository {
 
     }
 
-    fun requestReport(mobile:String,body:ReportRequest) {
-        RequestClient.makeRequest().requestReport(mobile,body)
+    fun requestReport(mobile: String, body: ReportRequest) {
+        RequestClient.makeRequest().requestReport(mobile, body)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -263,15 +330,16 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldReport.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    mldReport.value =
+                        ConfirmDataModel(response.body()!!.message, response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })
 
     }
 
-    fun requestSendPray(mobile:String, body:PrayDataRequest) {
-        RequestClient.makeRequest().requestSendPray(mobile,body)
+    fun requestSendPray(mobile: String, body: PrayDataRequest) {
+        RequestClient.makeRequest().requestSendPray(mobile, body)
             .enqueue(object : Callback<ConfirmDataModel> {
                 override fun onFailure(call: retrofit2.Call<ConfirmDataModel>, t: Throwable) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -282,7 +350,8 @@ class LoginRepository {
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldSendPray.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
+                    mldSendPray.value =
+                        ConfirmDataModel(response.body()!!.message, response.body()!!.code)
                     Log.i(TAG, "im here=" + response.body())
                 }
             })
@@ -329,10 +398,14 @@ class LoginRepository {
             })
 
     }
-    fun requestFollowersList(id:Int) {
+
+    fun requestFollowersList(id: Int) {
         RequestClient.makeRequest().requestFollowesList(id)
             .enqueue(object : Callback<List<FollowersDataModel>> {
-                override fun onFailure(call: retrofit2.Call<List<FollowersDataModel>>, t: Throwable) {
+                override fun onFailure(
+                    call: retrofit2.Call<List<FollowersDataModel>>,
+                    t: Throwable
+                ) {
                     Log.e(TAG, "onFailure: " + t.message)
                     mldError.value = t
                 }
@@ -588,12 +661,11 @@ class LoginRepository {
                     mldError.value = t
                     Log.e(TAG, "onFailure: " + t.message)
                 }
-
                 override fun onResponse(
                     call: retrofit2.Call<ConfirmDataModel>,
                     response: Response<ConfirmDataModel>
                 ) {
-                    mldEditDeceased.value = response.body()
+                    mldEditDeceased.value = ConfirmDataModel(response.body()!!.message,response.body()!!.code)
                     Log.i("testTag", "im here=" + response.body())
                 }
             })

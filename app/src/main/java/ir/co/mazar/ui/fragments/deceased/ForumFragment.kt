@@ -82,7 +82,6 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
         Log.e(TAG, "onViewCreated :adminStatus " + adminStatus)
         viewModel.ldGetCommnet.observe(viewLifecycleOwner, Observer {
             it.let {
-                Log.i("testTag", "get comment" + it.toString())
                 commentAdapter.submitList(it)
             }
         })
@@ -243,7 +242,6 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
     }
 
     override fun replyCallback(msgId: Int, reply: Boolean) {
-        if (!reply) {
             imm.toggleSoftInput(
                 InputMethodManager.SHOW_FORCED,
                 InputMethodManager.HIDE_IMPLICIT_ONLY
@@ -254,12 +252,7 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
             }
             selectedCommentId = msgId
             checkReplay = true
-        } else {
-            TarhimToast.Builder()
-                .setActivity(requireActivity())
-                .message("شما به این نظر قبلا پاسخ داده اید ")
-                .build()
-        }
+
     }
 
 }

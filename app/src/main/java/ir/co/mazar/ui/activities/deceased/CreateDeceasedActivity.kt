@@ -46,6 +46,7 @@ import ir.co.mazar.ui.fragments.deceased.MapsFragment
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.AccessTypeDeceased
 import ir.co.mazar.utils.NetworkConnectionReceiver
+import ir.co.mazar.utils.PersianDate
 import ir.co.mazar.utils.TarhimCompress
 import ir.co.mazar.utils.TarhimConfig.Companion.CHOSE_IMAGE_FROM_GALLERY
 import ir.hamsaa.persiandatepicker.Listener
@@ -58,8 +59,11 @@ import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import okhttp3.MultipartBody
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.concurrent.schedule
+import kotlin.properties.Delegates
 
 
 class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
@@ -77,16 +81,21 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
     private lateinit var locationBurial: LatLng
     private lateinit var editBirth: String
     private lateinit var editDeath: String
+    private var birthZone: String? = ""
+    private var deathZone: String? = ""
+    private var epochT by Delegates.notNull<Long>()
     private var editProfile = false
     private var DeceasedId: Int? = -1
     private lateinit var viewModel: HomeViewModel
     private lateinit var picker: PersianDatePickerDialog
     private lateinit var details: MyDeceasedDataModel
-    private lateinit var deceasedInfo: DeceasedProfileDataModel
+    private lateinit var dateMap: HashMap<Int, String>
+    private var deceasedInfo: DeceasedProfileDataModel? = null
     private lateinit var inputMethodManager: InputMethodManager
     private lateinit var accessType: String
     private var listBirth: List<String>? = null
     private var listDeath: List<String>? = null
+    private var unixTime: String? = ""
 
     private var br = NetworkConnectionReceiver()
 
@@ -100,6 +109,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         registerReceiver(br, intentFilter)
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        dateMap = HashMap()
         picker = PersianDatePickerDialog(this)
         mapsFragment = MapsFragment()
         inputMethodManager =
@@ -116,7 +126,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         setUpSpinner()
 
 
-        locationBurial = Hawk.get("LOCATION", LatLng(0.0, 0.0))
+        locationBurial = Hawk.get("LOCATION", LatLng(35.53, 51.37))
 
 
 
@@ -127,8 +137,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             deceasedInfo = intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased")!!
             DeceasedId = intent?.getIntExtra("DeceasedId", -1)!!
             locationBurial =
-                LatLng((deceasedInfo.latitude).toDouble(), (deceasedInfo.longitude).toDouble())
-            showDeceasedDetails(deceasedInfo)
+                LatLng((deceasedInfo!!.latitude).toDouble(), (deceasedInfo!!.longitude).toDouble())
+            showDeceasedDetails(deceasedInfo!!)
 
         }
 
@@ -140,15 +150,12 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             hideSoftKeyboard(this)
             setUpDeathDayCalendar()
         }
-
         EtBirthDateDeceased.setOnClickListener {
             setUpBirthDayCalendar()
-
         }
         ETDeathDeceased.setOnClickListener {
             setUpDeathDayCalendar()
         }
-
         BtnOpenMap.setOnClickListener {
             mapFragment.visibility = View.VISIBLE
             supportFragmentManager.beginTransaction()
@@ -159,37 +166,23 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             startActivity(Intent(this, HomeActivity::class.java))
 
         }
-        BtnSaveEditUser.setOnClickListener {
 
+        BtnSaveEditUser.setOnClickListener {
 
             if (deceasedInfo != null) {
                 showLoading(true)
-//
-//                DialogProvider().showConfirm(
-//                    this,
-//                    R.drawable.request,
-//                    "از ثبت اطلاعات مطمن هستید؟",
-//                    {
-                        viewModel.requestEditDeceased(
-                        CreateDeceasedRequest(
-                            accessType,
-                            EtBirthDateDeceased.text.toString(),
-                            ETDeathDeceased.text.toString(),
-                            ETBurialLocation.text.toString(),
-                            ETdeceasedDescription.text.toString(),
-                            imagePath!!,
-                            locationBurial.latitude,
-                            locationBurial.longitude,
-                            ETNameDeceased.text.toString()
-                        ), DeceasedId!!)
-
-//                       DialogProvider().dismiss()
-//                    },
-//                    {
-//                        DialogProvider().dismiss()
-//                    }
-//                )
-
+                viewModel.requestEditDeceased(
+                    CreateDeceasedRequest(
+                        accessType,
+                        dateMap.get(1)!!,
+                        dateMap.get(2)!!,
+                        ETBurialLocation.text.toString(),
+                        ETdeceasedDescription.text.toString(),
+                        imagePath!!,
+                        locationBurial.latitude,
+                        locationBurial.longitude,
+                        ETNameDeceased.text.toString()
+                    ), DeceasedId!!)
             } else {
                 //<editor-fold desc="Create Deceaed Profile">
                 if (
@@ -198,17 +191,18 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                     EtBirthDateDeceased.text.toString().length > 0 &&
                     ETDeathDeceased.text.toString().length > 0
                 ) {
+
                     showLoading(true)
-                   showConfirmDialog(
+                    showConfirmDialog(
                         this,
                         R.drawable.request,
-                        "از ثبت اطلاعات متوفی مطمن هستید؟",
+                        "از ثبت اطلاعات متوفی مطمئن هستید؟",
                         {
                             viewModel.requestCreateDeceased(
                                 CreateDeceasedRequest(
                                     accessType,
-                                    EtBirthDateDeceased.text.toString(),
-                                    ETDeathDeceased.text.toString(),
+                                    dateMap!!.get(1)!!,
+                                    dateMap!!.get(2)!!,
                                     ETBurialLocation.text.toString(),
                                     ETdeceasedDescription.text.toString(),
                                     imagePath!!,
@@ -218,12 +212,12 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                                 )
                             )
                             alertDialog.dismiss()
-//
+
                         },
                         {
+                            showLoading(false)
                             alertDialog.dismiss()
                         })
-
 
 
                 } else {
@@ -265,13 +259,12 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                 if (it.code == 200) {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT)
                     Handler().postDelayed({
-
                         startActivity(
                             Intent(this, DeceasedProfileActivity::class.java)
                                 .putExtra("FromPersonal", DeceasedId!!)
                         )
 
-                    }, 1000)
+                    }, 500)
                 } else {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
 
@@ -279,15 +272,17 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             }
         })
 
+
     }
 
 
     private fun setUpBirthDayCalendar() {
-        showCalendarInDarkMode(EtBirthDateDeceased, 1370, 3, 13)
+        showCalendarInDarkMode(1, EtBirthDateDeceased, 1370, 3, 13)
+
     }
 
     private fun setUpDeathDayCalendar() {
-        showCalendarInDarkMode(ETDeathDeceased, 1370, 3, 13)
+        showCalendarInDarkMode(2, ETDeathDeceased, 1370, 3, 13)
 
     }
 
@@ -364,10 +359,9 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                 ""
             )
 
-            viewModel.requestUploadImage(uploadFile(Uri.parse(path)))
+            viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(dataUri!!))))
         }
     }
-
 
     fun getRealPathFromURI(contentUri: Uri?): String? {
         var path: String? = null
@@ -392,7 +386,13 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         return multiPart
     }
 
-    fun showCalendarInDarkMode(editText: AppCompatEditText, year: Int, month: Int, day: Int) {
+    fun showCalendarInDarkMode(
+        status: Int,
+        editText: AppCompatEditText,
+        year: Int,
+        month: Int,
+        day: Int
+    ) {
         val typeface = ResourcesCompat.getFont(this, R.font.iran_sans_medium)
         val initDate = PersianCalendar()
         initDate.setPersianDate(1370, 3, 13)
@@ -420,13 +420,37 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
                     editText.setText(choseDate)
 
+                    val calendar = Calendar.getInstance()
+                    calendar.time = Date()
+                    val sdf = SimpleDateFormat("yyyy-MM-dd")
+                    sdf.timeZone = TimeZone.getTimeZone("UTC")
+//
+                    val df = SimpleDateFormat("yyyy-MM-dd")
+                    val date = df.parse(sdf.format(persianCalendar.time))
+                    unixTime = date.time.toString()
+
+                    when (status) {
+                        1 -> {
+                            dateMap!!.put(1, unixTime!!)
+                        }
+                        2 -> {
+                            dateMap!!.put(2, unixTime!!)
+                        }
+                    }
+
+                    Log.e("dateMap", "onDateSelected: "+unixTime )
+
                     editText.imeOptions = EditorInfo.IME_ACTION_NEXT
                     showSoftKeyboard(this@CreateDeceasedActivity)
+
+
                 }
 
                 override fun onDismissed() {}
             })
         picker.show()
+
+
     }
 
     override fun updateProgress(interceptare: Int) {
@@ -451,15 +475,24 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
     }
 
     private fun showDeceasedDetails(details: DeceasedProfileDataModel) {
-
         Glide.with(this)
             .load(details.imageurl)
             .circleCrop()
             .into(IvDeceased)
 
         imagePath = details.imageurl
+
+        Log.e("EditDeceased", "showDeceasedDetails: "+deceasedInfo!!.birthday )
+        Log.e("EditDeceased", "showDeceasedDetails: "+deceasedInfo!!.deathday )
+        var dateBirthDay = Date((details.birthday).toLong())
+        var dateDeathDay = Date((details.deathday).toLong())
+        val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+        val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+        var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+        var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
         ETNameDeceased.setText(details.name)
-        EtBirthDateDeceased.setText(details.birthday)
+        EtBirthDateDeceased.setText(birthDay)
 
         when (details.accesstype) {
             AccessTypeDeceased.Public.name -> {
@@ -473,11 +506,14 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             }
         }
 
+        dateMap.put(1, details.birthday)
+        dateMap.put(2, details.deathday)
+
         listBirth = details.birthday?.split("/")
         listDeath = details.deathday?.split("/")
 
         editBirth = details.birthday!!
-        ETDeathDeceased.setText(details.deathday)
+        ETDeathDeceased.setText(deathDay)
         editDeath = details.deathday!!
         ETBurialLocation.setText(details.deathloc)
         ETdeceasedDescription.setText(details.description)

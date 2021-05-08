@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.GONE
 import android.view.ViewGroup.MarginLayoutParams
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +25,9 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.orhanobut.hawk.Hawk
 import ir.co.mazar.R
+import ir.co.mazar.model.RemindeRequestModel
 import ir.co.mazar.model.deceased.DeceasedProfileDataModel
 import ir.co.mazar.ui.activities.home.HomeActivity
 import ir.co.mazar.ui.activities.inbox.InboxMessageActivity
@@ -35,12 +38,11 @@ import ir.co.mazar.ui.fragments.deceased.CharityFragment
 import ir.co.mazar.ui.fragments.deceased.ForumFragment
 import ir.co.mazar.ui.fragments.deceased.GalleryFragment
 import ir.co.mazar.ui.viewModels.HomeViewModel
-import ir.co.mazar.utils.AccessTypeDeceased
-import ir.co.mazar.utils.DialogProvider
-import ir.co.mazar.utils.NetworkConnectionReceiver
-import ir.co.mazar.utils.SeperateNumber
+import ir.co.mazar.utils.*
+import ir.co.mazar.utils.TarhimConfig.Companion.NOTIFICATION_STATUS
 import kotlinx.android.synthetic.main.deceased_profile.*
 import java.util.*
+import java.util.Timer
 import kotlin.concurrent.schedule
 
 class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
@@ -73,19 +75,19 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         registerReceiver(br, intentFilter)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         showLoading(true)
+
         if (intent?.extras != null) {
             deceasedId = intent?.getIntExtra("FromPersonal", -1)!!
             viewModel.requestDeceasedPersonal(deceasedId!!)
-            Log.e(TAG, "onViewCreated: deceasedId" + deceasedId)
+            Log.e(TAG, "onViewCreated: deceasedId personal" + deceasedId)
             initTabAndViewPager()
         }
-        if (intent.hasExtra("SearchPersonal")) {
+        if (intent?.extras != null) {
             deceasedId = intent?.getIntExtra("SearchPersonal", -1)!!
             viewModel.requestDeceasedFromSearch(deceasedId!!)
+            Log.e(TAG, "onViewCreated: deceasedId search " + deceasedId)
             initTabAndViewPager()
-
         }
-
 
         viewModel.ldDeceasedProfile.observe(this, Observer {
             showLoading(false)
@@ -114,8 +116,16 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                 SeperateNumber().splitDigit(it.followerCount).toInt()
                             } دنبال کننده "
                         )
-                        TvDeathDateDeseaces.text = it.deathday
-                        TvBornDateDeseaces.text = it.birthday
+                        var dateBirthDay = Date((it.birthday).toLong())
+                        var dateDeathDay = Date((it.deathday).toLong())
+                        val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+                        val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
+                        var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+                        var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
+                        TvDeathDateDeseaces.text = deathDay
+                        TvBornDateDeseaces.text = birthDay
                         TvBurialLocation.text = "${it.deathloc}"
                         bioDeceased = it.description
                         configBioText(it.description!!)
@@ -144,8 +154,18 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                     SeperateNumber().splitDigit(it.followerCount).toInt()
                                 } دنبال کننده "
                             )
-                            TvDeathDateDeseaces.text = it.deathday
-                            TvBornDateDeseaces.text = it.birthday
+                            var dateBirthDay = Date((it.birthday).toLong())
+                            var dateDeathDay = Date((it.deathday).toLong())
+                            val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+                            val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
+                            var birthDay =
+                                "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+                            var deathDay =
+                                "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
+                            TvDeathDateDeseaces.text = deathDay
+                            TvBornDateDeseaces.text = birthDay
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
@@ -160,15 +180,24 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                     }
                     AccessTypeDeceased.Private.name -> {
                         if (it.isowner!!) {
-                            Log.e(TAG, "onCreate: ")
+                            Log.e(TAG, "onCreate:private --------------------------------- ")
                             coordinateLayout.visibility = View.VISIBLE
                             btnAddFriends.visibility = View.VISIBLE
                             typeSpinner.visibility = View.VISIBLE
                             TvTypeDeceasedPage.visibility = View.VISIBLE
                             typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[2])
                             TvDeseacesName.text = it.name
-                            TvDeathDateDeseaces.text = it.deathday
-                            TvBornDateDeseaces.text = it.birthday
+                            var dateBirthDay = Date((it.birthday).toLong())
+                            var dateDeathDay = Date((it.deathday).toLong())
+                            val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+                            val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
+                            var birthDay =
+                                "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+                            var deathDay =
+                                "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+                            TvDeathDateDeseaces.text = deathDay
+                            TvBornDateDeseaces.text = birthDay
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
@@ -178,6 +207,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                 .into(ImVDeceased)
 
                             initCollapsToolbar(this, it.imageurl!!, it.name!!)
+                        }else{
+                            BtnEditToolbar.visibility = View.GONE
+                            BtnEditDeceased.visibility = View.GONE
+                            coordinateLayout.visibility = View.GONE
+                            requestFollow(it)
+                            btnRequestFollow.visibility=View.GONE
                         }
 
                     }
@@ -211,8 +246,16 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                 SeperateNumber().splitDigit(it.followerCount).toInt()
                             } دنبال کننده "
                         )
-                        TvDeathDateDeseaces.text = it.deathday
-                        TvBornDateDeseaces.text = it.birthday
+                        var dateBirthDay = Date((it.birthday).toLong())
+                        var dateDeathDay = Date((it.deathday).toLong())
+                        val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+                        val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
+                        var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+                        var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
+                        TvDeathDateDeseaces.text = deathDay
+                        TvBornDateDeseaces.text = birthDay
                         TvBurialLocation.text = "${it.deathloc}"
                         bioDeceased = it.description
                         configBioText(it.description!!)
@@ -243,8 +286,18 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             TvTypeDeceasedPage.visibility = View.VISIBLE
                             typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[1])
                             TvDeseacesName.text = it.name
-                            TvDeathDateDeseaces.text = it.birthday
-                            TvBornDateDeseaces.text = it.deathday
+                            var dateBirthDay = Date((it.birthday).toLong())
+                            var dateDeathDay = Date((it.deathday).toLong())
+                            val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+                            val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
+                            var birthDay =
+                                "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+                            var deathDay =
+                                "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
+                            TvDeathDateDeseaces.text = deathDay
+                            TvBornDateDeseaces.text = birthDay
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
@@ -259,15 +312,25 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                     }
                     AccessTypeDeceased.Private.name -> {
                         if (it.isowner!!) {
-                            Log.e(TAG, "onCreate: ")
+                            Log.e(TAG, "onCreate:private --------------------------------- ")
                             coordinateLayout.visibility = View.VISIBLE
                             btnAddFriends.visibility = View.VISIBLE
                             typeSpinner.visibility = View.VISIBLE
                             TvTypeDeceasedPage.visibility = View.VISIBLE
                             typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[2])
                             TvDeseacesName.text = it.name
-                            TvDeathDateDeseaces.text = it.birthday
-                            TvBornDateDeseaces.text = it.deathday
+                            var dateBirthDay = Date((it.birthday).toLong())
+                            var dateDeathDay = Date((it.deathday).toLong())
+                            val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+                            val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
+                            var birthDay =
+                                "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+                            var deathDay =
+                                "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
+                            TvDeathDateDeseaces.text = deathDay
+                            TvBornDateDeseaces.text = birthDay
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
@@ -275,10 +338,15 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                 .load(it.imageurl)
                                 .circleCrop()
                                 .into(ImVDeceased)
-
                             initCollapsToolbar(this, it.imageurl!!, it.name!!)
-                        }
+                        } else {
+                            BtnEditToolbar.visibility = View.GONE
+                            BtnEditDeceased.visibility = View.GONE
+                            coordinateLayout.visibility = View.GONE
+                            requestFollow(it)
+                            btnRequestFollow.visibility=View.GONE
 
+                        }
                     }
                 }
             }
@@ -308,6 +376,65 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             startActivity(intent)
         }
 
+
+        /////////////notif on
+
+        BtnNotifBell.setOnClickListener {
+
+
+            showLoading(true)
+            BtnNotifBell.setBackgroundResource(R.drawable.ic_notifications_active)
+            viewModel.requestReminder(
+                RemindeRequestModel(
+                    true,
+                    deceasedId!!,
+                    true,
+                    true,
+                    Hawk.get(TarhimConfig.USER_NUMBER),
+                    true,
+                    true,
+                    "Push"
+                )
+            )
+
+//            else {
+//                Hawk.put(NOTIFICATION_STATUS, false)
+//                BtnNotifBell.setBackgroundResource(R.drawable.ic_notifications_off)
+//                viewModel.requestReminder(
+//                    RemindeRequestModel(
+//                        true,
+//                        deceasedId!!,
+//                        true,
+//                        true,
+//                        Hawk.get(TarhimConfig.USER_NUMBER),
+//                        true,
+//                        true,
+//                        "Push"
+//                    )
+//                )
+//            }
+        }
+
+
+///////////////////////////////////
+        viewModel.ldReminder.observe(this, Observer {
+            it.let {
+                showLoading(false)
+                when (it.code) {
+                    200 -> {
+                        TarhimToast.Builder()
+                            .setActivity(this)
+                            .message(it.message)
+                            .build()
+                    }
+                    else ->
+                        TarhimToast.Builder()
+                            .setActivity(this)
+                            .message(it.message)
+                            .build()
+                }
+            }
+        })
 
 
         BtnEditDeceased.setOnClickListener {
@@ -359,9 +486,15 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                 btnRequestFollow.setBackgroundResource(R.drawable.waiting_request_follow_shape)
                 btnRequestFollow.text = "در انتظار تایید"
                 btnRequestFollow.setTextColor(resources.getColor(R.color.tradewind))
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                TarhimToast.Builder()
+                    .setActivity(this)
+                    .message(it.message)
+                    .build()
             } else {
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                TarhimToast.Builder()
+                    .setActivity(this)
+                    .message(it.message)
+                    .build()
             }
         })
         viewModel.ldUnFollow.observe(this, Observer {
@@ -373,7 +506,11 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                 btnRequestFollow.setTextColor(resources.getColor(R.color.white))
                 Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                TarhimToast.Builder()
+                    .setActivity(this)
+                    .message(it.message)
+                    .build()
+
             }
         })
         BtnInboxDeceasedProfile.setOnClickListener {
@@ -494,16 +631,24 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             btnRequestFollow.text = "در انتظار تایید"
             coordinateLayout.visibility = View.GONE
             btnRequestFollow.setTextColor(resources.getColor(R.color.tradewind))
-            txttitleDeceaedPage.visibility = GONE
+            txttitleDeceaedPage.visibility = View.VISIBLE
             BtnNotifBell.visibility = GONE
-            BtnInboxDeceasedProfile.visibility = GONE
+            BtnInboxDeceasedProfile.visibility = View.VISIBLE
             PrivateLayout.visibility = View.VISIBLE
         }
         if (deceasedInfo.isfollow!!) {
             TvDeseacesName.text = deceasedInfo.name
             coordinateLayout.visibility = View.VISIBLE
-            TvDeathDateDeseaces.text = deceasedInfo.birthday
-            TvBornDateDeseaces.text = deceasedInfo.deathday
+            var dateBirthDay = Date((deceasedInfo.birthday).toLong())
+            var dateDeathDay = Date((deceasedInfo.deathday).toLong())
+            val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+            val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
+            var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
+            TvDeathDateDeseaces.text = birthDay
+            TvBornDateDeseaces.text = deathDay
             TvBurialLocation.text = "${deceasedInfo.deathloc}"
             bioDeceased = deceasedInfo.description
             configBioText(deceasedInfo.description!!)
@@ -523,17 +668,30 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             .into(ImVDeceasedPrivate)
 
         TvDeseacesNamePrivate.text = itemDeceased.name
-        TvBornDateDeseacesPrivate.text = itemDeceased.birthday
-        TvDeathDateDeseacesPrivate.text = itemDeceased.deathday
+        var dateBirthDay = Date((itemDeceased.birthday).toLong())
+        var dateDeathDay = Date((itemDeceased.deathday).toLong())
+        val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+        val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
+        var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+        var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
+        TvBornDateDeseacesPrivate.text = birthDay
+        TvDeathDateDeseacesPrivate.text = deathDay
     }
 
 
     private fun showLoading(visibility: Boolean) {
         if (visibility) {
             deceasedPagePrg.visibility = View.VISIBLE
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
 
         } else {
             deceasedPagePrg.visibility = View.GONE
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
         }
     }

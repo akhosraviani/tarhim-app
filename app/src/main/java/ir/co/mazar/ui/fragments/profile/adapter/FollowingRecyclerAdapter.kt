@@ -14,7 +14,9 @@ import com.bumptech.glide.Glide
 import ir.co.mazar.R
 import ir.co.mazar.model.deceased.MyDeceasedDataModel
 import ir.co.mazar.ui.callback.ProfileListener
+import ir.co.mazar.utils.PersianDate
 import kotlinx.android.synthetic.main.row_recycler_following.view.*
+import java.util.*
 
 class FollowingRecyclerAdapter(
     var followingListener: ProfileListener.MyDeceasedListener,
@@ -63,18 +65,16 @@ class FollowingRecyclerAdapter(
 
             TvFollowingName.setText(item.name)
 //
-//            var birthData= Date((item.birthday).toLong())
-//            var deathData= Date((item.deathday).toLong())
-//            var format=SimpleDateFormat("yyyy:dd:MM")
-//
-//            var birthTime=format.format(birthData)
-//            var deathTime=format.format(deathData)
-//
-//            var birth="${PersianDate.SolarCalendar(Date(birthTime)).year}/${PersianDate.SolarCalendar(Date(birthTime)).month}/${PersianDate.SolarCalendar(Date(birthTime)).date}"
-//            var death="${PersianDate.SolarCalendar(Date(deathTime)).year}/${PersianDate.SolarCalendar(Date(deathTime)).month}/${PersianDate.SolarCalendar(Date(deathTime)).date}"
+            var dateBirthDay = Date((item.birthday).toLong())
+            var dateDeathDay = Date((item.deathday).toLong())
+            val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+            val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
+            var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
 
 
-            TvFollowingDate.setText("${item.deathday} - ${item.birthday}")
+            TvFollowingDate.setText("${birthDay} - ${deathDay}")
         }
 
     }

@@ -51,7 +51,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
     private lateinit var deceasedViewModel: DeceasedViewModel
     private var deceasedId: Int = -1
     private var adminStatus: Boolean = false
-    private lateinit var alertDialog:AlertDialog
+    private lateinit var alertDialog: AlertDialog
     private lateinit var listsGallery: MutableList<GalleryDataModel>
     private lateinit var adminGalleryAdapter: GalleryRecyclerViewAdapter
 
@@ -89,7 +89,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         Log.e(TAG, "onViewCreated:ListsGallery  " + listsGallery.size)
         viewModel.ldGetGallery.observe(viewLifecycleOwner, Observer {
 
-            it!!.let {
+            if (it != null) {
                 if (adminStatus) {
                     listsGallery.add(
                         0,
@@ -115,7 +115,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
                 initRecycler(listsGallery)
             }
 
-            Log.i("testTag2","path list= "+listsGallery.toString())
+            Log.i("testTag2", "path list= " + listsGallery.toString())
 
         })
 
@@ -145,10 +145,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         deceasedViewModel.ldDeletePhoto.observe(viewLifecycleOwner, Observer {
             it.let {
                 if (it.code == 200) {
-                    Log.i("testTag2","hiii deleted")
-                    Toast.makeText(requireActivity(), "deleted", Toast.LENGTH_SHORT).show()
-//                    initRecycler(listsGallery)
-//                    adminGalleryAdapter.notifyDataSetChanged()
+                    viewModel.requestGetGallery(deceasedId)
                 }
             }
         })
@@ -156,16 +153,15 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         viewModel.ldReport.observe(viewLifecycleOwner, Observer {
             it.let {
                 if (it.code == 200) {
-                    Toast.makeText(requireActivity(), "${it.message}", Toast.LENGTH_SHORT).show()
+                    TarhimToast.Builder()
+                        .setActivity(requireActivity())
+                        .message(it.message)
+                        .build()
                 }
             }
-            })
+        })
 
     }
-
-
-
-
 
 
     private fun initRecycler(paths: List<GalleryDataModel>) {
@@ -195,7 +191,6 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
             var dataUri = data?.data
 
             showLoading(true, "در حال بارگذاری")
-
 
             viewModel.requestUploadImage(uploadPost(Uri.parse(getRealPathFromURI(dataUri))))
 
@@ -294,16 +289,20 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         if (adminStatus && position == 0) {
             openGallery()
         } else {
-           showImageDialog(requireActivity(), item, adminStatus,
+            showImageDialog(requireActivity(), item, adminStatus,
                 {
-                    viewModel.grequestReport(ReportRequest(true,"Picture",item.id))
+                    viewModel.grequestReport(ReportRequest(true, "Picture", item.id))
                     alertDialog.dismiss()
                 },
-                {Log.i("testTag2","hi im in gallaryre")
-                    Log.i("testTag2","hi"+item.imagespath.toString())
+                {
+                    Log.i("testTag2", "hi im in gallaryre")
+
                     //inja request bede
-                    deceasedViewModel.deletePhotoFromGallery( deceasedId!! , item.imagespath.toString())
-                    Toast.makeText(requireActivity(), "test remove", Toast.LENGTH_SHORT).show()
+                    deceasedViewModel.deletePhotoFromGallery(
+                        deceasedId!!,
+                        item.imagespath.toString()
+                    )
+
                     alertDialog.dismiss()
 
                 })
@@ -327,12 +326,12 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         alertDialog.show()
 
         if (adminStatus) {
-            root.btn_report_image.visibility = View.VISIBLE
-//            root.btn_remove_image.visibility = View.VISIBLE
+            root.btn_remove_image.visibility = View.VISIBLE
         }
         Glide.with(activity)
             .load(item.imagespath)
             .into(root.ImgGalleryDialog)
+
 
         root.btn_report_image.setOnClickListener(report)
         root.btn_remove_image.setOnClickListener(remove)

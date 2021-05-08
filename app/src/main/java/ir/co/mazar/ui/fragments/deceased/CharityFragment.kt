@@ -95,7 +95,6 @@ class CharityFragment : Fragment(), CharityListener, SpiritualListener {
 
         viewModel.ldGetSiritual.observe(viewLifecycleOwner, Observer {
             it.also {
-                Log.e(TAG, "onViewCreated: " + it.size)
 
                 if (it != null && it.size > 0) {
                     initSpiritualRecycler(it)

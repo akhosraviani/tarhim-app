@@ -1,5 +1,6 @@
 package ir.co.mazar.ui.activities.login.state
 
+import android.text.InputFilter
 import android.text.InputType
 import android.text.TextUtils
 import android.view.View
@@ -35,6 +36,7 @@ class InputPasswordState(
         loginEnterEt.setHint("")
         loginEnterEt.inputType=InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD
         helpTv.visibility= View.GONE
+        loginEnterEt.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(20))
         loginStartTv.setText(activity.getString(R.string.signIn_title))
         loginEnterTv.setText(activity.getString(R.string.signIn_start_description))
         loginEnterEt.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD

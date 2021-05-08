@@ -11,10 +11,12 @@ import com.bumptech.glide.Glide
 import ir.co.mazar.R
 import ir.co.mazar.model.deceased.MyDeceasedDataModel
 import ir.co.mazar.ui.callback.ProfileListener
+import ir.co.mazar.utils.PersianDate
 import kotlinx.android.synthetic.main.row_deceased_pages_recycler.view.*
 import kotlinx.android.synthetic.main.row_latest_deceased.view.IvFollowingImage
 import kotlinx.android.synthetic.main.row_latest_deceased.view.TvFollowingDate
 import kotlinx.android.synthetic.main.row_latest_deceased.view.TvFollowingName
+import java.util.*
 
 class MyDeceasedAdapter(
     private val listDeceased: List<MyDeceasedDataModel>,
@@ -55,9 +57,17 @@ class MyDeceasedAdapter(
             .circleCrop()
             .into(holder.imageDeceased)
 
+        var dateBirthDay = Date((listDeceased[position].birthday).toLong())
+        var dateDeathDay = Date((listDeceased[position].deathday).toLong())
+        val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+        val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
+        var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+        var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
         holder.nameDeceased.text = listDeceased.get(position).name
         holder.birth_DeathDay.text =
-            "${listDeceased.get(position).birthday} - ${listDeceased.get(position).deathday}"
+            "${birthDay} - ${deathDay}"
         holder.itemView.setOnClickListener {
             deceasedCallBack.myDeceasedCallBack(listDeceased.get(holder.adapterPosition).id)
         }

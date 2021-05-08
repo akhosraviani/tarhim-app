@@ -1,6 +1,7 @@
 package ir.co.mazar.network
 
 import ir.co.mazar.model.ConfirmDataModel
+import ir.co.mazar.model.RemindeRequestModel
 import ir.co.mazar.model.deceased.*
 import ir.co.mazar.model.deceased.comment.ReplyCommentRequest
 import ir.co.mazar.model.deceased.like.LikeCommentDataModel
@@ -100,8 +101,6 @@ interface RequestApi {
     ): Call<ConfirmDataModel>
 
 
-
-
     @PUT("api/v1/account/edit")
     fun requestRegisterUser(
         @Body body: RegisterUser,
@@ -145,8 +144,8 @@ interface RequestApi {
 
     @PUT("api/v1/deceased/gallery")
     fun requestDeletePhotoFromGallery(
-        @Query("deceasedid") deceasedid : Int,
-        @Query("mobile") mobile : String,
+        @Query("deceasedid") deceasedid: Int,
+        @Query("mobile") mobile: String,
         @Query("path") path: String
     ): Call<ConfirmDataModel>
 
@@ -209,32 +208,42 @@ interface RequestApi {
 
     @GET("api/v1/deceased/followerlist")
     fun requesDeceasedFollowersList(
-        @Query("id") id:Int,
+        @Query("id") id: Int,
     ): Call<List<FollowersDataModel>>
 
     @HTTP(method = "DELETE", path = "api/v1/comments/delete", hasBody = true)
     fun requestDeleteComment(
-      @Body body: DeleteCommentRequestModel,
-        @Query("mobile") mobile:String,
+        @Body body: DeleteCommentRequestModel,
+        @Query("mobile") mobile: String,
     ): Call<ConfirmDataModel>
 
-@POST("api/v1/inbox/accept")
+    @POST("api/v1/inbox/accept")
     fun requestAcceptRequest(
-    @Query("mobile") mobile:String,
-    @Query("notificationId") notificationId:Int,
+        @Query("mobile") mobile: String,
+        @Query("notificationId") notificationId: Int,
     ): Call<ConfirmDataModel>
 
     @DELETE("api/v1/inbox/reject")
     fun requestRejectRequest(
-    @Query("mobile") mobile:String,
-    @Query("notificationId") notificationId:Int,
+        @Query("mobile") mobile: String,
+        @Query("notificationId") notificationId: Int,
     ): Call<ConfirmDataModel>
 
-@GET("api/v1/setting/setting")
+    @GET("api/v1/setting/setting")
     fun requestSetting(
-    @Query("mobile") mobile:String,
-    @Query("token") token :String
-): Call<SettingDataModel>
+        @Query("mobile") mobile: String,
+        @Query("token") token: String
+    ): Call<SettingDataModel>
+
+    @GET("api/v1/admin/notification")
+    fun requestNotification(
+        @Query("mobile") mobile: String,
+    ): Call<List<NotificationMessageDataModel>>
+
+    @POST("api/v1/remindme/send")
+    fun requestReminder(
+        @Body body: RemindeRequestModel,
+    ): Call<ConfirmDataModel>
 
 
 }

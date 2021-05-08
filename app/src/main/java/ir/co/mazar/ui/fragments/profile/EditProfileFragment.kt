@@ -41,6 +41,7 @@ import ir.co.mazar.utils.OnBackPressed
 import ir.co.mazar.utils.TarhimCompress
 import ir.co.mazar.utils.TarhimConfig.Companion.FIRST_VISIT
 import ir.co.mazar.utils.TarhimConfig.Companion.USER_NUMBER
+import ir.co.mazar.utils.TarhimToast
 import kotlinx.android.synthetic.main.edit_user_profile.*
 import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import okhttp3.MultipartBody
@@ -50,6 +51,14 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
 
     companion object {
         private const val TAG = "EditProfileFragment"
+    }
+
+    fun newInstance(register: Boolean): EditProfileFragment {
+        val fragment = EditProfileFragment()
+        val args = Bundle()
+        fragment.arguments = args
+        args.putBoolean("REGISTER", register)
+        return fragment
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -78,6 +87,7 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
     private val GALLERY_CODE = 101
     private lateinit var imm: InputMethodManager
     private var imagePath: String? = ""
+    private var register: Boolean = true
     private lateinit var bottomSheet: FrameLayout
 
     override fun onCreateView(
@@ -92,7 +102,9 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         OnBackPressed().pressedCallBack(findNavController())
-
+//        if (requireArguments() != null) {
+//            register = requireArguments().getBoolean("REGISTER")
+//        }
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         imm = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         showLoading(true)
@@ -164,18 +176,19 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
                     showConfirmDialog(
                         requireActivity(),
                         R.drawable.request,
-                        "از ثبت اطلاعات خود مطمن هستید؟",
+                        "از ثبت اطلاعات خود مطمئن هستید؟",
                         {
-                    viewModel.requestRegisterUser(
-                        RegisterUser(
-                            ETUserEmail.text.toString(),
-                            imagePath!!,
-                            ETNameUser.text.toString()
-                        )
-                    )
+                            viewModel.requestRegisterUser(
+                                RegisterUser(
+                                    ETUserEmail.text.toString(),
+                                    imagePath!!,
+                                    ETNameUser.text.toString()
+                                )
+                            )
                             alertDialog.dismiss()
                         },
                         {
+                            showLoading(false)
                             alertDialog.dismiss()
                         })
 
@@ -193,9 +206,16 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
 
 
         BtnExitUserPage.setOnClickListener {
-            findNavController().navigate(R.id.fragment_profile)
-
+//            if (register) {
+//                TarhimToast.Builder()
+//                    .setActivity(requireActivity())
+//                    .message("ابتدا حساب کاربری خئد را تکمیل کنید")
+//                    .build()
+//            } else {
+                findNavController().navigate(R.id.fragment_profile)
+//            }
         }
+
     }
 
 

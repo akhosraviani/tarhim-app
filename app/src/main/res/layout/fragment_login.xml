@@ -2,18 +2,29 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loginRoot"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/register_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="@dimen/_10sdp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/loginCv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_12sdp"
-        android:visibility="visible"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:background="@drawable/shape_login_card_view_border"
+        android:visibility="visible"
+        app:layout_constraintVertical_bias=".25"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,6 +32,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -28,7 +40,7 @@
                 android:layout_width="@dimen/size_login_logo"
                 android:layout_height="@dimen/size_login_logo"
                 android:layout_marginTop="@dimen/all_xlarge_space"
-                android:src="@drawable/sample_logo"
+                android:src="@drawable/icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,9 +92,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/all_xlarge_space"
                 android:layout_marginTop="@dimen/all_medium_space"
-                android:fontFamily="@font/iran_sans"
                 android:layout_marginEnd="@dimen/all_xlarge_space"
                 android:background="@drawable/shape_login_edit_text_phone_number"
+                android:fontFamily="@font/iran_sans"
                 android:gravity="center"
                 android:inputType="number"
                 android:padding="@dimen/padding_top_phone_email_entry_et"
@@ -93,7 +105,6 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSubmitEnter"
-                tools:text="send verfication code "
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginTop="@dimen/all_xlarge_space"
@@ -105,7 +116,8 @@
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/loginEnterEt"
                 app:layout_constraintStart_toStartOf="@+id/loginEnterEt"
-                app:layout_constraintTop_toBottomOf="@+id/loginEnterEt" />
+                app:layout_constraintTop_toBottomOf="@+id/loginEnterEt"
+                tools:text="send verfication code " />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/changePassTv"
@@ -127,8 +139,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/all_medium_space"
                 android:layout_marginBottom="32dp"
-                android:gravity="center"
                 android:fontFamily="@font/iran_sans"
+                android:gravity="center"
                 android:textColor="@color/purple_300"
                 android:textSize="@dimen/textsize_login_rules"
                 android:visibility="gone"
@@ -141,10 +153,10 @@
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/noIntenterLogroot"
-        android:visibility="gone"
-        android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"

@@ -60,6 +60,7 @@
         <activity android:name="ir.co.mazar.ui.activities.deceased.DeceasedProfileActivity"/>
         <activity android:name="ir.co.mazar.ui.activities.invite_friend.InviteFriendsActivity"/>
         <activity android:name="ir.co.mazar.ui.activities.inbox.InboxMessageActivity"/>
+        <activity android:name="ir.co.mazar.ui.activities.inbox.NotificationMessageActivity"/>
 
         <receiver android:name="ir.co.mazar.utils.NetworkConnectionReceiver">
             <intent-filter>

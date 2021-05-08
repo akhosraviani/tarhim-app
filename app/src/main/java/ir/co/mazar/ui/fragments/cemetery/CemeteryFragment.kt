@@ -39,7 +39,6 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
         private const val TAG = "CemeteryFragment"
     }
 
-
     private lateinit var imm: InputMethodManager
     private lateinit var viewModel: HomeViewModel
     private lateinit var latestAdapter: LatestSearchRecyclerAdapter

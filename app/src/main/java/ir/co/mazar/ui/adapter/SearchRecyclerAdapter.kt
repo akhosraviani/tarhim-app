@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import ir.co.mazar.R
 import ir.co.mazar.model.deceased.DeceasedDataModel
 import ir.co.mazar.ui.callback.SearchListener
+import ir.co.mazar.utils.PersianDate
 import kotlinx.android.synthetic.main.row_latest_deceased.view.*
 import java.util.*
 
@@ -69,15 +70,15 @@ class SearchRecyclerAdapter(var searchCallBack:SearchListener) :
 
             val loc = Locale("en_US")
 //
-//            var dateBirthDay = Date(deceased.birthday)
-//            var dateDeathDay = Date(deceased.deathday)
-//            val scBirthDay = SolarCalendar(dateBirthDay)
-//            val scDeathDay = SolarCalendar(dateDeathDay)
-//
-//            var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
-//            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+            var dateBirthDay = Date((deceased.birthday).toLong())
+            var dateDeathDay = Date((deceased.deathday).toLong())
+            val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
+            val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
-            birth_DeathDay.text = "${deceased.birthday} - ${deceased.deathday}"
+            var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
+            birth_DeathDay.text = "${birthDay} - ${deathDay}"
 
 
 
