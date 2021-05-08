@@ -99,6 +99,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
     private var br = NetworkConnectionReceiver()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_deceased)
@@ -122,6 +123,25 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             }
         })
 
+        if (intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased") != null) {
+            txtToolbar.text = "ویرایش پروفایل"
+            TvChangeImg.text = getString(R.string.msg_edit_image)
+            editProfile = true
+
+
+            deceasedInfo = intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased")!!
+            val  bundle = intent.extras
+            DeceasedId = bundle!!.getInt("DeceasedId")
+            Log.i("testTag7", "id in create dec activity= " + DeceasedId.toString())
+//            DeceasedId = intent?.getIntExtra("DeceasedId", -1)!!
+            locationBurial =
+                LatLng((deceasedInfo!!.latitude).toDouble(), (deceasedInfo!!.longitude).toDouble())
+            showDeceasedDetails(deceasedInfo!!)
+
+        }
+
+        Log.i("testTag4","DeceasedId=  "+DeceasedId.toString())
+
         setUpView(this.window.decorView)
         setUpSpinner()
 
@@ -129,18 +149,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         locationBurial = Hawk.get("LOCATION", LatLng(35.53, 51.37))
 
 
-
-        if (intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased") != null) {
-            txtToolbar.text = "ویرایش پروفایل"
-            TvChangeImg.text = getString(R.string.msg_edit_image)
-            editProfile = true
-            deceasedInfo = intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased")!!
-            DeceasedId = intent?.getIntExtra("DeceasedId", -1)!!
-            locationBurial =
-                LatLng((deceasedInfo!!.latitude).toDouble(), (deceasedInfo!!.longitude).toDouble())
-            showDeceasedDetails(deceasedInfo!!)
-
-        }
 
         EtBirthDateDeceased.setOnFocusChangeListener { view, b ->
             hideSoftKeyboard(this)
@@ -182,48 +190,48 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                         locationBurial.latitude,
                         locationBurial.longitude,
                         ETNameDeceased.text.toString()
-                    ), 28)
-//            } else {
-//                //<editor-fold desc="Create Deceaed Profile">
-//                if (
-//                    ETNameDeceased.text.toString().length > 0 &&
-//                    ETBurialLocation.text.toString().length > 0 &&
-//                    EtBirthDateDeceased.text.toString().length > 0 &&
-//                    ETDeathDeceased.text.toString().length > 0
-//                ) {
-//
-//                    showLoading(true)
-//                    showConfirmDialog(
-//                        this,
-//                        R.drawable.request,
-//                        "از ثبت اطلاعات متوفی مطمئن هستید؟",
-//                        {
-//                            viewModel.requestCreateDeceased(
-//                                CreateDeceasedRequest(
-//                                    accessType,
-//                                    dateMap!!.get(1)!!,
-//                                    dateMap!!.get(2)!!,
-//                                    ETBurialLocation.text.toString(),
-//                                    ETdeceasedDescription.text.toString(),
-//                                    imagePath!!,
-//                                    locationBurial.latitude,
-//                                    locationBurial.longitude,
-//                                    ETNameDeceased.text.toString()
-//                                )
-//                            )
-//                            alertDialog.dismiss()
-//
-//                        },
-//                        {
-//                            showLoading(false)
-//                            alertDialog.dismiss()
-//                        })
-//
-//
-//                } else {
-//                    Toast.makeText(this, "لطفا تمام قسمت ها را تکمیل کنید", Toast.LENGTH_SHORT)
-//                        .show()
-//                }
+                    ), DeceasedId!!)
+            } else {
+                //<editor-fold desc="Create Deceaed Profile">
+                if (
+                    ETNameDeceased.text.toString().length > 0 &&
+                    ETBurialLocation.text.toString().length > 0 &&
+                    EtBirthDateDeceased.text.toString().length > 0 &&
+                    ETDeathDeceased.text.toString().length > 0
+                ) {
+
+                    showLoading(true)
+                    showConfirmDialog(
+                        this,
+                        R.drawable.request,
+                        "از ثبت اطلاعات متوفی مطمئن هستید؟",
+                        {
+                            viewModel.requestCreateDeceased(
+                                CreateDeceasedRequest(
+                                    accessType,
+                                    dateMap!!.get(1)!!,
+                                    dateMap!!.get(2)!!,
+                                    ETBurialLocation.text.toString(),
+                                    ETdeceasedDescription.text.toString(),
+                                    imagePath!!,
+                                    locationBurial.latitude,
+                                    locationBurial.longitude,
+                                    ETNameDeceased.text.toString()
+                                )
+                            )
+                            alertDialog.dismiss()
+
+                        },
+                        {
+                            showLoading(false)
+                            alertDialog.dismiss()
+                        })
+
+
+                } else {
+                    Toast.makeText(this, "لطفا تمام قسمت ها را تکمیل کنید", Toast.LENGTH_SHORT)
+                        .show()
+                }
                 //</editor-fold>
             }
         }
@@ -253,23 +261,23 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         })
         viewModel.ldEditDeceased.observe(this, Observer {
 
-//           Log.i("testTag3","edited = "+it.toString())
-//            if (it != null) {
-//                showLoading(false)
-//                if (it.code == 200) {
-//                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT)
-//                    Handler().postDelayed({
-//                        startActivity(
-//                            Intent(this, DeceasedProfileActivity::class.java)
-//                                .putExtra("FromPersonal", DeceasedId!!)
-//                        )
-//
-//                    }, 500)
-//                } else {
-//                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-//
-//                }
-//            }
+           Log.i("testTag3","edited = "+it.toString())
+            if (it != null) {
+                showLoading(false)
+                if (it.code == 200) {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT)
+                    Handler().postDelayed({
+                        startActivity(
+                            Intent(this, DeceasedProfileActivity::class.java)
+                                .putExtra("FromPersonal", DeceasedId!!)
+                        )
+
+                    }, 500)
+                } else {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+
+                }
+            }
         })
 
 

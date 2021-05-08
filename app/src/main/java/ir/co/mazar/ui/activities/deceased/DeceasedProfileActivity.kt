@@ -39,7 +39,6 @@ import ir.co.mazar.ui.fragments.deceased.ForumFragment
 import ir.co.mazar.ui.fragments.deceased.GalleryFragment
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.*
-import ir.co.mazar.utils.TarhimConfig.Companion.NOTIFICATION_STATUS
 import kotlinx.android.synthetic.main.deceased_profile.*
 import java.util.*
 import java.util.Timer
@@ -76,17 +75,25 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         showLoading(true)
 
+        val bundle = intent.extras
         if (intent?.extras != null) {
-            deceasedId = intent?.getIntExtra("FromPersonal", -1)!!
-            viewModel.requestDeceasedPersonal(deceasedId!!)
-            Log.e(TAG, "onViewCreated: deceasedId personal" + deceasedId)
-            initTabAndViewPager()
+            if(bundle!!.getInt("FromPersonal") != 0){
+                deceasedId = bundle!!.getInt("FromPersonal")
+                Log.i("testTag7", "deceasedId in deceased activity personal= " + deceasedId.toString())
+                viewModel.requestDeceasedPersonal(deceasedId!!)
+                initTabAndViewPager()
+            }
+
         }
         if (intent?.extras != null) {
-            deceasedId = intent?.getIntExtra("SearchPersonal", -1)!!
-            viewModel.requestDeceasedFromSearch(deceasedId!!)
-            Log.e(TAG, "onViewCreated: deceasedId search " + deceasedId)
-            initTabAndViewPager()
+            if(bundle!!.getInt("SearchPersonal") != 0){
+                deceasedId = bundle!!.getInt("SearchPersonal")
+                Log.i("testTag7", "deceasedId in deceased activity search= " + deceasedId.toString())
+                viewModel.requestDeceasedFromSearch(deceasedId!!)
+                Log.e(TAG, "onViewCreated: deceasedId search " + deceasedId)
+                initTabAndViewPager()
+            }
+
         }
 
         viewModel.ldDeceasedProfile.observe(this, Observer {
@@ -438,7 +445,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
 
         BtnEditDeceased.setOnClickListener {
-
+           Log.i("testTag7","id= "+deceasedId.toString())
             startActivity(
                 Intent(this, CreateDeceasedActivity::class.java)
                     .putExtra("DeceasedId", deceasedId)
@@ -447,6 +454,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
         }
         BtnEditToolbar.setOnClickListener {
+            Log.i("testTag7","id2= "+deceasedId.toString())
             startActivity(
                 Intent(this, CreateDeceasedActivity::class.java)
                     .putExtra("DeceasedId", deceasedId)

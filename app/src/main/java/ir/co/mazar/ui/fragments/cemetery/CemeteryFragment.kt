@@ -227,7 +227,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
     }
 
     override fun latestCallBack(decId: Int) {
-
+        Log.i("testTag7","cemetery latest call id= "+decId.toString())
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
         SearchView.setText("")
         SearchView.clearFocus()
@@ -238,6 +238,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
     }
 
     override fun serachClickCallBack(deceasedId: Int) {
+        Log.i("testTag7","search cemetery id= "+deceasedId.toString())
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
         SearchView.setText("")
         SearchView.clearFocus()
