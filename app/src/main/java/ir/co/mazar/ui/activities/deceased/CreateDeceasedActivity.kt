@@ -169,20 +169,20 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
         BtnSaveEditUser.setOnClickListener {
             if (deceasedInfo != null) {
-                Log.i("testTag4","clicked ")
-//                showLoading(true)
-//                viewModel.requestEditDeceased(
-//                    CreateDeceasedRequest(
-//                        accessType,
-//                        dateMap[1]!!,
-//                        dateMap[2]!!,
-//                        ETBurialLocation.text.toString(),
-//                        ETdeceasedDescription.text.toString(),
-//                        imagePath!!,
-//                        locationBurial.latitude,
-//                        locationBurial.longitude,
-//                        ETNameDeceased.text.toString()
-//                    ), DeceasedId!!)
+                Log.i("testTag4","DeceasedId=  "+DeceasedId.toString())
+                showLoading(true)
+                viewModel.requestEditDeceased(
+                    CreateDeceasedRequest(
+                        accessType,
+                        dateMap[1]!!,
+                        dateMap[2]!!,
+                        ETBurialLocation.text.toString(),
+                        ETdeceasedDescription.text.toString(),
+                        imagePath!!,
+                        locationBurial.latitude,
+                        locationBurial.longitude,
+                        ETNameDeceased.text.toString()
+                    ), 28)
 //            } else {
 //                //<editor-fold desc="Create Deceaed Profile">
 //                if (
@@ -252,6 +252,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             Toast.makeText(this, "ورودی های خود را چک کنید!", Toast.LENGTH_SHORT).show()
         })
         viewModel.ldEditDeceased.observe(this, Observer {
+
 //           Log.i("testTag3","edited = "+it.toString())
 //            if (it != null) {
 //                showLoading(false)
