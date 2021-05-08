@@ -20,7 +20,7 @@ object RequestClient {
 
     private var makeRetrofit=Retrofit
         .Builder()
-        .baseUrl("http://194.225.229.200:9092/")
+        .baseUrl("https://api.mazar.app/")
         .client(client)
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(gson))

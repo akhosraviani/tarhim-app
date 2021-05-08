@@ -74,8 +74,8 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
         viewModel.ldLatestSearch.observe(viewLifecycleOwner, Observer {
             showLoading(false)
             it.let {
-                Log.i("testTag3","hi ="+it.toString())
-                    if (it!=null && it.size > 0) {
+                Log.i("testTag3", "hi =$it")
+                    if (it!=null && it.isNotEmpty()) {
                         latestAdapter.submitList(it)
                     }else{
                         latestAdapter.submitList(null)
