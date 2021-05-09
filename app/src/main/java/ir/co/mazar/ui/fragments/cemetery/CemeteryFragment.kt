@@ -122,9 +122,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
 
                 searchAdapter.submitList(it)
             }
-            if (data == null)
-                Toast.makeText(getActivity(), "موردی یافت نشد", Toast.LENGTH_SHORT).show()
-        }
+            }
         )
 
         viewModel.ldDeleteLatest.observe(viewLifecycleOwner, Observer {

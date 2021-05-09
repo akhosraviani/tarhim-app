@@ -44,7 +44,7 @@ class GalleryRecyclerViewAdapter(
             if(url.startsWith("http")){
                 Glide.with(itemView.context)
                     .load(url.replace("http","https"))
-                    .circleCrop()
+                    .centerCrop()
                     .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(
                             e: GlideException?,
@@ -74,7 +74,7 @@ class GalleryRecyclerViewAdapter(
             }else{
                 Glide.with(itemView.context)
                     .load(url)
-                    .circleCrop()
+                    .centerCrop()
                     .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(
                             e: GlideException?,
