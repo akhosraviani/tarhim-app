@@ -1,6 +1,8 @@
 package ir.co.mazar.ui.activities.deceased
 
 import android.animation.ObjectAnimator
+import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -12,6 +14,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.GONE
@@ -47,6 +50,8 @@ import ir.co.mazar.ui.fragments.deceased.GalleryFragment
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.*
 import kotlinx.android.synthetic.main.deceased_profile.*
+import kotlinx.android.synthetic.main.dialog_notification.view.*
+import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import java.util.*
 import java.util.Timer
 import kotlin.concurrent.schedule
@@ -76,6 +81,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
     private var forty: Boolean = false
     private var fifth: Boolean = false
     private var anniversary: Boolean = false
+    private lateinit var alertDialog: AlertDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -828,13 +834,15 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
 
 
         val checkBoxThird: CheckBox = dialog.findViewById(R.id.checkBoxThird)
         val checkBoxSeventh: CheckBox = dialog.findViewById(R.id.checkBoxSeventh)
         val checkBoxForty: CheckBox = dialog.findViewById(R.id.checkBoxForty)
         val checkBoxAnniversary: CheckBox = dialog.findViewById(R.id.checkBoxAnniversary)
-        val notifSave: Button = dialog.findViewById(R.id.notifSave)
+        val notifSave: TextView = dialog.findViewById(R.id.notifSave)
 
         if (checkBoxThird.isChecked) {
             third = true
@@ -872,4 +880,65 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         }
         dialog.show()
     }
+
+
+//
+//    private fun notificationDialog(
+//        activity: Activity
+//    ) {
+//        val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
+//        val view =
+//            LayoutInflater.from(activity).inflate(R.layout.dialog_notification, viewGroup, false)
+//        alertDialog = AlertDialog.Builder(activity).setView(view).create()
+//        alertDialog.setCancelable(false)
+//        alertDialog.setCanceledOnTouchOutside(false)
+//        alertDialog.window!!.setLayout(
+//            WindowManager.LayoutParams.WRAP_CONTENT,
+//            WindowManager.LayoutParams.WRAP_CONTENT
+//        )
+//        alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//
+//        val checkBoxThird: CheckBox = alertDialog.findViewById(R.id.checkBoxThird)
+//        val checkBoxSeventh: CheckBox = alertDialog.findViewById(R.id.checkBoxSeventh)
+//        val checkBoxForty: CheckBox = alertDialog.findViewById(R.id.checkBoxForty)
+//        val checkBoxAnniversary: CheckBox = alertDialog.findViewById(R.id.checkBoxAnniversary)
+//        val notifSave: TextView = alertDialog.findViewById(R.id.notifSave)
+//
+//        if (checkBoxThird.isChecked) {
+//            third = true
+//        }
+//
+//        if (checkBoxForty.isChecked) {
+//            forty = true
+//        }
+//
+//        if (checkBoxSeventh.isChecked) {
+//            seventh = true
+//        }
+//
+//        if (checkBoxAnniversary.isChecked) {
+//            anniversary = true
+//        }
+//        if (checkBoxAnniversary.isChecked) {
+//            fifth = true
+//        }
+//
+//
+//        notifSave.setOnClickListener {
+//
+//            viewModel.requestReminder(
+//                RemindeRequestModel(
+//                    anniversary,
+//                    deceasedId!!,
+//                    fifth,
+//                    forty,
+//                    Hawk.get(TarhimConfig.USER_NUMBER),
+//                    seventh,
+//                    third,
+//                    "Push"
+//                )
+//            )
+//        }
+//        alertDialog.show()
+//    }
 }
