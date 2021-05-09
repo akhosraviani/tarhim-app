@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.orhanobut.hawk.Hawk
 import ir.co.mazar.R
 import ir.co.mazar.model.deceased.DeceasedDataModel
@@ -59,6 +60,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         Hawk.put(FIRST_VISIT, true)
         initUi()
+
 
         //<editor-fold desc="show EllipizeTitle">
         var titlesrc = "${getString(R.string.salavat)} ♦ ${getString(R.string.ill)}"
