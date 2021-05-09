@@ -1,9 +1,12 @@
 package ir.co.mazar.ui.activities.deceased
 
 import android.animation.ObjectAnimator
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
@@ -14,9 +17,11 @@ import android.view.ViewGroup
 import android.view.ViewGroup.GONE
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.view.animation.AnimationUtils
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,6 +30,8 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.orhanobut.hawk.Hawk
 import ir.co.mazar.R
 import ir.co.mazar.model.RemindeRequestModel
@@ -63,6 +70,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
     private var checkFollow = false
     private var adminStatus = false
     private var br = NetworkConnectionReceiver()
+    private lateinit var dialog: Dialog
+    private var third: Boolean = false
+    private var seventh: Boolean = false
+    private var forty: Boolean = false
+    private var fifth: Boolean = false
+    private var anniversary: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,18 +90,24 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
         val bundle = intent.extras
         if (intent?.extras != null) {
-            if(bundle!!.getInt("FromPersonal") != 0){
+            if (bundle!!.getInt("FromPersonal") != 0) {
                 deceasedId = bundle!!.getInt("FromPersonal")
-                Log.i("testTag7", "deceasedId in deceased activity personal= " + deceasedId.toString())
+                Log.i(
+                    "testTag7",
+                    "deceasedId in deceased activity personal= " + deceasedId.toString()
+                )
                 viewModel.requestDeceasedPersonal(deceasedId!!)
                 initTabAndViewPager()
             }
 
         }
         if (intent?.extras != null) {
-            if(bundle!!.getInt("SearchPersonal") != 0){
+            if (bundle!!.getInt("SearchPersonal") != 0) {
                 deceasedId = bundle!!.getInt("SearchPersonal")
-                Log.i("testTag7", "deceasedId in deceased activity search= " + deceasedId.toString())
+                Log.i(
+                    "testTag7",
+                    "deceasedId in deceased activity search= " + deceasedId.toString()
+                )
                 viewModel.requestDeceasedFromSearch(deceasedId!!)
                 Log.e(TAG, "onViewCreated: deceasedId search " + deceasedId)
                 initTabAndViewPager()
@@ -122,7 +141,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                         TvDeseacesName.text = it.name
                         TvFollowersCount.setText(
                             "${
-                                SeperateNumber().splitDigit(it.followerCount).toInt()
+                            SeperateNumber().splitDigit(it.followerCount).toInt()
                             } دنبال کننده "
                         )
                         var dateBirthDay = Date((it.birthday).toLong())
@@ -139,12 +158,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                         bioDeceased = it.description
                         configBioText(it.description!!)
 
-                        if(url.startsWith("http")){
+                        if (url.startsWith("http")) {
                             Glide.with(this)
-                                .load(url.replace("http","https"))
+                                .load(url.replace("http", "https"))
                                 .circleCrop()
                                 .into(ImVDeceased)
-                        }else{
+                        } else {
                             Glide.with(this)
                                 .load(it.imageurl)
                                 .circleCrop()
@@ -168,7 +187,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             TvDeseacesName.text = it.name
                             TvFollowersCount.setText(
                                 "${
-                                    SeperateNumber().splitDigit(it.followerCount).toInt()
+                                SeperateNumber().splitDigit(it.followerCount).toInt()
                                 } دنبال کننده "
                             )
                             var dateBirthDay = Date((it.birthday).toLong())
@@ -188,12 +207,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             configBioText(it.description!!)
 
 
-                            if(url.startsWith("http")){
+                            if (url.startsWith("http")) {
                                 Glide.with(this)
-                                    .load(url.replace("http","https"))
+                                    .load(url.replace("http", "https"))
                                     .circleCrop()
                                     .into(ImVDeceased)
-                            }else{
+                            } else {
                                 Glide.with(this)
                                     .load(it.imageurl)
                                     .circleCrop()
@@ -228,12 +247,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             bioDeceased = it.description
                             configBioText(it.description!!)
 
-                            if(url.startsWith("http")){
+                            if (url.startsWith("http")) {
                                 Glide.with(this)
-                                    .load(url.replace("http","https"))
+                                    .load(url.replace("http", "https"))
                                     .circleCrop()
                                     .into(ImVDeceased)
-                            }else{
+                            } else {
                                 Glide.with(this)
                                     .load(it.imageurl)
                                     .circleCrop()
@@ -241,12 +260,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             }
 
                             initCollapsToolbar(this, it.imageurl!!, it.name!!)
-                        }else{
+                        } else {
                             BtnEditToolbar.visibility = View.GONE
                             BtnEditDeceased.visibility = View.GONE
                             coordinateLayout.visibility = View.GONE
                             requestFollow(it)
-                            btnRequestFollow.visibility=View.GONE
+                            btnRequestFollow.visibility = View.GONE
                         }
 
                     }
@@ -279,7 +298,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                         TvDeseacesName.text = it.name
                         TvFollowersCount.setText(
                             "${
-                                SeperateNumber().splitDigit(it.followerCount).toInt()
+                            SeperateNumber().splitDigit(it.followerCount).toInt()
                             } دنبال کننده "
                         )
                         var dateBirthDay = Date((it.birthday).toLong())
@@ -296,12 +315,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                         bioDeceased = it.description
                         configBioText(it.description!!)
 
-                        if(url.startsWith("http")){
+                        if (url.startsWith("http")) {
                             Glide.with(this)
-                                .load(url.replace("http","https"))
+                                .load(url.replace("http", "https"))
                                 .circleCrop()
                                 .into(ImVDeceased)
-                        }else{
+                        } else {
                             Glide.with(this)
                                 .load(it.imageurl)
                                 .circleCrop()
@@ -323,7 +342,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             btnAddFriends.visibility = View.VISIBLE
                             TvFollowersCount.setText(
                                 "${
-                                    SeperateNumber().splitDigit(it.followerCount).toInt()
+                                SeperateNumber().splitDigit(it.followerCount).toInt()
                                 } دنبال کننده "
                             )
                             typeSpinner.visibility = View.VISIBLE
@@ -346,12 +365,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             bioDeceased = it.description
                             configBioText(it.description!!)
 
-                            if(url.startsWith("http")){
+                            if (url.startsWith("http")) {
                                 Glide.with(this)
-                                    .load(url.replace("http","https"))
+                                    .load(url.replace("http", "https"))
                                     .circleCrop()
                                     .into(ImVDeceased)
-                            }else{
+                            } else {
                                 Glide.with(this)
                                     .load(it.imageurl)
                                     .circleCrop()
@@ -387,12 +406,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             bioDeceased = it.description
                             configBioText(it.description!!)
 
-                            if(url.startsWith("http")){
+                            if (url.startsWith("http")) {
                                 Glide.with(this)
-                                    .load(url.replace("http","https"))
+                                    .load(url.replace("http", "https"))
                                     .circleCrop()
                                     .into(ImVDeceased)
-                            }else{
+                            } else {
                                 Glide.with(this)
                                     .load(it.imageurl)
                                     .circleCrop()
@@ -404,7 +423,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             BtnEditDeceased.visibility = View.GONE
                             coordinateLayout.visibility = View.GONE
                             requestFollow(it)
-                            btnRequestFollow.visibility=View.GONE
+                            btnRequestFollow.visibility = View.GONE
 
                         }
                     }
@@ -442,21 +461,10 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         BtnNotifBell.setOnClickListener {
 
 
-            showLoading(true)
+//            showLoading(true)
             BtnNotifBell.setBackgroundResource(R.drawable.ic_notifications_active)
-            viewModel.requestReminder(
-                RemindeRequestModel(
-                    true,
-                    deceasedId!!,
-                    true,
-                    true,
-                    Hawk.get(TarhimConfig.USER_NUMBER),
-                    true,
-                    true,
-                    "Push"
-                )
-            )
 
+            notificationDialog()
 //            else {
 //                Hawk.put(NOTIFICATION_STATUS, false)
 //                BtnNotifBell.setBackgroundResource(R.drawable.ic_notifications_off)
@@ -480,6 +488,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         viewModel.ldReminder.observe(this, Observer {
             it.let {
                 showLoading(false)
+                dialog.dismiss()
                 when (it.code) {
                     200 -> {
                         TarhimToast.Builder()
@@ -498,7 +507,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
 
         BtnEditDeceased.setOnClickListener {
-           Log.i("testTag7","id= "+deceasedId.toString())
+            Log.i("testTag7", "id= " + deceasedId.toString())
             startActivity(
                 Intent(this, CreateDeceasedActivity::class.java)
                     .putExtra("DeceasedId", deceasedId)
@@ -507,7 +516,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
         }
         BtnEditToolbar.setOnClickListener {
-            Log.i("testTag7","id2= "+deceasedId.toString())
+            Log.i("testTag7", "id2= " + deceasedId.toString())
             startActivity(
                 Intent(this, CreateDeceasedActivity::class.java)
                     .putExtra("DeceasedId", deceasedId)
@@ -636,12 +645,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         imageDeceased: String,
         nameDeceased: String
     ) {
-        if(imageDeceased.startsWith("http")){
+        if (imageDeceased.startsWith("http")) {
             Glide.with(ctx)
-                .load(imageDeceased.replace("http","https"))
+                .load(imageDeceased.replace("http", "https"))
                 .circleCrop()
                 .into(IvToolbar)
-        }else{
+        } else {
             Glide.with(ctx)
                 .load(imageDeceased)
                 .circleCrop()
@@ -723,12 +732,12 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             configBioText(deceasedInfo.description!!)
 
 
-            if(url.startsWith("http")){
+            if (url.startsWith("http")) {
                 Glide.with(this)
-                    .load(url.replace("http","https"))
+                    .load(url.replace("http", "https"))
                     .circleCrop()
                     .into(ImVDeceased)
-            }else{
+            } else {
                 Glide.with(this)
                     .load(url)
                     .circleCrop()
@@ -740,13 +749,13 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
     }
 
     private fun showPrivateDetailsPage(itemDeceased: DeceasedProfileDataModel) {
-      val url =  itemDeceased.imageurl
-        if(url.startsWith("http")){
+        val url = itemDeceased.imageurl
+        if (url.startsWith("http")) {
             Glide.with(this)
-                .load(url.replace("http","https"))
+                .load(url.replace("http", "https"))
                 .circleCrop()
                 .into(ImVDeceasedPrivate)
-        }else{
+        } else {
             Glide.with(this)
                 .load(url)
                 .circleCrop()
@@ -811,5 +820,56 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         }
     }
 
+    private fun notificationDialog() {
 
+        Log.i("testTag4", "dialog")
+        dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_notification)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+        val checkBoxThird: CheckBox = dialog.findViewById(R.id.checkBoxThird)
+        val checkBoxSeventh: CheckBox = dialog.findViewById(R.id.checkBoxSeventh)
+        val checkBoxForty: CheckBox = dialog.findViewById(R.id.checkBoxForty)
+        val checkBoxAnniversary: CheckBox = dialog.findViewById(R.id.checkBoxAnniversary)
+        val notifSave: Button = dialog.findViewById(R.id.notifSave)
+
+        if (checkBoxThird.isChecked) {
+            third = true
+        }
+
+        if (checkBoxForty.isChecked) {
+            forty = true
+        }
+
+        if (checkBoxSeventh.isChecked) {
+            seventh = true
+        }
+
+        if (checkBoxAnniversary.isChecked) {
+            anniversary = true
+        }
+        if (checkBoxAnniversary.isChecked) {
+            fifth = true
+        }
+
+        notifSave.setOnClickListener {
+
+            viewModel.requestReminder(
+                RemindeRequestModel(
+                    anniversary,
+                    deceasedId!!,
+                    fifth,
+                    forty,
+                    Hawk.get(TarhimConfig.USER_NUMBER),
+                    seventh,
+                    third,
+                    "Push"
+                )
+            )
+        }
+        dialog.show()
+    }
 }

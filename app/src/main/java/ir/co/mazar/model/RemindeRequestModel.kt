@@ -1,5 +1,6 @@
 package ir.co.mazar.model
 
+
 data class RemindeRequestModel(
     val aniversary: Boolean,
     val deceasedId: Int,
