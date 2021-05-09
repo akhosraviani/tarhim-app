@@ -71,9 +71,9 @@
     </string>
 
     <string-array name="list_pray_type">
-        <item>صلوات</item>
-        <item>قرآن</item>
-        <item>پول</item>
+        <item>فرستادن صلوات</item>
+        <item>ختم قرآن</item>
+        <item>نیاز مالی</item>
     </string-array>
 
     <string-array name="list_access_type">
