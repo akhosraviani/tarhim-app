@@ -133,7 +133,7 @@ class MyFollowingFragment : Fragment(), ProfileListener.MyDeceasedListener,
 
        showConfirmDialog(
             requireActivity(), R.drawable.request,
-            "آیا مطمن هستید؟",
+            "آیا مطمئن هستید؟",
             {
                 viewModel.requestUnFollowDeceased(deceasedId)
                 showLoading(true)
