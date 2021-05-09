@@ -105,7 +105,7 @@ class MapsFragment : Fragment(),
             MarkerOptions()
                 .draggable(false).position(mGoogleMap.cameraPosition.target).icon(
                     BitmapDescriptorFactory
-                        .fromResource(R.drawable.marker)
+                        .fromResource(R.drawable.orijin_black)
                 )
         )
 
