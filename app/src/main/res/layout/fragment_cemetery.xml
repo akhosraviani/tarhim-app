@@ -139,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/iran_sans"
                 android:text="جستجوی متوفی"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="16sp"
                 android:textColor="@color/grey_500"
                 android:textColorHighlight="@color/text_color_lighter"
                 android:textStyle="bold"
@@ -150,8 +150,8 @@
 
             <ImageButton
                 android:id="@+id/imageButton"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/search_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -168,12 +168,12 @@
             android:background="@drawable/shape_button"
             android:fontFamily="@font/iran_sans"
             android:text="ایجادصفحه متوفی"
+            android:textSize="16sp"
             android:textColor="@color/white"
             android:gravity="center"
             android:paddingStart="@dimen/_30sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:drawableRight="@drawable/ic_baseline_add_24"
-
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/SearchLayout"
