@@ -60,6 +60,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
         Hawk.put(FIRST_VISIT, true)
         initUi()
 
+
         //<editor-fold desc="show EllipizeTitle">
         var titlesrc = "${getString(R.string.salavat)} ♦ ${getString(R.string.ill)}"
         TitleCemetery.text = titlesrc
@@ -74,7 +75,8 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
         viewModel.ldLatestSearch.observe(viewLifecycleOwner, Observer {
             showLoading(false)
             it.let {
-                    if (it!=null && it.size > 0) {
+                Log.i("testTag3", "hi =$it")
+                    if (it!=null && it.isNotEmpty()) {
                         latestAdapter.submitList(it)
                     }else{
                         latestAdapter.submitList(null)
@@ -226,7 +228,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
     }
 
     override fun latestCallBack(decId: Int) {
-
+        Log.i("testTag7","cemetery latest call id= "+decId.toString())
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
         SearchView.setText("")
         SearchView.clearFocus()
@@ -237,6 +239,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
     }
 
     override fun serachClickCallBack(deceasedId: Int) {
+        Log.i("testTag7","search cemetery id= "+deceasedId.toString())
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
         SearchView.setText("")
         SearchView.clearFocus()

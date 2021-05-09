@@ -185,6 +185,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun requestEditDeceased(dataRequest: CreateDeceasedRequest, id: Int) {
+        Log.i("testTag3","edited view model")
         loginRepository.requestEditDeceaed(dataRequest, id, Hawk.get(USER_NUMBER))
     }
 

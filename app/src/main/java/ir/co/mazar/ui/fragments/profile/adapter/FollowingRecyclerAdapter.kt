@@ -56,15 +56,20 @@ class FollowingRecyclerAdapter(
         }
 
         fun bind(item: MyDeceasedDataModel) {
+            val url = item.imageurl
+            if(url.startsWith("http")){
+                Glide.with(itemView.context)
+                    .load(url.replace("http","https"))
+                    .circleCrop()
+                    .into(IvFollowingImage)
+            }else{
+                Glide.with(itemView.context)
+                    .load(url)
+                    .circleCrop()
+                    .into(IvFollowingImage)
+            }
 
-            Glide
-                .with(itemView.context)
-                .load(item.imageurl)
-                .circleCrop()
-                .into(IvFollowingImage)
-
-            TvFollowingName.setText(item.name)
-//
+            TvFollowingName.text = item.name
             var dateBirthDay = Date((item.birthday).toLong())
             var dateDeathDay = Date((item.deathday).toLong())
             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)

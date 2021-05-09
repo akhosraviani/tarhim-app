@@ -23,6 +23,7 @@ class DeceasedRepository {
             .enqueue(object : Callback<LikeCommentDataModel> {
                 override fun onFailure(call: retrofit2.Call<LikeCommentDataModel>, t: Throwable) {
                     mldError.value = t
+
                 }
 
                 override fun onResponse(

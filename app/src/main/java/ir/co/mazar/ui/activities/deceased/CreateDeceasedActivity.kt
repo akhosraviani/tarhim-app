@@ -99,6 +99,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
     private var br = NetworkConnectionReceiver()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_deceased)
@@ -122,6 +123,25 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             }
         })
 
+        if (intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased") != null) {
+            txtToolbar.text = "ویرایش پروفایل"
+            TvChangeImg.text = getString(R.string.msg_edit_image)
+            editProfile = true
+
+
+            deceasedInfo = intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased")!!
+            val  bundle = intent.extras
+            DeceasedId = bundle!!.getInt("DeceasedId")
+            Log.i("testTag7", "id in create dec activity= " + DeceasedId.toString())
+//            DeceasedId = intent?.getIntExtra("DeceasedId", -1)!!
+            locationBurial =
+                LatLng((deceasedInfo!!.latitude).toDouble(), (deceasedInfo!!.longitude).toDouble())
+            showDeceasedDetails(deceasedInfo!!)
+
+        }
+
+        Log.i("testTag4","DeceasedId=  "+DeceasedId.toString())
+
         setUpView(this.window.decorView)
         setUpSpinner()
 
@@ -129,18 +149,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         locationBurial = Hawk.get("LOCATION", LatLng(35.53, 51.37))
 
 
-
-        if (intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased") != null) {
-            txtToolbar.text = "ویرایش پروفایل"
-            TvChangeImg.text = getString(R.string.msg_edit_image)
-            editProfile = true
-            deceasedInfo = intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased")!!
-            DeceasedId = intent?.getIntExtra("DeceasedId", -1)!!
-            locationBurial =
-                LatLng((deceasedInfo!!.latitude).toDouble(), (deceasedInfo!!.longitude).toDouble())
-            showDeceasedDetails(deceasedInfo!!)
-
-        }
 
         EtBirthDateDeceased.setOnFocusChangeListener { view, b ->
             hideSoftKeyboard(this)
@@ -168,14 +176,14 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         }
 
         BtnSaveEditUser.setOnClickListener {
-
             if (deceasedInfo != null) {
+                Log.i("testTag4","DeceasedId=  "+DeceasedId.toString())
                 showLoading(true)
                 viewModel.requestEditDeceased(
                     CreateDeceasedRequest(
                         accessType,
-                        dateMap.get(1)!!,
-                        dateMap.get(2)!!,
+                        dateMap[1]!!,
+                        dateMap[2]!!,
                         ETBurialLocation.text.toString(),
                         ETdeceasedDescription.text.toString(),
                         imagePath!!,
@@ -253,8 +261,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         })
         viewModel.ldEditDeceased.observe(this, Observer {
 
+           Log.i("testTag3","edited = "+it.toString())
             if (it != null) {
-
                 showLoading(false)
                 if (it.code == 200) {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT)

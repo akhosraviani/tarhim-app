@@ -43,6 +43,7 @@ import ir.co.mazar.utils.TarhimConfig.Companion.FIRST_VISIT
 import ir.co.mazar.utils.TarhimConfig.Companion.USER_NUMBER
 import ir.co.mazar.utils.TarhimToast
 import kotlinx.android.synthetic.main.edit_user_profile.*
+import kotlinx.android.synthetic.main.gallery_image_dialog.view.*
 import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import okhttp3.MultipartBody
 import java.io.File
@@ -117,17 +118,34 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
             it?.let {
                 showLoading(false)
                 if (it.name != null) {
-                    TvEditImgUser.setText(getString(R.string.msg_edit_image))
+                    TvEditImgUser.text = getString(R.string.msg_edit_image)
                     ETNameUser.setText(it.name)
                     if (it.email != null) {
                         ETUserEmail.setText(it.email)
                     }
-                    imagePath = it.imageurl
-                    Glide.with(requireContext())
-                        .load(imagePath)
-                        .centerInside()
-                        .circleCrop()
-                        .into(IvUser)
+
+                    val url = it.imageurl.toString()
+                    if (url.startsWith("http")) {
+                        Glide.with(requireContext())
+                            .load(url.replace("http", "https"))
+                            .centerInside()
+                            .circleCrop()
+                            .into(IvUser)
+                    } else {
+                        Glide.with(requireContext())
+                            .load(url)
+                            .centerInside()
+                            .circleCrop()
+                            .into(IvUser)
+                    }
+
+
+//                    imagePath = it.imageurl
+//                    Glide.with(requireContext())
+//                        .load(imagePath)
+//                        .centerInside()
+//                        .circleCrop()
+//                        .into(IvUser)
                 }
             }
         })
@@ -167,7 +185,7 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
 
 
         BtnSaveUser.setOnClickListener {
-            if (ETNameUser.text.toString().length > 0) {
+            if (ETNameUser.text.toString().isNotEmpty()) {
 
                 if (ETUserEmail.text.isNullOrEmpty() ||
                     Patterns.EMAIL_ADDRESS.matcher(ETUserEmail.text!!.trim().toString()).matches()
@@ -212,7 +230,7 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
 //                    .message("ابتدا حساب کاربری خئد را تکمیل کنید")
 //                    .build()
 //            } else {
-                findNavController().navigate(R.id.fragment_profile)
+            findNavController().navigate(R.id.fragment_profile)
 //            }
         }
 

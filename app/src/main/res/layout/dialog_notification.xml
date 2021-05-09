@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/shape_dialog_backgraound"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/checkBoxThird"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="100dp"
+        android:fontFamily="@font/iran_sans"
+        android:text="سوم"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBoxSeventh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/iran_sans"
+        android:text="هفتم"
+        app:layout_constraintStart_toStartOf="@+id/checkBoxFifth"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxFifth" />
+
+    <CheckBox
+        android:id="@+id/checkBoxForty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/iran_sans"
+        android:text="چهلم"
+        app:layout_constraintStart_toStartOf="@+id/checkBoxSeventh"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxSeventh" />
+
+    <CheckBox
+        android:id="@+id/checkBoxAnniversary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/iran_sans"
+        android:text="سالگرد"
+        app:layout_constraintStart_toStartOf="@+id/checkBoxForty"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxForty" />
+
+    <Button
+        android:id="@+id/notifSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ذخیره"
+        android:fontFamily="@font/iran_sans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxAnniversary" />
+
+    <CheckBox
+        android:id="@+id/checkBoxFifth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/iran_sans"
+        android:text="پنجم"
+        app:layout_constraintStart_toStartOf="@+id/checkBoxThird"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxThird" />
+</androidx.constraintlayout.widget.ConstraintLayout>

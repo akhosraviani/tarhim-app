@@ -137,8 +137,8 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/ImVDeceased"
-                            android:layout_width="@dimen/_100sdp"
-                            android:layout_height="@dimen/_100sdp"
+                            android:layout_width="@dimen/_120sdp"
+                            android:layout_height="@dimen/_120sdp"
                             android:background="@drawable/profil_pic"
                             android:elevation="5dp"
                             app:layout_constraintBottom_toBottomOf="parent"

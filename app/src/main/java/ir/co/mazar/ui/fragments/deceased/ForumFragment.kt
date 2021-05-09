@@ -37,6 +37,7 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
     private val ADMIN_STATUE = "adminStatus"
     private var adminStatus: Boolean? = false
+    private var replayStatus: Boolean = false
 
     fun newInstance(id: Int, adminStatus: Boolean): ForumFragment {
         val fragment = ForumFragment()
@@ -88,7 +89,10 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
         viewModel.ldSendCommnet.observe(viewLifecycleOwner, Observer {
             it.let {
-                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                ETComment.setText("")
+//                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                viewModel.requestGetComment(deceasedId!!)
+
             }
         })
 
@@ -112,10 +116,13 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
         deceasedViewModel.ldReplayComment.observe(viewLifecycleOwner, Observer {
             it.let {
                 if (it.code == 200) {
+                    Log.i("testTag2","replay 200")
                     commentAdapter.setReplay(selectedCommentResponse)
                     commentAdapter.setId(selectedCommentId)
                     ForumRecycler.adapter = commentAdapter
+                        viewModel.requestGetComment(deceasedId!!)
                     ETComment.setText("")
+                    replayStatus = false
                 }
             }
         })
@@ -140,7 +147,8 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
 
 
         BtnSendComment.setOnClickListener {
-            if (checkReplay) {
+            if (replayStatus) {
+                Log.i("testTag2","replayStatus true")
                 selectedCommentResponse = ETComment.text.toString()
                 deceasedViewModel.requestReplyComment(
                     ReplyCommentRequest(
@@ -150,6 +158,7 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
                     )
                 )
             } else {
+                Log.i("testTag2","replayStatus false")
                 if (ETComment.text.toString().isNotEmpty()) {
                     viewModel.requestSendComment(
                         SendCommentRequest(
@@ -245,13 +254,14 @@ class ForumFragment : Fragment(), TipsListener, LikeCommentClicked {
             imm.toggleSoftInput(
                 InputMethodManager.SHOW_FORCED,
                 InputMethodManager.HIDE_IMPLICIT_ONLY
-            );
+            )
             ETComment.requestFocus()
+            ETComment.setText("")
             if (commentAdapter.itemCount > 0) {
                 ForumRecycler.layoutManager?.scrollToPosition(commentAdapter.itemCount - 1)
             }
             selectedCommentId = msgId
-            checkReplay = true
+        replayStatus = true
 
     }
 

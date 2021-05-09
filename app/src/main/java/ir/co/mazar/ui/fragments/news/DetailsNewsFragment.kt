@@ -67,9 +67,19 @@ class DetailsNewsFragment : BaseBottomSheetDialog() {
     fun initUi(new: NewsDataModel) {
 
         TvTitleOfNews.text = new.topic
-        Glide.with(requireContext())
-            .load(new.imageurl)
-            .into(IvDetailsNews)
+        val url = new.imageurl
+        if (url != null) {
+            if(url.startsWith("http")){
+                Glide.with(requireContext())
+                    .load(url.replace("http","https"))
+                    .into(IvDetailsNews)
+            }else{
+                Glide.with(requireContext())
+                    .load(url)
+                    .into(IvDetailsNews)
+            }
+        }
+
         TvTopicDetailsNews.text = new.text
 
 

@@ -39,35 +39,69 @@ class GalleryRecyclerViewAdapter(
         open fun bindTo(item: GalleryDataModel) {
 
             Log.e("bindTo", "bindTo: " + item.imagespath)
-            Glide.with(itemView.context)
-                .load(item.imagespath)
-                .centerCrop()
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        loadinggallery.visibility = View.GONE
 
-                        return false
-                    }
+            val url: String = java.lang.String.valueOf(item.imagespath)
+            if(url.startsWith("http")){
+                Glide.with(itemView.context)
+                    .load(url.replace("http","https"))
+                    .circleCrop()
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            loadinggallery.visibility = View.GONE
 
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
+                            return false
+                        }
 
-                        loadinggallery.visibility = View.GONE
-                        return false
-                    }
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
 
-                })
-                .into(galleryIv)
+                            loadinggallery.visibility = View.GONE
+                            return false
+                        }
+
+                    })
+                    .into(galleryIv)
+            }else{
+                Glide.with(itemView.context)
+                    .load(url)
+                    .circleCrop()
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            loadinggallery.visibility = View.GONE
+
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+
+                            loadinggallery.visibility = View.GONE
+                            return false
+                        }
+
+                    })
+                    .into(galleryIv)
+            }
 
         }
     }

@@ -64,22 +64,31 @@ class CommentRecyclerAdapter(
                 likeIcon.setImageResource(R.drawable.ic_non_favorite)
 
             }
-            TVCountLike.setText("${comment.likes}")
-            if (comment.reply != null) {
+            TVCountLike.text = "${comment.likes}"
+            if (comment.reply == null) {
+                nameUser.text = comment.name
+                txtComment.text = comment.message
+
+                val url = comment.imageurl
+                if(url.startsWith("http")){
+                    Glide.with(itemView.context)
+                        .load(url.replace("http","https"))
+                        .circleCrop()
+                        .into(imageUser)
+                }else{
+                    Glide.with(itemView.context)
+                        .load(url)
+                        .circleCrop()
+                        .into(imageUser)
+                }
+
+                rightLayout.visibility = View.VISIBLE
+                IVRightForum.visibility = View.VISIBLE
+            } else {
+
                 txtComment.text = comment.reply
                 rightLayout.visibility = View.GONE
                 IVRightForum.visibility = View.GONE
-
-            } else {
-                nameUser.text = comment.name
-                txtComment.text = comment.message
-                Glide.with(itemView.context)
-                    .load(comment.imageurl)
-                    .circleCrop()
-                    .into(imageUser)
-                rightLayout.visibility = View.VISIBLE
-                IVRightForum.visibility = View.VISIBLE
-
             }
         }
     }
@@ -100,10 +109,19 @@ class CommentRecyclerAdapter(
 
         open fun bindTo(comment: CommentDataModel) {
 
-            Glide.with(itemView.context)
-                .load(comment.imageurl)
-                .circleCrop()
-                .into(adminImage)
+            val url = comment.imageurl
+            if(url.startsWith("http")){
+                Glide.with(itemView.context)
+                    .load(url.replace("http","https"))
+                    .circleCrop()
+                    .into(adminImage)
+            }else{
+                Glide.with(itemView.context)
+                    .load(url)
+                    .circleCrop()
+                    .into(adminImage)
+            }
+
             leftTVCommentForum.text = comment.reply
             adminComment.text = comment.message
             TVNameLeftForum.text = comment.name
@@ -131,12 +149,12 @@ class CommentRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view: View
         if (viewType == RIGHT_VIEW_TYPE) {
-            view = LayoutInflater.from(parent.getContext())
+            view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.row_right_forum, parent, false)
             return CommentViewHolder(view)
 
         }
-            view = LayoutInflater.from(parent.getContext())
+            view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.row_left_forum, parent, false)
             return ReplayViewHolder(view)
 
@@ -144,10 +162,10 @@ class CommentRecyclerAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (getItem(position).reply!=null){
-            return LEFT_VIEW_TYPE
+        return if (getItem(position).reply!=null){
+            LEFT_VIEW_TYPE
         }else{
-            return RIGHT_VIEW_TYPE
+            RIGHT_VIEW_TYPE
         }
     }
 
@@ -177,8 +195,8 @@ class CommentRecyclerAdapter(
                var popup = PopupMenu(holder.itemView.context, holder.itemView)
                popup.inflate(R.menu.tool_tip_menu)
                if (!adminStatus!!) {
-                   popup.menu.findItem(R.id.deleteTool).setVisible(false)
-                   popup.menu.findItem(R.id.replayTool).setVisible(false)
+                   popup.menu.findItem(R.id.deleteTool).isVisible = false
+//                   popup.menu.findItem(R.id.replayTool).setVisible(false)
                }
                holder.itemView.BtnMore.setOnClickListener {
                    popup.setOnMenuItemClickListener {

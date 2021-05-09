@@ -36,10 +36,24 @@ class RequirementRecyclerAdapter :
 
        fun bind(item: RequirementDataModel) {
 
-            Glide.with(itemView.context)
-                .load(item.imageUrl)
-                .circleCrop()
-                .into(IvUserReq)
+           val url = item.imageUrl
+           if(url.startsWith("http")){
+               Glide.with(itemView.context)
+                   .load(url.replace("http","https"))
+                   .circleCrop()
+                   .into(IvUserReq)
+           }else{
+               Glide.with(itemView.context)
+                   .load(url)
+                   .circleCrop()
+                   .into(IvUserReq)
+           }
+
+//            Glide.with(itemView.context)
+//                .load(item.imageUrl)
+//                .circleCrop()
+//                .into(IvUserReq)
+
             TvUserReq.setText(item.name)
             TvTypeReq.setText(item.subject)
             TvDecs.setText(item.message)

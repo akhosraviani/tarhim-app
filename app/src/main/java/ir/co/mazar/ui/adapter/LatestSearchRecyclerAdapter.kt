@@ -67,11 +67,21 @@ class LatestSearchRecyclerAdapter(
 
         @RequiresApi(Build.VERSION_CODES.O)
         fun bindTo(deceased: DeceasedDataModel) {
-            Glide.with(itemView.context)
-                .load(deceased.imageurl)
-                .centerInside()
-                .circleCrop()
-                .into(imageDeceased)
+
+            val url = deceased.imageurl
+            if(url.startsWith("http")){
+                Glide.with(itemView.context)
+                    .load(url.replace("http","https"))
+                    .centerInside()
+                    .circleCrop()
+                    .into(imageDeceased)
+            }else{
+                Glide.with(itemView.context)
+                    .load(url)
+                    .centerInside()
+                    .circleCrop()
+                    .into(imageDeceased)
+            }
 
             nameDeceased.text = deceased.name
 

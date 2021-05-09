@@ -16,7 +16,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -328,10 +327,17 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         if (adminStatus) {
             root.btn_remove_image.visibility = View.VISIBLE
         }
-        Glide.with(activity)
-            .load(item.imagespath)
-            .into(root.ImgGalleryDialog)
 
+        val url: String = java.lang.String.valueOf(item.imagespath)
+        if(url.startsWith("http")){
+            Glide.with(activity)
+                .load(url.replace("http","https"))
+                .into(root.ImgGalleryDialog)
+        }else{
+            Glide.with(activity)
+                .load(url)
+                .into(root.ImgGalleryDialog)
+        }
 
         root.btn_report_image.setOnClickListener(report)
         root.btn_remove_image.setOnClickListener(remove)
