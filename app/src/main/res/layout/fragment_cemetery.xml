@@ -115,13 +115,22 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/latestRoot"
         android:layout_width="match_parent"
-        android:background="@drawable/cemetery_bkg"
+
         android:layout_height="0dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TitleCemetery"
         app:layout_constraintVertical_bias="0">
-
+        <ImageView
+            android:id="@+id/center"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:background="@drawable/cemet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/BtnCreateDeceased"
+            app:layout_constraintVertical_bias=".11" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/SearchLayout"
@@ -179,7 +188,7 @@
             app:layout_constraintEnd_toEndOf="@+id/SearchLayout"
             app:layout_constraintStart_toStartOf="@+id/SearchLayout"
             app:layout_constraintTop_toBottomOf="@+id/SearchLayout"
-            app:layout_constraintVertical_bias=".05" />
+            app:layout_constraintVertical_bias=".03" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/TvLatestSearch"

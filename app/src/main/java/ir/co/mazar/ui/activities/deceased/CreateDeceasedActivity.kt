@@ -132,6 +132,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             deceasedInfo = intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased")!!
             val  bundle = intent.extras
             DeceasedId = bundle!!.getInt("DeceasedId")
+            Hawk.put("deceasedId",DeceasedId)
             Log.i("testTag7", "id in create dec activity= " + DeceasedId.toString())
 //            DeceasedId = intent?.getIntExtra("DeceasedId", -1)!!
             locationBurial =
@@ -140,7 +141,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
         }
 
-        Log.i("testTag4","DeceasedId=  "+DeceasedId.toString())
 
         setUpView(this.window.decorView)
         setUpSpinner()
@@ -177,7 +177,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
         BtnSaveEditUser.setOnClickListener {
             if (deceasedInfo != null) {
-                Log.i("testTag4","DeceasedId=  "+DeceasedId.toString())
                 showLoading(true)
                 viewModel.requestEditDeceased(
                     CreateDeceasedRequest(
@@ -190,7 +189,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                         locationBurial.latitude,
                         locationBurial.longitude,
                         ETNameDeceased.text.toString()
-                    ), DeceasedId!!)
+                    ), Hawk.get("deceasedId")!!
+                )
             } else {
                 //<editor-fold desc="Create Deceaed Profile">
                 if (
@@ -243,12 +243,14 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             showLoading(false)
             if (it != null) {
 
+                DeceasedId=  Hawk.get("deceasedId")
                 Toast.makeText(this, "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show()
                 Handler().postDelayed({
 
                     startActivity(
                         Intent(this, DeceasedProfileActivity::class.java)
-                            .putExtra("FromPersonal", it.id!!)
+                            .putExtra("FromPersonal",   DeceasedId)!!
+
                     )
                     editProfile = true
                 }, 1000)
@@ -267,6 +269,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                 if (it.code == 200) {
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT)
                     Handler().postDelayed({
+                        DeceasedId = Hawk.get("deceasedId")
+
                         startActivity(
                             Intent(this, DeceasedProfileActivity::class.java)
                                 .putExtra("FromPersonal", DeceasedId!!)
@@ -446,7 +450,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                         }
                     }
 
-                    Log.e("dateMap", "onDateSelected: "+unixTime )
+                    Log.e("dateMap", "onDateSelected: " + unixTime)
 
                     editText.imeOptions = EditorInfo.IME_ACTION_NEXT
                     showSoftKeyboard(this@CreateDeceasedActivity)
@@ -483,15 +487,24 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
     }
 
     private fun showDeceasedDetails(details: DeceasedProfileDataModel) {
+
+        val url: String = java.lang.String.valueOf(details.imageurl)
+        if(url.startsWith("http")){
+            imagePath=url.replace("http","https")
+
+        }else{
+            imagePath = details.imageurl
+        }
+
+
+        Log.e("imagePath", "showDeceasedDetails: "+imagePath )
         Glide.with(this)
-            .load(details.imageurl)
+            .load(imagePath)
             .circleCrop()
             .into(IvDeceased)
 
-        imagePath = details.imageurl
-
-        Log.e("EditDeceased", "showDeceasedDetails: "+deceasedInfo!!.birthday )
-        Log.e("EditDeceased", "showDeceasedDetails: "+deceasedInfo!!.deathday )
+        Log.e("EditDeceased", "showDeceasedDetails: " + deceasedInfo!!.birthday)
+        Log.e("EditDeceased", "showDeceasedDetails: " + deceasedInfo!!.deathday)
         var dateBirthDay = Date((details.birthday).toLong())
         var dateDeathDay = Date((details.deathday).toLong())
         val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)

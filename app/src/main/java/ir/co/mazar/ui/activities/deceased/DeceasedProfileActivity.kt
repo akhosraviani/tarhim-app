@@ -171,7 +171,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                 .into(ImVDeceased)
                         } else {
                             Glide.with(this)
-                                .load(it.imageurl)
+                                .load(url)
                                 .circleCrop()
                                 .into(ImVDeceased)
                         }
@@ -220,7 +220,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                     .into(ImVDeceased)
                             } else {
                                 Glide.with(this)
-                                    .load(it.imageurl)
+                                    .load(url)
                                     .circleCrop()
                                     .into(ImVDeceased)
                             }
@@ -260,7 +260,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                     .into(ImVDeceased)
                             } else {
                                 Glide.with(this)
-                                    .load(it.imageurl)
+                                    .load(url)
                                     .circleCrop()
                                     .into(ImVDeceased)
                             }
@@ -328,7 +328,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                 .into(ImVDeceased)
                         } else {
                             Glide.with(this)
-                                .load(it.imageurl)
+                                .load(url)
                                 .circleCrop()
                                 .into(ImVDeceased)
                         }
@@ -378,7 +378,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                     .into(ImVDeceased)
                             } else {
                                 Glide.with(this)
-                                    .load(it.imageurl)
+                                    .load(url)
                                     .circleCrop()
                                     .into(ImVDeceased)
                             }
@@ -419,7 +419,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                     .into(ImVDeceased)
                             } else {
                                 Glide.with(this)
-                                    .load(it.imageurl)
+                                    .load(url)
                                     .circleCrop()
                                     .into(ImVDeceased)
                             }
