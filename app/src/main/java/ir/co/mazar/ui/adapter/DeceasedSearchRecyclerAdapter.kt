@@ -39,10 +39,20 @@ class DeceasedSearchRecyclerAdapter(private val listDeceased: List<DeceasedDataM
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Glide.with(holder.itemView.context)
-            .load(listDeceased.get(position).imageurl)
-            .circleCrop()
-            .into(holder.imageDeceased)
+
+        val url = listDeceased[position].imageurl
+        if(url.startsWith("http")){
+            Glide.with(holder.itemView.context)
+                .load(url.replace("http","https"))
+                .circleCrop()
+                .into(holder.imageDeceased)
+        }else{
+            Glide.with(holder.itemView.context)
+                .load(url)
+                .circleCrop()
+                .into(holder.imageDeceased)
+        }
+
 
         holder.nameDeceased.text = listDeceased.get(position).name
         holder.birth_DeathDay.text =

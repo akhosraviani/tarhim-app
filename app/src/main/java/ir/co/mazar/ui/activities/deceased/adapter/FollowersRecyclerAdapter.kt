@@ -51,13 +51,22 @@ class FollowersRecyclerAdapter() :
         }
 
         fun bindTo(follower: FollowersDataModel) {
-            Glide.with(itemView.context)
-                .load(follower.imageurl)
-                .centerInside()
-                .placeholder(R.drawable.profil_pic)
-                .circleCrop()
-                .into(imageFollowers)
-
+            val url = follower.imageurl
+            if(url.startsWith("http")){
+                Glide.with(itemView.context)
+                    .load(url.replace("http","https"))
+                    .centerInside()
+                    .placeholder(R.drawable.profil_pic)
+                    .circleCrop()
+                    .into(imageFollowers)
+            }else{
+                Glide.with(itemView.context)
+                    .load(follower.imageurl)
+                    .centerInside()
+                    .placeholder(R.drawable.profil_pic)
+                    .circleCrop()
+                    .into(imageFollowers)
+            }
             nameFollowers.text = follower.name
 
 

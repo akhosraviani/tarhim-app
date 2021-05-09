@@ -68,10 +68,20 @@ class CommentRecyclerAdapter(
             if (comment.reply == null) {
                 nameUser.text = comment.name
                 txtComment.text = comment.message
-                Glide.with(itemView.context)
-                    .load(comment.imageurl)
-                    .circleCrop()
-                    .into(imageUser)
+
+                val url = comment.imageurl
+                if(url.startsWith("http")){
+                    Glide.with(itemView.context)
+                        .load(url.replace("http","https"))
+                        .circleCrop()
+                        .into(imageUser)
+                }else{
+                    Glide.with(itemView.context)
+                        .load(url)
+                        .circleCrop()
+                        .into(imageUser)
+                }
+
                 rightLayout.visibility = View.VISIBLE
                 IVRightForum.visibility = View.VISIBLE
             } else {
@@ -99,10 +109,19 @@ class CommentRecyclerAdapter(
 
         open fun bindTo(comment: CommentDataModel) {
 
-            Glide.with(itemView.context)
-                .load(comment.imageurl)
-                .circleCrop()
-                .into(adminImage)
+            val url = comment.imageurl
+            if(url.startsWith("http")){
+                Glide.with(itemView.context)
+                    .load(url.replace("http","https"))
+                    .circleCrop()
+                    .into(adminImage)
+            }else{
+                Glide.with(itemView.context)
+                    .load(url)
+                    .circleCrop()
+                    .into(adminImage)
+            }
+
             leftTVCommentForum.text = comment.reply
             adminComment.text = comment.message
             TVNameLeftForum.text = comment.name

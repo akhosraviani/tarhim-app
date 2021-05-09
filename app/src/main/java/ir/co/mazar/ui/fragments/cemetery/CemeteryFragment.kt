@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.orhanobut.hawk.Hawk
 import ir.co.mazar.R
 import ir.co.mazar.model.deceased.DeceasedDataModel

@@ -100,6 +100,8 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             showLoading(false)
 
             it?.let {
+                val url = it.imageurl
+
                 if (!TextUtils.isEmpty(it.isowner.toString())) {
                     adminStatus = it.isowner
                 }
@@ -136,10 +138,18 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                         TvBurialLocation.text = "${it.deathloc}"
                         bioDeceased = it.description
                         configBioText(it.description!!)
-                        Glide.with(this)
-                            .load(it.imageurl)
-                            .circleCrop()
-                            .into(ImVDeceased)
+
+                        if(url.startsWith("http")){
+                            Glide.with(this)
+                                .load(url.replace("http","https"))
+                                .circleCrop()
+                                .into(ImVDeceased)
+                        }else{
+                            Glide.with(this)
+                                .load(it.imageurl)
+                                .circleCrop()
+                                .into(ImVDeceased)
+                        }
 
                         initCollapsToolbar(this, it.imageurl!!, it.name!!)
 
@@ -176,10 +186,19 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
-                            Glide.with(this)
-                                .load(it.imageurl)
-                                .circleCrop()
-                                .into(ImVDeceased)
+
+
+                            if(url.startsWith("http")){
+                                Glide.with(this)
+                                    .load(url.replace("http","https"))
+                                    .circleCrop()
+                                    .into(ImVDeceased)
+                            }else{
+                                Glide.with(this)
+                                    .load(it.imageurl)
+                                    .circleCrop()
+                                    .into(ImVDeceased)
+                            }
 
                             initCollapsToolbar(this, it.imageurl!!, it.name!!)
 
@@ -208,10 +227,18 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
-                            Glide.with(this)
-                                .load(it.imageurl)
-                                .circleCrop()
-                                .into(ImVDeceased)
+
+                            if(url.startsWith("http")){
+                                Glide.with(this)
+                                    .load(url.replace("http","https"))
+                                    .circleCrop()
+                                    .into(ImVDeceased)
+                            }else{
+                                Glide.with(this)
+                                    .load(it.imageurl)
+                                    .circleCrop()
+                                    .into(ImVDeceased)
+                            }
 
                             initCollapsToolbar(this, it.imageurl!!, it.name!!)
                         }else{
@@ -232,6 +259,8 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             showLoading(false)
 
             it?.let {
+
+                val url = it.imageurl
                 if (!TextUtils.isEmpty(it.isowner!!.toString())) {
                     adminStatus = it.isowner!!
                 }
@@ -266,10 +295,18 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                         TvBurialLocation.text = "${it.deathloc}"
                         bioDeceased = it.description
                         configBioText(it.description!!)
-                        Glide.with(this)
-                            .load(it.imageurl)
-                            .circleCrop()
-                            .into(ImVDeceased)
+
+                        if(url.startsWith("http")){
+                            Glide.with(this)
+                                .load(url.replace("http","https"))
+                                .circleCrop()
+                                .into(ImVDeceased)
+                        }else{
+                            Glide.with(this)
+                                .load(it.imageurl)
+                                .circleCrop()
+                                .into(ImVDeceased)
+                        }
 
                         initCollapsToolbar(this, it.imageurl!!, it.name!!)
 
@@ -308,10 +345,18 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
-                            Glide.with(this)
-                                .load(it.imageurl)
-                                .circleCrop()
-                                .into(ImVDeceased)
+
+                            if(url.startsWith("http")){
+                                Glide.with(this)
+                                    .load(url.replace("http","https"))
+                                    .circleCrop()
+                                    .into(ImVDeceased)
+                            }else{
+                                Glide.with(this)
+                                    .load(it.imageurl)
+                                    .circleCrop()
+                                    .into(ImVDeceased)
+                            }
 
                             initCollapsToolbar(this, it.imageurl!!, it.name!!)
 
@@ -341,10 +386,18 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             TvBurialLocation.text = "${it.deathloc}"
                             bioDeceased = it.description
                             configBioText(it.description!!)
-                            Glide.with(this)
-                                .load(it.imageurl)
-                                .circleCrop()
-                                .into(ImVDeceased)
+
+                            if(url.startsWith("http")){
+                                Glide.with(this)
+                                    .load(url.replace("http","https"))
+                                    .circleCrop()
+                                    .into(ImVDeceased)
+                            }else{
+                                Glide.with(this)
+                                    .load(it.imageurl)
+                                    .circleCrop()
+                                    .into(ImVDeceased)
+                            }
                             initCollapsToolbar(this, it.imageurl!!, it.name!!)
                         } else {
                             BtnEditToolbar.visibility = View.GONE
@@ -583,10 +636,17 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         imageDeceased: String,
         nameDeceased: String
     ) {
-        Glide.with(ctx)
-            .load(imageDeceased)
-            .circleCrop()
-            .into(IvToolbar)
+        if(imageDeceased.startsWith("http")){
+            Glide.with(ctx)
+                .load(imageDeceased.replace("http","https"))
+                .circleCrop()
+                .into(IvToolbar)
+        }else{
+            Glide.with(ctx)
+                .load(imageDeceased)
+                .circleCrop()
+                .into(IvToolbar)
+        }
 
         TvNameToolbar.text = nameDeceased
     }
@@ -625,6 +685,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
     }
 
     private fun requestFollow(deceasedInfo: DeceasedProfileDataModel) {
+        val url = deceasedInfo.imageurl
         showPrivateDetailsPage(deceasedInfo)
         if ((deceasedInfo.isrequested == null || !deceasedInfo.isrequested!!) && !deceasedInfo.isfollow!!) {
             BtnNotifBell.visibility = GONE
@@ -660,20 +721,37 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             TvBurialLocation.text = "${deceasedInfo.deathloc}"
             bioDeceased = deceasedInfo.description
             configBioText(deceasedInfo.description!!)
-            Glide.with(this)
-                .load(deceasedInfo.imageurl)
-                .circleCrop()
-                .into(ImVDeceased)
+
+
+            if(url.startsWith("http")){
+                Glide.with(this)
+                    .load(url.replace("http","https"))
+                    .circleCrop()
+                    .into(ImVDeceased)
+            }else{
+                Glide.with(this)
+                    .load(url)
+                    .circleCrop()
+                    .into(ImVDeceased)
+            }
 
             initCollapsToolbar(this, deceasedInfo.imageurl!!, deceasedInfo.name!!)
         }
     }
 
     private fun showPrivateDetailsPage(itemDeceased: DeceasedProfileDataModel) {
-        Glide.with(this)
-            .load(itemDeceased.imageurl)
-            .circleCrop()
-            .into(ImVDeceasedPrivate)
+      val url =  itemDeceased.imageurl
+        if(url.startsWith("http")){
+            Glide.with(this)
+                .load(url.replace("http","https"))
+                .circleCrop()
+                .into(ImVDeceasedPrivate)
+        }else{
+            Glide.with(this)
+                .load(url)
+                .circleCrop()
+                .into(ImVDeceasedPrivate)
+        }
 
         TvDeseacesNamePrivate.text = itemDeceased.name
         var dateBirthDay = Date((itemDeceased.birthday).toLong())

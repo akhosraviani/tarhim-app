@@ -29,10 +29,23 @@ class NewsAdapter(var callBack: NewsListener) :
         }
 
         fun bindPost(item: NewsDataModel) {
-            Glide.with(itemView.context)
-                .load(item.imageurl)
-                .centerInside()
-                .into(imgNews)
+
+            val url = item.imageurl
+            if (url != null) {
+                if(url.startsWith("http")){
+                    Glide.with(itemView.context)
+                        .load(url.replace("http","https"))
+                        .centerInside()
+                        .into(imgNews)
+                }else{
+                    Glide.with(itemView.context)
+                        .load(url)
+                        .centerInside()
+                        .circleCrop()
+                        .into(imgNews)
+                }
+            }
+
 
             topicNews.text = "${item.text}..."
             titleNews.text = item.topic

@@ -19,6 +19,7 @@ import ir.co.mazar.ui.activities.deceased.CreateDeceasedActivity
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.OnBackPressed
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.gallery_image_dialog.view.*
 
 class ProfileFragment : Fragment(), ViewPagerCallBack {
 
@@ -45,12 +46,30 @@ class ProfileFragment : Fragment(), ViewPagerCallBack {
             it?.let {
                 if (it.name != null) {
 
-                    TvuUserName.setText(it.name)
-                    Glide.with(requireContext())
-                        .load(it.imageurl)
-                        .centerInside()
-                        .circleCrop()
-                        .into(ImVUser)
+                    TvuUserName.text = it.name
+
+
+                    val url = it.imageurl
+                    if(url.startsWith("http")){
+                        Glide.with(requireContext())
+                            .load(url.replace("http","https"))
+                            .centerInside()
+                            .circleCrop()
+                            .into(ImVUser)
+                    }else{
+                        Glide.with(requireContext())
+                            .load(url)
+                            .centerInside()
+                            .circleCrop()
+                            .into(ImVUser)
+                    }
+
+//
+//                    Glide.with(requireContext())
+//                        .load(it.imageurl)
+//                        .centerInside()
+//                        .circleCrop()
+//                        .into(ImVUser)
                 }
             }
         })
