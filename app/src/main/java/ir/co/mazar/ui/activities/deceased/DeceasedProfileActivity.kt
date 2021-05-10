@@ -842,6 +842,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         val checkBoxSeventh: CheckBox = dialog.findViewById(R.id.checkBoxSeventh)
         val checkBoxForty: CheckBox = dialog.findViewById(R.id.checkBoxForty)
         val checkBoxAnniversary: CheckBox = dialog.findViewById(R.id.checkBoxAnniversary)
+        val checkBoxFifth: CheckBox = dialog.findViewById(R.id.checkBoxFifth)
         val notifSave: TextView = dialog.findViewById(R.id.notifSave)
 
         if (checkBoxThird.isChecked) {
@@ -859,86 +860,31 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         if (checkBoxAnniversary.isChecked) {
             anniversary = true
         }
-        if (checkBoxAnniversary.isChecked) {
+        if (checkBoxFifth.isChecked) {
             fifth = true
         }
 
         notifSave.setOnClickListener {
 
-            viewModel.requestReminder(
-                RemindeRequestModel(
-                    anniversary,
-                    deceasedId!!,
-                    fifth,
-                    forty,
-                    Hawk.get(TarhimConfig.USER_NUMBER),
-                    seventh,
-                    third,
-                    "Push"
+            if(!checkBoxThird.isChecked && !checkBoxForty.isChecked && !checkBoxSeventh.isChecked
+                && !checkBoxAnniversary.isChecked && !checkBoxFifth.isChecked){
+                dialog.dismiss()
+            }else{
+                viewModel.requestReminder(
+                    RemindeRequestModel(
+                        anniversary,
+                        deceasedId!!,
+                        fifth,
+                        forty,
+                        Hawk.get(TarhimConfig.USER_NUMBER),
+                        seventh,
+                        third,
+                        "Push"
+                    )
                 )
-            )
+            }
         }
         dialog.show()
     }
 
-
-//
-//    private fun notificationDialog(
-//        activity: Activity
-//    ) {
-//        val viewGroup: ViewGroup = activity.findViewById(android.R.id.content)
-//        val view =
-//            LayoutInflater.from(activity).inflate(R.layout.dialog_notification, viewGroup, false)
-//        alertDialog = AlertDialog.Builder(activity).setView(view).create()
-//        alertDialog.setCancelable(false)
-//        alertDialog.setCanceledOnTouchOutside(false)
-//        alertDialog.window!!.setLayout(
-//            WindowManager.LayoutParams.WRAP_CONTENT,
-//            WindowManager.LayoutParams.WRAP_CONTENT
-//        )
-//        alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//
-//        val checkBoxThird: CheckBox = alertDialog.findViewById(R.id.checkBoxThird)
-//        val checkBoxSeventh: CheckBox = alertDialog.findViewById(R.id.checkBoxSeventh)
-//        val checkBoxForty: CheckBox = alertDialog.findViewById(R.id.checkBoxForty)
-//        val checkBoxAnniversary: CheckBox = alertDialog.findViewById(R.id.checkBoxAnniversary)
-//        val notifSave: TextView = alertDialog.findViewById(R.id.notifSave)
-//
-//        if (checkBoxThird.isChecked) {
-//            third = true
-//        }
-//
-//        if (checkBoxForty.isChecked) {
-//            forty = true
-//        }
-//
-//        if (checkBoxSeventh.isChecked) {
-//            seventh = true
-//        }
-//
-//        if (checkBoxAnniversary.isChecked) {
-//            anniversary = true
-//        }
-//        if (checkBoxAnniversary.isChecked) {
-//            fifth = true
-//        }
-//
-//
-//        notifSave.setOnClickListener {
-//
-//            viewModel.requestReminder(
-//                RemindeRequestModel(
-//                    anniversary,
-//                    deceasedId!!,
-//                    fifth,
-//                    forty,
-//                    Hawk.get(TarhimConfig.USER_NUMBER),
-//                    seventh,
-//                    third,
-//                    "Push"
-//                )
-//            )
-//        }
-//        alertDialog.show()
-//    }
 }
