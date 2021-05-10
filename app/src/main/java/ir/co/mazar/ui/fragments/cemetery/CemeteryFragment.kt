@@ -119,7 +119,6 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
         viewModel.ldSearch.observe(viewLifecycleOwner, { data ->
             showLoading(false)
             data.let {
-
                 searchAdapter.submitList(it)
             }
             if (data == null)

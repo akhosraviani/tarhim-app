@@ -749,6 +749,7 @@ class LoginRepository {
                 ) {
                     mldError.value = t
                     Log.e(TAG, "onFailure: " + t.message)
+                    Log.i("testTag0", "im here erro=" + t.message)
                 }
 
                 override fun onResponse(
@@ -756,7 +757,8 @@ class LoginRepository {
                     response: Response<List<DeceasedDataModel>>
                 ) {
                     mldSearchList.postValue(response.body())
-                    Log.i("testTag", "im here=" + response.body())
+
+                    Log.i("testTag0", "im here=" + response.body())
                 }
             })
 

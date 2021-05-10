@@ -85,14 +85,26 @@ class LatestSearchRecyclerAdapter(
 
             nameDeceased.text = deceased.name
 
-//
-            var dateBirthDay = Date((deceased.birthday).toLong())
-            var dateDeathDay = Date((deceased.deathday).toLong())
+            var dateBirthDay = Date()
+            var dateDeathDay = Date()
+
+            if(deceased.birthday != ""){
+                dateBirthDay = Date((deceased.birthday).toLong())
+            }else{
+                dateBirthDay =Date(("1619035200").toLong())
+            }
+
+            if(deceased.deathday != ""){
+                dateDeathDay = Date((deceased.deathday).toLong())
+            }else{
+                dateDeathDay =Date(("1619035200").toLong())
+            }
+
             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
-            var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
-            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+            val birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+            val deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
 
 
             birth_DeathDay.text = "${birthDay} - ${deathDay}"
