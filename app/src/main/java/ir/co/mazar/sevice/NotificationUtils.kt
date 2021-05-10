@@ -125,7 +125,7 @@ class NotificationUtils(val context: Context) {
         alarmSound: Uri
     ) {
         val notificationLayout = RemoteViews(packageNam, R.layout.notification_small)
-        notificationLayout.setTextViewText(R.id.notifTitle, title)
+        notificationLayout.setTextViewText(R.id.charityTitle, title)
         notificationLayout.setImageViewResource(
             R.id.notifIcon,
             icon

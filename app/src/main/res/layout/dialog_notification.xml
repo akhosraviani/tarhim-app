@@ -6,11 +6,10 @@
     android:layout_width="match_parent"
     android:layout_marginStart="32dp"
     android:layout_marginEnd="32dp"
-
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/notifTitle"
+        android:id="@+id/charityTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -32,8 +31,8 @@
         android:fontFamily="@font/iran_sans"
         android:layoutDirection="rtl"
         android:text="سوم"
-        app:layout_constraintStart_toStartOf="@+id/notifTitle"
-        app:layout_constraintTop_toBottomOf="@+id/notifTitle" />
+        app:layout_constraintStart_toStartOf="@+id/charityTitle"
+        app:layout_constraintTop_toBottomOf="@+id/charityTitle" />
 
     <CheckBox
         android:id="@+id/checkBoxSeventh"
@@ -75,7 +74,7 @@
         app:layout_constraintTop_toBottomOf="@+id/checkBoxForty" />
 
     <TextView
-        android:id="@+id/notifSave"
+        android:id="@+id/charitySave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"

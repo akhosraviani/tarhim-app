@@ -1,8 +1,6 @@
 package ir.co.mazar.ui.activities.deceased
 
 import android.animation.ObjectAnimator
-import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -14,17 +12,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.GONE
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
-import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -33,8 +27,6 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.orhanobut.hawk.Hawk
 import ir.co.mazar.R
 import ir.co.mazar.model.RemindeRequestModel
@@ -50,8 +42,6 @@ import ir.co.mazar.ui.fragments.deceased.GalleryFragment
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.*
 import kotlinx.android.synthetic.main.deceased_profile.*
-import kotlinx.android.synthetic.main.dialog_notification.view.*
-import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import java.util.*
 import java.util.Timer
 import kotlin.concurrent.schedule
@@ -81,7 +71,6 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
     private var forty: Boolean = false
     private var fifth: Boolean = false
     private var anniversary: Boolean = false
-    private lateinit var alertDialog: AlertDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -843,7 +832,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         val checkBoxForty: CheckBox = dialog.findViewById(R.id.checkBoxForty)
         val checkBoxAnniversary: CheckBox = dialog.findViewById(R.id.checkBoxAnniversary)
         val checkBoxFifth: CheckBox = dialog.findViewById(R.id.checkBoxFifth)
-        val notifSave: TextView = dialog.findViewById(R.id.notifSave)
+        val notifSave: TextView = dialog.findViewById(R.id.charitySave)
 
         if (checkBoxThird.isChecked) {
             third = true
