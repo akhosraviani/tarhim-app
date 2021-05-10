@@ -60,4 +60,13 @@
         <item name="android:popupBackground">@drawable/popupmenu_background</item>
     </style>
 
+
+    <style name="colored_checkBox" parent="Theme.AppCompat.Light">
+        <!-- selected checkbox color -->
+        <item name="colorAccent">@color/color_green</item>
+        <!-- default/unselected checkbox color -->
+        <item name="android:textColorSecondary">@android:color/darker_gray</item>
+    </style>
+
+
 </resources>

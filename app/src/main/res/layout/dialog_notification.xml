@@ -4,28 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/shape_dialog_backgraound"
     android:layout_width="match_parent"
+    android:layout_marginStart="32dp"
+    android:layout_marginEnd="32dp"
+
     android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/notifTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/iran_sans"
+        android:text="به من در مورد تاریخ های مهم ، برای ذکر فاتحه و یا شرکت در مراسم اطلاع بده"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
         android:id="@+id/checkBoxThird"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginTop="16dp"
+        android:paddingStart="8dp"
+        android:theme="@style/colored_checkBox"
         android:fontFamily="@font/iran_sans"
+        android:layoutDirection="rtl"
         android:text="سوم"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/notifTitle"
+        app:layout_constraintTop_toBottomOf="@+id/notifTitle" />
 
     <CheckBox
         android:id="@+id/checkBoxSeventh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:theme="@style/colored_checkBox"
         android:fontFamily="@font/iran_sans"
+        android:layoutDirection="rtl"
         android:text="هفتم"
+        android:paddingStart="8dp"
         app:layout_constraintStart_toStartOf="@+id/checkBoxFifth"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxFifth" />
 
@@ -34,8 +53,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:theme="@style/colored_checkBox"
         android:fontFamily="@font/iran_sans"
+        android:layoutDirection="rtl"
         android:text="چهلم"
+        android:paddingStart="8dp"
         app:layout_constraintStart_toStartOf="@+id/checkBoxSeventh"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxSeventh" />
 
@@ -44,17 +66,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:theme="@style/colored_checkBox"
         android:fontFamily="@font/iran_sans"
+        android:layoutDirection="rtl"
         android:text="سالگرد"
+        android:paddingStart="8dp"
         app:layout_constraintStart_toStartOf="@+id/checkBoxForty"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxForty" />
 
-    <Button
+    <TextView
         android:id="@+id/notifSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ذخیره"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
+        android:paddingEnd="32dp"
+        android:paddingStart="32dp"
+        android:textSize="16sp"
+        android:background="@drawable/shape_green_button"
         android:fontFamily="@font/iran_sans"
+        android:text="تایید"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxAnniversary" />
@@ -64,8 +97,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:theme="@style/colored_checkBox"
         android:fontFamily="@font/iran_sans"
+        android:layoutDirection="rtl"
+        android:paddingStart="8dp"
         android:text="پنجم"
         app:layout_constraintStart_toStartOf="@+id/checkBoxThird"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxThird" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
