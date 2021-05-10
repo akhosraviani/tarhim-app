@@ -164,16 +164,22 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
 
 
     private fun initRecycler(paths: List<GalleryDataModel>) {
-
-        adminGalleryAdapter = GalleryRecyclerViewAdapter(requireContext(), paths, this)
-        galleryrecycler.adapter = adminGalleryAdapter
-        galleryrecycler.layoutAnimation =
-            AnimationUtils.loadLayoutAnimation(context, R.anim.up_to_bottom)
-        galleryrecycler.layoutManager =
-            GridLayoutManager(requireContext(), 3)
-        adminGalleryAdapter.notifyDataSetChanged()
-
-
+        if(paths.isEmpty()){
+            Log.i("testTag0","0")
+            galleryEmptyData.visibility=View.VISIBLE
+            galleryrecycler.visibility=View.GONE
+        }else{
+            Log.i("testTag0","1")
+            galleryEmptyData.visibility=View.GONE
+            galleryrecycler.visibility=View.VISIBLE
+            adminGalleryAdapter = GalleryRecyclerViewAdapter(requireContext(), paths, this)
+            galleryrecycler.adapter = adminGalleryAdapter
+            galleryrecycler.layoutAnimation =
+                AnimationUtils.loadLayoutAnimation(context, R.anim.up_to_bottom)
+            galleryrecycler.layoutManager =
+                GridLayoutManager(requireContext(), 3)
+            adminGalleryAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun uploadPost(file: Uri): MultipartBody.Part {

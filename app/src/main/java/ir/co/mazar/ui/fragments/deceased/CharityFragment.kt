@@ -105,7 +105,7 @@ class CharityFragment : Fragment(), CharityListener, SpiritualListener {
         viewModel.ldGetSiritual.observe(viewLifecycleOwner, Observer {
             it.also {
 
-                if (it != null && it.size > 0) {
+                if (it != null && it.isNotEmpty()) {
                     initSpiritualRecycler(it)
                 } else {
                     initSpiritualRecycler(ArrayList())
@@ -137,7 +137,6 @@ class CharityFragment : Fragment(), CharityListener, SpiritualListener {
     }
 
     override fun chalityCallback(charityUrl: String) {
-//        Toast.makeText(requireActivity(), "test charity click button", Toast.LENGTH_SHORT).show()
         Log.e(TAG, "chalityCallback: " + charityUrl)
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(charityUrl)
