@@ -165,11 +165,9 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
 
     private fun initRecycler(paths: List<GalleryDataModel>) {
         if(paths.isEmpty()){
-            Log.i("testTag0","0")
             galleryEmptyData.visibility=View.VISIBLE
             galleryrecycler.visibility=View.GONE
         }else{
-            Log.i("testTag0","1")
             galleryEmptyData.visibility=View.GONE
             galleryrecycler.visibility=View.VISIBLE
             adminGalleryAdapter = GalleryRecyclerViewAdapter(requireContext(), paths, this)
