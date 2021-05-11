@@ -77,10 +77,6 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             changeBottomIcon(bottom_navigation.menu, item, getEnableSelectedIcon().get(item.itemId))
             true
         }
-
-        toolbarLayout.BtnBackToolbar.setOnClickListener {
-            onBackPressed()
-        }
         toolbarLayout.BtnInboxToolbar.setOnClickListener {
 
             startActivity(
