@@ -79,7 +79,7 @@ class MyDeceasedAdapter(
         holder.birth_DeathDay.text =
             "${birthDay} - ${deathDay}"
         holder.itemView.setOnClickListener {
-            deceasedCallBack.myDeceasedCallBack(listDeceased.get(holder.adapterPosition).id)
+            deceasedCallBack.myDeceasedCallBack(listDeceased[holder.adapterPosition].id)
         }
         holder.editDeceased.setOnClickListener {
             editdeceasedCallBack.editDeceased(listDeceased[position])

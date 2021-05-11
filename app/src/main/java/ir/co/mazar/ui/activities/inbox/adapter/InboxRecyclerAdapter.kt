@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.row_inbox_recycler.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class InboxRecyclerAdapter( var inboxListener: InboxListener) :
     ListAdapter<MyInboxDataModel, InboxRecyclerAdapter.ViewHolder>(InboxDiffUnit()) {
 
@@ -40,24 +41,22 @@ class InboxRecyclerAdapter( var inboxListener: InboxListener) :
 
         open fun bindTo(item: MyInboxDataModel) {
 
-            if (item.type.equals("FollowReq")) {
+            if (item.type == "FollowReq") {
                 BtnAcceptRequest.visibility = View.VISIBLE
                 BtnDeclineRequest.visibility = View.VISIBLE
             }
 
 
-
-            var d = (item.date).toLong()
+            val d = Date((item.date).toLong())
             val formatData = SimpleDateFormat("yyyy/MM/dd")
-            var time = formatData.format(d)
+            val time = formatData.format(d)
+            val year = PersianDate.SolarCalendar(Date(time)).year
+            val month = PersianDate.SolarCalendar(Date(time)).month
+            val day = PersianDate.SolarCalendar(Date(time)).date
+            TvDate.text = "${year}/${month}/${day}"
 
-            var year = PersianDate.SolarCalendar(Date(time)).year
-            var month = PersianDate.SolarCalendar(Date(time)).month
-            var day = PersianDate.SolarCalendar(Date(time)).date
-            TvDate.setText("${year}-${month}-${day}")
-
-            TvFrom.setText(item.name)
-            TvStatus.setText(item.subject)
+            TvFrom.text = item.name
+            TvStatus.text = item.subject
             var description: String
 //            if (item.message.length > 30) {
 //                description = "${item.message.substring(0, 30)} ..."
@@ -65,7 +64,7 @@ class InboxRecyclerAdapter( var inboxListener: InboxListener) :
 //            } else {
 //                description = item.message
 //            }
-            TvDesc.setText(item.message)
+            TvDesc.text = item.message
         }
 
     }

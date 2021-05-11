@@ -31,7 +31,7 @@
     <string name="verification_send_me_again">ارسال مجدد کد</string>
 
     <!-- endregion -->
-
+    <string name="charity_type_title">آیا می خواهید به نیت ایشان %1$s</string>
     <string name="bioTitle"></string>
     <string name="charity_msg">کمک هایی که دریافت کرده اید</string>
     <string name="help_to_charity_centers">کمک به مراکز خیریه به نیت مرحوم</string>
