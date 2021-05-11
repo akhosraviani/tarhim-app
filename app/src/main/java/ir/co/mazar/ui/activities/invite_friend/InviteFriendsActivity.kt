@@ -49,7 +49,7 @@ class InviteFriendsActivity() : AppCompatActivity() {
         Log.e(TAG, "onCreate: "+deceasedId )
         viewModel.ldFollowersList.observe(this, Observer {
             it.also {
-
+             Log.i("testTag0","hi injam")
                 Log.e(TAG, "onCreate: "+it.size )
                 inviteAdapter.submitList(it)
             }
