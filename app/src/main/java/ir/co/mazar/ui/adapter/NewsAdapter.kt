@@ -32,16 +32,16 @@ class NewsAdapter(var callBack: NewsListener) :
 
             val url = item.imageurl
             if (url != null) {
-                if(url.startsWith("http")){
-                    Glide.with(itemView.context)
-                        .load(url.replace("http","https"))
-                        .centerInside()
-                        .into(imgNews)
-                }else{
+                if(url.startsWith("https")){
                     Glide.with(itemView.context)
                         .load(url)
                         .centerInside()
                         .circleCrop()
+                        .into(imgNews)
+                }else{
+                    Glide.with(itemView.context)
+                        .load(url.replace("http","https"))
+                        .centerInside()
                         .into(imgNews)
                 }
             }

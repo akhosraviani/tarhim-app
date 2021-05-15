@@ -153,14 +153,14 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                         bioDeceased = it.description
                         configBioText(it.description!!)
 
-                        if (url.startsWith("http")) {
+                        if (url.startsWith("https")) {
                             Glide.with(this)
-                                .load(url.replace("http", "https"))
+                                .load(url)
                                 .circleCrop()
                                 .into(ImVDeceased)
                         } else {
                             Glide.with(this)
-                                .load(url)
+                                .load(url.replace("http", "https"))
                                 .circleCrop()
                                 .into(ImVDeceased)
                         }
@@ -202,14 +202,14 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             configBioText(it.description!!)
 
 
-                            if (url.startsWith("http")) {
+                            if (url.startsWith("https")) {
                                 Glide.with(this)
-                                    .load(url.replace("http", "https"))
+                                    .load(url)
                                     .circleCrop()
                                     .into(ImVDeceased)
                             } else {
                                 Glide.with(this)
-                                    .load(url)
+                                    .load(url.replace("http", "https"))
                                     .circleCrop()
                                     .into(ImVDeceased)
                             }
@@ -242,14 +242,14 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             bioDeceased = it.description
                             configBioText(it.description!!)
 
-                            if (url.startsWith("http")) {
+                            if (url.startsWith("https")) {
                                 Glide.with(this)
-                                    .load(url.replace("http", "https"))
+                                    .load(url)
                                     .circleCrop()
                                     .into(ImVDeceased)
                             } else {
                                 Glide.with(this)
-                                    .load(url)
+                                    .load(url.replace("http", "https"))
                                     .circleCrop()
                                     .into(ImVDeceased)
                             }
@@ -310,14 +310,14 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                         bioDeceased = it.description
                         configBioText(it.description!!)
 
-                        if (url.startsWith("http")) {
+                        if (url.startsWith("https")) {
                             Glide.with(this)
-                                .load(url.replace("http", "https"))
+                                .load(url)
                                 .circleCrop()
                                 .into(ImVDeceased)
                         } else {
                             Glide.with(this)
-                                .load(url)
+                                .load(url.replace("http", "https"))
                                 .circleCrop()
                                 .into(ImVDeceased)
                         }
@@ -360,14 +360,15 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             bioDeceased = it.description
                             configBioText(it.description!!)
 
-                            if (url.startsWith("http")) {
-                                Glide.with(this)
-                                    .load(url.replace("http", "https"))
-                                    .circleCrop()
-                                    .into(ImVDeceased)
-                            } else {
+                            if (url.startsWith("https")) {
                                 Glide.with(this)
                                     .load(url)
+                                    .circleCrop()
+                                    .into(ImVDeceased)
+
+                            } else {
+                                Glide.with(this)
+                                    .load(url.replace("http", "https"))
                                     .circleCrop()
                                     .into(ImVDeceased)
                             }
@@ -401,14 +402,14 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             bioDeceased = it.description
                             configBioText(it.description!!)
 
-                            if (url.startsWith("http")) {
+                            if (url.startsWith("https")) {
                                 Glide.with(this)
-                                    .load(url.replace("http", "https"))
+                                    .load(url)
                                     .circleCrop()
                                     .into(ImVDeceased)
                             } else {
                                 Glide.with(this)
-                                    .load(url)
+                                    .load(url.replace("http", "https"))
                                     .circleCrop()
                                     .into(ImVDeceased)
                             }
@@ -640,14 +641,14 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         imageDeceased: String,
         nameDeceased: String
     ) {
-        if (imageDeceased.startsWith("http")) {
+        if (imageDeceased.startsWith("https")) {
             Glide.with(ctx)
-                .load(imageDeceased.replace("http", "https"))
+                .load(imageDeceased)
                 .circleCrop()
                 .into(IvToolbar)
         } else {
             Glide.with(ctx)
-                .load(imageDeceased)
+                .load(imageDeceased.replace("http", "https"))
                 .circleCrop()
                 .into(IvToolbar)
         }
@@ -727,14 +728,14 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             configBioText(deceasedInfo.description!!)
 
 
-            if (url.startsWith("http")) {
+            if (url.startsWith("https")) {
                 Glide.with(this)
-                    .load(url.replace("http", "https"))
+                    .load(url)
                     .circleCrop()
                     .into(ImVDeceased)
             } else {
                 Glide.with(this)
-                    .load(url)
+                    .load(url.replace("http", "https"))
                     .circleCrop()
                     .into(ImVDeceased)
             }
@@ -745,29 +746,35 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
     private fun showPrivateDetailsPage(itemDeceased: DeceasedProfileDataModel) {
         val url = itemDeceased.imageurl
-        if (url.startsWith("http")) {
+        if (url.startsWith("https")) {
             Glide.with(this)
-                .load(url.replace("http", "https"))
+                .load(url)
                 .circleCrop()
                 .into(ImVDeceasedPrivate)
         } else {
             Glide.with(this)
-                .load(url)
+                .load(url.replace("http", "https"))
                 .circleCrop()
                 .into(ImVDeceasedPrivate)
         }
 
         TvDeseacesNamePrivate.text = itemDeceased.name
+        if(itemDeceased.deathday!=""){
+            var dateDeathDay = Date((itemDeceased.deathday).toLong())
+            val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+            TvDeathDateDeseacesPrivate.text = deathDay
+        }
         var dateBirthDay = Date((itemDeceased.birthday).toLong())
-        var dateDeathDay = Date((itemDeceased.deathday).toLong())
+
         val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
-        val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
+
 
         var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
-        var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+
 
         TvBornDateDeseacesPrivate.text = birthDay
-        TvDeathDateDeseacesPrivate.text = deathDay
+
     }
 
 

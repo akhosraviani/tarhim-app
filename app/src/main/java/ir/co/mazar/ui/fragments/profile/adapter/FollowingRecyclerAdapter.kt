@@ -57,14 +57,14 @@ class FollowingRecyclerAdapter(
 
         fun bind(item: MyDeceasedDataModel) {
             val url = item.imageurl
-            if(url.startsWith("http")){
+            if(url.startsWith("https")){
                 Glide.with(itemView.context)
-                    .load(url.replace("http","https"))
+                    .load(url)
                     .circleCrop()
                     .into(IvFollowingImage)
             }else{
                 Glide.with(itemView.context)
-                    .load(url)
+                    .load(url.replace("http","https"))
                     .circleCrop()
                     .into(IvFollowingImage)
             }

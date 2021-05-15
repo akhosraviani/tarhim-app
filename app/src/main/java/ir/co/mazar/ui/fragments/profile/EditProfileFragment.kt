@@ -125,15 +125,15 @@ class EditProfileFragment : BaseBottomSheetDialog(), UploadCallBack {
                     }
 
                     val url = it.imageurl.toString()
-                    if (url.startsWith("http")) {
+                    if (url.startsWith("https")) {
                         Glide.with(requireContext())
-                            .load(url.replace("http", "https"))
+                            .load(url)
                             .centerInside()
                             .circleCrop()
                             .into(IvUser)
                     } else {
                         Glide.with(requireContext())
-                            .load(url)
+                            .load(url.replace("http", "https"))
                             .centerInside()
                             .circleCrop()
                             .into(IvUser)

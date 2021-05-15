@@ -70,14 +70,15 @@ class CommentRecyclerAdapter(
                 txtComment.text = comment.message
 
                 val url = comment.imageurl
-                if(url.startsWith("http")){
-                    Glide.with(itemView.context)
-                        .load(url.replace("http","https"))
-                        .circleCrop()
-                        .into(imageUser)
-                }else{
+                if(url.startsWith("https")){
                     Glide.with(itemView.context)
                         .load(url)
+                        .circleCrop()
+                        .into(imageUser)
+
+                }else{
+                    Glide.with(itemView.context)
+                        .load(url.replace("http","https"))
                         .circleCrop()
                         .into(imageUser)
                 }
@@ -110,14 +111,14 @@ class CommentRecyclerAdapter(
         open fun bindTo(comment: CommentDataModel) {
 
             val url = comment.imageurl
-            if(url.startsWith("http")){
+            if(url.startsWith("https")){
                 Glide.with(itemView.context)
-                    .load(url.replace("http","https"))
+                    .load(url)
                     .circleCrop()
                     .into(adminImage)
             }else{
                 Glide.with(itemView.context)
-                    .load(url)
+                    .load(url.replace("http","https"))
                     .circleCrop()
                     .into(adminImage)
             }

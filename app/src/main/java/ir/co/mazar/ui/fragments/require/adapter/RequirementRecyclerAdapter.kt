@@ -37,14 +37,14 @@ class RequirementRecyclerAdapter :
        fun bind(item: RequirementDataModel) {
 
            val url = item.imageUrl
-           if(url.startsWith("http")){
+           if(url.startsWith("https")){
                Glide.with(itemView.context)
-                   .load(url.replace("http","https"))
+                   .load(url)
                    .circleCrop()
                    .into(IvUserReq)
            }else{
                Glide.with(itemView.context)
-                   .load(url)
+                   .load(url.replace("http","https"))
                    .circleCrop()
                    .into(IvUserReq)
            }
@@ -54,9 +54,9 @@ class RequirementRecyclerAdapter :
 //                .circleCrop()
 //                .into(IvUserReq)
 
-            TvUserReq.setText(item.name)
-            TvTypeReq.setText(item.subject)
-            TvDecs.setText(item.message)
+           TvUserReq.text = item.name
+           TvTypeReq.text = item.subject
+           TvDecs.text = item.message
             TvDecs.maxLines = 3
 
 //            var lineCount = TvDecs.lineCount

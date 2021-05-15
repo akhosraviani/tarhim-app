@@ -52,16 +52,16 @@ class FollowersRecyclerAdapter() :
 
         fun bindTo(follower: FollowersDataModel) {
             val url = follower.imageurl
-            if(url.startsWith("http")){
+            if(url.startsWith("https")){
                 Glide.with(itemView.context)
-                    .load(url.replace("http","https"))
+                    .load(follower.imageurl)
                     .centerInside()
                     .placeholder(R.drawable.profil_pic)
                     .circleCrop()
                     .into(imageFollowers)
             }else{
                 Glide.with(itemView.context)
-                    .load(follower.imageurl)
+                    .load(url.replace("http","https"))
                     .centerInside()
                     .placeholder(R.drawable.profil_pic)
                     .circleCrop()

@@ -62,15 +62,15 @@ class SearchRecyclerAdapter(var searchCallBack:SearchListener) :
         fun bindTo(deceased: DeceasedDataModel) {
 
             val url = deceased.imageurl
-            if(url.startsWith("http")){
+            if(url.startsWith("https")){
                 Glide.with(itemView.context)
-                    .load(url.replace("http","https"))
+                    .load(url)
                     .centerInside()
                     .circleCrop()
                     .into(imageDeceased)
             }else{
                 Glide.with(itemView.context)
-                    .load(url)
+                    .load(url.replace("http","https"))
                     .centerInside()
                     .circleCrop()
                     .into(imageDeceased)

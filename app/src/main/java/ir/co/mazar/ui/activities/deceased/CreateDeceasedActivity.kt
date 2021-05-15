@@ -489,11 +489,10 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
     private fun showDeceasedDetails(details: DeceasedProfileDataModel) {
 
         val url: String = java.lang.String.valueOf(details.imageurl)
-        if(url.startsWith("http")){
-            imagePath=url.replace("http","https")
-
-        }else{
+        if(url.startsWith("https")){
             imagePath = details.imageurl
+        }else{
+            imagePath=url.replace("http","https")
         }
 
 

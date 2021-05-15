@@ -1,5 +1,6 @@
 package ir.co.mazar.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,14 +42,16 @@ class DeceasedSearchRecyclerAdapter(private val listDeceased: List<DeceasedDataM
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val url = listDeceased[position].imageurl
-        if(url.startsWith("http")){
+        if(url.startsWith("https")){
+            Log.i("testTag333","tsss")
             Glide.with(holder.itemView.context)
-                .load(url.replace("http","https"))
+                .load(url)
                 .circleCrop()
                 .into(holder.imageDeceased)
         }else{
+            Log.i("testTag333","fgnss")
             Glide.with(holder.itemView.context)
-                .load(url)
+                .load(url.replace("http","https"))
                 .circleCrop()
                 .into(holder.imageDeceased)
         }

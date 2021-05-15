@@ -41,9 +41,9 @@ class GalleryRecyclerViewAdapter(
             Log.e("bindTo", "bindTo: " + item.imagespath)
 
             val url: String = java.lang.String.valueOf(item.imagespath)
-            if(url.startsWith("http")){
+            if(url.startsWith("https")){
                 Glide.with(itemView.context)
-                    .load(url.replace("http","https"))
+                    .load(url)
                     .centerCrop()
                     .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(
@@ -73,7 +73,7 @@ class GalleryRecyclerViewAdapter(
                     .into(galleryIv)
             }else{
                 Glide.with(itemView.context)
-                    .load(url)
+                    .load(url.replace("http","https"))
                     .centerCrop()
                     .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(

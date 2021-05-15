@@ -54,14 +54,15 @@ class MyDeceasedAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val url = listDeceased[position].imageurl
-        if(url.startsWith("http")){
-            Glide.with(holder.itemView.context)
-                .load(url.replace("http","https"))
-                .circleCrop()
-                .into(holder.imageDeceased)
-        }else{
+        if(url.startsWith("https")){
             Glide.with(holder.itemView.context)
                 .load(url)
+                .circleCrop()
+                .into(holder.imageDeceased)
+
+        }else{
+            Glide.with(holder.itemView.context)
+                .load(url.replace("http","https"))
                 .circleCrop()
                 .into(holder.imageDeceased)
         }

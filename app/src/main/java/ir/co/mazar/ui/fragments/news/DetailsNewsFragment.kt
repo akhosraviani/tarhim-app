@@ -69,13 +69,13 @@ class DetailsNewsFragment : BaseBottomSheetDialog() {
         TvTitleOfNews.text = new.topic
         val url = new.imageurl
         if (url != null) {
-            if(url.startsWith("http")){
+            if(url.startsWith("https")){
                 Glide.with(requireContext())
-                    .load(url.replace("http","https"))
+                    .load(url)
                     .into(IvDetailsNews)
             }else{
                 Glide.with(requireContext())
-                    .load(url)
+                    .load(url.replace("http","https"))
                     .into(IvDetailsNews)
             }
         }

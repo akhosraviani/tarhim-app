@@ -50,15 +50,16 @@ class ProfileFragment : Fragment(), ViewPagerCallBack {
 
 
                     val url = it.imageurl
-                    if(url.startsWith("http")){
+                    if(url.startsWith("https")){
                         Glide.with(requireContext())
-                            .load(url.replace("http","https"))
+                            .load(url)
                             .centerInside()
                             .circleCrop()
                             .into(ImVUser)
                     }else{
+
                         Glide.with(requireContext())
-                            .load(url)
+                            .load(url.replace("http","https"))
                             .centerInside()
                             .circleCrop()
                             .into(ImVUser)
