@@ -194,10 +194,10 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             } else {
                 //<editor-fold desc="Create Deceaed Profile">
                 if (
-                    ETNameDeceased.text.toString().length > 0 &&
-                    ETBurialLocation.text.toString().length > 0 &&
-                    EtBirthDateDeceased.text.toString().length > 0 &&
-                    ETDeathDeceased.text.toString().length > 0
+                    ETNameDeceased.text.toString().isNotEmpty() &&
+                    ETBurialLocation.text.toString().isNotEmpty() &&
+                    EtBirthDateDeceased.text.toString().isNotEmpty() &&
+                    ETDeathDeceased.text.toString().isNotEmpty()
                 ) {
 
                     showLoading(true)
@@ -239,11 +239,10 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             openGallery()
         }
         viewModel.ldcreateDeceased.observe(this, Observer {
-
             showLoading(false)
             if (it != null) {
-
-                DeceasedId=  Hawk.get("deceasedId")
+                DeceasedId = it.id
+//                DeceasedId=  Hawk.get("deceasedId")
                 Toast.makeText(this, "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show()
                 Handler().postDelayed({
 
