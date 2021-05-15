@@ -122,7 +122,7 @@ class GalleryRecyclerViewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         (holder as GalleryViewHolder)
-        holder.bindTo(data.get(position))
+        holder.bindTo(data[position])
 
         holder.galleryIv.setOnClickListener {
                 galleryListener.galleryRecyclerCallBack(position,data[holder.adapterPosition])

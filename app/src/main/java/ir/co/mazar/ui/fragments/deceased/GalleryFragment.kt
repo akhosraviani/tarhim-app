@@ -90,6 +90,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
 
             if (it != null) {
                 if (adminStatus) {
+                    Log.i("testTag333",",jkk")
                     listsGallery.add(
                         0,
                         GalleryDataModel(
@@ -103,7 +104,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
                 }
                 Log.e(TAG, "onViewCreated: " + it.size)
 
-                for (i in 0 until it.size) {
+                for (i in it.indices) {
                     listsGallery.add(
                         GalleryDataModel(
                             it[i].id, it[i].imagespath
@@ -144,6 +145,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         deceasedViewModel.ldDeletePhoto.observe(viewLifecycleOwner, Observer {
             it.let {
                 if (it.code == 200) {
+                    listsGallery.clear()
                     viewModel.requestGetGallery(deceasedId)
                 }
             }
