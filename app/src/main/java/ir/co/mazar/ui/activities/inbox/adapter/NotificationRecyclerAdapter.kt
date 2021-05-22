@@ -45,7 +45,7 @@ class NotificationRecyclerAdapter(var inboxListener: InboxListener) :
 //                BtnDeclineRequest.visibility = View.VISIBLE
 //            }
 
-            var d = (item.date)
+            var d = (item.date)*1000
             val formatData = SimpleDateFormat("yyyy/MM/dd")
             var time = formatData.format(d)
 

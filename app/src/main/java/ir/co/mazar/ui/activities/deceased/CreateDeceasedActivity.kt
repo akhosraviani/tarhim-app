@@ -135,6 +135,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             Log.i("testTag7", "id in create dec activity= " + DeceasedId.toString())
 //            DeceasedId = intent?.getIntExtra("DeceasedId", -1)!!
             locationBurial = LatLng((deceasedInfo!!.latitude), (deceasedInfo!!.longitude))
+            Hawk.put("locationBurial",locationBurial)
             showDeceasedDetails(deceasedInfo!!)
         }
         setUpView(this.window.decorView)
@@ -157,7 +158,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         BtnOpenMap.setOnClickListener {
             mapFragment.visibility = View.VISIBLE
             supportFragmentManager.beginTransaction()
-                .replace(R.id.mapFragment, mapsFragment.newInstance(true))
+                .replace(R.id.mapFragment, mapsFragment)
                 .addToBackStack(null)
                 .commit();
         }

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.carto.styles.AnimationStyleBuilder
 import com.carto.styles.AnimationType
 import com.carto.styles.MarkerStyleBuilder
+import com.orhanobut.hawk.Hawk
 import ir.co.mazar.databinding.FragmentMapsBinding
 import ir.co.mazar.model.deceased.DeceasedProfileDataModel
 import kotlinx.android.synthetic.main.fragment_maps.*
@@ -20,7 +21,6 @@ import org.neshan.mapsdk.model.Marker
 
 
 class MapsFragment : Fragment(),
-
     MapView.OnMapClickListener {
 
     private var checkLocaion = false
@@ -32,16 +32,14 @@ class MapsFragment : Fragment(),
     private lateinit var binding: FragmentMapsBinding
 
     private var lastedLocation: LatLng? = null
-    private var cemeteryLocate: DoubleArray? = null
+    private var cemeteryLocate: LatLng? = null
     private var info: DeceasedProfileDataModel? = null
     private lateinit var marker: Marker
-
-
-    fun newInstance(test: Boolean): MapsFragment {
+    fun newInstance(locaion: LatLng): MapsFragment {
         val args = Bundle()
         val fragment = MapsFragment()
         fragment.arguments = args
-        args.putBoolean("test", test)
+        args.putDoubleArray("LOCATION", doubleArrayOf(locaion.latitude, locaion.longitude))
         return fragment
     }
 
@@ -55,13 +53,19 @@ class MapsFragment : Fragment(),
         }.root
 
     public fun initLayoutReference() {
-        map.setOnMapClickListener(this)
-//        map.moveCamera(LatLng(cemeteryLocate!!.get(0)!!, cemeteryLocate!!.get(1)), 0.25f)
-        binding.map.setZoom(15f, 0f)
-        marker = addMarker(LatLng(cemeteryLocate!!.get(0)!!, cemeteryLocate!!.get(1)))
 
-        if (!checkLocaion) {
+        map.setOnMapClickListener(this)
+        if (checkLocaion) {
+            map.moveCamera(LatLng(35.5413334, 51.3784391), 0.25f)
+            binding.map.setZoom(15f, 0f)
+            marker = addMarker(LatLng(35.5413334, 51.3784391))
+
+        } else {
+            map.moveCamera(LatLng(cemeteryLocate!!.latitude, cemeteryLocate!!.longitude), 0.25f)
+            binding.map.setZoom(15f, 0f)
+            marker = addMarker(LatLng(cemeteryLocate!!.latitude, cemeteryLocate!!.longitude))
             map.addMarker(marker);
+
         }
     }
 
@@ -89,15 +93,11 @@ class MapsFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (arguments?.getBoolean("test") == true) {
-//           info=requireArguments().getBoolean("DECEASED")
-//            cemeteryLocate = doubleArrayOf(info!!.latitude,info!!.longitude)
-            Toast.makeText(requireContext(), "edit", Toast.LENGTH_SHORT).show()
+        if (Hawk.get("locationBurial",null) != null) {
+            cemeteryLocate =Hawk.get("locationBurial",null)
 
         } else {
-            cemeteryLocate = doubleArrayOf(35.5413334, 51.3784391)
             checkLocaion = true
-            Toast.makeText(requireContext(), "create", Toast.LENGTH_SHORT).show()
         }
 
         initLayoutReference()
