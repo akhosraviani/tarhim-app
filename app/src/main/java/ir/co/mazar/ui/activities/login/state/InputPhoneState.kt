@@ -2,6 +2,7 @@ package ir.co.mazar.ui.activities.login.state
 
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
+import android.text.InputType
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
@@ -47,6 +48,7 @@ class InputPhoneState(
         loginEnterTv.setText(activity.getString(R.string.login_start_description))
         loginEnterEt.filters = arrayOf<InputFilter>(LengthFilter(11))
         loginEnterEt.setHint("09*********")
+        loginEnterEt.inputType= InputType.TYPE_CLASS_NUMBER
         btnSubmit.setText(activity.getString(R.string.login_start_button))
         helpTv.visibility = View.VISIBLE
 

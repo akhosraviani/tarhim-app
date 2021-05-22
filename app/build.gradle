@@ -6,6 +6,14 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'adak'
+            storePassword '12345678'
+            keyPassword '12345678'
+            storeFile file('H:\\mysign\\adak.jks')
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
@@ -23,6 +31,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
@@ -33,8 +42,22 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+
+    buildFeatures {
+
+        dataBinding true
+
+    }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
     }
 }
 
@@ -103,5 +126,10 @@ dependencies {
     //Lottie Animation
     def lottieVersion = "3.4.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+    //Neshan sdk library
+    //Neshan sdk library
+    implementation 'neshan-android-sdk:mobile-sdk:1.0.0@aar'
+    implementation 'neshan-android-sdk:services-sdk:1.0.0@aar'
+    implementation 'neshan-android-sdk:common-sdk:0.0.1@aar'
 
 }

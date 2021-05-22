@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -90,7 +91,6 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
 
             if (it != null) {
                 if (adminStatus) {
-                    Log.i("testTag333",",jkk")
                     listsGallery.add(
                         0,
                         GalleryDataModel(
@@ -104,7 +104,7 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
                 }
                 Log.e(TAG, "onViewCreated: " + it.size)
 
-                for (i in it.indices) {
+                for (i in 0 until it.size) {
                     listsGallery.add(
                         GalleryDataModel(
                             it[i].id, it[i].imagespath
@@ -145,7 +145,6 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         deceasedViewModel.ldDeletePhoto.observe(viewLifecycleOwner, Observer {
             it.let {
                 if (it.code == 200) {
-                    listsGallery.clear()
                     viewModel.requestGetGallery(deceasedId)
                 }
             }
@@ -166,20 +165,16 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
 
 
     private fun initRecycler(paths: List<GalleryDataModel>) {
-        if(paths.isEmpty()){
-            galleryEmptyData.visibility=View.VISIBLE
-            galleryrecycler.visibility=View.GONE
-        }else{
-            galleryEmptyData.visibility=View.GONE
-            galleryrecycler.visibility=View.VISIBLE
-            adminGalleryAdapter = GalleryRecyclerViewAdapter(requireContext(), paths, this)
-            galleryrecycler.adapter = adminGalleryAdapter
-            galleryrecycler.layoutAnimation =
-                AnimationUtils.loadLayoutAnimation(context, R.anim.up_to_bottom)
-            galleryrecycler.layoutManager =
-                GridLayoutManager(requireContext(), 3)
-            adminGalleryAdapter.notifyDataSetChanged()
-        }
+
+        adminGalleryAdapter = GalleryRecyclerViewAdapter(requireContext(), paths, this)
+        galleryrecycler.adapter = adminGalleryAdapter
+        galleryrecycler.layoutAnimation =
+            AnimationUtils.loadLayoutAnimation(context, R.anim.up_to_bottom)
+        galleryrecycler.layoutManager =
+            GridLayoutManager(requireContext(), 3)
+        adminGalleryAdapter.notifyDataSetChanged()
+
+
     }
 
     private fun uploadPost(file: Uri): MultipartBody.Part {
@@ -333,17 +328,10 @@ class GalleryFragment : Fragment(), GalleryListener, UploadCallBack {
         if (adminStatus) {
             root.btn_remove_image.visibility = View.VISIBLE
         }
+        Glide.with(activity)
+            .load(item.imagespath)
+            .into(root.ImgGalleryDialog)
 
-        val url: String = java.lang.String.valueOf(item.imagespath)
-        if(url.startsWith("https")){
-            Glide.with(activity)
-                .load(url)
-                .into(root.ImgGalleryDialog)
-        }else{
-            Glide.with(activity)
-                .load(url.replace("http","https"))
-                .into(root.ImgGalleryDialog)
-        }
 
         root.btn_report_image.setOnClickListener(report)
         root.btn_remove_image.setOnClickListener(remove)

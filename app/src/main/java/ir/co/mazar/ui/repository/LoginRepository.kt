@@ -31,7 +31,7 @@ class LoginRepository {
     val mldSignUp = MutableLiveData<CheckRegisterModel>()
     val mldOtp = MutableLiveData<OtpDataModel>()
     val mldError = MutableLiveData<Throwable>()
-    val mldNotification = MutableLiveData<List<NotificationMessageDataModel>>()
+    val mldNotification = MutableLiveData<List<NotifDataModel>>()
     val mldInBox = MutableLiveData<List<MyInboxDataModel>>()
     val mldConfirmOtp = MutableLiveData<ConfirmDataModel>()
     val mldCreateDeceased = MutableLiveData<userRedirect>()
@@ -112,9 +112,9 @@ class LoginRepository {
 
     fun requestNotification(mobile: String) {
         RequestClient.makeRequest().requestNotification(mobile)
-            .enqueue(object : Callback<List<NotificationMessageDataModel>> {
+            .enqueue(object : Callback<List<NotifDataModel>> {
                 override fun onFailure(
-                    call: retrofit2.Call<List<NotificationMessageDataModel>>,
+                    call: retrofit2.Call<List<NotifDataModel>>,
                     t: Throwable
                 ) {
                     Log.e(TAG, "onFailure: " + t.message)
@@ -122,8 +122,8 @@ class LoginRepository {
                 }
 
                 override fun onResponse(
-                    call: retrofit2.Call<List<NotificationMessageDataModel>>,
-                    response: Response<List<NotificationMessageDataModel>>
+                    call: retrofit2.Call<List<NotifDataModel>>,
+                    response: Response<List<NotifDataModel>>
                 ) {
                     mldNotification.value = response.body()
                     Log.i(TAG, "im here=" + response.body())

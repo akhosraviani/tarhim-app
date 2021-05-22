@@ -33,7 +33,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.google.android.gms.maps.model.LatLng
 import com.orhanobut.hawk.Hawk
 import ir.co.mazar.R
 import ir.co.mazar.model.deceased.CreateDeceasedRequest
@@ -57,6 +56,7 @@ import kotlinx.android.synthetic.main.fragment_gallery.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import okhttp3.MultipartBody
+import org.neshan.common.model.LatLng
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
@@ -78,7 +78,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
     private lateinit var mapsFragment: MapsFragment
     private var imagePath: String? = ""
-    private lateinit var locationBurial: LatLng
+    private  var locationBurial: LatLng? =null
     private lateinit var editBirth: String
     private lateinit var editDeath: String
     private var birthZone: String? = ""
@@ -128,27 +128,17 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             TvChangeImg.text = getString(R.string.msg_edit_image)
             editProfile = true
 
-
             deceasedInfo = intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased")!!
             val  bundle = intent.extras
             DeceasedId = bundle!!.getInt("DeceasedId")
             Hawk.put("deceasedId",DeceasedId)
             Log.i("testTag7", "id in create dec activity= " + DeceasedId.toString())
 //            DeceasedId = intent?.getIntExtra("DeceasedId", -1)!!
-            locationBurial =
-                LatLng((deceasedInfo!!.latitude).toDouble(), (deceasedInfo!!.longitude).toDouble())
+            locationBurial = LatLng((deceasedInfo!!.latitude), (deceasedInfo!!.longitude))
             showDeceasedDetails(deceasedInfo!!)
-
         }
-
-
         setUpView(this.window.decorView)
         setUpSpinner()
-
-
-        locationBurial = Hawk.get("LOCATION", LatLng(35.53, 51.37))
-
-
 
         EtBirthDateDeceased.setOnFocusChangeListener { view, b ->
             hideSoftKeyboard(this)
@@ -167,17 +157,18 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         BtnOpenMap.setOnClickListener {
             mapFragment.visibility = View.VISIBLE
             supportFragmentManager.beginTransaction()
-                .add(R.id.mapFragment, mapsFragment.newInstance(locationBurial))
+                .replace(R.id.mapFragment, mapsFragment.newInstance(true))
+                .addToBackStack(null)
                 .commit();
         }
         BtnExitDeceasedPage.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
-
         }
 
         BtnSaveEditUser.setOnClickListener {
             if (deceasedInfo != null) {
                 showLoading(true)
+
                 viewModel.requestEditDeceased(
                     CreateDeceasedRequest(
                         accessType,
@@ -186,8 +177,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                         ETBurialLocation.text.toString(),
                         ETdeceasedDescription.text.toString(),
                         imagePath!!,
-                        locationBurial.latitude,
-                        locationBurial.longitude,
+                        locationBurial!!.latitude,
+                        locationBurial!!.longitude,
                         ETNameDeceased.text.toString()
                     ), Hawk.get("deceasedId")!!
                 )
@@ -206,6 +197,18 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                         R.drawable.request,
                         "از ثبت اطلاعات متوفی مطمئن هستید؟",
                         {
+
+                            Log.e("location", "create: " +  CreateDeceasedRequest(
+                                accessType,
+                                dateMap[1]!!,
+                                dateMap[2]!!,
+                                ETBurialLocation.text.toString(),
+                                ETdeceasedDescription.text.toString(),
+                                imagePath!!,
+                                locationBurial!!.latitude,
+                                locationBurial!!.longitude,
+                                ETNameDeceased.text.toString()
+                            ))
                             viewModel.requestCreateDeceased(
                                 CreateDeceasedRequest(
                                     accessType,
@@ -214,8 +217,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                                     ETBurialLocation.text.toString(),
                                     ETdeceasedDescription.text.toString(),
                                     imagePath!!,
-                                    locationBurial.latitude,
-                                    locationBurial.longitude,
+                                    locationBurial!!.latitude,
+                                    locationBurial!!.longitude,
                                     ETNameDeceased.text.toString()
                                 )
                             )
@@ -289,14 +292,12 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
     private fun setUpBirthDayCalendar() {
         showCalendarInDarkMode(1, EtBirthDateDeceased, 1370, 3, 13)
-
     }
 
     private fun setUpDeathDayCalendar() {
         showCalendarInDarkMode(2, ETDeathDeceased, 1370, 3, 13)
 
     }
-
     private fun openGallery() {
         when {
             ContextCompat.checkSelfPermission(
@@ -319,7 +320,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             }
         }
     }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: kotlin.Array<out String>,
@@ -343,8 +343,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             }
         }
     }
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
@@ -373,7 +371,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(dataUri!!))))
         }
     }
-
     fun getRealPathFromURI(contentUri: Uri?): String? {
         var path: String? = null
         var cursor = this?.contentResolver?.query(contentUri!!, null, null, null, null)
@@ -388,7 +385,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
         return path!!
     }
-
     private fun uploadFile(filePath: Uri): MultipartBody.Part {
         var file = File(filePath.path)
         var uploadFile = UploadProgress(file, this)
@@ -396,7 +392,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
         return multiPart
     }
-
     fun showCalendarInDarkMode(
         status: Int,
         editText: AppCompatEditText,
@@ -467,7 +462,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
     override fun updateProgress(interceptare: Int) {
         Log.e(TAG, "updateProgress: " + interceptare)
     }
-
     private fun showLoading(status: Boolean) {
         when (status) {
             true -> {
@@ -501,8 +495,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             .circleCrop()
             .into(IvDeceased)
 
-        Log.e("EditDeceased", "showDeceasedDetails: " + deceasedInfo!!.birthday)
-        Log.e("EditDeceased", "showDeceasedDetails: " + deceasedInfo!!.deathday)
         var dateBirthDay = Date((details.birthday).toLong())
         var dateDeathDay = Date((details.deathday).toLong())
         val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
@@ -536,6 +528,9 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         editDeath = details.deathday!!
         ETBurialLocation.setText(details.deathloc)
         ETdeceasedDescription.setText(details.description)
+
+        Log.e(TAG, "showDeceasedDetails: "+deceasedInfo )
+
     }
 
     fun hideSoftKeyboard(activity: Activity) {
@@ -603,11 +598,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         }
     }
 
-    override fun locationCallback(location: LatLng) {
-        Log.e("locationCallback", "locationCallback: " + location.latitude)
-        Log.e("locationCallback", "locationCallback: " + location.longitude)
-        locationBurial = LatLng(location.latitude, location.longitude)
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -657,5 +647,11 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         view.IvImageDialog.setBackgroundResource(image)
 
         alertDialog.show()
+    }
+
+    override fun locationCallback(location: org.neshan.common.model.LatLng) {
+        Log.e("locationCallback", "locationCallback: " + location.latitude)
+        Log.e("locationCallback", "locationCallback: " + location.longitude)
+        locationBurial = org.neshan.common.model.LatLng(location.latitude, location.longitude)
     }
 }

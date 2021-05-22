@@ -47,7 +47,7 @@ class InboxRecyclerAdapter( var inboxListener: InboxListener) :
             }
 
 
-            val d = Date((item.date).toLong())
+            val d = Date((item.date)*1000)
             val formatData = SimpleDateFormat("yyyy/MM/dd")
             val time = formatData.format(d)
             val year = PersianDate.SolarCalendar(Date(time)).year

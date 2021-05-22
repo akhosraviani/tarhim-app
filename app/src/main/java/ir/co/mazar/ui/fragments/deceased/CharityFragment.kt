@@ -95,6 +95,7 @@ class CharityFragment : Fragment(), CharityListener, SpiritualListener {
                             .setActivity(requireActivity())
                             .message(it.message+" و به خانواده ی ایشان اطلاع داده خواهد شد")
                             .build()
+                        dialog.dismiss()
                         viewModel.getSiritualRes(deceasedId!!)
                     }
                 }

@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.co.mazar.R
-import ir.co.mazar.model.deceased.MyInboxDataModel
-import ir.co.mazar.model.deceased.NotificationMessageDataModel
+import ir.co.mazar.model.deceased.NotifDataModel
 import ir.co.mazar.ui.callback.InboxListener
 import ir.co.mazar.utils.PersianDate
 import kotlinx.android.synthetic.main.row_inbox_recycler.view.*
@@ -18,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class NotificationRecyclerAdapter(var inboxListener: InboxListener) :
-    ListAdapter<NotificationMessageDataModel, NotificationRecyclerAdapter.ViewHolder>(InboxDiffUnit()) {
+    ListAdapter<NotifDataModel, NotificationRecyclerAdapter.ViewHolder>(InboxDiffUnit()) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         lateinit var TvDate: AppCompatTextView
@@ -39,16 +38,14 @@ class NotificationRecyclerAdapter(var inboxListener: InboxListener) :
         }
 
 
-        open fun bindTo(item: NotificationMessageDataModel) {
+        open fun bindTo(item: NotifDataModel) {
 
-            if (item.type.equals("FollowReq")) {
-                BtnAcceptRequest.visibility = View.VISIBLE
-                BtnDeclineRequest.visibility = View.VISIBLE
-            }
+//            if (item.type.equals("FollowReq")) {
+//                BtnAcceptRequest.visibility = View.VISIBLE
+//                BtnDeclineRequest.visibility = View.VISIBLE
+//            }
 
-
-
-            var d = (item.date).toLong()
+            var d = (item.date)
             val formatData = SimpleDateFormat("yyyy/MM/dd")
             var time = formatData.format(d)
 
@@ -57,24 +54,21 @@ class NotificationRecyclerAdapter(var inboxListener: InboxListener) :
             var day = PersianDate.SolarCalendar(Date(time)).date
             TvDate.setText("${year}-${month}-${day}")
 
-            TvFrom.setText(item.type)
+//            TvFrom.setText(item.type)
             TvDesc.setText(item.text)
         }
-
     }
-
-
-    open class InboxDiffUnit : DiffUtil.ItemCallback<NotificationMessageDataModel>() {
+    open class InboxDiffUnit : DiffUtil.ItemCallback<NotifDataModel>() {
         override fun areItemsTheSame(
-            oldItem: NotificationMessageDataModel,
-            newItem: NotificationMessageDataModel
+            oldItem: NotifDataModel,
+            newItem: NotifDataModel
         ): Boolean {
             return oldItem.date == newItem.date
         }
 
         override fun areContentsTheSame(
-            oldItem: NotificationMessageDataModel,
-            newItem: NotificationMessageDataModel
+            oldItem: NotifDataModel,
+            newItem: NotifDataModel
         ): Boolean {
             return oldItem == newItem
         }

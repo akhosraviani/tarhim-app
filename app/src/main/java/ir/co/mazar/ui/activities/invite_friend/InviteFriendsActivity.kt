@@ -19,6 +19,7 @@ import ir.co.mazar.ui.activities.invite_friend.adapter.InviteAdapterRecycler
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.TarhimToast
 import kotlinx.android.synthetic.main.contact_fragment.*
+import kotlinx.android.synthetic.main.fragment_login.*
 
 class InviteFriendsActivity() : AppCompatActivity() {
 
@@ -44,30 +45,34 @@ class InviteFriendsActivity() : AppCompatActivity() {
         }
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        viewModel.requestFollowes(deceasedId)
+//        viewModel.requestFollowes(deceasedId)
 
-        Log.e(TAG, "onCreate: "+deceasedId )
-        viewModel.ldFollowersList.observe(this, Observer {
-            it.also {
-             Log.i("testTag0","hi injam")
-                Log.e(TAG, "onCreate: "+it.size )
-                inviteAdapter.submitList(it)
-            }
-        })
+//        Log.e(TAG, "onCreate: "+deceasedId )
+//        viewModel.ldFollowersList.observe(this, Observer {
+//            it.also {
+//             Log.i("testTag0","hi injam")
+//                Log.e(TAG, "onCreate: "+it.size )
+//                inviteAdapter.submitList(it)
+//            }
+//        })
 
         viewModel.ldInvite.observe(this, Observer {
             it.also {
                 when (it.code) {
+
                     200 -> {
+
                         TarhimToast.Builder()
                             .setActivity(this)
                             .message(it.message)
-                        viewModel.requestFollowes(deceasedId)
+                            .build()
+//                        viewModel.requestFollowes(deceasedId)
                     }
                     400->{
                         TarhimToast.Builder()
                             .setActivity(this)
                             .message(it.message)
+                            .build()
                     }
                 }
             }

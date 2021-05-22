@@ -48,7 +48,7 @@ class NotificationMessageActivity : AppCompatActivity(), InboxListener {
     }
 
     private fun initRecycler() {
-        viewModel.requestInboxMessage()
+        viewModel.requestNotification()
         notifAdapter = NotificationRecyclerAdapter(this)
         inboxMessageRecycler.adapter = notifAdapter
         inboxMessageRecycler.layoutManager =

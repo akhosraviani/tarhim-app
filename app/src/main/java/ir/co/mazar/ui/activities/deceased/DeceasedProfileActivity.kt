@@ -838,7 +838,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         val checkBoxSeventh: CheckBox = dialog.findViewById(R.id.checkBoxSeventh)
         val checkBoxForty: CheckBox = dialog.findViewById(R.id.checkBoxForty)
         val checkBoxAnniversary: CheckBox = dialog.findViewById(R.id.checkBoxAnniversary)
-        val checkBoxFifth: CheckBox = dialog.findViewById(R.id.checkBoxFifth)
+//        val checkBoxFifth: CheckBox = dialog.findViewById(R.id.checkBoxFifth)
         val notifSave: TextView = dialog.findViewById(R.id.charitySave)
 
         if (checkBoxThird.isChecked) {
@@ -856,14 +856,14 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         if (checkBoxAnniversary.isChecked) {
             anniversary = true
         }
-        if (checkBoxFifth.isChecked) {
-            fifth = true
-        }
+//        if (checkBoxFifth.isChecked) {
+//            fifth = true
+//        }
 
         notifSave.setOnClickListener {
 
             if(!checkBoxThird.isChecked && !checkBoxForty.isChecked && !checkBoxSeventh.isChecked
-                && !checkBoxAnniversary.isChecked && !checkBoxFifth.isChecked){
+                && !checkBoxAnniversary.isChecked ){
                 dialog.dismiss()
             }else{
                 viewModel.requestReminder(

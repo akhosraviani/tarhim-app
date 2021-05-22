@@ -62,7 +62,7 @@ class HomeViewModel : ViewModel() {
     var ldFollowing: LiveData<List<MyDeceasedDataModel>>
     var ldDeceasedFollowers: LiveData<List<FollowersDataModel>>
     var ldSetting: LiveData<SettingDataModel>
-    var ldNotificationMessage:LiveData<List<NotificationMessageDataModel>>
+    var ldNotificationMessage:LiveData<List<NotifDataModel>>
 
     init {
         ldSignUp = loginRepository.mldSignUp

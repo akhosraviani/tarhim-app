@@ -96,7 +96,6 @@
                 android:background="@drawable/shape_login_edit_text_phone_number"
                 android:fontFamily="@font/iran_sans"
                 android:gravity="center"
-                android:inputType="number"
                 android:padding="@dimen/padding_top_phone_email_entry_et"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"

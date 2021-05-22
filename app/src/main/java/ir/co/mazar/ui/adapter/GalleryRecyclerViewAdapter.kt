@@ -39,69 +39,35 @@ class GalleryRecyclerViewAdapter(
         open fun bindTo(item: GalleryDataModel) {
 
             Log.e("bindTo", "bindTo: " + item.imagespath)
+            Glide.with(itemView.context)
+                .load(item.imagespath)
+                .centerCrop()
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        loadinggallery.visibility = View.GONE
 
-            val url: String = java.lang.String.valueOf(item.imagespath)
-            if(url.startsWith("https")){
-                Glide.with(itemView.context)
-                    .load(url)
-                    .centerCrop()
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            loadinggallery.visibility = View.GONE
+                        return false
+                    }
 
-                            return false
-                        }
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
 
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
+                        loadinggallery.visibility = View.GONE
+                        return false
+                    }
 
-                            loadinggallery.visibility = View.GONE
-                            return false
-                        }
-
-                    })
-                    .into(galleryIv)
-            }else{
-                Glide.with(itemView.context)
-                    .load(url.replace("http","https"))
-                    .centerCrop()
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            loadinggallery.visibility = View.GONE
-
-                            return false
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-
-                            loadinggallery.visibility = View.GONE
-                            return false
-                        }
-
-                    })
-                    .into(galleryIv)
-            }
+                })
+                .into(galleryIv)
 
         }
     }
@@ -122,13 +88,13 @@ class GalleryRecyclerViewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         (holder as GalleryViewHolder)
-        holder.bindTo(data[position])
+        holder.bindTo(data.get(position))
 
         holder.galleryIv.setOnClickListener {
-                galleryListener.galleryRecyclerCallBack(position,data[holder.adapterPosition])
+            galleryListener.galleryRecyclerCallBack(position,data[holder.adapterPosition])
 
-            }
         }
+    }
 
 
 

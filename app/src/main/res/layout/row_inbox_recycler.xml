@@ -75,7 +75,7 @@
         android:id="@+id/appCompatTextView10"
         android:layout_width="@dimen/_45sdp"
         android:layout_height="@dimen/_45sdp"
-        android:background="@drawable/shape_inbox_circule"
+        android:background="@drawable/profil_pic"
         android:fontFamily="@font/iran_sans_light"
         android:textColor="@color/text_color_lighter"
         app:layout_constraintBottom_toBottomOf="parent"

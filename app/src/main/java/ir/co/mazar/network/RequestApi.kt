@@ -153,7 +153,6 @@ interface RequestApi {
     @GET("api/v1/inbox/mybox")
     fun requestMyInbox(
         @Query("mobile") mobile: String,
-
         ): Call<List<MyInboxDataModel>>
 
     @GET("api/v1/pray")
@@ -238,7 +237,7 @@ interface RequestApi {
     @GET("api/v1/admin/notification")
     fun requestNotification(
         @Query("mobile") mobile: String,
-    ): Call<List<NotificationMessageDataModel>>
+    ): Call<List<NotifDataModel>>
 
     @POST("api/v1/remindme/send")
     fun requestReminder(
