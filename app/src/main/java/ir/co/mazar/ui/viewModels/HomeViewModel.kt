@@ -63,6 +63,7 @@ class HomeViewModel : ViewModel() {
     var ldDeceasedFollowers: LiveData<List<FollowersDataModel>>
     var ldSetting: LiveData<SettingDataModel>
     var ldNotificationMessage:LiveData<List<NotifDataModel>>
+    var ldAddContact:LiveData<List<ListOfContactsModel>>
 
     init {
         ldSignUp = loginRepository.mldSignUp
@@ -105,6 +106,7 @@ class HomeViewModel : ViewModel() {
         ldSetting=loginRepository.mldSetting
         ldReminder=loginRepository.mldReminder
         ldNotificationMessage=loginRepository.mldNotification
+        ldAddContact = loginRepository.mldAddContact
     }
 
     fun requestPostGallery(deceasedId: Int, path: String) {
@@ -158,6 +160,10 @@ class HomeViewModel : ViewModel() {
 
     fun requestInboxMessage() {
         loginRepository.requestMyInbox(Hawk.get(USER_NUMBER))
+    }
+
+    fun requestAddContact(id: Int) {
+        loginRepository.requestMyContactsList(id)
     }
 
     fun requestInvite(id: Int, mobile: String) {

@@ -157,6 +157,12 @@ interface RequestApi {
         @Query("mobile") mobile: String,
         ): Call<List<MyInboxDataModel>>
 
+    @GET("api/v1/inbox/listofphone")
+    fun requestMyListOfPhone(
+        @Query("id") id: Int,
+    ): Call<List<ListOfContactsModel>>
+
+
     @GET("api/v1/pray")
     fun requestPray(): Call<List<RequirementDataModel>>
 

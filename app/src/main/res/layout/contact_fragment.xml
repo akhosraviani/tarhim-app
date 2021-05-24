@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_page">
@@ -48,64 +49,14 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/AddFriendsTv"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_33sdp"
-        android:background="@drawable/shape_button"
-        android:drawableLeft="@drawable/ic_baseline_add_circle_outline_24"
-        android:fontFamily="@font/iran_sans_bold"
-        android:gravity="left|center"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:text="اضافه کردن مخاطب جدید"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_12sdp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputEditText"
-        app:layout_constraintVertical_bias=".01"
-
-        />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_30sdp"
-        android:layout_marginEnd="@dimen/_30sdp"
-        android:background="@color/white"
-        android:hint="@string/text_hint_add_friends"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contact_toolbar"
-        app:layout_constraintVertical_bias=".02">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/ETInputNumber"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:background="@color/background_grey"
-            android:fontFamily="@font/iran_sans_light"
-            android:gravity="right"
-            android:maxLength="11"
-            android:imeOptions="actionNext"
-            android:inputType="number"
-            android:singleLine="true" />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contactRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AddFriendsTv"
-        app:layout_constraintVertical_bias=".02" />
+        app:layout_constraintTop_toBottomOf="@+id/contact_toolbar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

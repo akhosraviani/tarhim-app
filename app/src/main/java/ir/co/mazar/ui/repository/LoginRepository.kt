@@ -74,6 +74,7 @@ class LoginRepository {
     val mldSetting = MutableLiveData<SettingDataModel>()
     val mldDeceasedFollowers = MutableLiveData<List<FollowersDataModel>>()
     val mldMap = MutableLiveData<MapMatching>()
+    val mldAddContact = MutableLiveData<List<ListOfContactsModel>>()
 
     fun requestSendPray(checkRegisterRequest: CheckPhoneNumberRequest) {
         RequestClient.makeRequest().requestCheckRegister(checkRegisterRequest)
@@ -438,6 +439,25 @@ class LoginRepository {
                     response: Response<List<MyInboxDataModel>>
                 ) {
                     mldInBox.value = response.body()
+                    Log.i(TAG, "im here=" + response.body())
+                }
+            })
+
+    }
+
+    fun requestMyContactsList(id: Int) {
+        RequestClient.makeRequest().requestMyListOfPhone(id)
+            .enqueue(object : Callback<List<ListOfContactsModel>> {
+                override fun onFailure(call: retrofit2.Call<List<ListOfContactsModel>>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<List<ListOfContactsModel>>,
+                    response: Response<List<ListOfContactsModel>>
+                ) {
+                    mldAddContact.value = response.body()
                     Log.i(TAG, "im here=" + response.body())
                 }
             })

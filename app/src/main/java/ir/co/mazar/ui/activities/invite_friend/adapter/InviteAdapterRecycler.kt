@@ -10,23 +10,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.co.mazar.R
-import ir.co.mazar.model.deceased.FollowersDataModel
-import ir.co.mazar.model.deceased.PrayDeceasedRequest
 import ir.co.mazar.ui.activities.invite_friend.ContactModel
-import ir.co.mazar.ui.adapter.MyDeceasedAdapter
-import ir.co.mazar.utils.PrayDeceasedType
+import ir.co.mazar.ui.callback.InviteFriendsListener
 import kotlinx.android.synthetic.main.item_contact.view.*
-import kotlinx.android.synthetic.main.row_contact_recycler.view.*
 
-class InviteAdapterRecycler(private var context : Context, private val data : List<ContactModel>) :
+
+class InviteAdapterRecycler(private var context : Context, private val data : List<ContactModel>
+                            , private val inviteFriendsListener : InviteFriendsListener , private var addedContact : MutableList<ContactModel>) :
     RecyclerView.Adapter<InviteAdapterRecycler.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -86,6 +79,15 @@ class InviteAdapterRecycler(private var context : Context, private val data : Li
     }
 
     override fun onBindViewHolder(holder: ViewHolder, p1: Int) {
+        for(i in data!!.indices){
+            for(j in addedContact!!.indices){
+                if(addedContact[j].phone==data[i].phone){
+                    holder.sendInvitation.visibility=View.VISIBLE
+                    holder.sendInvitation.text = "ارسال شد"
+                }
+            }
+        }
+
 
         holder.contactName.text = data[p1].name
         holder.contactPhoneNumber.text = data[p1].phone
@@ -99,6 +101,7 @@ class InviteAdapterRecycler(private var context : Context, private val data : Li
         }
 
         holder.sendInvitation.setOnClickListener {
+            if(holder.sendInvitation.text != "ارسال شد"){
             lateinit var dialog: Dialog
             Log.i("testTag4", "dialog")
             dialog = Dialog(context)
@@ -119,6 +122,8 @@ class InviteAdapterRecycler(private var context : Context, private val data : Li
 
 
             charityYes.setOnClickListener {
+                dialog.dismiss()
+             inviteFriendsListener.addContact(data[p1].phone)
 
             }
             charityNo.setOnClickListener {
@@ -128,6 +133,7 @@ class InviteAdapterRecycler(private var context : Context, private val data : Li
 
             }
             dialog.show()
+        }
         }
     }
 

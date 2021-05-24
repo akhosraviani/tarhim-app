@@ -20,14 +20,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.co.mazar.R
+import ir.co.mazar.model.deceased.ListOfContactsModel
 import ir.co.mazar.ui.activities.invite_friend.adapter.InviteAdapterRecycler
+import ir.co.mazar.ui.callback.InviteFriendsListener
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.TarhimToast
 import kotlinx.android.synthetic.main.contact_fragment.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.jar.Manifest
 
-class InviteFriendsActivity() : AppCompatActivity() {
+class InviteFriendsActivity() : AppCompatActivity() , InviteFriendsListener {
 
     companion object{
         private const val TAG = "InviteFriendsActivity"
@@ -41,6 +43,8 @@ class InviteFriendsActivity() : AppCompatActivity() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var imm: InputMethodManager
     private lateinit var inviteAdapter: InviteAdapterRecycler
+   private var contactList = ArrayList<ContactModel>()
+   private var addedContacts : MutableList<ContactModel> = mutableListOf()
 
 
 
@@ -81,6 +85,7 @@ class InviteFriendsActivity() : AppCompatActivity() {
                             .setActivity(this)
                             .message(it.message)
                             .build()
+                        viewModel.requestAddContact(deceasedId)
 //                        viewModel.requestFollowes(deceasedId)
                     }
                     400->{
@@ -93,42 +98,28 @@ class InviteFriendsActivity() : AppCompatActivity() {
             }
         })
 
+        viewModel.ldAddContact.observe(this , Observer{
+            for(i in it!!.indices ){
+               addedContacts.add(i,ContactModel(it[i].mobile , it[i].name))
+            }
+
+            Log.i("testTag000","added= "+it)
+            val adapter = InviteAdapterRecycler( this , getContactsData() ,this , addedContacts)
+            contactRecycler.adapter = adapter
+            manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            contactRecycler.layoutManager = manager
+            contactRecycler.layoutAnimation =
+                AnimationUtils.loadLayoutAnimation(this, R.anim.up_to_bottom)
+
+        })
+
 
         BtBackInvite.setOnClickListener {
             finish()
         }
-        initContactRecycler()
-
-        showAddFriendLayout()
+//        initContactRecycler()
     }
 
-
-    private fun initContactRecycler() {
-//        inviteAdapter = InviteAdapterRecycler()
-//        contactRecycler.adapter = inviteAdapter
-        manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        contactRecycler.layoutManager = manager
-        contactRecycler.layoutAnimation =
-            AnimationUtils.loadLayoutAnimation(this, R.anim.up_to_bottom)
-    }
-
-
-    private fun showAddFriendLayout() {
-
-        AddFriendsTv.setOnClickListener {
-            if (!TextUtils.isEmpty(ETInputNumber.text) && ETInputNumber.text!!.length == 11) {
-                viewModel.requestInvite(deceasedId, ETInputNumber.text.toString())
-                ETInputNumber.setText("")
-                closeKeyboard(window!!.decorView)
-            } else {
-                TarhimToast.Builder()
-                    .setActivity(this)
-                    .message("شماره به درستی وارد نشده است")
-                    .build()
-
-            }
-        }
-    }
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -145,14 +136,13 @@ class InviteFriendsActivity() : AppCompatActivity() {
     }
 
     private fun getContacts() {
-        val adapter = InviteAdapterRecycler( this , getContactsData())
-        contactRecycler.adapter = adapter
+        viewModel.requestAddContact(deceasedId)
 
         Log.i("testTag00","my contacts= "+getContactsData().toString())
     }
 
     private fun getContactsData(): ArrayList<ContactModel> {
-     val contactList = ArrayList<ContactModel>()
+
         val contactCurser = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null)
 
         if((contactCurser?.count ?: 0 ) > 0 ){
@@ -205,6 +195,10 @@ class InviteFriendsActivity() : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun addContact(phone: String) {
+        viewModel.requestInvite(deceasedId, phone)
     }
 
 }
