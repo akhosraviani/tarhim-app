@@ -1,5 +1,6 @@
 package ir.co.mazar.network
 
+import com.google.type.LatLng
 import ir.co.mazar.model.ConfirmDataModel
 import ir.co.mazar.model.RemindeRequestModel
 import ir.co.mazar.model.deceased.*
@@ -12,6 +13,7 @@ import ir.co.mazar.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.mazar.model.login.mobile.CheckPhoneNumberRequest
 import ir.co.mazar.model.login.mobile.CheckRegisterModel
 import ir.co.mazar.model.login.otp.OtpDataModel
+import ir.co.mazar.model.map.MapMatching
 import ir.co.mazar.model.news.NewsDataModel
 import ir.co.mazar.model.user.RegisterUser
 import ir.co.mazar.model.user.UserInfoDataModel
@@ -243,6 +245,12 @@ interface RequestApi {
     fun requestReminder(
         @Body body: RemindeRequestModel,
     ): Call<ConfirmDataModel>
+
+
+    @GET("v1/map-matching")
+    fun requestMap(
+        @Query("path") path: List<LatLng>
+    ): Call<MapMatching>
 
 
 }

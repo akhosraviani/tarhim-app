@@ -2,6 +2,7 @@ package ir.co.mazar.ui.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.type.LatLng
 import ir.co.mazar.model.ConfirmDataModel
 import ir.co.mazar.model.RemindeRequestModel
 import ir.co.mazar.model.deceased.*
@@ -11,9 +12,11 @@ import ir.co.mazar.model.login.confirmpass.ConfirmPasswordRequest
 import ir.co.mazar.model.login.mobile.CheckPhoneNumberRequest
 import ir.co.mazar.model.login.mobile.CheckRegisterModel
 import ir.co.mazar.model.login.otp.OtpDataModel
+import ir.co.mazar.model.map.MapMatching
 import ir.co.mazar.model.news.NewsDataModel
 import ir.co.mazar.model.user.RegisterUser
 import ir.co.mazar.model.user.UserInfoDataModel
+import ir.co.mazar.network.MapRequest
 import ir.co.mazar.network.RequestClient
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -70,6 +73,7 @@ class LoginRepository {
     val mldReminder = MutableLiveData<ConfirmDataModel>()
     val mldSetting = MutableLiveData<SettingDataModel>()
     val mldDeceasedFollowers = MutableLiveData<List<FollowersDataModel>>()
+    val mldMap = MutableLiveData<MapMatching>()
 
     fun requestSendPray(checkRegisterRequest: CheckPhoneNumberRequest) {
         RequestClient.makeRequest().requestCheckRegister(checkRegisterRequest)
@@ -910,6 +914,30 @@ class LoginRepository {
                         ConfirmDataModel(response.message(), response.code())
                 }
             })
+    }
+
+
+    fun requestMapMatching(path : List<LatLng>) {
+        MapRequest.makeRequest().requestMap(path)
+            .enqueue(object : Callback<MapMatching> {
+                override fun onFailure(call: retrofit2.Call<MapMatching>, t: Throwable) {
+                    Log.e(TAG, "onFailure: " + t.message)
+                    mldError.value = t
+                    Log.i("testTag44", "im here in map error")
+                    Log.i("testTag44", "im here in map error= "+ t.message)
+                }
+
+                override fun onResponse(
+                    call: retrofit2.Call<MapMatching>,
+                    response: Response<MapMatching>
+                ) {
+                    mldMap.value =
+                        MapMatching(response.body()!!.snappedPoints)
+                    Log.i("testTag44", "im here in map")
+                    Log.i("testTag44", "im here in map= "+response.body()!!.snappedPoints.toString())
+                }
+            })
+
     }
 
 }

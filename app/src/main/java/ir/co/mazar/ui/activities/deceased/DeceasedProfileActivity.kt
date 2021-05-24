@@ -225,16 +225,16 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             btnAddFriends.visibility = View.VISIBLE
                             typeSpinner.visibility = View.VISIBLE
                             TvTypeDeceasedPage.visibility = View.VISIBLE
-                            typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[2])
+                            typeSpinner.text = resources.getStringArray(R.array.list_access_type)[2]
                             TvDeseacesName.text = it.name
-                            var dateBirthDay = Date((it.birthday).toLong())
-                            var dateDeathDay = Date((it.deathday).toLong())
+                            val dateBirthDay = Date((it.birthday).toLong())
+                            val dateDeathDay = Date((it.deathday).toLong())
                             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
                             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
-                            var birthDay =
+                            val birthDay =
                                 "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
-                            var deathDay =
+                            val deathDay =
                                 "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
                             TvDeathDateDeseaces.text = deathDay
                             TvBornDateDeseaces.text = birthDay
@@ -296,13 +296,13 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             SeperateNumber().splitDigit(it.followerCount).toInt()
                             } دنبال کننده "
                         )
-                        var dateBirthDay = Date((it.birthday).toLong())
-                        var dateDeathDay = Date((it.deathday).toLong())
+                        val dateBirthDay = Date((it.birthday).toLong())
+                        val dateDeathDay = Date((it.deathday).toLong())
                         val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
                         val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
-                        var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
-                        var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+                        val birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+                        val deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
 
                         TvDeathDateDeseaces.text = deathDay
                         TvBornDateDeseaces.text = birthDay
@@ -342,16 +342,16 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             )
                             typeSpinner.visibility = View.VISIBLE
                             TvTypeDeceasedPage.visibility = View.VISIBLE
-                            typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[1])
+                            typeSpinner.text = resources.getStringArray(R.array.list_access_type)[1]
                             TvDeseacesName.text = it.name
-                            var dateBirthDay = Date((it.birthday).toLong())
-                            var dateDeathDay = Date((it.deathday).toLong())
+                            val dateBirthDay = Date((it.birthday).toLong())
+                            val dateDeathDay = Date((it.deathday).toLong())
                             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
                             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
-                            var birthDay =
+                            val birthDay =
                                 "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
-                            var deathDay =
+                            val deathDay =
                                 "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
 
                             TvDeathDateDeseaces.text = deathDay
@@ -386,14 +386,14 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             TvTypeDeceasedPage.visibility = View.VISIBLE
                             typeSpinner.setText(resources.getStringArray(R.array.list_access_type)[2])
                             TvDeseacesName.text = it.name
-                            var dateBirthDay = Date((it.birthday).toLong())
-                            var dateDeathDay = Date((it.deathday).toLong())
+                            val dateBirthDay = Date((it.birthday).toLong())
+                            val dateDeathDay = Date((it.deathday).toLong())
                             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
                             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
-                            var birthDay =
+                            val birthDay =
                                 "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
-                            var deathDay =
+                            val deathDay =
                                 "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
 
                             TvDeathDateDeseaces.text = deathDay
@@ -663,11 +663,11 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         }
 
         btShowmore.setOnClickListener {
-            var countLine = TvBioDeseaces.lineCount
+            val countLine = TvBioDeseaces.lineCount
             if (!expandable) {
                 btShowmore.visibility = View.VISIBLE
                 expandable = true
-                var animation = ObjectAnimator.ofInt(TvBioDeseaces, "maxLines", countLine)
+                val animation = ObjectAnimator.ofInt(TvBioDeseaces, "maxLines", countLine)
                 animation.setDuration(100).start()
                 btShowmore.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_arrow_up,
@@ -677,7 +677,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                 )
             } else {
                 expandable = false
-                var animation = ObjectAnimator.ofInt(TvBioDeseaces, "maxLines", 3)
+                val animation = ObjectAnimator.ofInt(TvBioDeseaces, "maxLines", 3)
                 animation.setDuration(100).start()
                 btShowmore.setCompoundDrawablesWithIntrinsicBounds(
                     R.drawable.ic_arrow_down,
@@ -713,13 +713,13 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         if (deceasedInfo.isfollow!!) {
             TvDeseacesName.text = deceasedInfo.name
             coordinateLayout.visibility = View.VISIBLE
-            var dateBirthDay = Date((deceasedInfo.birthday).toLong())
-            var dateDeathDay = Date((deceasedInfo.deathday).toLong())
+            val dateBirthDay = Date((deceasedInfo.birthday).toLong())
+            val dateDeathDay = Date((deceasedInfo.deathday).toLong())
             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
-            var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
-            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+            val birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+            val deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
 
             TvDeathDateDeseaces.text = birthDay
             TvBornDateDeseaces.text = deathDay
@@ -760,17 +760,17 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
         TvDeseacesNamePrivate.text = itemDeceased.name
         if(itemDeceased.deathday!=""){
-            var dateDeathDay = Date((itemDeceased.deathday).toLong())
+            val dateDeathDay = Date((itemDeceased.deathday).toLong())
             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
-            var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+            val deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
             TvDeathDateDeseacesPrivate.text = deathDay
         }
-        var dateBirthDay = Date((itemDeceased.birthday).toLong())
+        val dateBirthDay = Date((itemDeceased.birthday).toLong())
 
         val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
 
 
-        var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+        val birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
 
 
         TvBornDateDeseacesPrivate.text = birthDay

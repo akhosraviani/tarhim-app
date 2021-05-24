@@ -68,17 +68,17 @@ class MyDeceasedAdapter(
         }
 
 
-        var dateBirthDay = Date((listDeceased[position].birthday).toLong())
-        var dateDeathDay = Date((listDeceased[position].deathday).toLong())
+        val dateBirthDay = Date((listDeceased[position].birthday).toLong())
+        val dateDeathDay = Date((listDeceased[position].deathday).toLong())
         val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
         val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
-        var birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
-        var deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
+        val birthDay = "${scBirthDay.year}/${scBirthDay.month}/${scBirthDay.date}"
+        val deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
 
         holder.nameDeceased.text = listDeceased.get(position).name
         holder.birth_DeathDay.text =
-            "${birthDay} - ${deathDay}"
+            "$birthDay - $deathDay"
         holder.itemView.setOnClickListener {
             deceasedCallBack.myDeceasedCallBack(listDeceased[holder.adapterPosition].id)
         }

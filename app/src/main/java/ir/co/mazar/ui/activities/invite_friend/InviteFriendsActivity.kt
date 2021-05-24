@@ -1,8 +1,12 @@
 package ir.co.mazar.ui.activities.invite_friend
 
 import android.app.Activity
+import android.app.Dialog
+import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.os.Bundle
+import android.provider.Contacts
+import android.provider.ContactsContract
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -11,6 +15,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,11 +25,13 @@ import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.TarhimToast
 import kotlinx.android.synthetic.main.contact_fragment.*
 import kotlinx.android.synthetic.main.fragment_login.*
+import java.util.jar.Manifest
 
 class InviteFriendsActivity() : AppCompatActivity() {
 
     companion object{
         private const val TAG = "InviteFriendsActivity"
+        val REQUEST_PERMISSION = 1
     }
     
     private lateinit var bottomSheet: FrameLayout
@@ -36,6 +43,7 @@ class InviteFriendsActivity() : AppCompatActivity() {
     private lateinit var inviteAdapter: InviteAdapterRecycler
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.contact_fragment)
@@ -45,6 +53,13 @@ class InviteFriendsActivity() : AppCompatActivity() {
         }
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_CONTACTS) , REQUEST_PERMISSION)
+        }else{
+            Log.i("testTag00","contact")
+            getContacts()
+        }
 //        viewModel.requestFollowes(deceasedId)
 
 //        Log.e(TAG, "onCreate: "+deceasedId )
@@ -89,8 +104,8 @@ class InviteFriendsActivity() : AppCompatActivity() {
 
 
     private fun initContactRecycler() {
-        inviteAdapter = InviteAdapterRecycler()
-        contactRecycler.adapter = inviteAdapter
+//        inviteAdapter = InviteAdapterRecycler()
+//        contactRecycler.adapter = inviteAdapter
         manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         contactRecycler.layoutManager = manager
         contactRecycler.layoutAnimation =
@@ -120,17 +135,66 @@ class InviteFriendsActivity() : AppCompatActivity() {
         finish()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if(requestCode == REQUEST_PERMISSION) getContacts()
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun getContacts() {
+        val adapter = InviteAdapterRecycler( this , getContactsData())
+        contactRecycler.adapter = adapter
+
+        Log.i("testTag00","my contacts= "+getContactsData().toString())
+    }
+
+    private fun getContactsData(): ArrayList<ContactModel> {
+     val contactList = ArrayList<ContactModel>()
+        val contactCurser = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null,null,null,null)
+
+        if((contactCurser?.count ?: 0 ) > 0 ){
+            while (contactCurser != null && contactCurser.moveToNext()){
+                val rowId = contactCurser.getString(contactCurser.getColumnIndex(ContactsContract.Contacts._ID))
+                val name = contactCurser.getString(contactCurser.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                var phoneNumber = ""
+                if(contactCurser.getInt(contactCurser.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0 ) {
+                    val phoneNumberCursor = contentResolver.query(
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ? ",
+                        arrayOf<String>(rowId),
+                        null
+                    )
+                    while (phoneNumberCursor!!.moveToNext()) {
+                        phoneNumber += phoneNumberCursor.getString(
+                            phoneNumberCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                        ) + "\n"
+                    }
+                    phoneNumberCursor.close()
+                }
+
+                    contactList.add(ContactModel(phoneNumber,name))
+                }
+            }
+        contactCurser!!.close()
+        return contactList
+        }
+
+
     private fun closeKeyboard(view: View) {
         view.viewTreeObserver.addOnGlobalLayoutListener {
             object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    var contentView = view.findViewById<View>(android.R.id.content)
-                    var rect = Rect()
+                    val contentView = view.findViewById<View>(android.R.id.content)
+                    val rect = Rect()
                     view.getWindowVisibleDisplayFrame(rect)
-                    var screenHeight = contentView.height
+                    val screenHeight = contentView.height
                     val keypadHeight: Int = screenHeight - rect.bottom
                     if (keypadHeight > screenHeight * 0.15) {
-                        imm.hideSoftInputFromWindow(contentView!!.getWindowToken(), 0)
+                        imm.hideSoftInputFromWindow(contentView!!.windowToken, 0)
 
                     } else {
                         return
@@ -140,6 +204,7 @@ class InviteFriendsActivity() : AppCompatActivity() {
 
             }
         }
+
     }
 
 }

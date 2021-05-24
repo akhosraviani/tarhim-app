@@ -76,12 +76,12 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
             showLoading(false)
             it.let {
                 Log.i("testTag3", "hi =$it")
-                    if (it!=null && it.isNotEmpty()) {
-                        latestAdapter.submitList(it)
-                    }else{
-                        latestAdapter.submitList(null)
-                        TvLatestSearch.visibility=View.GONE
-                    }
+                if (it!=null && it.isNotEmpty()) {
+                    latestAdapter.submitList(it)
+                }else{
+                    latestAdapter.submitList(null)
+                    TvLatestSearch.visibility=View.GONE
+                }
             }
         })
 
@@ -121,7 +121,7 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
             data.let {
                 searchAdapter.submitList(it)
             }
-            }
+        }
         )
 
         viewModel.ldDeleteLatest.observe(viewLifecycleOwner, Observer {
@@ -278,8 +278,5 @@ class CemeteryFragment : Fragment(), LatestRecyclerListener, SearchListener, Del
 
 
 }
-
-
-
 
 

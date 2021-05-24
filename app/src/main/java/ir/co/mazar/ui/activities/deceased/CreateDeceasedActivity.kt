@@ -128,6 +128,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             TvChangeImg.text = getString(R.string.msg_edit_image)
             editProfile = true
 
+
             deceasedInfo = intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased")!!
             val  bundle = intent.extras
             DeceasedId = bundle!!.getInt("DeceasedId")
@@ -239,6 +240,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                 //</editor-fold>
             }
         }
+
         TvChangeImg.setOnClickListener {
             openGallery()
         }
@@ -293,12 +295,14 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
     private fun setUpBirthDayCalendar() {
         showCalendarInDarkMode(1, EtBirthDateDeceased, 1370, 3, 13)
+
     }
 
     private fun setUpDeathDayCalendar() {
         showCalendarInDarkMode(2, ETDeathDeceased, 1370, 3, 13)
 
     }
+
     private fun openGallery() {
         when {
             ContextCompat.checkSelfPermission(
@@ -372,6 +376,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             viewModel.requestUploadImage(uploadFile(Uri.parse(getRealPathFromURI(dataUri!!))))
         }
     }
+
     fun getRealPathFromURI(contentUri: Uri?): String? {
         var path: String? = null
         var cursor = this?.contentResolver?.query(contentUri!!, null, null, null, null)
@@ -386,6 +391,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
         return path!!
     }
+
     private fun uploadFile(filePath: Uri): MultipartBody.Part {
         var file = File(filePath.path)
         var uploadFile = UploadProgress(file, this)
@@ -463,6 +469,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
     override fun updateProgress(interceptare: Int) {
         Log.e(TAG, "updateProgress: " + interceptare)
     }
+
     private fun showLoading(status: Boolean) {
         when (status) {
             true -> {
@@ -496,6 +503,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             .circleCrop()
             .into(IvDeceased)
 
+        Log.e("EditDeceased", "showDeceasedDetails: " + deceasedInfo!!.birthday)
+        Log.e("EditDeceased", "showDeceasedDetails: " + deceasedInfo!!.deathday)
         var dateBirthDay = Date((details.birthday).toLong())
         var dateDeathDay = Date((details.deathday).toLong())
         val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
