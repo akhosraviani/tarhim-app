@@ -13,6 +13,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/iran_sans"
         android:text="TextView"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/inviteCheckBox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/inviteCheckBox" />
@@ -28,6 +29,7 @@
         android:fontFamily="@font/iran_sans"
         android:gravity="right"
         android:text="TextView"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/inviteCheckBox"
         app:layout_constraintStart_toEndOf="@+id/contactPhoneNumber"

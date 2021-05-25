@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     android:background="@color/background_page">
 
+    <ProgressBar
+        android:id="@+id/loadingContactFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_3sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_toolbar" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/contact_toolbar"
         android:layout_width="match_parent"

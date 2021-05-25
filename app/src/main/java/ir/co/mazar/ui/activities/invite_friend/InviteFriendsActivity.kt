@@ -11,6 +11,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
@@ -26,6 +27,7 @@ import ir.co.mazar.ui.callback.InviteFriendsListener
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.TarhimToast
 import kotlinx.android.synthetic.main.contact_fragment.*
+import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import java.util.jar.Manifest
 
@@ -80,7 +82,7 @@ class InviteFriendsActivity() : AppCompatActivity() , InviteFriendsListener {
                 when (it.code) {
 
                     200 -> {
-
+                        showLoading(false)
                         TarhimToast.Builder()
                             .setActivity(this)
                             .message(it.message)
@@ -199,6 +201,24 @@ class InviteFriendsActivity() : AppCompatActivity() , InviteFriendsListener {
 
     override fun addContact(phone: String) {
         viewModel.requestInvite(deceasedId, phone)
+        showLoading(true)
+    }
+
+    private fun showLoading(status: Boolean) {
+        when (status) {
+            true -> {
+                loadingContactFragment.visibility = View.VISIBLE
+                this?.window?.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                )
+
+            }
+            else -> {
+                loadingContactFragment.visibility = View.GONE
+                this?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            }
+        }
     }
 
 }
