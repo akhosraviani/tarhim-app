@@ -73,15 +73,15 @@ class InviteAdapterRecycler(private var context : Context, private val data : Li
 
     override fun onCreateViewHolder(view: ViewGroup, p1: Int): ViewHolder {
         return ViewHolder(
-//            LayoutInflater.from(view.context).inflate(R.layout.row_contact_recycler, view, false)
             LayoutInflater.from(view.context).inflate(R.layout.item_contact, view, false)
         )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, p1: Int) {
-        for(i in data!!.indices){
-            for(j in addedContact!!.indices){
-                if(addedContact[j].phone==data[i].phone){
+
+        for(i in data.indices){
+            for(j in addedContact.indices){
+                if(data[i].phone==addedContact[i].phone){
                     holder.sendInvitation.visibility=View.VISIBLE
                     holder.sendInvitation.text = "ارسال شد"
                 }
