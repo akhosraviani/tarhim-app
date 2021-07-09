@@ -33,7 +33,7 @@ import ir.co.mazar.model.RemindeRequestModel
 import ir.co.mazar.model.deceased.DeceasedProfileDataModel
 import ir.co.mazar.ui.activities.home.HomeActivity
 import ir.co.mazar.ui.activities.inbox.InboxMessageActivity
-import ir.co.mazar.ui.activities.invite_friend.InviteFriendsActivity
+import ir.co.mazar.ui.activities.invite_friend.InviteActivity
 import ir.co.mazar.ui.adapter.ViewPagerAdapter
 import ir.co.mazar.ui.callback.ViewPagerCallBack
 import ir.co.mazar.ui.fragments.deceased.CharityFragment
@@ -139,8 +139,8 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             SeperateNumber().splitDigit(it.followerCount).toInt()
                             } دنبال کننده "
                         )
-                        var dateBirthDay = Date((it.birthday).toLong())
-                        var dateDeathDay = Date((it.deathday).toLong())
+                        var dateBirthDay = Date((it.birthday).toLong()*1000)
+                        var dateDeathDay = Date((it.deathday).toLong()*1000)
                         val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
                         val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
@@ -185,8 +185,8 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                                 SeperateNumber().splitDigit(it.followerCount).toInt()
                                 } دنبال کننده "
                             )
-                            var dateBirthDay = Date((it.birthday).toLong())
-                            var dateDeathDay = Date((it.deathday).toLong())
+                            var dateBirthDay = Date((it.birthday).toLong()*1000)
+                            var dateDeathDay = Date((it.deathday).toLong()*1000)
                             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
                             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
@@ -227,8 +227,8 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             TvTypeDeceasedPage.visibility = View.VISIBLE
                             typeSpinner.text = resources.getStringArray(R.array.list_access_type)[2]
                             TvDeseacesName.text = it.name
-                            val dateBirthDay = Date((it.birthday).toLong())
-                            val dateDeathDay = Date((it.deathday).toLong())
+                            val dateBirthDay = Date((it.birthday).toLong()*1000)
+                            val dateDeathDay = Date((it.deathday).toLong()*1000)
                             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
                             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
@@ -521,7 +521,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         }
         btnAddFriends.setOnClickListener {
             startActivity(
-                Intent(this, InviteFriendsActivity::class.java)
+                Intent(this, InviteActivity::class.java)
                     .putExtra("DeceasedId", deceasedId)
             )
         }

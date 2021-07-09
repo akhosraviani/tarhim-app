@@ -84,13 +84,13 @@ class SearchRecyclerAdapter(var searchCallBack:SearchListener) :
             var dateDeathDay = Date()
 
             if(deceased.birthday != ""){
-                dateBirthDay = Date((deceased.birthday).toLong())
+                dateBirthDay = Date((deceased.birthday).toLong()*1000)
             }else{
                 dateBirthDay =Date(("1619035200").toLong())
             }
 
             if(deceased.deathday != ""){
-                dateDeathDay = Date((deceased.deathday).toLong())
+                dateDeathDay = Date((deceased.deathday).toLong()*1000)
             }else{
                 dateDeathDay =Date(("1619035200").toLong())
             }

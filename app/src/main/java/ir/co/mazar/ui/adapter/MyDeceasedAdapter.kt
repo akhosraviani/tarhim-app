@@ -68,8 +68,8 @@ class MyDeceasedAdapter(
         }
 
 
-        val dateBirthDay = Date((listDeceased[position].birthday).toLong())
-        val dateDeathDay = Date((listDeceased[position].deathday).toLong())
+        val dateBirthDay = Date((listDeceased[position].birthday).toLong()*1000)
+        val dateDeathDay = Date((listDeceased[position].deathday).toLong()*1000)
         val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
         val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 

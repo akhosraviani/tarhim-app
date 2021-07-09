@@ -27,6 +27,9 @@ interface RequestApi {
     @POST("api/v1/account/mobile")
     fun requestCheckRegister(@Body checkRegisterRequest: CheckPhoneNumberRequest): Call<CheckRegisterModel>
 
+
+    @POST("api/v1/inbox/shareinvite")
+    fun ShareLink(@Query("id")id:Int,@Query("mobile")mobile:String):Call<ConfirmDataModel>
     @POST("api/v1/account/otp")
     fun requestOtp(@Body checkPhoneNumber: CheckPhoneNumberRequest): Call<OtpDataModel>
 
@@ -134,9 +137,7 @@ interface RequestApi {
 
     @POST("api/v1/inbox/invite")
     fun requestInvite(
-        @Query("id") userId: Int,
-        @Query("mobile") contactMobile: String
-    ): Call<ConfirmDataModel>
+        @Query("id") userId: Int, @Query("mobile") contactMobile: String): Call<ConfirmDataModel>
 
     @POST("api/v1/admin/specificdeceased/gallery")
     fun requestPostGallery(

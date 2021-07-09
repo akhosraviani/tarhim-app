@@ -69,7 +69,6 @@ class InputPasswordState(
 
         if (TextUtils.isEmpty(loginEnterEt.text)) {
             informUser("لطفا رمز عبور خود را وارد کنید")
-
         }
 
         if(!register){
@@ -77,8 +76,11 @@ class InputPasswordState(
             ConfirmPasswordRequest(
                 Hawk.get(USER_NUMBER),
                 loginEnterEt.text.toString()
+
             )
         )
+            activity.showLoading(true)
+
         } else{
             activity.getViewModel().requestSetPassword(
                 ConfirmPasswordRequest(
@@ -86,6 +88,7 @@ class InputPasswordState(
                     loginEnterEt.text.toString()
                 )
             )
+            activity.showLoading(true)
         }
 
     }

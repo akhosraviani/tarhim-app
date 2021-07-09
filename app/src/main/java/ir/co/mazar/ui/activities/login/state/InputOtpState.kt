@@ -50,5 +50,6 @@ class InputOtpState(
                 Hawk.get(USER_NUMBER)
             )
         )
+        activity.showLoading(true)
     }
 }

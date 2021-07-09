@@ -70,8 +70,8 @@ class FollowingRecyclerAdapter(
             }
 
             TvFollowingName.text = item.name
-            var dateBirthDay = Date((item.birthday).toLong())
-            var dateDeathDay = Date((item.deathday).toLong())
+            var dateBirthDay = Date((item.birthday).toLong()*1000)
+            var dateDeathDay = Date((item.deathday).toLong()*1000)
             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 

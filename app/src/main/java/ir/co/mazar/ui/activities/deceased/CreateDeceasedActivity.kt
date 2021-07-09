@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -43,17 +44,12 @@ import ir.co.mazar.ui.callback.UploadCallBack
 import ir.co.mazar.ui.callback.UploadProgress
 import ir.co.mazar.ui.fragments.deceased.MapsFragment
 import ir.co.mazar.ui.viewModels.HomeViewModel
-import ir.co.mazar.utils.AccessTypeDeceased
-import ir.co.mazar.utils.NetworkConnectionReceiver
-import ir.co.mazar.utils.PersianDate
-import ir.co.mazar.utils.TarhimCompress
+import ir.co.mazar.utils.*
 import ir.co.mazar.utils.TarhimConfig.Companion.CHOSE_IMAGE_FROM_GALLERY
 import ir.hamsaa.persiandatepicker.Listener
 import ir.hamsaa.persiandatepicker.PersianDatePickerDialog
 import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.create_deceased.*
-import kotlinx.android.synthetic.main.fragment_gallery.*
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import okhttp3.MultipartBody
 import org.neshan.common.model.LatLng
@@ -61,6 +57,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Timer
 import kotlin.collections.HashMap
 import kotlin.concurrent.schedule
 import kotlin.properties.Delegates
@@ -78,7 +75,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
     private lateinit var mapsFragment: MapsFragment
     private var imagePath: String? = ""
-    private  var locationBurial: LatLng? =null
+    private var locationBurial = LatLng(35.5413334, 51.3784391)
     private lateinit var editBirth: String
     private lateinit var editDeath: String
     private var birthZone: String? = ""
@@ -128,16 +125,18 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             TvChangeImg.text = getString(R.string.msg_edit_image)
             editProfile = true
 
-
             deceasedInfo = intent?.getParcelableExtra<DeceasedProfileDataModel>("EditDeceased")!!
-            val  bundle = intent.extras
+            val bundle = intent.extras
             DeceasedId = bundle!!.getInt("DeceasedId")
-            Hawk.put("deceasedId",DeceasedId)
-            Log.i("testTag7", "id in create dec activity= " + DeceasedId.toString())
-//            DeceasedId = intent?.getIntExtra("DeceasedId", -1)!!
+            Hawk.put("deceasedId", DeceasedId)
+            Log.e("TAG", "id in create dec activity= " + deceasedInfo)
+
             locationBurial = LatLng((deceasedInfo!!.latitude), (deceasedInfo!!.longitude))
-            Hawk.put("locationBurial",locationBurial)
+            Hawk.put("locationBurial", locationBurial)
+
             showDeceasedDetails(deceasedInfo!!)
+        } else {
+            Hawk.put("locationBurial", null)
         }
         setUpView(this.window.decorView)
         setUpSpinner()
@@ -170,47 +169,50 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         BtnSaveEditUser.setOnClickListener {
             if (deceasedInfo != null) {
                 showLoading(true)
+                if (
+                    !TextUtils.isEmpty(ETNameDeceased.text.toString()) &&
+                    !TextUtils.isEmpty(ETBurialLocation.text.toString()) &&
+                    !TextUtils.isEmpty(EtBirthDateDeceased.text.toString()) &&
+                    !TextUtils.isEmpty(ETDeathDeceased.text.toString()) &&
+                    !TextUtils.isEmpty(ETdeceasedDescription.text.toString())
+                ) {
+                    viewModel.requestEditDeceased(
+                        CreateDeceasedRequest(
+                            accessType,
+                            dateMap[1]!!,
+                            dateMap[2]!!,
+                            ETBurialLocation.text.toString(),
+                            ETdeceasedDescription.text.toString(),
+                            imagePath!!,
+                            locationBurial!!.latitude,
+                            locationBurial!!.longitude,
+                            ETNameDeceased.text.toString()
+                        ), Hawk.get("deceasedId")!!
+                    )
+                } else {
+                    TarhimToast.Builder()
+                        .setActivity(this)
+                        .message("لطفا تمام قسمت ها را تکمیل کنید")
+                        .build()
 
-                viewModel.requestEditDeceased(
-                    CreateDeceasedRequest(
-                        accessType,
-                        dateMap[1]!!,
-                        dateMap[2]!!,
-                        ETBurialLocation.text.toString(),
-                        ETdeceasedDescription.text.toString(),
-                        imagePath!!,
-                        locationBurial!!.latitude,
-                        locationBurial!!.longitude,
-                        ETNameDeceased.text.toString()
-                    ), Hawk.get("deceasedId")!!
-                )
+                }
             } else {
                 //<editor-fold desc="Create Deceaed Profile">
                 if (
-                    ETNameDeceased.text.toString().isNotEmpty() &&
-                    ETBurialLocation.text.toString().isNotEmpty() &&
-                    EtBirthDateDeceased.text.toString().isNotEmpty() &&
-                    ETDeathDeceased.text.toString().isNotEmpty()
+                    !TextUtils.isEmpty(ETNameDeceased.text.toString()) &&
+                    !TextUtils.isEmpty(ETBurialLocation.text.toString()) &&
+                    !TextUtils.isEmpty(EtBirthDateDeceased.text.toString()) &&
+                    !TextUtils.isEmpty(ETDeathDeceased.text.toString()) &&
+                    !TextUtils.isEmpty(ETdeceasedDescription.text.toString())
                 ) {
 
-                    showLoading(true)
                     showConfirmDialog(
                         this,
                         R.drawable.request,
                         "از ثبت اطلاعات متوفی مطمئن هستید؟",
                         {
+                            showLoading(true)
 
-                            Log.e("location", "create: " +  CreateDeceasedRequest(
-                                accessType,
-                                dateMap[1]!!,
-                                dateMap[2]!!,
-                                ETBurialLocation.text.toString(),
-                                ETdeceasedDescription.text.toString(),
-                                imagePath!!,
-                                locationBurial!!.latitude,
-                                locationBurial!!.longitude,
-                                ETNameDeceased.text.toString()
-                            ))
                             viewModel.requestCreateDeceased(
                                 CreateDeceasedRequest(
                                     accessType,
@@ -234,8 +236,10 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
 
                 } else {
-                    Toast.makeText(this, "لطفا تمام قسمت ها را تکمیل کنید", Toast.LENGTH_SHORT)
-                        .show()
+                    TarhimToast.Builder()
+                        .setActivity(this)
+                        .message("لطفا تمام قسمت ها را تکمیل کنید")
+                        .build()
                 }
                 //</editor-fold>
             }
@@ -249,12 +253,16 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             if (it != null) {
                 DeceasedId = it.id
 //                DeceasedId=  Hawk.get("deceasedId")
-                Toast.makeText(this, "با موفقیت ثبت شد", Toast.LENGTH_SHORT).show()
+                TarhimToast.Builder()
+                    .setActivity(this)
+                    .message("با موفقیت ثبت شد")
+                    .build()
+
                 Handler().postDelayed({
 
                     startActivity(
                         Intent(this, DeceasedProfileActivity::class.java)
-                            .putExtra("FromPersonal",   DeceasedId)!!
+                            .putExtra("FromPersonal", DeceasedId)!!
 
                     )
                     editProfile = true
@@ -268,7 +276,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         })
         viewModel.ldEditDeceased.observe(this, Observer {
 
-           Log.i("testTag3","edited = "+it.toString())
+            Log.i("testTag3", "edited = " + it.toString())
             if (it != null) {
                 showLoading(false)
                 if (it.code == 200) {
@@ -325,6 +333,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             }
         }
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: kotlin.Array<out String>,
@@ -348,6 +357,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             }
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
@@ -399,6 +409,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
         return multiPart
     }
+
     fun showCalendarInDarkMode(
         status: Int,
         editText: AppCompatEditText,
@@ -433,21 +444,19 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
                     editText.setText(choseDate)
 
-                    val calendar = Calendar.getInstance()
-                    calendar.time = Date()
-                    val sdf = SimpleDateFormat("yyyy-MM-dd")
-                    sdf.timeZone = TimeZone.getTimeZone("UTC")
-//
-                    val df = SimpleDateFormat("yyyy-MM-dd")
-                    val date = df.parse(sdf.format(persianCalendar.time))
-                    unixTime = date.time.toString()
 
+                    var p = persianCalendar.time
+                    val currentDate = Date(p.time)
+                    var unixTime = currentDate.time / 1000
+
+                    Log.e("onDateSelected", unixTime.toString() )
+//
                     when (status) {
                         1 -> {
-                            dateMap!!.put(1, unixTime!!)
+                            dateMap!!.put(1, unixTime.toString())
                         }
                         2 -> {
-                            dateMap!!.put(2, unixTime!!)
+                            dateMap!!.put(2,unixTime.toString())
                         }
                     }
 
@@ -455,7 +464,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
 
                     editText.imeOptions = EditorInfo.IME_ACTION_NEXT
                     showSoftKeyboard(this@CreateDeceasedActivity)
-
+//
 
                 }
 
@@ -490,14 +499,14 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
     private fun showDeceasedDetails(details: DeceasedProfileDataModel) {
 
         val url: String = java.lang.String.valueOf(details.imageurl)
-        if(url.startsWith("https")){
+        if (url.startsWith("https")) {
             imagePath = details.imageurl
-        }else{
-            imagePath=url.replace("http","https")
+        } else {
+            imagePath = url.replace("http", "https")
         }
 
 
-        Log.e("imagePath", "showDeceasedDetails: "+imagePath )
+        Log.e("imagePath", "showDeceasedDetails: " + imagePath)
         Glide.with(this)
             .load(imagePath)
             .circleCrop()
@@ -539,7 +548,7 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         ETBurialLocation.setText(details.deathloc)
         ETdeceasedDescription.setText(details.description)
 
-        Log.e(TAG, "showDeceasedDetails: "+deceasedInfo )
+        Log.e(TAG, "showDeceasedDetails: " + deceasedInfo)
 
     }
 

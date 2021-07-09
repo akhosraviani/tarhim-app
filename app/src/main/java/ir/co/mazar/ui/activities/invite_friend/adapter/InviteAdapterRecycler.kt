@@ -18,43 +18,30 @@ import ir.co.mazar.ui.callback.InviteFriendsListener
 import kotlinx.android.synthetic.main.item_contact.view.*
 
 
-class InviteAdapterRecycler(private var context : Context, private val data : List<ContactModel>
-                            , private val inviteFriendsListener : InviteFriendsListener , private var addedContact : MutableList<ContactModel>) :
+class InviteAdapterRecycler(
+    private var context: Context,
+    private val data: List<ContactModel>,
+    private val inviteFriendsListener: InviteFriendsListener,
+) :
     RecyclerView.Adapter<InviteAdapterRecycler.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-//        lateinit var TvFollowersName: AppCompatTextView
-//        lateinit var TvFollowersNumber: AppCompatTextView
-//        lateinit var TvFollowersStatus: AppCompatImageView
-//        lateinit var BtnMoreFollowers: AppCompatImageButton
-
-
-        lateinit var contactPhoneNumber: TextView
-        lateinit var contactName: TextView
-        lateinit var sendInvitation: TextView
-        lateinit var inviteCheckBox: CheckBox
+        var contactPhoneNumber: TextView
+        var contactName: TextView
+        var sendInvitation: TextView
+        var sendInvitationLink: TextView
+        var inviteCheckBox: CheckBox
 
 
         init {
-//            TvFollowersName = view.TvFollowersName
-//            TvFollowersNumber = view.TvFollowersPhone
-//            TvFollowersStatus = view.TvFollowersStatus
-//            BtnMoreFollowers = view.BtnFollowersMore
 
             contactPhoneNumber = view.contactPhoneNumber
             contactName = view.contactName
             inviteCheckBox = view.inviteCheckBox
             sendInvitation = view.sendInvitation
+            sendInvitationLink = view.sendInvitationLink
         }
 
-
-        fun bind(item: ContactModel) {
-            contactPhoneNumber.text = item.phone
-            contactName.text = item.name
-//            TvFollowersName.text = item.name
-//            TvFollowersNumber.text = item.mobile
-
-        }
 
     }
 
@@ -71,22 +58,13 @@ class InviteAdapterRecycler(private var context : Context, private val data : Li
 
     }
 
-    override fun onCreateViewHolder(view: ViewGroup, p1: Int): ViewHolder {
+    override fun onCreateViewHolder(view: ViewGroup, position: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(view.context).inflate(R.layout.item_contact, view, false)
         )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, p1: Int) {
-
-        for(i in data.indices){
-            for(j in addedContact.indices){
-                if(data[i].phone==addedContact[i].phone){
-                    holder.sendInvitation.visibility=View.VISIBLE
-                    holder.sendInvitation.text = "ارسال شد"
-                }
-            }
-        }
 
 
         holder.contactName.text = data[p1].name
@@ -95,61 +73,58 @@ class InviteAdapterRecycler(private var context : Context, private val data : Li
         holder.inviteCheckBox.setOnClickListener {
             if (holder.inviteCheckBox.isChecked) {
                 holder.sendInvitation.visibility = View.VISIBLE
+                holder.sendInvitationLink.visibility = View.VISIBLE
             } else {
                 holder.sendInvitation.visibility = View.GONE
+                holder.sendInvitationLink.visibility = View.GONE
             }
         }
 
         holder.sendInvitation.setOnClickListener {
-            if(holder.sendInvitation.text != "ارسال شد"){
-            lateinit var dialog: Dialog
-            Log.i("testTag4", "dialog")
-            dialog = Dialog(context)
-            dialog.setContentView(R.layout.dialog_charity)
-            dialog.setCancelable(true)
-            dialog.setCanceledOnTouchOutside(true)
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.window!!.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
+            if (holder.sendInvitation.text != "ارسال شد") {
+                lateinit var dialog: Dialog
+                Log.i("testTag4", "dialog")
+                dialog = Dialog(context)
+                dialog.setContentView(R.layout.dialog_charity)
+                dialog.setCancelable(true)
+                dialog.setCanceledOnTouchOutside(true)
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.window!!.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
 
-            val charityTitle: TextView = dialog.findViewById(R.id.charityTitle)
-            val charityYes: TextView = dialog.findViewById(R.id.charityYes)
-            val charityNo: TextView = dialog.findViewById(R.id.charityNo)
+                val charityTitle: TextView = dialog.findViewById(R.id.charityTitle)
+                val charityYes: TextView = dialog.findViewById(R.id.charityYes)
+                val charityNo: TextView = dialog.findViewById(R.id.charityNo)
 
-            charityTitle.text = "آیا می خواهید برای مخاطب مورد نظر دعوتنامه ارسال شود؟"
+                charityTitle.text = "آیا می خواهید برای مخاطب مورد نظر دعوتنامه ارسال شود؟"
 
 
-            charityYes.setOnClickListener {
-                dialog.dismiss()
-             inviteFriendsListener.addContact(data[p1].phone)
+                charityYes.setOnClickListener {
+                    inviteFriendsListener.addContact(data[p1].phone)
+                    dialog.dismiss()
 
+                }
+                charityNo.setOnClickListener {
+                    holder.inviteCheckBox.isChecked = false
+                    holder.sendInvitation.visibility = View.GONE
+                    dialog.dismiss()
+
+                }
+                dialog.show()
             }
-            charityNo.setOnClickListener {
-                holder.inviteCheckBox.isChecked = false
-                holder.sendInvitation.visibility = View.GONE
-                dialog.dismiss()
-
-            }
-            dialog.show()
         }
+        holder.sendInvitationLink.setOnClickListener {
+            inviteFriendsListener.sendInvitationLInk(data[p1].phone)
         }
-    }
 
+    
+}
 
-
-//        holder.bind(getItem(p1))
-
-//        holder.BtnMoreFollowers.setOnClickListener {
-//            Toast.makeText(holder.itemView.context, "در حال پیاده سازی", Toast.LENGTH_SHORT).show()
-//        }
-
-
-
-    override fun getItemCount(): Int {
-       return data.size
-    }
+override fun getItemCount(): Int {
+    return data.size
+}
 
 
 }

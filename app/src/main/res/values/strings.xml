@@ -25,7 +25,7 @@
 
     <!-- region verification-->
     <string name="verification_title">کد تایید را وارد کنید</string>
-    <string name="verification_start_description">کد تایید برای شماره موبایل شما ارسال گردید.</string>
+    <string name="verification_start_description">کد تایید برای شماره موبایل شما ارسال گردیده لطفا تا دریافت آن صبر کنید.</string>
     <string name="verification_inter_with_password">ورود با رمز عبور > </string>
     <string name="verification_continue">ادامه</string>
     <string name="verification_send_me_again">ارسال مجدد کد</string>

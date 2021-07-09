@@ -10,13 +10,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:fontFamily="@font/iran_sans"
         android:text="TextView"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/inviteCheckBox"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/inviteCheckBox" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/contactName"
@@ -51,15 +50,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="ارسال دعوت"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:textSize="14sp"
-        android:textColor="@color/white"
         android:background="@drawable/shape_green_button"
         android:fontFamily="@font/iran_sans"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="ارسال دعوت"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintVertical_bias="0"
+        android:layout_marginTop="@dimen/_3sdp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/contactName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/contactName" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sendInvitationLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_green_button"
+        android:fontFamily="@font/iran_sans"
+        android:text="لینک دعوت"
+        android:paddingStart="12dp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_3sdp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/sendInvitation"
+        app:layout_constraintStart_toStartOf="@id/sendInvitation"
+        app:layout_constraintTop_toBottomOf="@id/sendInvitation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

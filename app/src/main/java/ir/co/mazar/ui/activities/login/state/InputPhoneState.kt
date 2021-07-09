@@ -41,6 +41,7 @@ class InputPhoneState(
         activity.getViewModel()
             .requestCheckRegister(CheckPhoneNumberRequest(loginEnterEt.text.toString()))
         Hawk.put(USER_NUMBER, loginEnterEt.text.toString())
+        activity.showLoading(true)
     }
 
     override fun decorateView() {
@@ -51,8 +52,5 @@ class InputPhoneState(
         loginEnterEt.inputType= InputType.TYPE_CLASS_NUMBER
         btnSubmit.setText(activity.getString(R.string.login_start_button))
         helpTv.visibility = View.VISIBLE
-
-
-
     }
 }

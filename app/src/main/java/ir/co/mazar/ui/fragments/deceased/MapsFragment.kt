@@ -20,7 +20,7 @@ import org.neshan.mapsdk.MapView
 import org.neshan.mapsdk.model.Marker
 
 
-class MapsFragment : Fragment(),
+class   MapsFragment : Fragment(),
     MapView.OnMapClickListener {
 
     private var checkLocaion = false

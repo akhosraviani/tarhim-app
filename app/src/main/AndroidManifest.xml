@@ -59,7 +59,6 @@
 
         <activity android:name="ir.co.mazar.ui.activities.deceased.CreateDeceasedActivity"/>
         <activity android:name="ir.co.mazar.ui.activities.deceased.DeceasedProfileActivity"/>
-        <activity android:name="ir.co.mazar.ui.activities.invite_friend.InviteFriendsActivity"/>
         <activity android:name="ir.co.mazar.ui.activities.inbox.InboxMessageActivity"/>
         <activity android:name="ir.co.mazar.ui.activities.inbox.NotificationMessageActivity"/>
 
@@ -86,6 +85,8 @@
         </service>
         <!-- ./Firebase Notifications -->
 
+
+        <activity android:name=".ui.activities.invite_friend.InviteActivity"></activity>
 
     </application>
 

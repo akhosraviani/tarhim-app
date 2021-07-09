@@ -222,7 +222,6 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
 
         btnSubmitEnter.setOnClickListener {
             state.submitBtnClickListener()
-            showLoading(true)
         }
         setHelpTv()
 
