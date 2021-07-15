@@ -57,7 +57,9 @@ class InviteActivity : AppCompatActivity(), InviteFriendsListener {
 
 
         if (intent?.getIntExtra("DeceasedId", -1) != null) {
-            deceasedId = intent?.getIntExtra("DeceasedId", -1)!!
+            intent?.getIntExtra("DeceasedId", -1)?.let {
+                deceasedId = it
+            }
         }
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -94,7 +96,7 @@ class InviteActivity : AppCompatActivity(), InviteFriendsListener {
 
         viewModel.muList.observe(this, Observer {
             if (it.size > 0) {
-                var ls=it.sortedBy { it.name }.distinctBy { it.name }
+                var ls = it.sortedBy { it.name }.distinctBy { it.name }
                 inviteAdapter = InviteAdapterRecycler(this, ls, this)
                 manager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                 contactRecycler.adapter = inviteAdapter
@@ -156,19 +158,20 @@ class InviteActivity : AppCompatActivity(), InviteFriendsListener {
 
 
         AddLinkTv.setOnClickListener {
-            if (!TextUtils.isEmpty(ETInputNumber.text) &&
-                ETInputNumber.text!!.length == 11 && ETInputNumber.text!!.startsWith("09")
-            ) {
-                isShare = true
-                viewModel.requestShareLink(deceasedId, ETInputNumber.text.toString())
-                showLoading(true)
-            } else {
-                TarhimToast.Builder()
-                    .setActivity(this)
-                    .message("موبایل به درستی وارد نشده! ")
-                    .build()
+            ETInputNumber.text?.let {
+                if (!TextUtils.isEmpty(ETInputNumber.text) &&
+                    it.length == 11 && it.startsWith("09")
+                ) {
+                    isShare = true
+                    viewModel.requestShareLink(deceasedId, ETInputNumber.text.toString())
+                    showLoading(true)
+                } else {
+                    TarhimToast.Builder()
+                        .setActivity(this)
+                        .message("موبایل به درستی وارد نشده! ")
+                        .build()
+                }
             }
-
         }
 
         viewModel.livedataListContact.observe(this, Observer {
