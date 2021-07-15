@@ -6,14 +6,6 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'adak'
-            storePassword '12345678'
-            keyPassword '12345678'
-            storeFile file('H:\\mysign\\adak.jks')
-        }
-    }
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
@@ -21,8 +13,8 @@ android {
         applicationId "ir.co.mazar"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "01"
+        versionCode 2
+        versionName "02"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,7 +23,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
     }
     compileOptions {
