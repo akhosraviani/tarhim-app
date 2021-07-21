@@ -237,13 +237,15 @@ class HomeActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListe
             }
 
         } else {
-            if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
-                super.onBackPressed();
-                finishAffinity()
-            } else {
-                Toast.makeText(this, "برای خروج دوباره کلیک کنید", Toast.LENGTH_SHORT).show()
+            mBackPressed?.let {
+                if (mBackPressed!! + TIME_INTERVAL > System.currentTimeMillis()) {
+                    super.onBackPressed();
+                    finishAffinity()
+                } else {
+                    Toast.makeText(this, "برای خروج دوباره کلیک کنید", Toast.LENGTH_SHORT).show()
+                }
+                mBackPressed = System.currentTimeMillis()
             }
-            mBackPressed = System.currentTimeMillis()
         }
     }
 

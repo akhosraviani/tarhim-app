@@ -26,17 +26,17 @@ class DetailsNewsFragment : BaseBottomSheetDialog() {
         dialog.setOnShowListener {
             var bottomSheet =
                 (it as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
-            var behavior=BottomSheetBehavior.from(bottomSheet)
-            behavior.isDraggable=false
+            var behavior = BottomSheetBehavior.from(bottomSheet)
+            behavior.isDraggable = false
             val layoutParams = bottomSheet.layoutParams
             val displayMetrics = DisplayMetrics()
-            (context as Activity?)!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
-            var widthHeight=displayMetrics.heightPixels
-            if(layoutParams!=null){
-                layoutParams.height=widthHeight
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+            var widthHeight = displayMetrics.heightPixels
+            if (layoutParams != null) {
+                layoutParams.height = widthHeight
             }
-            bottomSheet.layoutParams=layoutParams
-            behavior.state=BottomSheetBehavior.STATE_EXPANDED
+            bottomSheet.layoutParams = layoutParams
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         }
         return dialog
@@ -69,13 +69,13 @@ class DetailsNewsFragment : BaseBottomSheetDialog() {
         TvTitleOfNews.text = new.topic
         val url = new.imageurl
         if (url != null) {
-            if(url.startsWith("https")){
+            if (url.startsWith("https")) {
                 Glide.with(requireContext())
                     .load(url)
                     .into(IvDetailsNews)
-            }else{
+            } else {
                 Glide.with(requireContext())
-                    .load(url.replace("http","https"))
+                    .load(url.replace("http", "https"))
                     .into(IvDetailsNews)
             }
         }

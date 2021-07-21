@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+idea
+app/release
+app/debug
+tarhim.keystore

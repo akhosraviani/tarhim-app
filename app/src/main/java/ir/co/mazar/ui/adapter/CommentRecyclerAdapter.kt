@@ -26,7 +26,7 @@ class CommentRecyclerAdapter(
     private val context: Context,
     private var likeCommentClicked: LikeCommentClicked,
     var tipsCallBack: TipsListener,
-    var adminStatus:Boolean
+    var adminStatus: Boolean
 ) :
     ListAdapter<CommentDataModel, RecyclerView.ViewHolder>(CommentDiffUnit()),
     LikedCommentChangeColor {
@@ -44,6 +44,7 @@ class CommentRecyclerAdapter(
         val IVRightForum: AppCompatImageView
         val likeIcon: AppCompatImageButton
         val rightLayout: ConstraintLayout
+
         init {
             txtComment = view.TVCommentForum
             nameUser = view.TVNameRightForum
@@ -70,17 +71,19 @@ class CommentRecyclerAdapter(
                 txtComment.text = comment.message
 
                 val url = comment.imageurl
-                if(url.startsWith("https")){
-                    Glide.with(itemView.context)
-                        .load(url)
-                        .circleCrop()
-                        .into(imageUser)
+                url?.let {
+                    if (url.startsWith("https")) {
+                        Glide.with(itemView.context)
+                            .load(url)
+                            .circleCrop()
+                            .into(imageUser)
 
-                }else{
-                    Glide.with(itemView.context)
-                        .load(url.replace("http","https"))
-                        .circleCrop()
-                        .into(imageUser)
+                    } else {
+                        Glide.with(itemView.context)
+                            .load(url.replace("http", "https"))
+                            .circleCrop()
+                            .into(imageUser)
+                    }
                 }
 
                 rightLayout.visibility = View.VISIBLE
@@ -111,14 +114,14 @@ class CommentRecyclerAdapter(
         open fun bindTo(comment: CommentDataModel) {
 
             val url = comment.imageurl
-            if(url.startsWith("https")){
+            if (url.startsWith("https")) {
                 Glide.with(itemView.context)
                     .load(url)
                     .circleCrop()
                     .into(adminImage)
-            }else{
+            } else {
                 Glide.with(itemView.context)
-                    .load(url.replace("http","https"))
+                    .load(url.replace("http", "https"))
                     .circleCrop()
                     .into(adminImage)
             }
@@ -155,17 +158,17 @@ class CommentRecyclerAdapter(
             return CommentViewHolder(view)
 
         }
-            view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.row_left_forum, parent, false)
-            return ReplayViewHolder(view)
+        view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.row_left_forum, parent, false)
+        return ReplayViewHolder(view)
 
 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).reply!=null){
+        return if (getItem(position).reply != null) {
             LEFT_VIEW_TYPE
-        }else{
+        } else {
             RIGHT_VIEW_TYPE
         }
     }
@@ -173,69 +176,90 @@ class CommentRecyclerAdapter(
     override fun changeColor(liked: Boolean) {
 
     }
+
     fun setReplay(replay: String) {
         x = replay
     }
+
     fun setId(id: Int) {
         selectedId = id
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-       when(holder.itemViewType){
-           LEFT_VIEW_TYPE->{
-               (holder as ReplayViewHolder).bindTo(getItem(position))
-               if (x != "" && selectedId == getItem(holder.adapterPosition).id) {
-                   holder.adminComment.text = x
-                   holder.leftTVCommentForum.text = getItem(holder.adapterPosition).message
-               }
-           }
-           else->{
-               (holder as CommentViewHolder).bindTo(getItem(position))
+        when (holder.itemViewType) {
+            LEFT_VIEW_TYPE -> {
+                (holder as ReplayViewHolder).bindTo(getItem(position))
+                if (x != "" && selectedId == getItem(holder.adapterPosition).id) {
+                    holder.adminComment.text = x
+                    holder.leftTVCommentForum.text = getItem(holder.adapterPosition).message
+                }
+            }
+            else -> {
+                (holder as CommentViewHolder).bindTo(getItem(position))
 
-               var popup = PopupMenu(holder.itemView.context, holder.itemView)
-               popup.inflate(R.menu.tool_tip_menu)
-               if (!adminStatus!!) {
-                   popup.menu.findItem(R.id.deleteTool).isVisible = false
-//                   popup.menu.findItem(R.id.replayTool).setVisible(false)
-               }
-               holder.itemView.BtnMore.setOnClickListener {
-                   popup.setOnMenuItemClickListener {
+                var popup = PopupMenu(holder.itemView.context, holder.itemView)
+                popup.inflate(R.menu.tool_tip_menu)
+                adminStatus?.let {
+                    if (!adminStatus) {
+                        popup.menu.findItem(R.id.deleteTool).isVisible = false
+                    }
+                }
+                holder.itemView.BtnMore.setOnClickListener {
+                    popup.setOnMenuItemClickListener {
 
-                       when (it.itemId) {
-                           R.id.deleteTool -> {
-                               tipsCallBack.deleteCallback(getItem(holder.adapterPosition).id,false)
-                           }
-                           R.id.reportTool -> {
-                               tipsCallBack.reportCallback(getItem(holder.adapterPosition).id,false)
-                           }
-                           R.id.replayTool -> {
-                               if(getItem(holder.adapterPosition).reply!=null)
-                               tipsCallBack.replyCallback(getItem(holder.adapterPosition).id,true)
-                               else
-                               tipsCallBack.replyCallback(getItem(holder.adapterPosition).id,false)
+                        when (it.itemId) {
+                            R.id.deleteTool -> {
+                                tipsCallBack.deleteCallback(
+                                    getItem(holder.adapterPosition).id,
+                                    false
+                                )
+                            }
+                            R.id.reportTool -> {
+                                tipsCallBack.reportCallback(
+                                    getItem(holder.adapterPosition).id,
+                                    false
+                                )
+                            }
+                            R.id.replayTool -> {
+                                if (getItem(holder.adapterPosition).reply != null)
+                                    tipsCallBack.replyCallback(
+                                        getItem(holder.adapterPosition).id,
+                                        true
+                                    )
+                                else
+                                    tipsCallBack.replyCallback(
+                                        getItem(holder.adapterPosition).id,
+                                        false
+                                    )
 
-                           }
-                           else -> false
+                            }
+                            else -> false
 
-                       }
-                       false
-                   }
-                   popup.show()
+                        }
+                        false
+                    }
+                    popup.show()
 
-               }
-               holder.likeIcon.setOnClickListener {
+                }
+                holder.likeIcon.setOnClickListener {
 
-                   if (!getItem(holder.adapterPosition).favourite) {
-                       likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id, false)
-                   } else {
-                       likeCommentClicked.likeCommentClicked(getItem(holder.adapterPosition).id, true)
+                    if (!getItem(holder.adapterPosition).favourite) {
+                        likeCommentClicked.likeCommentClicked(
+                            getItem(holder.adapterPosition).id,
+                            false
+                        )
+                    } else {
+                        likeCommentClicked.likeCommentClicked(
+                            getItem(holder.adapterPosition).id,
+                            true
+                        )
 
-                   }
+                    }
 
-               }
-           }
+                }
+            }
 
-       }
+        }
     }
 }
