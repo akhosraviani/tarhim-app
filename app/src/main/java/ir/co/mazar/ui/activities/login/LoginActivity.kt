@@ -35,13 +35,13 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 
-class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListener {
+class LoginActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkListener {
 
 
     private lateinit var viewModel: HomeViewModel
         private set
 
-    private val  br=NetworkConnectionReceiver()
+    private val br = NetworkConnectionReceiver()
     fun getViewModel(): HomeViewModel {
         return viewModel;
     }
@@ -56,7 +56,7 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
     }
 
     private lateinit var state: LoginState
-    private  var register:Boolean=false
+    private var register: Boolean = false
     private lateinit var inputPhoneState: InputPhoneState
     private lateinit var inputPasswordState: InputPasswordState
     private lateinit var otpInputState: InputOtpState
@@ -65,10 +65,10 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_login)
-        var intentFilter=IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
+        var intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
             addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
         }
-        registerReceiver(br,intentFilter)
+        registerReceiver(br, intentFilter)
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         initUi()
         if (Hawk.get(TarhimConfig.FIRST_VISIT, false)) {
@@ -77,7 +77,7 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
 
         viewModel.ldSignUp.observe(this, Observer { x ->
             showLoading(false)
-            register=x.registered
+            register = x.registered
             TarhimToast.Builder()
                 .setActivity(this)
                 .message("تایید شد")
@@ -89,11 +89,11 @@ class LoginActivity : AppCompatActivity(),NetworkConnectionReceiver.NetworkListe
                 inputPasswordState.serRegister(true)
                 state.decorateView()
             } else {
+                val mobile = loginEnterEt.text.toString()
                 inputPhoneState.loginEnterEt.setText("")
                 state = otpInputState
                 state.decorateView()
-                viewModel.requestOtp(CheckPhoneNumberRequest(loginEnterEt.text.toString()))
-
+                viewModel.requestOtp(CheckPhoneNumberRequest(mobile))
             }
         })
 
