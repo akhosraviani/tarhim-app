@@ -7,6 +7,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.orhanobut.hawk.Hawk
+import ir.co.mazar.network.RequestClient
 
 class TarhimApplication : Application() {
 
@@ -22,6 +23,7 @@ class TarhimApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Hawk.init(this).build()
+        RequestClient.initRetrofit(this)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
