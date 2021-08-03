@@ -12,13 +12,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.GONE
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
 import android.widget.*
+import androidx.annotation.MenuRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -42,6 +48,8 @@ import ir.co.mazar.ui.fragments.deceased.GalleryFragment
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.*
 import kotlinx.android.synthetic.main.deceased_profile.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 import java.util.Timer
 import kotlin.concurrent.schedule
@@ -136,11 +144,11 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                         TvDeseacesName.text = it.name
                         TvFollowersCount.setText(
                             "${
-                            SeperateNumber().splitDigit(it.followerCount).toInt()
+                                SeperateNumber().splitDigit(it.followerCount).toInt()
                             } دنبال کننده "
                         )
-                        var dateBirthDay = Date((it.birthday).toLong()*1000)
-                        var dateDeathDay = Date((it.deathday).toLong()*1000)
+                        var dateBirthDay = Date((it.birthday).toLong() * 1000)
+                        var dateDeathDay = Date((it.deathday).toLong() * 1000)
                         val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
                         val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
@@ -182,11 +190,11 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             TvDeseacesName.text = it.name
                             TvFollowersCount.setText(
                                 "${
-                                SeperateNumber().splitDigit(it.followerCount).toInt()
+                                    SeperateNumber().splitDigit(it.followerCount).toInt()
                                 } دنبال کننده "
                             )
-                            var dateBirthDay = Date((it.birthday).toLong()*1000)
-                            var dateDeathDay = Date((it.deathday).toLong()*1000)
+                            var dateBirthDay = Date((it.birthday).toLong() * 1000)
+                            var dateDeathDay = Date((it.deathday).toLong() * 1000)
                             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
                             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
@@ -227,8 +235,8 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             TvTypeDeceasedPage.visibility = View.VISIBLE
                             typeSpinner.text = resources.getStringArray(R.array.list_access_type)[2]
                             TvDeseacesName.text = it.name
-                            val dateBirthDay = Date((it.birthday).toLong()*1000)
-                            val dateDeathDay = Date((it.deathday).toLong()*1000)
+                            val dateBirthDay = Date((it.birthday).toLong() * 1000)
+                            val dateDeathDay = Date((it.deathday).toLong() * 1000)
                             val scBirthDay = PersianDate.SolarCalendar(dateBirthDay)
                             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
 
@@ -269,6 +277,14 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
             }
         })
+
+        val moreBtn = findViewById<AppCompatImageButton>(R.id.BtnMore)
+        moreBtn.setOnClickListener {
+            it?.let { v ->
+                showMenu(v, R.menu.common_menu)
+            }
+        }
+
         viewModel.ldDeceasedFromSearch.observe(this, Observer {
             showLoading(false)
 
@@ -293,7 +309,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                         TvDeseacesName.text = it.name
                         TvFollowersCount.setText(
                             "${
-                            SeperateNumber().splitDigit(it.followerCount).toInt()
+                                SeperateNumber().splitDigit(it.followerCount).toInt()
                             } دنبال کننده "
                         )
                         val dateBirthDay = Date((it.birthday).toLong())
@@ -337,7 +353,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                             btnAddFriends.visibility = View.VISIBLE
                             TvFollowersCount.setText(
                                 "${
-                                SeperateNumber().splitDigit(it.followerCount).toInt()
+                                    SeperateNumber().splitDigit(it.followerCount).toInt()
                                 } دنبال کننده "
                             )
                             typeSpinner.visibility = View.VISIBLE
@@ -759,7 +775,7 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         }
 
         TvDeseacesNamePrivate.text = itemDeceased.name
-        if(itemDeceased.deathday!=""){
+        if (itemDeceased.deathday != "") {
             val dateDeathDay = Date((itemDeceased.deathday).toLong())
             val scDeathDay = PersianDate.SolarCalendar(dateDeathDay)
             val deathDay = "${scDeathDay.year}/${scDeathDay.month}/${scDeathDay.date}"
@@ -830,8 +846,10 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
         dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
 
 
         val checkBoxThird: CheckBox = dialog.findViewById(R.id.checkBoxThird)
@@ -862,10 +880,11 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
         notifSave.setOnClickListener {
 
-            if(!checkBoxThird.isChecked && !checkBoxForty.isChecked && !checkBoxSeventh.isChecked
-                && !checkBoxAnniversary.isChecked ){
+            if (!checkBoxThird.isChecked && !checkBoxForty.isChecked && !checkBoxSeventh.isChecked
+                && !checkBoxAnniversary.isChecked
+            ) {
                 dialog.dismiss()
-            }else{
+            } else {
                 viewModel.requestReminder(
                     RemindeRequestModel(
                         anniversary,
@@ -881,6 +900,23 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
             }
         }
         dialog.show()
+    }
+
+    private fun showMenu(v: View, @MenuRes menuRes: Int) {
+        val popup = PopupMenu(this, v)
+        popup.menuInflater.inflate(menuRes, popup.menu)
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.report -> {
+                    Toast.makeText(this, "گزارش شما با موفقیت ثبت گردید", Toast.LENGTH_SHORT).show()
+                    true
+                }
+
+                else -> throw UnsupportedOperationException("there is not this item")
+            }
+        }
+
+        popup.show()
     }
 
 }
