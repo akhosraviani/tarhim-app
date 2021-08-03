@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.toSpannable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.orhanobut.hawk.Hawk
 import ir.co.mazar.R
 import ir.co.mazar.model.login.mobile.CheckPhoneNumberRequest
@@ -24,7 +25,6 @@ import ir.co.mazar.ui.activities.login.state.InputOtpState
 import ir.co.mazar.ui.activities.login.state.InputPasswordState
 import ir.co.mazar.ui.activities.login.state.InputPhoneState
 import ir.co.mazar.ui.activities.login.state.LoginState
-import ir.co.mazar.ui.fragments.profile.EditProfileFragment
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.NetworkConnectionReceiver
 import ir.co.mazar.utils.TarhimConfig
@@ -49,8 +49,6 @@ class LoginActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkList
     companion object {
         private const val CONDITION_WORDS_START_INDEX: Int = 32
         private const val CONDITION_WORDS_END_INDEX: Int = 48
-        private const val RULES_WORDS_START_INDEX: Int = 77
-        private const val RULES_WORDS_END_INDEX: Int = 97
         private const val TAG = "LoginActivity"
 
     }
@@ -234,19 +232,10 @@ class LoginActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkList
 
         val clickableSpanForCondition: ClickableSpan = object : ClickableSpan() {
             override fun onClick(p0: View) {
-                //go to condition's page
-            }
-
-            override fun updateDrawState(ds: TextPaint) {
-                super.updateDrawState(ds)
-                ds.isUnderlineText = true
-            }
-
-        }
-
-        val clickableSpanForRules: ClickableSpan = object : ClickableSpan() {
-            override fun onClick(p0: View) {
-                //go to rule's page
+                val dialog = BottomSheetDialog(this@LoginActivity)
+                val v = layoutInflater.inflate(R.layout.fragment_rules, null, false)
+                dialog.setContentView(v)
+                dialog.show()
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -261,12 +250,6 @@ class LoginActivity : AppCompatActivity(), NetworkConnectionReceiver.NetworkList
             clickableSpanForCondition,
             CONDITION_WORDS_START_INDEX,
             CONDITION_WORDS_END_INDEX,
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        rulesWord.setSpan(
-            clickableSpanForRules,
-            RULES_WORDS_START_INDEX,
-            RULES_WORDS_END_INDEX,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         helpTv.text = rulesWord
