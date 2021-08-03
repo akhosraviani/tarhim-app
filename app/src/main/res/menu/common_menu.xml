@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layoutDirection="rtl">
+    <group android:id="@+id/edit_name_gp">
+        <item
+            android:background="@color/white"
+            android:id="@+id/report"
+            android:gravity="center"
+            android:fontFamily="@font/iran_sans"
+            android:title="@string/report" />
+    </group>
+</menu>

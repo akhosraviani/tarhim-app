@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/noIntenterroot"
         android:layout_width="match_parent"
@@ -37,15 +39,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/deceasedPageRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_page"
         android:orientation="vertical">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/prayToolbar"
             android:layout_width="match_parent"
@@ -82,6 +83,7 @@
                     app:layout_constraintHorizontal_bias=".05"
                     app:layout_constraintStart_toEndOf="@id/BtnInboxDeceasedProfile"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txttitleDeceaedPage"
                     android:layout_width="wrap_content"
@@ -94,6 +96,18 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_marginRight="12dp"
+                    android:id="@+id/BtnMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_baseline_more_"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -253,8 +267,8 @@
                             android:drawableLeft="@drawable/ic_location"
                             android:drawablePadding="5dp"
                             android:fontFamily="@font/iran_sans"
-                            android:text="مسیریابی"
                             android:gravity="center"
+                            android:text="مسیریابی"
                             android:textColor="@color/white"
                             android:visibility="invisible"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -270,8 +284,8 @@
                             android:layout_height="@dimen/_30sdp"
                             android:background="@drawable/edit_icon"
                             android:drawablePadding="5dp"
-                            android:visibility="visible"
                             android:textColor="@color/white"
+                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/ImVDeceased"
                             app:layout_constraintHorizontal_bias=".1"
@@ -287,9 +301,9 @@
                             android:drawableLeft="@drawable/ic_arrow_down"
                             android:elevation="@dimen/_5sdp"
                             android:fontFamily="@font/iran_sans_bold"
+                            android:maxLines="3"
                             android:text="بیشتر"
                             android:textAllCaps="false"
-                            android:maxLines="3"
                             android:textColor="@color/color_green"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@id/TvBioDeseaces"
@@ -328,12 +342,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_35sdp"
                             android:layout_marginTop="@dimen/_7sdp"
-                            android:paddingStart="@dimen/_10sdp"
-                            android:paddingEnd="@dimen/_10sdp"
                             android:background="@drawable/shape_button"
                             android:drawableLeft="@drawable/ic_baseline_add_circle_outline_24"
                             android:fontFamily="@font/iran_sans_bold"
                             android:gravity="left|center"
+                            android:paddingStart="@dimen/_10sdp"
+                            android:paddingEnd="@dimen/_10sdp"
                             android:text="اضافه کردن مخاطب جدید با شماره تلفن "
                             android:textSize="@dimen/_12sdp"
                             android:visibility="gone"
@@ -424,8 +438,8 @@
                                 android:layout_height="@dimen/_30sdp"
                                 android:background="@drawable/edit_icon"
                                 android:drawablePadding="5dp"
-                                android:visibility="visible"
                                 android:textColor="@color/white"
+                                android:visibility="visible"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/TvNameToolbar"
                                 app:layout_constraintHorizontal_bias="0"
@@ -463,6 +477,7 @@
 
                 />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/PrivateLayout"
             android:layout_width="match_parent"
@@ -606,6 +621,7 @@
                 app:layout_constraintVertical_bias="0.1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ProgressBar
             android:id="@+id/deceasedPagePrg"
             android:layout_width="wrap_content"

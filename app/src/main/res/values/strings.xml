@@ -69,6 +69,7 @@
              میتوانید آنرا دریافت کنید.
         </br>
     </string>
+    <string name="report">گزارش تخلف</string>
 
     <string-array name="list_pray_type">
         <item>فرستادن صلوات</item>
