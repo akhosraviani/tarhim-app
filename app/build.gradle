@@ -13,8 +13,8 @@ android {
         applicationId "ir.co.mazar"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 4
-        versionName "04"
+        versionCode 5
+        versionName "05"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
