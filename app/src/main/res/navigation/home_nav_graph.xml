@@ -38,12 +38,6 @@
     </fragment>
 
 
-    <fragment
-        android:id="@+id/maps_fragment"
-        android:name="ir.co.mazar.ui.fragments.deceased.MapsFragment"
-        tools:layout="@layout/fragment_maps">
-
-    </fragment>
     <dialog
         android:label="اخبار"
         android:id="@+id/details_news_fragment"

@@ -99,10 +99,10 @@
 
 
                 <androidx.appcompat.widget.AppCompatImageButton
-                    android:layout_marginRight="12dp"
                     android:id="@+id/BtnMore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
                     android:background="@drawable/ic_baseline_more_"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +117,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fitsSystemWindows="true"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -253,30 +252,9 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/iran_sans_light"
                             android:textColor="@color/text_color_lighter"
-                            app:layout_constraintBottom_toBottomOf="@+id/btnFindBurialLocation"
                             app:layout_constraintEnd_toEndOf="@+id/ImVDeceased"
-                            app:layout_constraintHorizontal_bias="0.959"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/btnFindBurialLocation" />
-
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btnFindBurialLocation"
-                            android:layout_width="@dimen/_80sdp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:background="@drawable/shape_button"
-                            android:drawableLeft="@drawable/ic_location"
-                            android:drawablePadding="5dp"
-                            android:fontFamily="@font/iran_sans"
-                            android:gravity="center"
-                            android:text="مسیریابی"
-                            android:textColor="@color/white"
-                            android:visibility="invisible"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias=".05"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/ImVDeceased"
-                            app:layout_constraintVertical_bias="0.02" />
+                            app:layout_constraintStart_toStartOf="@+id/ImVDeceased"
+                            app:layout_constraintTop_toBottomOf="@+id/ImVDeceased" />
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/BtnEditDeceased"
@@ -318,7 +296,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_7sdp"
-                            android:layout_marginTop="@dimen/_7sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
                             android:layout_marginEnd="@dimen/_7sdp"
                             android:background="@drawable/shape_bg_box_latest_search"
                             android:fontFamily="@font/iran_sans"
@@ -332,8 +310,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/btnFindBurialLocation"
-                            app:layout_constraintVertical_bias="0"
+                            app:layout_constraintTop_toBottomOf="@+id/TvBurialLocation"
                             tools:text="text to1" />
 
 
