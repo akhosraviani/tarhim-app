@@ -130,7 +130,8 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
 
                 if (it.latitude != null) {
                     locationBurial = LatLng(it.latitude, it.longitude)
-                    btnFindBurialLocation.visibility = View.VISIBLE
+                    // btnFindBurialLocation.visibility = View.VISIBLE
+//                    btnFindBurialLocation.visibility = View.GONE
                 }
                 deceasedInfo = it
 
@@ -297,7 +298,8 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                 deceasedInfo = it
                 if (it.latitude != null) {
                     locationBurial = LatLng(it.latitude, it.longitude)
-                    btnFindBurialLocation.visibility = View.VISIBLE
+                    // btnFindBurialLocation.visibility = View.VISIBLE
+//                    btnFindBurialLocation.visibility = View.GONE
                 }
                 when (it.accesstype) {
                     AccessTypeDeceased.Public.name -> {
@@ -453,19 +455,6 @@ class DeceasedProfileActivity : AppCompatActivity(), ViewPagerCallBack,
                 cToolbar.animate().alpha(0f).duration = 600
             }
         })
-
-
-        btnFindBurialLocation.setOnClickListener {
-
-            val uri = java.lang.String.format(
-                Locale.ENGLISH,
-                "http://maps.google.com/maps?q=loc:%f,%f",
-                locationBurial!!.latitude,
-                locationBurial!!.longitude
-            )
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-            startActivity(intent)
-        }
 
 
         /////////////notif on

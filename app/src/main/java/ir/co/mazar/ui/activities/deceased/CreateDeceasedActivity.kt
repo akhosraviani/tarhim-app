@@ -42,7 +42,6 @@ import ir.co.mazar.model.deceased.MyDeceasedDataModel
 import ir.co.mazar.ui.activities.home.HomeActivity
 import ir.co.mazar.ui.callback.UploadCallBack
 import ir.co.mazar.ui.callback.UploadProgress
-import ir.co.mazar.ui.fragments.deceased.MapsFragment
 import ir.co.mazar.ui.viewModels.HomeViewModel
 import ir.co.mazar.utils.*
 import ir.co.mazar.utils.TarhimConfig.Companion.CHOSE_IMAGE_FROM_GALLERY
@@ -52,10 +51,8 @@ import ir.hamsaa.persiandatepicker.util.PersianCalendar
 import kotlinx.android.synthetic.main.create_deceased.*
 import kotlinx.android.synthetic.main.tarhim_dialog.view.*
 import okhttp3.MultipartBody
-import org.neshan.common.model.LatLng
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Timer
 import kotlin.collections.HashMap
@@ -64,18 +61,13 @@ import kotlin.properties.Delegates
 
 
 class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
-    MapsFragment.DetectLocationListenr,
     NetworkConnectionReceiver.NetworkListener {
 
     companion object {
         private const val TAG = "CreateDeceased"
-
     }
 
-
-    private lateinit var mapsFragment: MapsFragment
     private var imagePath: String? = ""
-    private var locationBurial = LatLng(35.5413334, 51.3784391)
     private lateinit var editBirth: String
     private lateinit var editDeath: String
     private var birthZone: String? = ""
@@ -109,7 +101,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         dateMap = HashMap()
         picker = PersianDatePickerDialog(this)
-        mapsFragment = MapsFragment()
         inputMethodManager =
             this?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         viewModel.ldImageUpload.observe(this, Observer {
@@ -131,9 +122,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
             Hawk.put("deceasedId", DeceasedId)
             Log.e("TAG", "id in create dec activity= " + deceasedInfo)
 
-            locationBurial = LatLng((deceasedInfo!!.latitude), (deceasedInfo!!.longitude))
-            Hawk.put("locationBurial", locationBurial)
-
             showDeceasedDetails(deceasedInfo!!)
         } else {
             Hawk.put("locationBurial", null)
@@ -154,13 +142,6 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         }
         ETDeathDeceased.setOnClickListener {
             setUpDeathDayCalendar()
-        }
-        BtnOpenMap.setOnClickListener {
-            mapFragment.visibility = View.VISIBLE
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.mapFragment, mapsFragment)
-                .addToBackStack(null)
-                .commit();
         }
         BtnExitDeceasedPage.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
@@ -184,8 +165,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                             ETBurialLocation.text.toString(),
                             ETdeceasedDescription.text.toString(),
                             imagePath!!,
-                            locationBurial!!.latitude,
-                            locationBurial!!.longitude,
+                            0.0,
+                            0.0,
                             ETNameDeceased.text.toString()
                         ), Hawk.get("deceasedId")!!
                     )
@@ -221,8 +202,8 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                                     ETBurialLocation.text.toString(),
                                     ETdeceasedDescription.text.toString(),
                                     imagePath!!,
-                                    locationBurial!!.latitude,
-                                    locationBurial!!.longitude,
+                                    0.0,
+                                    0.0,
                                     ETNameDeceased.text.toString()
                                 )
                             )
@@ -449,14 +430,14 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
                     val currentDate = Date(p.time)
                     var unixTime = currentDate.time / 1000
 
-                    Log.e("onDateSelected", unixTime.toString() )
+                    Log.e("onDateSelected", unixTime.toString())
 //
                     when (status) {
                         1 -> {
                             dateMap!!.put(1, unixTime.toString())
                         }
                         2 -> {
-                            dateMap!!.put(2,unixTime.toString())
+                            dateMap!!.put(2, unixTime.toString())
                         }
                     }
 
@@ -668,9 +649,4 @@ class CreateDeceasedActivity : AppCompatActivity(), UploadCallBack,
         alertDialog.show()
     }
 
-    override fun locationCallback(location: org.neshan.common.model.LatLng) {
-        Log.e("locationCallback", "locationCallback: " + location.latitude)
-        Log.e("locationCallback", "locationCallback: " + location.longitude)
-        locationBurial = org.neshan.common.model.LatLng(location.latitude, location.longitude)
-    }
 }
